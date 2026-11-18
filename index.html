@@ -28,6 +28,15 @@ header{height:76px;background:var(--green);padding:12px 17px;
  background:#ffffff18;color:white;display:grid;place-items:center}
 .icon-btn svg{width:22px;height:22px;stroke:currentColor;
  fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center}
+.icon-btn:active{background:#ffffff22}
+.settings-accordion{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:10px 0;overflow:hidden}
+.settings-accordion summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;cursor:pointer;font-weight:700;color:#30352d}
+.settings-accordion summary::-webkit-details-marker{display:none}
+.settings-accordion summary::after{content:'⌄';font-size:20px;color:#687066;transition:transform .18s}
+.settings-accordion[open] summary::after{transform:rotate(180deg)}
+.accordion-content{padding:0 16px 16px;border-top:1px solid var(--line)}
+.accordion-content .settings-row:first-child{margin-top:4px}
 main{padding:21px 17px 35px}
 h1,h2,h3,p{margin-top:0}
 h1{font-size:25px;margin-bottom:8px}
@@ -156,13 +165,13 @@ h2{font-size:18px;margin-bottom:13px}
   <div class="slogan">Tu hogar, organizado en un solo lugar</div>
  </div>
  <div class="header-actions">
-  <button class="icon-btn" onclick="navigate('notificaciones')" aria-label="Notificaciones">
+  <button class="icon-btn" onclick="toggleHeaderPanel('notificaciones')" aria-label="Notificaciones">
    <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
   </button>
-  <button class="icon-btn" onclick="navigate('configuracion')" aria-label="Configuración">
-   <svg viewBox="0 0 24 24">
-    <path d="M12 2.8l1.2 1.1 1.7.2.9 1.4 1.6.7.3 1.7 1.2 1.2-.4 1.7.4 1.7-1.2 1.2-.3 1.7-1.6.7-.9 1.4-1.7.2L12 21.2l-1.2-1.1-1.7-.2-.9-1.4-1.6-.7-.3-1.7-1.2-1.2.4-1.7-.4-1.7 1.2-1.2.3-1.7 1.6-.7.9-1.4 1.7-.2z"/>
-    <circle cx="12" cy="12" r="3.1"/>
+  <button class="icon-btn" onclick="toggleHeaderPanel('configuracion')" aria-label="Configuración">
+   <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.5-2-3.4-2.4 1a7.8 7.8 0 0 0-1.7-1L15 3.5H9l-.4 2.6a7.8 7.8 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.5a7.8 7.8 0 0 0 0 2l-2 1.5 2 3.4 2.4-1a7.8 7.8 0 0 0 1.7 1L9 21h6l.4-2.6a7.8 7.8 0 0 0 1.7-1l2.4 1 2-3.4z"/>
+    <circle cx="12" cy="12" r="3.2"/>
    </svg>
   </button>
  </div>
@@ -195,6 +204,7 @@ const modules=[
 let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
 if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
 let current='inicio',calendarView='Mes',selectedDate=new Date();
+let headerPanelReturn='inicio';
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]');
@@ -228,6 +238,15 @@ function escapeHTML(s){
  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function orderedModules(){return order.map(id=>modules.find(m=>m.id===id)).filter(Boolean)}
+function toggleHeaderPanel(id){
+ if(current===id){
+  const back=headerPanelReturn||'inicio';
+  current=back;render();window.scrollTo(0,0);return;
+ }
+ if(current!=='notificaciones'&&current!=='configuracion')headerPanelReturn=current;
+ if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
+ current=id;render();window.scrollTo(0,0);
+}
 function navigate(id){
  if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
  if(id==='finanzas'&&current!=='finanzas'){requestFinanceAccess();return}
@@ -425,30 +444,40 @@ function renderNotifications(){
  const isAdmin=householdRole==='admin';
  screen.innerHTML=`
  <div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
- <div class="card">
-  <div class="settings-row"><strong>Seguridad y dispositivos</strong><span class="pill">Dispositivo actual</span></div>
-  <label class="setting-control"><input id="householdDevice" type="checkbox" ${householdDevice?'checked':''} onchange="saveSecuritySettings()"> Este es el dispositivo fijado como hogar</label>
-  <label class="setting-control"><input id="adminFinanceRule" type="checkbox" ${adminFinanceRule?'checked':''} ${isAdmin?'':'disabled'} onchange="saveSecuritySettings()"> Exigir PIN al entrar a Finanzas para todos los integrantes</label>
-  <label class="setting-control" for="financeTimeout">Tiempo antes del bloqueo personal de Finanzas</label>
-  <select id="financeTimeout" onchange="saveSecuritySettings()">
-   <option value="0" ${financeLockMinutes===0?'selected':''}>Inmediatamente</option>
-   <option value="1" ${financeLockMinutes===1?'selected':''}>1 minuto</option>
-   <option value="5" ${financeLockMinutes===5?'selected':''}>5 minutos</option>
-   <option value="15" ${financeLockMinutes===15?'selected':''}>15 minutos</option>
-   <option value="30" ${financeLockMinutes===30?'selected':''}>30 minutos</option>
-  </select>
-  <button class="secondary-btn" onclick="showFinancePinSetup(false)">Configurar o cambiar PIN de Finanzas</button>
-  <p class="settings-note">El dispositivo fijado como hogar solicita el PIN cada vez que se sale de Finanzas. En los demás dispositivos cada integrante puede elegir si activa el bloqueo y definir su tiempo. El administrador puede exigir el PIN para todos.</p>
-  <p class="settings-note">Prototipo: esta pantalla no reemplaza una autenticación segura en servidor. La protección real y la administración de dispositivos se implementarán en una etapa posterior.</p>
- </div>
- <div class="card">
-  <div class="settings-row"><strong>Integrantes del hogar</strong><span class="pill">${householdMemberCount} integrante(s)</span></div>
-  <p class="settings-note">La administración de integrantes, solicitudes y permisos se conectará cuando exista el sistema de cuentas y hogares.</p>
- </div>
- <div class="card">
-  <div class="settings-row"><strong>Ayuda</strong></div>
-  <p class="settings-note">La ayuda y el soporte de Enorden estarán disponibles en una siguiente etapa.</p>
- </div>
+ <details class="settings-accordion">
+  <summary>Seguridad y dispositivos <span class="pill">Dispositivo actual</span></summary>
+  <div class="accordion-content">
+   <label class="setting-control"><input id="householdDevice" type="checkbox" ${householdDevice?'checked':''} onchange="saveSecuritySettings()"> Este es el dispositivo fijado como hogar</label>
+   <label class="setting-control"><input id="adminFinanceRule" type="checkbox" ${adminFinanceRule?'checked':''} ${isAdmin?'':'disabled'} onchange="saveSecuritySettings()"> Exigir PIN al entrar a Finanzas para todos los integrantes</label>
+   <label class="setting-control" for="financeTimeout">Tiempo antes del bloqueo personal de Finanzas</label>
+   <select id="financeTimeout" onchange="saveSecuritySettings()">
+    <option value="0" ${financeLockMinutes===0?'selected':''}>Inmediatamente</option>
+    <option value="1" ${financeLockMinutes===1?'selected':''}>1 minuto</option>
+    <option value="5" ${financeLockMinutes===5?'selected':''}>5 minutos</option>
+    <option value="15" ${financeLockMinutes===15?'selected':''}>15 minutos</option>
+    <option value="30" ${financeLockMinutes===30?'selected':''}>30 minutos</option>
+   </select>
+   <button class="secondary-btn" onclick="showFinancePinSetup(false)">Configurar o cambiar PIN de Finanzas</button>
+   <p class="settings-note">El dispositivo fijado como hogar solicita el PIN cada vez que se sale de Finanzas. En los demás dispositivos cada integrante puede elegir si activa el bloqueo y definir su tiempo. El administrador puede exigir el PIN para todos.</p>
+   <p class="settings-note">Prototipo: esta pantalla no reemplaza una autenticación segura en servidor. La protección real y la administración de dispositivos se implementarán en una etapa posterior.</p>
+  </div>
+ </details>
+ <details class="settings-accordion">
+  <summary>Integrantes del hogar <span class="pill">${householdMemberCount} integrante(s)</span></summary>
+  <div class="accordion-content">
+   <div class="settings-row"><strong>Administrador</strong><span class="pill">Tú</span></div>
+   <p class="settings-note">La administración de integrantes, solicitudes, perfiles y permisos se conectará cuando exista el sistema de cuentas y hogares.</p>
+  </div>
+ </details>
+ <details class="settings-accordion">
+  <summary>Ayuda</summary>
+  <div class="accordion-content">
+   <div class="settings-row"><strong>¿Cómo funciona Enorden?</strong></div>
+   <p class="settings-note">Enorden reúne la organización del hogar en módulos: calendario, tareas, listas, finanzas, rutinas, notas, mapa y chat.</p>
+   <div class="settings-row"><strong>¿Necesitas ayuda?</strong></div>
+   <p class="settings-note">La ayuda y el soporte estarán disponibles cuando conectemos los servicios de la aplicación.</p>
+  </div>
+ </details>
  <div class="plain-heading">Código de hogar</div>
  <div class="home-code">${escapeHTML(homeCode)}</div>
  <div class="toolbar" style="margin-top:10px">
