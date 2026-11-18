@@ -735,6 +735,8 @@ function showEventFields(){
  '<div class="event-form-section"><span class="field-label">Conectar con otros módulos</span><label class="event-choice"><input id="linkTask" type="checkbox" onchange="toggleEventLink(\'task\')"> Vincular con una tarea</label><div id="linkTaskWrap" class="hidden"><select id="linkTaskId">'+(taskOptions||'<option value="">No hay tareas guardadas</option>')+'</select></div><label class="event-choice"><input id="linkNote" type="checkbox" onchange="toggleEventLink(\'note\')"> Vincular con una nota</label><div id="linkNoteWrap" class="hidden"><input id="linkNoteId" placeholder="Referencia de la nota (módulo en desarrollo)"></div><label class="event-choice"><input id="linkExpense" type="checkbox" onchange="toggleEventLink(\'expense\')"> Vincular con un gasto o presupuesto</label><div id="linkExpenseWrap" class="hidden"><input id="linkExpenseId" placeholder="Referencia del gasto o presupuesto (módulo en desarrollo)"></div></div>'+
  '<div class="event-preview"><div class="field-label">Vista previa</div><div id="eventPreview"><div class="event-preview-title">Nombre del evento</div>Selecciona una fecha</div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">Guardar</button></div>';
+ if(type==='birthday'||type==='anniversary')document.getElementById('eventRepeat').value='yearly';
+ if(type==='anniversary'){document.getElementById('eventAllDay').checked=true;toggleEventAllDay();}
  updateEventPreview();
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
