@@ -8,12 +8,12 @@
 <title>Enorden</title>
 <style>
 :root{
- --bg:#101010;--surface:#1c1c1c;--surface2:#252525;
- --green:#24564f;--green2:#326b61;--white:#f5f5f5;
- --muted:#a2a2a2;--line:#343434;--gold:#d9b879;
+ --bg:#f2ecdf;--surface:#fffaf1;--surface2:#e9e0d0;
+ --green:#24564f;--green2:#326b61;--white:#242820;
+ --muted:#70736c;--line:#d9d0c1;--gold:#bd9144;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--white);
+body{margin:0;background:var(--bg);color:#242820;
  font-family:Arial,Helvetica,sans-serif;font-size:15px}
 button,input,select{font:inherit}
 button{cursor:pointer}
@@ -34,25 +34,25 @@ h1{font-size:25px;margin-bottom:8px}
 h2{font-size:18px;margin-bottom:13px}
 .muted{color:var(--muted)}
 .dayline{display:flex;align-items:baseline;gap:8px;margin:3px 0 15px}
-.dayline strong{font-size:19px;color:white;text-transform:capitalize}
-.dayline span{font-size:15px;color:#aaa}
+.dayline strong{font-size:19px;color:#242820;text-transform:capitalize}
+.dayline span{font-size:15px;color:#74766f}
 .greeting{font-size:29px;font-weight:700;margin:0 0 9px}
 .weather{display:flex;align-items:center;gap:8px;font-size:16px;
- color:#ddd;margin-bottom:10px}
+ color:#555a51;margin-bottom:10px}
 .weather-icon{font-size:20px}
 .summary-intro{font-size:13px;color:var(--muted);margin-bottom:17px}
 .searchbox{display:flex;align-items:center;gap:8px;
  background:var(--surface);border:1px solid var(--line);
  border-radius:13px;padding:4px 7px;margin-bottom:20px}
 .searchbox input{flex:1;min-width:0;background:transparent;
- color:white;border:0;outline:none;padding:11px 7px}
+ color:#242820;border:0;outline:none;padding:11px 7px}
 .searchbox button{border:0;border-radius:9px;background:var(--green);
  color:white;padding:9px 11px}
 .summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .summary-card{background:var(--surface);border:1px solid var(--line);
- border-radius:13px;padding:13px 9px;min-height:94px}
+ border-radius:13px;padding:13px 9px;min-height:94px;color:#242820;text-align:left}
 .summary-card .number{font-size:25px;font-weight:700;margin-bottom:5px}
-.summary-card .label{font-size:11px;color:#c3c3c3;line-height:1.3}
+.summary-card .label{font-size:11px;color:#70736c;line-height:1.3}
 .section{margin-top:27px}
 .section-title{font-size:18px;font-weight:700;margin-bottom:13px}
 .module-strip,.bottom-nav{display:flex;gap:9px;overflow-x:auto;
@@ -62,24 +62,24 @@ h2{font-size:18px;margin-bottom:13px}
 .module-tile{flex:0 0 88px;min-height:88px;scroll-snap-align:start;
  display:flex;flex-direction:column;align-items:center;justify-content:center;
  gap:8px;background:var(--surface);border:1px solid var(--line);
- color:white;border-radius:14px;padding:10px 5px;touch-action:pan-x}
+ color:#242820;border-radius:14px;padding:10px 5px;touch-action:pan-x}
 .module-tile .emoji{font-size:24px}
 .module-tile span:last-child{font-size:11px;text-align:center}
 .hint{font-size:11px;line-height:1.5;color:#999;margin-top:2px}
 .card{background:var(--surface);border:1px solid var(--line);
- border-radius:14px;padding:15px;margin-bottom:11px}
+ border-radius:14px;padding:15px;margin-bottom:11px;color:#242820}
 .card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .page-heading{margin-bottom:18px}
 .page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
-.small-btn{background:var(--surface2);color:#eee;white-space:nowrap}
+.small-btn{background:var(--surface2);color:#30352d;white-space:nowrap}
 .small-btn.active,.primary-btn{background:var(--green2);color:white}
-.secondary-btn{background:var(--surface2);color:white}
+.secondary-btn{background:var(--surface2);color:#30352d}
 .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
  gap:5px;text-align:center}
-.calendar-grid div{padding:10px 1px;border-radius:8px;font-size:12px}
-.calendar-grid .weekday{color:#aaa;font-weight:700}
+.calendar-grid div{padding:10px 1px;border-radius:8px;font-size:12px;color:#30352d}
+.calendar-grid .weekday{color:#70736c;font-weight:700}
 .calendar-grid .today{background:var(--green2);color:white}
 .calendar-grid .has-event{border:1px solid var(--gold)}
 .month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -90,17 +90,17 @@ h2{font-size:18px;margin-bottom:13px}
 .task-row input[type=checkbox]{width:19px;height:19px;accent-color:var(--green2)}
 .task-row .task-name{flex:1}
 .done{text-decoration:line-through;color:var(--muted)}
-.list-section h3{font-size:14px;color:#ddd;margin:0 0 9px}
+.list-section h3{font-size:14px;color:#444a40;margin:0 0 9px}
 .empty{text-align:center;color:var(--muted);padding:20px 8px}
-.pill{font-size:11px;background:#304943;color:#d8e9e3;
+.pill{font-size:11px;background:#e0ebe3;color:#24564f;
  padding:5px 9px;border-radius:20px}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);
- width:min(650px,100%);background:#191919;border-top:1px solid #383838;
+ width:min(650px,100%);background:#fffaf1;border-top:1px solid #d9d0c1;
  padding:9px 7px max(10px,env(safe-area-inset-bottom));
  z-index:15;gap:5px;scrollbar-width:none;justify-content:flex-start}
 .bottom-nav::-webkit-scrollbar{display:none}
 .nav-btn{flex:0 0 76px;min-width:76px;border:0;background:transparent;
- color:#999;display:flex;flex-direction:column;align-items:center;
+ color:#72756d;display:flex;flex-direction:column;align-items:center;
  justify-content:center;gap:5px;padding:5px 2px;border-radius:10px;
  touch-action:pan-x}
 .nav-btn.active{color:#fff;background:#2c4842}
@@ -110,17 +110,41 @@ h2{font-size:18px;margin-bottom:13px}
 .fab{position:fixed;bottom:83px;right:max(20px,calc((100vw - 610px)/2));
  width:52px;height:52px;border:0;border-radius:50%;
  background:var(--green2);color:white;font-size:29px;z-index:12}
-.modal-backdrop{position:fixed;inset:0;background:#000a;z-index:30;
+.modal-backdrop{position:fixed;inset:0;background:#0008;z-index:30;
  display:none;align-items:flex-end;justify-content:center}
 .modal-backdrop.show{display:flex}
-.modal{background:#202020;width:min(650px,100%);padding:22px;
+.modal{background:#fffaf1;color:#242820;width:min(650px,100%);padding:22px;
  border-radius:20px 20px 0 0;max-height:85vh;overflow:auto}
-.modal input,.modal select{width:100%;background:#303030;color:white;
- border:1px solid #505050;border-radius:9px;padding:12px;margin:6px 0 13px}
-.modal label{font-size:12px;color:#bbb}
+.modal input,.modal select{width:100%;background:#fff;color:#242820;
+ border:1px solid #d1c8b8;border-radius:9px;padding:12px;margin:6px 0 13px}
+.modal label{font-size:12px;color:#60645c}
 .close-row{display:flex;justify-content:space-between;align-items:center}
 .modal h2{margin:0 0 18px}
 .bottom-space{height:75px}
+.plain-heading{font-size:16px;font-weight:700;margin:23px 0 8px;color:#242820}
+.home-code{font-size:25px;font-weight:800;letter-spacing:2px;color:#39ed63;
+ background:#1c3225;border-radius:12px;padding:15px;text-align:center;overflow-wrap:anywhere}
+.settings-action{width:100%;text-align:left;background:var(--surface);color:#242820;
+ border:1px solid var(--line);border-radius:12px;padding:14px;margin:6px 0}
+.settings-action.danger{color:#a13b35;border-color:#dfbdb5}
+.settings-row{display:flex;gap:10px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.settings-row:last-child{border-bottom:0}
+.setting-control{display:flex;gap:10px;align-items:flex-start;margin:13px 0;color:#3b4038;font-size:13px;line-height:1.4}
+.setting-control input{width:auto;margin:2px 0 0;accent-color:var(--green2)}
+.settings-note{font-size:12px;line-height:1.45;color:#74766f;margin:8px 0 0}
+.finance-lock{border:1px solid #d9d0c1;background:#f7f1e5;border-radius:12px;padding:14px;margin:13px 0}
+.finance-lock p{font-size:13px;color:#65695f;line-height:1.45;margin-bottom:0}
+.year-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.year-month{border:1px solid var(--line);background:var(--surface2);border-radius:10px;padding:9px 6px;color:#30352d}
+.year-month strong{display:block;text-align:center;margin-bottom:6px;font-size:12px}
+.year-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center;font-size:9px}
+.year-days span{padding:3px 0}
+.notification-card{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:start}
+.notification-emoji{font-size:22px}
+.notification-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.notification-description{font-size:12px;color:#65695f;line-height:1.4}
+.notification-meta{font-size:10px;color:#777;text-align:right}
+@media(min-width:440px){.year-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:550px){main{padding:25px}}
 </style>
 </head>
@@ -174,6 +198,21 @@ let current='inicio',calendarView='Mes',selectedDate=new Date();
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]');
+let householdDevice=localStorage.getItem('enorden_household_device')==='true';
+let financeLockChoice=localStorage.getItem('enorden_finance_lock')||'unset';
+let financeLockMinutes=Number(localStorage.getItem('enorden_finance_lock_minutes')||5);
+let adminFinanceRule=localStorage.getItem('enorden_finance_admin_rule')==='true';
+let financePinHash=localStorage.getItem('enorden_finance_pin_hash')||'';
+let financeUnlockUntil=Number(localStorage.getItem('enorden_finance_unlock_until')||0);
+let householdRole=localStorage.getItem('enorden_household_role')||'admin';
+let householdMemberCount=Number(localStorage.getItem('enorden_household_member_count')||1);
+let homeCode=localStorage.getItem('enorden_home_code');
+if(!homeCode){homeCode='EN-'+Math.random().toString(36).slice(2,8).toUpperCase();localStorage.setItem('enorden_home_code',homeCode)}
+let notifications=JSON.parse(localStorage.getItem('enorden_notifications')||'[]');
+let notificationsOpened=localStorage.getItem('enorden_notifications_opened')==='true';
+let chats=JSON.parse(localStorage.getItem('enorden_chats')||'null');
+if(!Array.isArray(chats)){chats=[{id:'familia',name:'Familia',createdAt:Date.now(),retentionHours:168,type:'family'}];localStorage.setItem('enorden_chats',JSON.stringify(chats))}
+let financeSetupContext='settings';
 const screen=document.getElementById('screen');
 const nav=document.getElementById('bottomNav');
 const fab=document.getElementById('fab');
@@ -189,9 +228,15 @@ function escapeHTML(s){
  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function orderedModules(){return order.map(id=>modules.find(m=>m.id===id)).filter(Boolean)}
-function navigate(id){current=id;render();window.scrollTo(0,0)}
+function navigate(id){
+ if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
+ if(id==='finanzas'&&current!=='finanzas'){requestFinanceAccess();return}
+ current=id;render();window.scrollTo(0,0);
+}
 function renderNav(){
- nav.innerHTML=orderedModules().map(m=>`
+ const homeButton=`<button class="nav-btn ${current==='inicio'?'active':''}" data-home="true" onclick="navigate('inicio')">
+ <span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>`;
+ nav.innerHTML=homeButton+orderedModules().map(m=>`
  <button class="nav-btn ${current===m.id?'active':''}" data-module="${m.id}"
  onclick="navigate('${m.id}')">
  <span class="nav-icon">${m.emoji}</span><span class="nav-label">${m.name}</span>
@@ -201,6 +246,7 @@ function renderNav(){
  enableReorder(nav);
 }
 function render(){
+ if(current==='notificaciones'&&notificationsOpened){notifications=notifications.slice(-3);localStorage.setItem('enorden_notifications',JSON.stringify(notifications))}
  renderNav();
  if(current==='inicio')renderHome();
  else if(current==='calendario')renderCalendar();
@@ -208,6 +254,8 @@ function render(){
  else if(current==='listas')renderLists();
  else if(current==='notificaciones')renderNotifications();
  else if(current==='configuracion')renderSettings();
+ else if(current==='finanzas')renderFinance();
+ else if(current==='chat')renderChat();
  else renderOther(current);
 }
 function renderHome(){
@@ -219,14 +267,14 @@ function renderHome(){
  const todayKey=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
  const upcoming=events.filter(e=>e.date>=todayKey).length;
  screen.innerHTML=`
- <div class="dayline"><strong>${day}</strong><span>${date}</span></div>
+ <div class="dayline"><strong>${day},</strong><span>${date}</span></div>
  <div class="greeting">Hola Vale 👋</div>
  <div class="weather"><span class="weather-icon">☀️</span><span>22 °C</span></div>
  <p class="summary-intro">Este es tu resumen de hoy.</p>
  <div class="searchbox">
-  <input id="homeSearch" placeholder="Buscar o pregunta algo...">
+  <input id="homeSearch" placeholder="Buscar en tu hogar...">
   <button onclick="voiceSearch()" aria-label="Buscar por voz">🎙</button>
-  <button onclick="doSearch()">⌕</button>
+  <button onclick="doSearch()" aria-label="Buscar">⌕</button>
  </div>
  <div class="summary-grid">
   <button class="summary-card" onclick="navigate('tareas')">
@@ -248,20 +296,9 @@ function renderHome(){
   </div>
   <div class="hint">Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.</div>
  </section>
- <section class="section">
-  <div class="section-title">Próximos eventos</div>
-  ${events.filter(e=>e.date>=todayKey).slice(0,3).map(e=>`
-   <div class="card card-row"><div>${escapeHTML(e.title)}<div class="muted" style="font-size:12px;margin-top:5px">${escapeHTML(e.date)}</div></div><span class="pill">Evento</span></div>
-  `).join('')||'<div class="card empty">Todavía no hay eventos registrados.</div>'}
- </section>
- <section class="section">
-  <div class="section-title">Tareas pendientes</div>
-  ${tasks.filter(t=>!t.done).slice(0,3).map(t=>`<div class="card">${escapeHTML(t.title)}</div>`).join('')||'<div class="card empty">No tienes tareas pendientes.</div>'}
- </section>
  <div class="bottom-space"></div>`;
  enableReorder(document.getElementById('homeModules'));
-}
-function doSearch(){
+}function doSearch(){
  const q=document.getElementById('homeSearch').value.trim().toLowerCase();
  if(!q)return;
  if(q.includes('tarea'))navigate('tareas');
@@ -310,7 +347,11 @@ function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth();
  let content='';
  if(calendarView==='Año'){
-  content=`<div class="month-grid">${months.map((name,i)=>`<button class="month-tile" onclick="selectedDate.setMonth(${i});calendarView='Mes';render()">${name}</button>`).join('')}</div>`;
+  content=`<div class="year-grid">${months.map((name,i)=>{
+   const first=(new Date(y,i,1).getDay()+6)%7,total=new Date(y,i+1,0).getDate();
+   const cells=Array.from({length:first},()=>'<span></span>').concat(Array.from({length:total},(_,n)=>`<span>${n+1}</span>`)).join('');
+   return `<button class="year-month" onclick="selectedDate=new Date(${y},${i},1);calendarView='Mes';render()"><strong>${name}</strong><div class="year-days">${weekdays.map(w=>`<span>${w[0]}</span>`).join('')}${cells}</div></button>`;
+  }).join('')}</div>`;
  }else if(calendarView==='Día'){
   const key=keyDate(d),items=events.filter(e=>e.date===key);
   content=`<strong>${d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})}</strong>
@@ -366,11 +407,178 @@ function renderLists(){
 function toggleProduct(id){const p=products.find(x=>x.id===id);if(p)p.bought=!p.bought;save();render()}
 function deleteProduct(id){products=products.filter(x=>x.id!==id);save();render()}
 function renderNotifications(){
- screen.innerHTML='<div class="page-heading"><h1>Notificaciones</h1><p>Aquí se reúnen los avisos de todos tus módulos.</p></div><div class="card empty">Todavía no tienes notificaciones.</div>';
+ if(!notificationsOpened){
+  notificationsOpened=true;localStorage.setItem('enorden_notifications_opened','true');
+ }
+ notifications=notifications.slice(-3);localStorage.setItem('enorden_notifications',JSON.stringify(notifications));
+ const cards=notifications.map(n=>`
+  <div class="card notification-card">
+   <div class="notification-emoji">${escapeHTML(n.emoji||'🔔')}</div>
+   <div><div class="notification-title">${escapeHTML(n.title||'Aviso')}</div>
+    <div class="notification-description">${escapeHTML(n.description||'')}</div></div>
+   <div class="notification-meta">${escapeHTML(n.module||'Enorden')}<br>${escapeHTML(n.when||'Ahora')}</div>
+  </div>`).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Notificaciones <span style="font-size:13px;color:#3478bd;font-weight:500">${notifications.length?notifications.length+' nuevas':''}</span></h1>
+ <p>Aquí se reúnen los avisos de todos tus módulos.</p></div>
+ ${cards||'<div class="card empty">Todavía no tienes notificaciones.</div>'}<div class="bottom-space"></div>`;
+}function renderSettings(){
+ const isAdmin=householdRole==='admin';
+ screen.innerHTML=`
+ <div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
+ <div class="card">
+  <div class="settings-row"><strong>Seguridad y dispositivos</strong><span class="pill">Dispositivo actual</span></div>
+  <label class="setting-control"><input id="householdDevice" type="checkbox" ${householdDevice?'checked':''} onchange="saveSecuritySettings()"> Este es el dispositivo fijado como hogar</label>
+  <label class="setting-control"><input id="adminFinanceRule" type="checkbox" ${adminFinanceRule?'checked':''} ${isAdmin?'':'disabled'} onchange="saveSecuritySettings()"> Exigir PIN al entrar a Finanzas para todos los integrantes</label>
+  <label class="setting-control" for="financeTimeout">Tiempo antes del bloqueo personal de Finanzas</label>
+  <select id="financeTimeout" onchange="saveSecuritySettings()">
+   <option value="0" ${financeLockMinutes===0?'selected':''}>Inmediatamente</option>
+   <option value="1" ${financeLockMinutes===1?'selected':''}>1 minuto</option>
+   <option value="5" ${financeLockMinutes===5?'selected':''}>5 minutos</option>
+   <option value="15" ${financeLockMinutes===15?'selected':''}>15 minutos</option>
+   <option value="30" ${financeLockMinutes===30?'selected':''}>30 minutos</option>
+  </select>
+  <button class="secondary-btn" onclick="showFinancePinSetup(false)">Configurar o cambiar PIN de Finanzas</button>
+  <p class="settings-note">El dispositivo fijado como hogar solicita el PIN cada vez que se sale de Finanzas. En los demás dispositivos cada integrante puede elegir si activa el bloqueo y definir su tiempo. El administrador puede exigir el PIN para todos.</p>
+  <p class="settings-note">Prototipo: esta pantalla no reemplaza una autenticación segura en servidor. La protección real y la administración de dispositivos se implementarán en una etapa posterior.</p>
+ </div>
+ <div class="card">
+  <div class="settings-row"><strong>Integrantes del hogar</strong><span class="pill">${householdMemberCount} integrante(s)</span></div>
+  <p class="settings-note">La administración de integrantes, solicitudes y permisos se conectará cuando exista el sistema de cuentas y hogares.</p>
+ </div>
+ <div class="card">
+  <div class="settings-row"><strong>Ayuda</strong></div>
+  <p class="settings-note">La ayuda y el soporte de Enorden estarán disponibles en una siguiente etapa.</p>
+ </div>
+ <div class="plain-heading">Código de hogar</div>
+ <div class="home-code">${escapeHTML(homeCode)}</div>
+ <div class="toolbar" style="margin-top:10px">
+  <button class="primary-btn" onclick="copyHomeCode()">Copiar</button>
+  <button class="secondary-btn" onclick="shareHomeCode()">Compartir</button>
+ </div>
+ <button class="settings-action danger" onclick="leaveHome()">Abandonar el hogar</button>
+ ${isAdmin&&householdMemberCount===1?'<button class="settings-action danger" onclick="deleteHome()">Eliminar el hogar</button>':''}
+ <div class="bottom-space"></div>`;
+}function renderFinance(){
+ screen.innerHTML=`
+ <div class="page-heading"><h1>Finanzas</h1><p>Organiza los ingresos, gastos y presupuestos del hogar.</p></div>
+ <div class="finance-lock"><strong>🔒 Acceso protegido</strong><p>La configuración de bloqueo de este dispositivo se administra en Configuración → Seguridad y dispositivos.</p></div>
+ <div class="card empty"><div style="font-size:34px">💰</div><p>La planilla de finanzas se construirá en la siguiente etapa.</p></div>
+ <div class="bottom-space"></div>`;
 }
-function renderSettings(){
- screen.innerHTML=`<div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
- <div class="card">${['Seguridad y dispositivos','Integrantes del hogar','Ayuda','Código del hogar','Abandonar hogar','Eliminar el hogar'].map(x=>`<div class="setting-row">${x}<span>›</span></div>`).join('')}</div>`;
+function renderChat(){
+ const family=chats.find(c=>c.id==='familia');
+ if(family&&Date.now()>=family.createdAt+family.retentionHours*60*60*1000){
+  chats=chats.filter(c=>c.id!=='familia');localStorage.setItem('enorden_chats',JSON.stringify(chats));
+ }
+ const active=chats.find(c=>c.id==='familia');
+ screen.innerHTML=`
+ <div class="page-heading"><h1>Chat</h1><p>Conversaciones del hogar.</p></div>
+ <div class="card">
+  <div class="card-row"><strong>💬 Familia</strong><span class="pill">Chat familiar</span></div>
+  <p class="settings-note">${active?'Este chat comenzó el '+new Date(active.createdAt).toLocaleString('es-CL')+'.':'El chat familiar se iniciará al crear la conversación.'}</p>
+  <p class="settings-note">La duración de 7 días se cuenta desde el inicio del chat, no desde el último mensaje. Los chats asociados a tareas tendrán una duración de 24 horas desde su creación.</p>
+ </div>
+ <div class="card empty">La mensajería de texto y audio se incorporará en una siguiente etapa.</div>
+ <div class="bottom-space"></div>`;
+}
+function startFinanceLockTimer(){
+ if(householdDevice||adminFinanceRule){financeUnlockUntil=0}
+ else if(financeLockChoice==='on'){financeUnlockUntil=Date.now()+Math.max(0,financeLockMinutes)*60000}
+ localStorage.setItem('enorden_finance_unlock_until',String(financeUnlockUntil));
+}
+function enterFinance(){
+ closeModal();financeUnlockUntil=0;localStorage.setItem('enorden_finance_unlock_until','0');
+ current='finanzas';render();window.scrollTo(0,0);
+}
+function requestFinanceAccess(){
+ const mustAlways=householdDevice||adminFinanceRule;
+ if(!mustAlways&&financeLockChoice==='unset'){
+  document.getElementById('modalTitle').textContent='Seguridad de Finanzas';
+  document.getElementById('modalBody').innerHTML=`
+   <p>¿Quieres activar un bloqueo para entrar al módulo Finanzas?</p>
+   <label>¿Cada cuánto tiempo quieres que se bloquee?</label>
+   <select id="firstFinanceTimeout">
+    <option value="0">Inmediatamente al salir</option><option value="1">1 minuto</option>
+    <option value="5" selected>5 minutos</option><option value="15">15 minutos</option><option value="30">30 minutos</option>
+   </select>
+   <div class="toolbar"><button class="secondary-btn" onclick="chooseFinanceSecurity(false)">Ahora no</button>
+   <button class="primary-btn" onclick="chooseFinanceSecurity(true)">Activar seguridad</button></div>`;
+  document.getElementById('backdrop').classList.add('show');return;
+ }
+ if(!mustAlways&&financeLockChoice==='off'){enterFinance();return}
+ if(!mustAlways&&financeLockChoice==='on'&&Date.now()<financeUnlockUntil){enterFinance();return}
+ if(!financePinHash){showFinancePinSetup(true);return}
+ document.getElementById('modalTitle').textContent='Ingresar PIN de Finanzas';
+ document.getElementById('modalBody').innerHTML=`
+  <label for="financePinEntry">PIN de 4 dígitos</label>
+  <input id="financePinEntry" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••">
+  <button class="primary-btn" onclick="verifyFinancePin()">Desbloquear Finanzas</button>`;
+ document.getElementById('backdrop').classList.add('show');
+}
+function chooseFinanceSecurity(enabled){
+ const select=document.getElementById('firstFinanceTimeout');
+ financeLockMinutes=Number(select?select.value:5);
+ localStorage.setItem('enorden_finance_lock_minutes',String(financeLockMinutes));
+ financeLockChoice=enabled?'on':'off';localStorage.setItem('enorden_finance_lock',financeLockChoice);
+ if(enabled)showFinancePinSetup(true);else enterFinance();
+}
+function showFinancePinSetup(continueToFinance){
+ financeSetupContext=continueToFinance?'finance':'settings';
+ document.getElementById('modalTitle').textContent='Configurar PIN de Finanzas';
+ document.getElementById('modalBody').innerHTML=`
+  <p>Elige un PIN de exactamente 4 números.</p>
+  <label for="financePinNew">Nuevo PIN</label><input id="financePinNew" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4 dígitos">
+  <label for="financePinConfirm">Confirmar PIN</label><input id="financePinConfirm" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Repite el PIN">
+  <button class="primary-btn" onclick="saveFinancePin()">Guardar PIN</button>
+  <p class="settings-note">En esta versión de prueba el PIN solo demuestra el flujo. No uses una clave real ni lo consideres protección de información sensible.</p>`;
+ document.getElementById('backdrop').classList.add('show');
+}
+async function hashFinancePin(value){
+ const bytes=new TextEncoder().encode(value);
+ const digest=await crypto.subtle.digest('SHA-256',bytes);
+ return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function saveFinancePin(){
+ const pin=document.getElementById('financePinNew').value;
+ const confirm=document.getElementById('financePinConfirm').value;
+ if(!/^\d{4}$/.test(pin)){alert('El PIN debe tener exactamente 4 números.');return}
+ if(pin!==confirm){alert('Los PIN no coinciden.');return}
+ financePinHash=await hashFinancePin(pin);localStorage.setItem('enorden_finance_pin_hash',financePinHash);
+ closeModal();
+ if(financeSetupContext==='finance')enterFinance();else renderSettings();
+}
+async function verifyFinancePin(){
+ const pin=document.getElementById('financePinEntry').value;
+ if(!/^\d{4}$/.test(pin)){alert('Ingresa un PIN de 4 números.');return}
+ const candidate=await hashFinancePin(pin);
+ if(candidate!==financePinHash){alert('El PIN no es correcto.');return}
+ enterFinance();
+}
+function saveSecuritySettings(){
+ householdDevice=document.getElementById('householdDevice').checked;
+ const adminControl=document.getElementById('adminFinanceRule');
+ if(householdRole==='admin')adminFinanceRule=adminControl.checked;
+ financeLockMinutes=Number(document.getElementById('financeTimeout').value);
+ localStorage.setItem('enorden_household_device',String(householdDevice));
+ localStorage.setItem('enorden_finance_admin_rule',String(adminFinanceRule));
+ localStorage.setItem('enorden_finance_lock_minutes',String(financeLockMinutes));
+ alert('Configuración guardada en este dispositivo.');
+}
+async function copyHomeCode(){
+ try{await navigator.clipboard.writeText(homeCode);alert('Código copiado.')}
+ catch(e){alert('No se pudo copiar automáticamente. Código: '+homeCode)}
+}
+async function shareHomeCode(){
+ if(navigator.share){try{await navigator.share({title:'Código de hogar Enorden',text:'Te invito a solicitar unirte a mi hogar en Enorden. Código: '+homeCode})}catch(e){}}
+ else copyHomeCode();
+}
+function leaveHome(){
+ if(householdRole==='admin')alert('Antes de abandonar el hogar, el administrador debe transferir la administración a otro integrante. Si eres la única persona, puedes eliminar el hogar desde esta pantalla.');
+ else if(confirm('¿Quieres abandonar este hogar? En esta versión de prueba la acción no modifica cuentas ni datos.'))alert('La salida del hogar se habilitará cuando exista el sistema de cuentas.');
+}
+function deleteHome(){
+ if(householdRole!=='admin'||householdMemberCount!==1){alert('Solo el administrador cuando es el único integrante puede eliminar el hogar.');return}
+ if(confirm('¿Eliminar el hogar? Esta acción no se puede deshacer. En esta versión de prueba no se borrarán datos reales.'))alert('La eliminación del hogar se habilitará cuando exista el sistema de cuentas.');
 }
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
@@ -411,6 +619,8 @@ function addEvent(){
  events.push({id:Date.now(),title:v,date:document.getElementById('newDate').value,reminder:document.getElementById('newReminder').value});
  save();closeModal();render();
 }
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer()});
+window.addEventListener('pagehide',()=>{if(current==='finanzas')startFinanceLockTimer()});
 render();
 </script>
 </body>
