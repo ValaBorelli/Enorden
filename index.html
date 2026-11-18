@@ -3,158 +3,179 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#173f3b">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
 <title>Enorden</title>
 <style>
 :root{
-  --green:#173f3b;--green2:#24564f;--mint:#e7f0eb;
-  --cream:#f7f6f0;--paper:#fffefa;--text:#263632;
-  --muted:#84918a;--line:#e8eae4;--gold:#d9b879;
-  --blue:#527d9c;--red:#b96d65;--shadow:0 5px 20px #183e3510;
+ --bg:#101010;--surface:#1c1c1c;--surface2:#252525;
+ --green:#24564f;--green2:#326b61;--white:#f5f5f5;
+ --muted:#a2a2a2;--line:#343434;--gold:#d9b879;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--text);
-font-family:Arial,Helvetica,sans-serif;font-size:15px}
-button{font:inherit;cursor:pointer}
-.app{max-width:650px;margin:auto;min-height:100vh;padding-bottom:0}
-header{height:76px;background:var(--green);color:white;padding:12px 18px;
-display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.brand{font-size:25px;font-weight:700;letter-spacing:.2px}
-.slogan{font-size:11px;opacity:.82;margin-top:3px}
-.header-actions{display:flex;gap:9px}
+body{margin:0;background:var(--bg);color:var(--white);
+ font-family:Arial,Helvetica,sans-serif;font-size:15px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:650px;margin:auto;min-height:100vh}
+header{height:76px;background:var(--green);padding:12px 17px;
+ display:flex;align-items:center;justify-content:space-between;
+ position:sticky;top:0;z-index:10}
+.brand{font-size:25px;font-weight:700}
+.slogan{font-size:11px;color:#dce8e3;margin-top:3px}
+.header-actions{display:flex;gap:10px}
 .icon-btn{width:39px;height:39px;border:0;border-radius:50%;
-background:#ffffff18;color:white;display:grid;place-items:center;font-size:21px}
-.icon-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8}
-main{padding:20px 17px 30px}
-h1{font-size:25px;margin:0 0 7px;color:var(--green)}
-h2{font-size:18px;margin:0 0 13px;color:var(--green)}
-p{line-height:1.45}
+ background:#ffffff18;color:white;display:grid;place-items:center}
+.icon-btn svg{width:22px;height:22px;stroke:currentColor;
+ fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+main{padding:21px 17px 35px}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:25px;margin-bottom:8px}
+h2{font-size:18px;margin-bottom:13px}
 .muted{color:var(--muted)}
-.date-weather{display:flex;justify-content:space-between;align-items:center;
-background:var(--mint);padding:13px 15px;border-radius:15px;margin:17px 0}
-.date-weather strong{display:block;font-size:14px}
-.date-weather small{color:var(--muted)}
-.weather{font-size:20px;color:var(--green);font-weight:700}
-.weather small{font-size:11px;display:block;font-weight:400;text-align:right}
-.module-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 1px 13px;
-scrollbar-width:thin;scroll-snap-type:x mandatory}
-.module-strip::-webkit-scrollbar{height:4px}
-.module-strip::-webkit-scrollbar-thumb{background:#cbd7cf;border-radius:5px}
-.module-tile{flex:0 0 91px;scroll-snap-align:start;border:1px solid var(--line);
-background:var(--paper);border-radius:15px;padding:14px 7px;text-align:center;
-color:var(--green);box-shadow:var(--shadow)}
-.module-tile .emoji{font-size:25px;display:block;margin-bottom:8px}
-.module-tile span:last-child{font-size:12px;font-weight:600}
-.section{margin-top:23px}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;
-padding:15px;margin-bottom:11px;box-shadow:var(--shadow)}
-.card-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.event-date{background:var(--mint);color:var(--green);border-radius:10px;
-padding:8px;text-align:center;min-width:48px;font-weight:700}
-.event-date small{display:block;font-size:10px;font-weight:400}
-.item-title{font-weight:600}
-.item-sub{font-size:12px;color:var(--muted);margin-top:4px}
-.pill{font-size:11px;border-radius:20px;padding:5px 9px;background:var(--mint);color:var(--green)}
-.page-heading{margin-bottom:17px}
-.page-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
-.small-btn,.primary-btn,.secondary-btn{border:0;border-radius:10px;padding:10px 13px}
-.small-btn{background:var(--mint);color:var(--green)}
-.small-btn.active{background:var(--green);color:white}
-.primary-btn{background:var(--green);color:white}
-.secondary-btn{background:#edf0eb;color:var(--green)}
-input,textarea,select{width:100%;padding:12px;border:1px solid var(--line);
-border-radius:10px;background:white;color:var(--text);font:inherit;margin:5px 0 12px}
-label{font-size:12px;color:var(--muted)}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
-.calendar-grid div{padding:9px 1px;border-radius:9px;font-size:12px}
-.calendar-grid .weekday{color:var(--muted);font-weight:700}
-.calendar-grid .today{background:var(--green);color:white}
+.dayline{display:flex;align-items:baseline;gap:8px;margin:3px 0 15px}
+.dayline strong{font-size:19px;color:white;text-transform:capitalize}
+.dayline span{font-size:15px;color:#aaa}
+.greeting{font-size:29px;font-weight:700;margin:0 0 9px}
+.weather{display:flex;align-items:center;gap:8px;font-size:16px;
+ color:#ddd;margin-bottom:10px}
+.weather-icon{font-size:20px}
+.summary-intro{font-size:13px;color:var(--muted);margin-bottom:17px}
+.searchbox{display:flex;align-items:center;gap:8px;
+ background:var(--surface);border:1px solid var(--line);
+ border-radius:13px;padding:4px 7px;margin-bottom:20px}
+.searchbox input{flex:1;min-width:0;background:transparent;
+ color:white;border:0;outline:none;padding:11px 7px}
+.searchbox button{border:0;border-radius:9px;background:var(--green);
+ color:white;padding:9px 11px}
+.summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.summary-card{background:var(--surface);border:1px solid var(--line);
+ border-radius:13px;padding:13px 9px;min-height:94px}
+.summary-card .number{font-size:25px;font-weight:700;margin-bottom:5px}
+.summary-card .label{font-size:11px;color:#c3c3c3;line-height:1.3}
+.section{margin-top:27px}
+.section-title{font-size:18px;font-weight:700;margin-bottom:13px}
+.module-strip,.bottom-nav{display:flex;gap:9px;overflow-x:auto;
+ scrollbar-width:thin;scrollbar-color:#555 transparent;
+ -webkit-overflow-scrolling:touch}
+.module-strip{padding:2px 1px 12px;scroll-snap-type:x proximity}
+.module-tile{flex:0 0 88px;min-height:88px;scroll-snap-align:start;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:8px;background:var(--surface);border:1px solid var(--line);
+ color:white;border-radius:14px;padding:10px 5px;touch-action:pan-x}
+.module-tile .emoji{font-size:24px}
+.module-tile span:last-child{font-size:11px;text-align:center}
+.hint{font-size:11px;line-height:1.5;color:#999;margin-top:2px}
+.card{background:var(--surface);border:1px solid var(--line);
+ border-radius:14px;padding:15px;margin-bottom:11px}
+.card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.page-heading{margin-bottom:18px}
+.page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
+.toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
+.small-btn{background:var(--surface2);color:#eee;white-space:nowrap}
+.small-btn.active,.primary-btn{background:var(--green2);color:white}
+.secondary-btn{background:var(--surface2);color:white}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
+ gap:5px;text-align:center}
+.calendar-grid div{padding:10px 1px;border-radius:8px;font-size:12px}
+.calendar-grid .weekday{color:#aaa;font-weight:700}
+.calendar-grid .today{background:var(--green2);color:white}
 .calendar-grid .has-event{border:1px solid var(--gold)}
-.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.month-tile{padding:15px 5px;border:1px solid var(--line);border-radius:12px;
-background:white;color:var(--green)}
-.task-row{display:flex;align-items:center;gap:10px}
-.task-row input[type=checkbox]{width:19px;height:19px;margin:0;accent-color:var(--green)}
+.month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.month-tile{padding:15px 4px;background:var(--surface2);color:white;
+ border:1px solid var(--line);border-radius:10px}
+.task-row,.setting-row{display:flex;align-items:center;gap:10px;
+ padding:12px 0;border-bottom:1px solid var(--line)}
+.task-row input[type=checkbox]{width:19px;height:19px;accent-color:var(--green2)}
+.task-row .task-name{flex:1}
 .done{text-decoration:line-through;color:var(--muted)}
-.list-section{margin:15px 0}
-.list-section h3{font-size:14px;color:var(--green);margin-bottom:8px}
+.list-section h3{font-size:14px;color:#ddd;margin:0 0 9px}
+.empty{text-align:center;color:var(--muted);padding:20px 8px}
+.pill{font-size:11px;background:#304943;color:#d8e9e3;
+ padding:5px 9px;border-radius:20px}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-width:min(650px,100%);background:#fffefa;border-top:1px solid var(--line);
-display:flex;justify-content:space-around;padding:8px 4px max(9px,env(safe-area-inset-bottom));
-z-index:15;box-shadow:0 -5px 18px #183e350c}
-.nav-btn{flex:1;border:0;background:transparent;color:var(--muted);
-display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;padding:4px 1px}
-.nav-btn .nav-icon{font-size:20px}
-.nav-btn.active{color:var(--green);font-weight:700}
-.fab{position:fixed;bottom:83px;right:max(20px,calc((100vw - 610px)/2));
-width:53px;height:53px;border:0;border-radius:50%;background:var(--green);
-color:white;font-size:29px;box-shadow:0 5px 15px #173f3b40;z-index:12}
-.modal-backdrop{position:fixed;inset:0;background:#0007;z-index:30;
-display:none;align-items:flex-end;justify-content:center}
-.modal-backdrop.show{display:flex}
-.modal{background:var(--paper);width:min(650px,100%);padding:23px;
-border-radius:22px 22px 0 0;max-height:85vh;overflow:auto}
-.modal h2{margin-bottom:18px}
-.close-row{display:flex;justify-content:space-between;align-items:center}
-.empty{text-align:center;color:var(--muted);padding:25px 10px}
-.notice{border-left:3px solid var(--gold)}
-.setting-row{padding:14px 0;border-bottom:1px solid var(--line);
-display:flex;justify-content:space-between;align-items:center}
+ width:min(650px,100%);background:#191919;border-top:1px solid #383838;
+ padding:9px 7px max(10px,env(safe-area-inset-bottom));
+ z-index:15;gap:5px;scrollbar-width:none;justify-content:flex-start}
+.bottom-nav::-webkit-scrollbar{display:none}
+.nav-btn{flex:0 0 76px;min-width:76px;border:0;background:transparent;
+ color:#999;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:5px;padding:5px 2px;border-radius:10px;
+ touch-action:pan-x}
+.nav-btn.active{color:#fff;background:#2c4842}
+.nav-icon{font-size:20px;line-height:23px}
+.nav-label{font-size:10px;white-space:nowrap}
 .hidden{display:none!important}
-@media(min-width:600px){main{padding:25px 25px 35px}}
+.fab{position:fixed;bottom:83px;right:max(20px,calc((100vw - 610px)/2));
+ width:52px;height:52px;border:0;border-radius:50%;
+ background:var(--green2);color:white;font-size:29px;z-index:12}
+.modal-backdrop{position:fixed;inset:0;background:#000a;z-index:30;
+ display:none;align-items:flex-end;justify-content:center}
+.modal-backdrop.show{display:flex}
+.modal{background:#202020;width:min(650px,100%);padding:22px;
+ border-radius:20px 20px 0 0;max-height:85vh;overflow:auto}
+.modal input,.modal select{width:100%;background:#303030;color:white;
+ border:1px solid #505050;border-radius:9px;padding:12px;margin:6px 0 13px}
+.modal label{font-size:12px;color:#bbb}
+.close-row{display:flex;justify-content:space-between;align-items:center}
+.modal h2{margin:0 0 18px}
+.bottom-space{height:75px}
+@media(min-width:550px){main{padding:25px}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div>
-    <div class="brand">Enorden</div>
-    <div class="slogan">Tu hogar, organizado en un solo lugar</div>
-  </div>
-  <div class="header-actions">
-    <button class="icon-btn" onclick="navigate('notificaciones')" aria-label="Notificaciones">
-      <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
-    </button>
-    <button class="icon-btn" onclick="navigate('configuracion')" aria-label="Configuración">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 2.9-.2-.1a1.7 1.7 0 0 0-1.8.2l-.2.1h-3.4l-.1-.2a1.7 1.7 0 0 0-1.6-1l-.3.1-2.9-1.7.1-.3a1.7 1.7 0 0 0-.2-1.8l-.1-.2v-3.4l.2-.1a1.7 1.7 0 0 0 1-1.6l-.1-.3 1.7-2.9.3.1a1.7 1.7 0 0 0 1.8-.2l.2-.1h3.4l.1.2a1.7 1.7 0 0 0 1.6 1l.3-.1 2.9 1.7-.1.3a1.7 1.7 0 0 0 .2 1.8l.1.2v3.4z"/></svg>
-    </button>
-  </div>
+ <div>
+  <div class="brand">Enorden</div>
+  <div class="slogan">Tu hogar, organizado en un solo lugar</div>
+ </div>
+ <div class="header-actions">
+  <button class="icon-btn" onclick="navigate('notificaciones')" aria-label="Notificaciones">
+   <svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+  </button>
+  <button class="icon-btn" onclick="navigate('configuracion')" aria-label="Configuración">
+   <svg viewBox="0 0 24 24">
+    <path d="M12 2.8l1.2 1.1 1.7.2.9 1.4 1.6.7.3 1.7 1.2 1.2-.4 1.7.4 1.7-1.2 1.2-.3 1.7-1.6.7-.9 1.4-1.7.2L12 21.2l-1.2-1.1-1.7-.2-.9-1.4-1.6-.7-.3-1.7-1.2-1.2.4-1.7-.4-1.7 1.2-1.2.3-1.7 1.6-.7.9-1.4 1.7-.2z"/>
+    <circle cx="12" cy="12" r="3.1"/>
+   </svg>
+  </button>
+ </div>
 </header>
-
 <main id="screen"></main>
 <nav class="bottom-nav hidden" id="bottomNav"></nav>
 <button class="fab hidden" id="fab" onclick="openAdd()">+</button>
 </div>
 
-<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
+<div class="modal-backdrop" id="backdrop" onclick="if(event.target===this)closeModal()">
  <div class="modal">
-  <div class="close-row"><h2 id="modalTitle">Agregar</h2><button class="small-btn" onclick="closeModal()">Cerrar ✕</button></div>
+  <div class="close-row"><h2 id="modalTitle">Agregar</h2>
+   <button class="small-btn" onclick="closeModal()">Cerrar ✕</button>
+  </div>
   <div id="modalBody"></div>
  </div>
 </div>
 
 <script>
 const modules=[
- {id:'inicio',name:'Inicio',emoji:'⌂'},
  {id:'calendario',name:'Calendario',emoji:'📅'},
  {id:'tareas',name:'Tareas',emoji:'✓'},
  {id:'listas',name:'Listas',emoji:'🛒'},
  {id:'finanzas',name:'Finanzas',emoji:'💰'},
  {id:'rutinas',name:'Rutinas',emoji:'🔄'},
  {id:'notas',name:'Notas',emoji:'📝'},
- {id:'ubicacion',name:'Ubicación',emoji:'📍'},
- {id:'chat',name:'Familia',emoji:'💬'}
+ {id:'mapa',name:'Mapa',emoji:'📍'},
+ {id:'chat',name:'Chat',emoji:'💬'}
 ];
-let current='inicio';
-let calendarView='Mes';
-let selectedDate=new Date();
+let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
+if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
+let current='inicio',calendarView='Mes',selectedDate=new Date();
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]');
 const screen=document.getElementById('screen');
-const bottomNav=document.getElementById('bottomNav');
+const nav=document.getElementById('bottomNav');
 const fab=document.getElementById('fab');
 const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const weekdays=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
@@ -162,19 +183,22 @@ function save(){
  localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
  localStorage.setItem('enorden_products',JSON.stringify(products));
  localStorage.setItem('enorden_events',JSON.stringify(events));
+ localStorage.setItem('enorden_order',JSON.stringify(order));
 }
-function dateLabel(d){
- return d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-function navigate(id){
- current=id;
- render();
- window.scrollTo(0,0);
-}
+function orderedModules(){return order.map(id=>modules.find(m=>m.id===id)).filter(Boolean)}
+function navigate(id){current=id;render();window.scrollTo(0,0)}
 function renderNav(){
- bottomNav.innerHTML=modules.map(m=>`<button class="nav-btn ${current===m.id?'active':''}" onclick="navigate('${m.id}')"><span class="nav-icon">${m.emoji}</span><span>${m.name}</span></button>`).join('');
- bottomNav.classList.toggle('hidden',current==='inicio');
- fab.classList.toggle('hidden',['inicio','notificaciones','configuracion'].includes(current));
+ nav.innerHTML=orderedModules().map(m=>`
+ <button class="nav-btn ${current===m.id?'active':''}" data-module="${m.id}"
+ onclick="navigate('${m.id}')">
+ <span class="nav-icon">${m.emoji}</span><span class="nav-label">${m.name}</span>
+ </button>`).join('');
+ nav.classList.toggle('hidden',current==='inicio');
+ fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current));
+ enableReorder(nav);
 }
 function render(){
  renderNav();
@@ -187,52 +211,135 @@ function render(){
  else renderOther(current);
 }
 function renderHome(){
- const today=new Date();
+ const d=new Date();
+ const day=d.toLocaleDateString('es-CL',{weekday:'long'});
+ const date=d.toLocaleDateString('es-CL',{day:'numeric',month:'long'});
+ const pending=tasks.filter(t=>!t.done).length;
+ const shopping=products.filter(p=>!p.bought).length;
+ const todayKey=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+ const upcoming=events.filter(e=>e.date>=todayKey).length;
  screen.innerHTML=`
- <h1>¡Hola, Vale!</h1>
- <p class="muted">Este es un vistazo a lo que se viene en tu hogar.</p>
- <div class="date-weather">
-  <div><strong>${dateLabel(today)}</strong><small>Hoy en tu hogar</small></div>
-  <div class="weather">☀️ 22°<small>Temperatura de ejemplo</small></div>
+ <div class="dayline"><strong>${day}</strong><span>${date}</span></div>
+ <div class="greeting">Hola Vale 👋</div>
+ <div class="weather"><span class="weather-icon">☀️</span><span>22 °C</span></div>
+ <p class="summary-intro">Este es tu resumen de hoy.</p>
+ <div class="searchbox">
+  <input id="homeSearch" placeholder="Buscar o pregunta algo...">
+  <button onclick="voiceSearch()" aria-label="Buscar por voz">🎙</button>
+  <button onclick="doSearch()">⌕</button>
  </div>
- <div class="section">
-  <h2>Tus módulos</h2>
-  <div class="module-strip">${modules.filter(m=>m.id!=='inicio').map(m=>`<button class="module-tile" onclick="navigate('${m.id}')"><span class="emoji">${m.emoji}</span><span>${m.name}</span></button>`).join('')}</div>
+ <div class="summary-grid">
+  <button class="summary-card" onclick="navigate('tareas')">
+   <div class="number">${pending}</div><div class="label">Tareas pendientes</div>
+  </button>
+  <button class="summary-card" onclick="navigate('calendario')">
+   <div class="number">${upcoming}</div><div class="label">Eventos pendientes</div>
+  </button>
+  <button class="summary-card" onclick="navigate('listas')">
+   <div class="number">${shopping}</div><div class="label">Compras pendientes</div>
+  </button>
  </div>
- <div class="section">
-  <div class="card-row"><h2>Próximos eventos</h2><button class="small-btn" onclick="navigate('calendario')">Ver calendario</button></div>
-  ${events.length?events.slice(0,3).map(e=>`<div class="card card-row"><div><div class="item-title">${escapeHTML(e.title)}</div><div class="item-sub">${escapeHTML(e.date||'Sin fecha')}</div></div><span class="pill">Evento</span></div>`).join(''):'<div class="card empty">Todavía no hay eventos registrados.</div>'}
- </div>
- <div class="section">
-  <div class="card-row"><h2>Tareas pendientes</h2><button class="small-btn" onclick="navigate('tareas')">Ver tareas</button></div>
-  ${tasks.filter(t=>!t.done).slice(0,3).map(t=>`<div class="card task-row"><span>○</span><div><div class="item-title">${escapeHTML(t.title)}</div><div class="item-sub">Pendiente</div></div></div>`).join('')||'<div class="card empty">¡No tienes tareas pendientes!</div>'}
- </div>`;
+ <section class="section">
+  <div class="section-title">Mis módulos</div>
+  <div class="module-strip" id="homeModules">
+   ${orderedModules().map(m=>`<button class="module-tile" data-module="${m.id}" onclick="navigate('${m.id}')">
+    <span class="emoji">${m.emoji}</span><span>${m.name}</span>
+   </button>`).join('')}
+  </div>
+  <div class="hint">Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.</div>
+ </section>
+ <section class="section">
+  <div class="section-title">Próximos eventos</div>
+  ${events.filter(e=>e.date>=todayKey).slice(0,3).map(e=>`
+   <div class="card card-row"><div>${escapeHTML(e.title)}<div class="muted" style="font-size:12px;margin-top:5px">${escapeHTML(e.date)}</div></div><span class="pill">Evento</span></div>
+  `).join('')||'<div class="card empty">Todavía no hay eventos registrados.</div>'}
+ </section>
+ <section class="section">
+  <div class="section-title">Tareas pendientes</div>
+  ${tasks.filter(t=>!t.done).slice(0,3).map(t=>`<div class="card">${escapeHTML(t.title)}</div>`).join('')||'<div class="card empty">No tienes tareas pendientes.</div>'}
+ </section>
+ <div class="bottom-space"></div>`;
+ enableReorder(document.getElementById('homeModules'));
+}
+function doSearch(){
+ const q=document.getElementById('homeSearch').value.trim().toLowerCase();
+ if(!q)return;
+ if(q.includes('tarea'))navigate('tareas');
+ else if(q.includes('evento')||q.includes('calendario'))navigate('calendario');
+ else if(q.includes('compra')||q.includes('lista'))navigate('listas');
+ else alert('La búsqueda inteligente se incorporará en una siguiente etapa. Por ahora puedes buscar tareas, eventos o compras.');
+}
+function voiceSearch(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){alert('La búsqueda por voz no está disponible en este navegador. Puedes escribir tu búsqueda.');return}
+ const rec=new SR();rec.lang='es-CL';rec.onresult=e=>{
+ document.getElementById('homeSearch').value=e.results[0][0].transcript;doSearch()};
+ rec.start();
+}
+/* Reordenamiento común para Inicio y navegación inferior */
+function enableReorder(container){
+ if(!container)return;
+ let timer=null,source=null,active=false;
+ container.querySelectorAll('[data-module]').forEach(el=>{
+  el.addEventListener('pointerdown',()=>{
+   source=el;active=false;
+   timer=setTimeout(()=>{active=true;el.style.opacity='.55'},500);
+  });
+  el.addEventListener('pointermove',e=>{
+   if(!active||!source)return;
+   const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-module]');
+   if(target&&target!==source&&target.parentElement===container){
+    const a=[...container.children].indexOf(source);
+    const b=[...container.children].indexOf(target);
+    if(a<b)container.insertBefore(source,target.nextSibling);
+    else container.insertBefore(source,target);
+   }
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(evt=>el.addEventListener(evt,()=>{
+   clearTimeout(timer);
+   if(active){
+    const newOrder=[...container.querySelectorAll('[data-module]')].map(x=>x.dataset.module);
+    order=newOrder;save();render();
+   }
+   if(source)source.style.opacity='';
+   active=false;source=null;
+  }));
+ });
 }
 function renderCalendar(){
- const d=selectedDate,year=d.getFullYear(),month=d.getMonth();
+ const d=selectedDate,y=d.getFullYear(),m=d.getMonth();
  let content='';
  if(calendarView==='Año'){
-  content=`<div class="month-grid">${months.map((m,i)=>`<button class="month-tile" onclick="selectedDate.setMonth(${i});calendarView='Mes';render()">${m}</button>`).join('')}</div>`;
+  content=`<div class="month-grid">${months.map((name,i)=>`<button class="month-tile" onclick="selectedDate.setMonth(${i});calendarView='Mes';render()">${name}</button>`).join('')}</div>`;
  }else if(calendarView==='Día'){
-  const dayEvents=events.filter(e=>e.date===d.toISOString().slice(0,10));
-  content=`<div class="card"><strong>${dateLabel(d)}</strong>${dayEvents.map(e=>`<p>📌 ${escapeHTML(e.title)}</p>`).join('')||'<p class="empty">No hay eventos para este día.</p>'}</div>`;
+  const key=keyDate(d),items=events.filter(e=>e.date===key);
+  content=`<strong>${d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})}</strong>
+  ${items.map(e=>`<p style="margin-top:15px">📌 ${escapeHTML(e.title)} ${e.reminder?'<span class="pill">Alarma configurada</span>':''}</p>`).join('')||'<div class="empty">No hay eventos para este día.</div>'}`;
  }else if(calendarView==='Semana'){
   const start=new Date(d);start.setDate(d.getDate()-((d.getDay()+6)%7));
-  content=`<div class="calendar-grid">${weekdays.map(w=>`<div class="weekday">${w}</div>`).join('')}${Array.from({length:7},(_,i)=>{let x=new Date(start);x.setDate(start.getDate()+i);return `<div class="${x.toDateString()===new Date().toDateString()?'today':''}" onclick="selectedDate=new Date('${x.toISOString()}');calendarView='Día';render()">${x.getDate()}</div>`}).join('')}</div>`;
+  content=`<div class="calendar-grid">${weekdays.map(w=>`<div class="weekday">${w}</div>`).join('')}
+  ${Array.from({length:7},(_,i)=>{const x=new Date(start);x.setDate(start.getDate()+i);return `<div onclick="selectedDate=new Date(${x.getFullYear()},${x.getMonth()},${x.getDate()});calendarView='Día';render()" class="${x.toDateString()===new Date().toDateString()?'today':''}">${x.getDate()}</div>`}).join('')}</div>`;
  }else{
-  const first=new Date(year,month,1),offset=(first.getDay()+6)%7,total=new Date(year,month+1,0).getDate();
-  content=`<div class="calendar-grid">${weekdays.map(w=>`<div class="weekday">${w}</div>`).join('')}${Array.from({length:offset},()=>'<div></div>').join('')}${Array.from({length:total},(_,i)=>{let n=i+1,iso=new Date(year,month,n).toISOString().slice(0,10),has=events.some(e=>e.date===iso);return `<div class="${n===new Date().getDate()&&month===new Date().getMonth()&&year===new Date().getFullYear()?'today':''} ${has?'has-event':''}" onclick="selectedDate=new Date(${year},${month},${n});calendarView='Día';render()">${n}</div>`}).join('')}</div>`;
+  const offset=(new Date(y,m,1).getDay()+6)%7,total=new Date(y,m+1,0).getDate();
+  content=`<div class="calendar-grid">${weekdays.map(w=>`<div class="weekday">${w}</div>`).join('')}
+  ${Array.from({length:offset},()=>'<div></div>').join('')}
+  ${Array.from({length:total},(_,i)=>{const n=i+1,key=keyDate(new Date(y,m,n));const has=events.some(e=>e.date===key);
+   return `<div class="${n===new Date().getDate()&&m===new Date().getMonth()&&y===new Date().getFullYear()?'today':''} ${has?'has-event':''}" onclick="selectedDate=new Date(${y},${m},${n});calendarView='Día';render()">${n}</div>`}).join('')}</div>`;
  }
  screen.innerHTML=`
  <div class="page-heading"><h1>Calendario</h1><p>Organiza las fechas importantes de tu hogar.</p></div>
  <div class="toolbar">${['Año','Mes','Semana','Día'].map(v=>`<button class="small-btn ${calendarView===v?'active':''}" onclick="calendarView='${v}';render()">${v}</button>`).join('')}</div>
  <div class="card">
- <div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>${calendarView==='Año'?year:calendarView==='Día'?dateLabel(d):months[month]+' '+year}</strong><button class="small-btn" onclick="changeDate(1)">›</button></div>
- <div style="margin-top:17px">${content}</div></div>
+  <div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button>
+  <strong>${calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y}</strong>
+  <button class="small-btn" onclick="changeDate(1)">›</button></div>
+  <div style="margin-top:16px">${content}</div>
+ </div>
  <div class="section"><h2>Próximos eventos</h2>
- ${events.map(e=>`<div class="card card-row"><div><div class="item-title">${escapeHTML(e.title)}</div><div class="item-sub">${escapeHTML(e.date||'Sin fecha')}</div></div><span class="pill">Evento</span></div>`).join('')||'<div class="card empty">No hay eventos registrados todavía.</div>'}
- </div>`;
+ ${events.map(e=>`<div class="card card-row"><div>${escapeHTML(e.title)}<div class="muted" style="font-size:12px;margin-top:5px">${escapeHTML(e.date)}</div></div>${e.reminder?'<span class="pill">🔔 Alarma</span>':''}</div>`).join('')||'<div class="card empty">No hay eventos registrados todavía.</div>'}
+ </div><div class="bottom-space"></div>`;
 }
+function keyDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function changeDate(n){
  if(calendarView==='Año')selectedDate.setFullYear(selectedDate.getFullYear()+n);
  else if(calendarView==='Mes')selectedDate.setMonth(selectedDate.getMonth()+n);
@@ -242,70 +349,67 @@ function changeDate(n){
 }
 function renderTasks(){
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer, en un solo lugar.</p></div>
- <div class="card"><h2>Pendientes</h2>${tasks.filter(t=>!t.done).map(t=>taskHTML(t)).join('')||'<div class="empty">No tienes tareas pendientes.</div>'}</div>
- <div class="card"><h2>Completadas</h2>${tasks.filter(t=>t.done).map(t=>taskHTML(t)).join('')||'<div class="empty">Todavía no hay tareas completadas.</div>'}</div>`;
+ <div class="card"><h2>Pendientes</h2>${tasks.filter(t=>!t.done).map(taskHTML).join('')||'<div class="empty">No tienes tareas pendientes.</div>'}</div>
+ <div class="card"><h2>Completadas</h2>${tasks.filter(t=>t.done).map(taskHTML).join('')||'<div class="empty">Todavía no hay tareas completadas.</div>'}</div><div class="bottom-space"></div>`;
 }
 function taskHTML(t){
- return `<div class="setting-row task-row"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><span class="${t.done?'done':''}">${escapeHTML(t.title)}</span><button class="small-btn" onclick="deleteTask(${t.id})">×</button></div>`;
+ return `<div class="task-row"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><span class="task-name ${t.done?'done':''}">${escapeHTML(t.title)}</span><button class="small-btn" onclick="deleteTask(${t.id})">×</button></div>`;
 }
-function toggleTask(id){let t=tasks.find(x=>x.id===id);if(t)t.done=!t.done;save();render();}
-function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);save();render();}
+function toggleTask(id){const t=tasks.find(x=>x.id===id);if(t)t.done=!t.done;save();render()}
+function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);save();render()}
 function renderLists(){
  const sections=['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras','Listo'];
- screen.innerHTML=`<div class="page-heading"><h1>Listas</h1><p>Tu lista compartida de compras.</p></div>
- ${sections.map(s=>`<div class="card list-section"><h3>${s}</h3>${products.filter(p=>p.section===s).map(p=>`<div class="setting-row task-row"><input type="checkbox" ${p.bought?'checked':''} onchange="toggleProduct(${p.id})"><span class="${p.bought?'done':''}">${escapeHTML(p.name)}</span><button class="small-btn" onclick="deleteProduct(${p.id})">×</button></div>`).join('')||'<small class="muted">Sin productos</small>'}</div>`).join('')}`;
+ screen.innerHTML=`<div class="page-heading"><h1>Listas</h1><p>Tu lista de compras.</p></div>
+ ${sections.map(s=>`<div class="card list-section"><h3>${s}</h3>
+ ${products.filter(p=>p.section===s).map(p=>`<div class="task-row"><input type="checkbox" ${p.bought?'checked':''} onchange="toggleProduct(${p.id})"><span class="task-name ${p.bought?'done':''}">${escapeHTML(p.name)}</span><button class="small-btn" onclick="deleteProduct(${p.id})">×</button></div>`).join('')||'<small class="muted">Sin productos</small>'}</div>`).join('')}<div class="bottom-space"></div>`;
 }
-function toggleProduct(id){let p=products.find(x=>x.id===id);if(p)p.bought=!p.bought;save();render();}
-function deleteProduct(id){products=products.filter(x=>x.id!==id);save();render();}
+function toggleProduct(id){const p=products.find(x=>x.id===id);if(p)p.bought=!p.bought;save();render()}
+function deleteProduct(id){products=products.filter(x=>x.id!==id);save();render()}
 function renderNotifications(){
- screen.innerHTML=`<div class="page-heading"><h1>Notificaciones</h1><p>Aquí se reúnen los avisos de todos tus módulos.</p></div>
- <div class="card empty">Todavía no tienes notificaciones.</div>`;
+ screen.innerHTML='<div class="page-heading"><h1>Notificaciones</h1><p>Aquí se reúnen los avisos de todos tus módulos.</p></div><div class="card empty">Todavía no tienes notificaciones.</div>';
 }
 function renderSettings(){
  screen.innerHTML=`<div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
- <div class="card">
- ${['Seguridad y dispositivos','Integrantes del hogar','Ayuda','Código del hogar','Abandonar hogar','Eliminar el hogar'].map(x=>`<div class="setting-row">${x}<span>›</span></div>`).join('')}
- </div>`;
+ <div class="card">${['Seguridad y dispositivos','Integrantes del hogar','Ayuda','Código del hogar','Abandonar hogar','Eliminar el hogar'].map(x=>`<div class="setting-row">${x}<span>›</span></div>`).join('')}</div>`;
 }
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
- screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Este módulo forma parte de Enorden.</p></div>
- <div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Estamos preparando este espacio para la siguiente etapa del proyecto.</p></div>`;
+ screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
 }
 function openAdd(){
  let title='',body='';
  if(current==='tareas'){
-  title='Nueva tarea';
-  body=`<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>`;
+  title='Nueva tarea';body='<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>';
  }else if(current==='listas'){
-  title='Agregar producto';
-  body=`<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">${['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(s=>`<option>${s}</option>`).join('')}</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>`;
- }else if(current==='calendario'){
-  title='Nuevo evento';
-  body=`<label>Nombre del evento</label><input id="newValue" placeholder="Nombre del evento"><label>Fecha</label><input id="newDate" type="date" value="${selectedDate.toISOString().slice(0,10)}"><button class="primary-btn" onclick="addEvent()">Guardar evento</button>`;
+  title='Agregar producto';body=`<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">${['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(s=>`<option>${s}</option>`).join('')}</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>`;
  }else{
-  title='Nuevo elemento';
-  body=`<p>Selecciona un módulo para agregar contenido.</p>`;
+  title='Nuevo evento';
+  body=`<label>Nombre del evento</label><input id="newValue" placeholder="Nombre del evento">
+  <label>Fecha</label><input id="newDate" type="date" value="${keyDate(selectedDate)}">
+  <label>Recordatorio</label>
+  <select id="newReminder">
+   <option value="">Sin alarma</option>
+   <option value="0">A la hora del evento</option>
+   <option value="5">5 minutos antes</option>
+   <option value="15">15 minutos antes</option>
+   <option value="30">30 minutos antes</option>
+   <option value="60">1 hora antes</option>
+   <option value="1440">1 día antes</option>
+   <option value="10080">1 semana antes</option>
+  </select>
+  <button class="primary-btn" onclick="addEvent()">Guardar evento</button>`;
  }
  document.getElementById('modalTitle').textContent=title;
  document.getElementById('modalBody').innerHTML=body;
- document.getElementById('modalBackdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');
 }
-function closeModal(){document.getElementById('modalBackdrop').classList.remove('show')}
-function addTask(){
- const v=document.getElementById('newValue').value.trim();if(!v)return;
- tasks.push({id:Date.now(),title:v,done:false});save();closeModal();render();
-}
-function addProduct(){
- const v=document.getElementById('newValue').value.trim();if(!v)return;
- products.push({id:Date.now(),name:v,section:document.getElementById('newSection').value,bought:false});save();closeModal();render();
-}
+function closeModal(){document.getElementById('backdrop').classList.remove('show')}
+function addTask(){const v=document.getElementById('newValue').value.trim();if(!v)return;tasks.push({id:Date.now(),title:v,done:false});save();closeModal();render()}
+function addProduct(){const v=document.getElementById('newValue').value.trim();if(!v)return;products.push({id:Date.now(),name:v,section:document.getElementById('newSection').value,bought:false});save();closeModal();render()}
 function addEvent(){
  const v=document.getElementById('newValue').value.trim();if(!v)return;
- events.push({id:Date.now(),title:v,date:document.getElementById('newDate').value});save();closeModal();render();
-}
-function escapeHTML(s){
- return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ events.push({id:Date.now(),title:v,date:document.getElementById('newDate').value,reminder:document.getElementById('newReminder').value});
+ save();closeModal();render();
 }
 render();
 </script>
