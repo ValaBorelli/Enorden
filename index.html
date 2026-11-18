@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172b35">
+<title>Enorden</title>
+<style>
+:root {
+  --bg:#101f27; --panel:#1b303a; --panel2:#29434e;
+  --ink:#f3f6f4; --muted:#afc0c2; --accent:#82c7df;
+  --line:#35515b; --gold:#f2d58a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:15px system-ui,-apple-system,sans-serif}
+.app{max-width:520px;margin:auto;min-height:100vh;
+padding:0 16px 100px}
+header{display:flex;justify-content:space-between;align-items:center;
+padding:17px 0;border-bottom:1px solid var(--line);
+position:sticky;top:0;background:var(--bg);z-index:5}
+.brand strong{display:block;font-size:23px}
+.brand small{color:var(--muted);font-size:12px}
+.actions{display:flex;gap:8px}
+.icon{background:none;border:0;color:var(--ink);font-size:25px;padding:7px}
+main{padding-top:20px}
+.screen{display:none}
+.screen.active{display:block}
+h1{font-size:22px;margin:0 0 5px}
+h2{font-size:16px;margin:22px 0 10px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.card{background:var(--panel);border:1px solid var(--line);
+border-radius:15px;padding:14px;margin:10px 0}
+.row{display:flex;align-items:center;gap:10px}
+.between{justify-content:space-between}
+.muted{color:var(--muted);font-size:12px}
+.pill{background:var(--panel2);color:var(--accent);
+padding:5px 9px;border-radius:20px;font-size:11px}
+button{font:inherit;cursor:pointer}
+.primary{background:var(--accent);color:#10232c;border:0;
+border-radius:11px;padding:11px 14px;font-weight:650}
+.secondary{background:var(--panel2);color:var(--ink);
+border:1px solid var(--line);border-radius:11px;padding:10px}
+.full{width:100%}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.quick button{min-height:68px;text-align:left}
+.tabs{display:flex;gap:4px;background:var(--panel);
+padding:5px;border-radius:12px;margin:14px 0;overflow:auto}
+.tabs button{flex:1;background:none;border:0;color:var(--muted);
+padding:8px 6px;border-radius:9px;white-space:nowrap}
+.tabs button.sel{background:var(--panel2);color:var(--ink)}
+.monthhead{display:flex;justify-content:space-between;align-items:center;
+margin-bottom:12px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);
+gap:4px;text-align:center}
+.calendar span{font-size:11px;color:var(--muted);padding:5px 0}
+.day{height:39px;background:none;color:var(--ink);border:0;
+border-radius:9px;position:relative}
+.day.selected{background:var(--accent);color:#10232c;font-weight:bold}
+.day.dot:after{content:"";width:4px;height:4px;background:var(--accent);
+border-radius:50%;position:absolute;bottom:4px;left:calc(50% - 2px)}
+.day.priority{outline:1px solid var(--gold)}
+.listitem{display:flex;align-items:center;gap:10px;
+padding:11px 0;border-bottom:1px solid var(--line)}
+.listitem:last-child{border:0}
+.check{width:19px;height:19px;accent-color:var(--accent)}
+.itemtext{flex:1}
+.done{text-decoration:line-through;color:var(--muted)}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+width:min(520px,100%);display:flex;justify-content:space-around;
+background:#142831;border-top:1px solid var(--line);
+padding:9px 5px 15px;z-index:10}
+.nav{flex:1;background:none;border:0;color:var(--muted);
+font-size:10px;padding:5px}
+.nav b{display:block;font-size:21px;font-weight:400}
+.nav.active{color:var(--accent)}
+.badge{font-size:10px;background:var(--accent);color:#10232c;
+padding:1px 5px;border-radius:20px;vertical-align:top}
+.notice{display:flex;gap:11px;align-items:flex-start}
+.emoji{font-size:23px}
+.noticebody{flex:1}
+.noticebody strong{font-size:14px}
+.noticebody p{font-size:13px;color:var(--muted);margin:4px 0}
+.settingsrow{padding:14px 0;border-bottom:1px solid var(--line)}
+.fab{position:fixed;bottom:85px;right:max(18px,calc((100vw - 520px)/2 + 18px));
+width:54px;height:54px;border:0;border-radius:50%;
+background:var(--accent);color:#10232c;font-size:28px;z-index:8}
+input,select{width:100%;background:#10232c;color:var(--ink);
+border:1px solid var(--line);border-radius:10px;
+padding:11px;margin:7px 0 12px;font:inherit}
+.modalback{display:none;position:fixed;inset:0;background:#0009;
+z-index:20;align-items:flex-end;justify-content:center}
+.modalback.show{display:flex}
+.modal{background:var(--panel);border-radius:20px 20px 0 0;
+width:min(520px,100%);padding:20px 18px 28px}
+.modal h2{margin-top:0}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand">
+    <strong>Enorden</strong>
+    <small>Tu hogar, organizado en un solo lugar</small>
+  </div>
+  <div class="actions">
+    <button class="icon" onclick="show('notifications')" aria-label="Notificaciones">♧ <span class="badge" id="badge">3</span></button>
+    <button class="icon" onclick="show('settings')" aria-label="Configuración">⚙</button>
+  </div>
+</header>
+
+<main>
+<section id="home" class="screen active">
+  <h1>Inicio</h1>
+  <p class="sub">Todo lo importante de tu hogar, en un solo lugar.</p>
+  <div class="card">
+    <div class="row between"><strong>¡Hola!</strong><span class="pill">Mi hogar</span></div>
+    <p class="muted">Un vistazo rápido a lo que viene.</p>
+    <div class="quick">
+      <button class="secondary" onclick="show('calendar')">📅 Calendario</button>
+      <button class="secondary" onclick="show('tasks')">✓ Tareas</button>
+      <button class="secondary" onclick="show('lists')">🛒 Listas</button>
+      <button class="secondary" onclick="show('notifications')">🔔 Avisos</button>
+    </div>
+  </div>
+  <h2>Próximos eventos</h2>
+  <div class="card" id="homeevents"></div>
+  <h2>Tareas pendientes</h2>
+  <div class="card" id="hometasks"></div>
+</section>
+
+<section id="calendar" class="screen">
+  <h1>Calendario</h1>
+  <p class="sub">Eventos personales y compartidos del hogar.</p>
+  <div class="tabs" id="calTabs">
+    <button data-view="Año">Año</button>
+    <button data-view="Mes" class="sel">Mes</button>
+    <button data-view="Semana">Semana</button>
+    <button data-view="Día">Día</button>
+  </div>
+  <div class="card">
+    <div class="monthhead">
+      <button class="secondary" onclick="shiftMonth(-1)">‹</button>
+      <strong id="monthlabel"></strong>
+      <button class="secondary" onclick="shiftMonth(1)">›</button>
+    </div>
+    <div id="calendarcontent"></div>
+  </div>
+  <h2>Próximos eventos</h2>
+  <div class="card" id="eventslist"></div>
+</section>
+
+<section id="tasks" class="screen">
+  <h1>Tareas</h1>
+  <p class="sub">Pendientes personales y del hogar.</p>
+  <div class="card" id="tasklist"></div>
+  <button class="primary full" onclick="openModal('task')">＋ Nueva tarea</button>
+</section>
+
+<section id="lists" class="screen">
+  <h1>Listas</h1>
+  <p class="sub">Una lista compartida para organizar las compras.</p>
+  <div class="card">
+    <div class="row between"><strong>Lista de compras</strong><span class="pill">Activa</span></div>
+    <div id="shoppinglist"></div>
+    <button class="secondary full" onclick="openModal('item')">＋ Agregar producto</button>
+  </div>
+  <h2>Secciones</h2>
+  <div class="quick">
+    <div class="card">Despensa</div><div class="card">Congelados</div>
+    <div class="card">Frutas</div><div class="card">Verduras</div>
+    <div class="card">Limpieza</div><div class="card">Cocina</div>
+    <div class="card">Baño</div><div class="card">Personales</div>
+    <div class="card">Extras</div>
+  </div>
+</section>
+
+<section id="notifications" class="screen">
+  <h1>Notificaciones <span id="newlabel" style="color:var(--accent);font-size:13px;font-weight:400">3 nuevas</span></h1>
+  <p class="sub">Aquí se reúnen los avisos de todos tus módulos.</p>
+  <div id="notices"></div>
+</section>
+
+<section id="settings" class="screen">
+  <h1>Configuración</h1>
+  <p class="sub">Ajustes de tu cuenta y del hogar.</p>
+  <div class="card">
+    <div class="settingsrow">Seguridad y dispositivos　›</div>
+    <div class="settingsrow">Integrantes del hogar　›</div>
+    <div class="settingsrow">Ayuda　›</div>
+    <div class="settingsrow">Código del hogar　›</div>
+    <div class="settingsrow">Abandonar hogar　›</div>
+    <div class="settingsrow">Eliminar el hogar　›</div>
+  </div>
+  <div class="card">
+    <strong>Primera versión de prueba</strong>
+    <p class="muted">Esta versión es una maqueta. Las cuentas, permisos, sincronización y seguridad real se incorporarán más adelante.</p>
+  </div>
+</section>
+</main>
+</div>
+
+<button class="fab" id="fab" onclick="openModal('quick')">＋</button>
+
+<nav class="bottom">
+  <button class="nav active" data-screen="home" onclick="show('home')"><b>⌂</b>Inicio</button>
+  <button class="nav" data-screen="calendar" onclick="show('calendar')"><b>▦</b>Calendario</button>
+  <button class="nav" data-screen="tasks" onclick="show('tasks')"><b>✓</b>Tareas</button>
+  <button class="nav" data-screen="lists" onclick="show('lists')"><b>☷</b>Listas</button>
+</nav>
+
+<div class="modalback" id="modalback" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h2 id="modtitle">Agregar</h2>
+    <div id="modalcontent"></div>
+    <div class="row">
+      <button class="secondary" style="flex:1" onclick="closeModal()">Cancelar</button>
+      <button class="primary" style="flex:1" onclick="saveModal()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'null')||
+[{t:'Comprar comida',who:'Del hogar',done:false},
+{t:'Ordenar la cocina',who:'Personal',done:false}];
+let items=JSON.parse(localStorage.getItem('enorden_items')||'null')||
+[{t:'Leche',done:false},{t:'Pan',done:false},{t:'Detergente',done:true}];
+let events=[{d:'18 nov',t:'Revisar pendientes del hogar'},
+{d:'20 nov',t:'Compra semanal'},{d:'24 nov',t:'Cumpleaños'}];
+let notices=[
+{e:'🔔',t:'Aviso del calendario',d:'Tienes un evento próximo.',time:'Hace 35 minutos',m:'Calendario'},
+{e:'🏠',t:'Actividad del hogar',d:'Hay novedades en el espacio compartido.',time:'Hace 2 horas',m:'Hogar'},
+{e:'🔐',t:'Nuevo acceso',d:'Se inició sesión desde un dispositivo.',time:'Ayer',m:'Seguridad'}
+];
+let current=new Date(2026,10,18),view='Mes',modalType='';
+
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
+ document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.screen===id));
+ document.getElementById('fab').style.display=['home','calendar','tasks','lists'].includes(id)?'block':'none';
+ if(id==='notifications'){
+   document.getElementById('badge').style.display='none';
+   document.getElementById('newlabel').textContent='';
+ }
+ render();
+}
+function saveData(){
+ localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
+ localStorage.setItem('enorden_items',JSON.stringify(items));
+}
+function render(){
+ renderTasks();renderItems();renderEvents();renderCalendar();renderNotices();
+}
+function renderTasks(){
+ let html=tasks.map((x,i)=>`<div class="listitem">
+ <input class="check" type="checkbox" ${x.done?'checked':''}
+ onchange="tasks[${i}].done=this.checked;saveData();render()">
+ <div class="itemtext ${x.done?'done':''}">${x.t}<div class="muted">${x.who}</div></div>
+ </div>`).join('')||'<p class="muted">No hay tareas por ahora.</p>';
+ document.getElementById('tasklist').innerHTML=html;
+ document.getElementById('hometasks').innerHTML=tasks.filter(x=>!x.done).slice(0,3).map(x=>`<div class="listitem">○ <div class="itemtext">${x.t}</div></div>`).join('')||'¡Todo al día!';
+}
+function renderItems(){
+ document.getElementById('shoppinglist').innerHTML=items.map((x,i)=>`<div class="listitem">
+ <input class="check" type="checkbox" ${x.done?'checked':''}
+ onchange="items[${i}].done=this.checked;saveData();render()">
+ <div class="itemtext ${x.done?'done':''}">${x.t}</div>
+ <span class="pill">${x.done?'Comprado':'Comprar'}</span></div>`).join('');
+}
+function renderEvents(){
+ document.getElementById('eventslist').innerHTML=events.map(x=>`<div class="listitem"><span class="pill">${x.d}</span><div class="itemtext">${x.t}</div></div>`).join('');
+ document.getElementById('homeevents').innerHTML=events.slice(0,2).map(x=>`<div class="listitem">📅 <div class="itemtext">${x.t}<div class="muted">${x.d}</div></div></div>`).join('');
+}
+function renderNotices(){
+ document.getElementById('notices').innerHTML=notices.map(n=>`<div class="card notice">
+ <div class="emoji">${n.e}</div><div class="noticebody"><strong>${n.t}</strong>
+ <p>${n.d}</p><div class="row between"><span class="muted">${n.time}</span><span class="pill">${n.m}</span></div>
+ </div></div>`).join('');
+}
+function renderCalendar(){
+ let y=current.getFullYear(),m=current.getMonth();
+ document.getElementById('monthlabel').textContent=current.toLocaleDateString('es-CL',{month:'long',year:'numeric'});
+ let c=document.getElementById('calendarcontent');
+ if(view==='Año'){
+  c.innerHTML='<div class="quick">'+Array.from({length:12},(_,i)=>`<div class="card">${new Date(y,i,1).toLocaleDateString('es-CL',{month:'long'})}</div>`).join('')+'</div>';return;
+ }
+ if(view==='Día'){
+  c.innerHTML=`<strong>${current.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})}</strong><p class="muted">No hay horarios registrados para este día.</p>`;return;
+ }
+ let first=new Date(y,m,1),start=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+ let out=['L','M','X','J','V','S','D'].map(x=>`<span>${x}</span>`).join('');
+ for(let i=0;i<start;i++)out+='<span></span>';
+ for(let d=1;d<=days;d++){
+  let sel=d===current.getDate(),dot=[18,20,24].includes(d);
+  out+=`<button class="day ${sel?'selected':''} ${dot?'dot':''} ${d===20?'priority':''}" onclick="current.setDate(${d});renderCalendar()">${d}</button>`;
+ }
+ c.innerHTML=`<div class="calendar">${out}</div>`;
+}
+function shiftMonth(n){current.setMonth(current.getMonth()+n);renderCalendar()}
+document.querySelectorAll('#calTabs button').forEach(b=>b.onclick=()=>{
+ view=b.dataset.view;
+ document.querySelectorAll('#calTabs button').forEach(x=>x.classList.toggle('sel',x===b));
+ renderCalendar();
+});
+function openModal(type){
+ modalType=type;let title='',body='';
+ if(type==='task'){
+  title='Nueva tarea';body='<label>Nombre de la tarea</label><input id="newvalue" placeholder="¿Qué hay que hacer?"><label>Tipo</label><select id="newcat"><option>Personal</option><option>Del hogar</option></select>';
+ }else if(type==='item'){
+  title='Agregar producto';body='<label>Producto</label><input id="newvalue" placeholder="¿Qué falta comprar?">';
+ }else{
+  title='¿Qué quieres agregar?';body='<button class="secondary full" onclick="openModal(\\'task\\')">✓ Nueva tarea</button><br><br><button class="secondary full" onclick="openModal(\\'item\\')">🛒 Producto a la lista</button>';
+ }
+ document.getElementById('modtitle').textContent=title;
+ document.getElementById('modalcontent').innerHTML=body;
+ document.getElementById('modalback').classList.add('show');
+}
+function closeModal(){document.getElementById('modalback').classList.remove('show')}
+function saveModal(){
+ let v=document.getElementById('newvalue')?.value.trim();
+ if(!v){closeModal();return}
+ let cat=document.getElementById('newcat')?.value||'Personal';
+ if(modalType==='task')tasks.unshift({t:v,who:cat,done:false});
+ if(modalType==='item')items.unshift({t:v,done:false});
+ saveData();closeModal();render();
+}
+render();
+</script>
+</body>
+</html>
