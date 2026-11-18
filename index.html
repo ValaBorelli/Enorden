@@ -207,7 +207,7 @@ h2{font-size:18px;margin-bottom:13px}
 <div class="modal-backdrop" id="backdrop" onclick="if(event.target===this)closeModal()">
  <div class="modal">
   <div class="close-row"><h2 id="modalTitle">Agregar</h2>
-   <button class="small-btn" onclick="closeModal()">Cerrar ✕</button>
+   <button class="small-btn" onclick="closeModal()">Cancelar ✕</button>
   </div>
   <div id="modalBody"></div>
  </div>
@@ -251,6 +251,9 @@ const nav=document.getElementById('bottomNav');
 const fab=document.getElementById('fab');
 const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const weekdays=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+function closeModal(){
+ document.getElementById('backdrop').classList.remove('show');
+}
 function save(){
  localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
  localStorage.setItem('enorden_products',JSON.stringify(products));
