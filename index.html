@@ -139,10 +139,11 @@ h2{font-size:18px;margin-bottom:13px}
 .home-code-actions{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
 .home-code-actions button{min-width:112px}
 .help-group{margin:10px 0}
-.help-group summary{font-weight:700;cursor:pointer;padding:12px 0;color:#30352d;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.help-group summary{font-weight:700;cursor:pointer;padding:12px 0;color:#30352d;list-style:none;display:flex;align-items:center;gap:12px}
 .help-group summary::-webkit-details-marker{display:none}
-.help-group summary::after{content:'⌄';font-size:20px;color:#687066;transition:transform .18s;flex:0 0 auto}
-.help-group[open] > summary::after{transform:rotate(180deg)}
+.help-main-group > summary{justify-content:space-between}
+.help-main-group > summary::after{content:'⌄';font-size:20px;color:#687066;transition:transform .18s;flex:0 0 auto}
+.help-main-group[open] > summary::after{transform:rotate(180deg)}
 .help-answer{font-size:13px;line-height:1.55;color:#555b52;padding:0 0 12px}
 .profile-option{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);padding:14px 2px;color:#30352d}
 .profile-option:last-child{border-bottom:0}
@@ -496,7 +497,7 @@ function renderNotifications(){
   </div>
  </details>
  <details class="settings-accordion"><summary>Ayuda</summary><div class="accordion-content">
- <details class="help-group"><summary>Preguntas frecuentes</summary><div class="help-answer">
+ <details class="help-group help-main-group"><summary>Preguntas frecuentes</summary><div class="help-answer">
  <details class="help-group"><summary>¿Cómo puedo abandonar mi hogar?</summary><div class="help-answer">Entra a Configuración y pulsa “Abandonar el hogar”. Si eres integrante, podrás confirmar tu salida. Si eres administrador, primero debes transferir la administración. Si eres la única persona, puedes eliminar el hogar desde Configuración.</div></details>
  <details class="help-group"><summary>¿Cómo puedo eliminar mi cuenta?</summary><div class="help-answer">Primero debes salir de tu hogar. Si eres administrador, antes tendrás que transferir la administración o, si eres el único integrante, eliminar el hogar. Después podrás elegir eliminar tu cuenta. Eliminar el hogar y eliminar tu cuenta son acciones distintas.</div></details>
  <details class="help-group"><summary>¿Cómo invito a alguien a mi hogar?</summary><div class="help-answer">Comparte el Código de hogar desde Configuración. La otra persona lo usará para enviar una solicitud. El administrador deberá aceptarla; conocer el código no da acceso automático.</div></details>
@@ -504,7 +505,7 @@ function renderNotifications(){
  <details class="help-group"><summary>¿Puedo cambiar mi nombre o imagen?</summary><div class="help-answer">Sí. En Configuración, abre “Mi Perfil” para cambiar tu imagen, nombre de usuario y datos de contacto verificables.</div></details>
  <details class="help-group"><summary>¿Qué pasa si cambio de teléfono?</summary><div class="help-answer">En la versión completa podrás iniciar sesión en otro dispositivo verificando tu identidad.</div></details>
  </div></details>
- <details class="help-group"><summary>Cómo usar Enorden</summary><div class="help-answer">
+ <details class="help-group help-main-group"><summary>Cómo usar Enorden</summary><div class="help-answer">
  <details class="help-group"><summary>Inicio</summary><div class="help-answer">1. Entra a Inicio para ver el resumen del hogar.<br>2. Revisa las tarjetas de tareas, eventos y compras pendientes.<br>3. Usa el buscador para encontrar información.<br>4. Desliza “Mis módulos” para abrir uno. Mantén presionado un módulo para cambiar su orden.</div></details>
  <details class="help-group"><summary>Calendario</summary><div class="help-answer">1. Abre Calendario.<br>2. Elige Año, Mes, Semana o Día.<br>3. Usa las flechas para moverte entre fechas.<br>4. Pulsa “+”, completa el nombre, fecha y recordatorio, y guarda.</div></details>
  <details class="help-group"><summary>Tareas</summary><div class="help-answer">1. Entra a Tareas.<br>2. Pulsa “+” para crear una tarea.<br>3. Escribe lo que necesitas hacer y guarda.<br>4. Marca la casilla al terminar. Puedes eliminarla con “×”.</div></details>
