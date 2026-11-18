@@ -21,7 +21,7 @@ button{cursor:pointer}
 header{height:76px;background:var(--green);padding:12px 17px;
  display:flex;align-items:center;justify-content:space-between;
  position:sticky;top:0;z-index:10}
-.brand{font-size:25px;font-weight:700}
+.brand{font-size:25px;font-weight:700;color:#fff}
 .slogan{font-size:11px;color:#dce8e3;margin-top:3px}
 .header-actions{display:flex;gap:10px}
 .icon-btn{width:39px;height:39px;border:0;border-radius:50%;
@@ -136,6 +136,24 @@ h2{font-size:18px;margin-bottom:13px}
 .settings-action{width:100%;text-align:left;background:var(--surface);color:#242820;
  border:1px solid var(--line);border-radius:12px;padding:14px;margin:6px 0}
 .settings-action.danger{color:#a13b35;border-color:#dfbdb5}
+.home-code-actions{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.home-code-actions button{min-width:112px}
+.help-group{margin:10px 0}
+.help-group summary{font-weight:700;cursor:pointer;padding:12px 0;color:#30352d;list-style:none}
+.help-group summary::-webkit-details-marker{display:none}
+.help-group summary::after{content:'＋';float:right;color:#687066}
+.help-group[open] summary::after{content:'−'}
+.help-answer{font-size:13px;line-height:1.55;color:#555b52;padding:0 0 12px}
+.profile-option{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);padding:14px 2px;color:#30352d}
+.profile-option:last-child{border-bottom:0}
+.profile-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;background:var(--surface2);display:grid;place-items:center;font-size:36px;margin:8px auto 14px}
+.profile-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:12px}
+.profile-actions button{min-width:100px}
+.profile-readonly{background:#eee8dc;border-radius:9px;padding:12px;margin:6px 0 14px;font-size:14px;overflow-wrap:anywhere}
+.avatar-choices{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.avatar-choice{width:54px;height:54px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);font-size:27px}
+.avatar-choice.selected{outline:3px solid var(--green2)}
+
 .settings-row{display:flex;gap:10px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
 .settings-row:last-child{border-bottom:0}
 .setting-control{display:flex;gap:10px;align-items:flex-start;margin:13px 0;color:#3b4038;font-size:13px;line-height:1.4}
@@ -445,6 +463,14 @@ function renderNotifications(){
  screen.innerHTML=`
  <div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
  <details class="settings-accordion">
+  <summary>Mi Perfil</summary><div class="accordion-content">
+   <div class="profile-avatar" id="settingsAvatar">🙂</div>
+   <button class="profile-option" onclick="openProfileImage()">🖼️ Imagen de Perfil <span class="muted">›</span></button>
+   <button class="profile-option" onclick="openProfileName()">✏️ Nombre de Usuario <span class="muted">›</span></button>
+   <button class="profile-option" onclick="openProfileContact()">📧 Contacto <span class="muted">›</span></button>
+   <p class="settings-note">Tus cambios de perfil se guardan en este dispositivo en esta versión de prueba.</p>
+  </div></details>
+ <details class="settings-accordion">
   <summary>Seguridad y dispositivos <span class="pill">Dispositivo actual</span></summary>
   <div class="accordion-content">
    <label class="setting-control"><input id="householdDevice" type="checkbox" ${householdDevice?'checked':''} onchange="saveSecuritySettings()"> Este es el dispositivo fijado como hogar</label>
@@ -469,25 +495,103 @@ function renderNotifications(){
    <p class="settings-note">La administración de integrantes, solicitudes, perfiles y permisos se conectará cuando exista el sistema de cuentas y hogares.</p>
   </div>
  </details>
- <details class="settings-accordion">
-  <summary>Ayuda</summary>
-  <div class="accordion-content">
-   <div class="settings-row"><strong>¿Cómo funciona Enorden?</strong></div>
-   <p class="settings-note">Enorden reúne la organización del hogar en módulos: calendario, tareas, listas, finanzas, rutinas, notas, mapa y chat.</p>
-   <div class="settings-row"><strong>¿Necesitas ayuda?</strong></div>
-   <p class="settings-note">La ayuda y el soporte estarán disponibles cuando conectemos los servicios de la aplicación.</p>
-  </div>
- </details>
+ <details class="settings-accordion"><summary>Ayuda</summary><div class="accordion-content">
+ <details class="help-group"><summary>Preguntas frecuentes</summary><div class="help-answer">
+ <details class="help-group"><summary>¿Cómo puedo abandonar mi hogar?</summary><div class="help-answer">Entra a Configuración y pulsa “Abandonar el hogar”. Si eres integrante, podrás confirmar tu salida. Si eres administrador, primero debes transferir la administración. Si eres la única persona, puedes eliminar el hogar desde Configuración.</div></details>
+ <details class="help-group"><summary>¿Cómo puedo eliminar mi cuenta?</summary><div class="help-answer">Primero debes salir de tu hogar. Si eres administrador, antes tendrás que transferir la administración o, si eres el único integrante, eliminar el hogar. Después podrás elegir eliminar tu cuenta. Eliminar el hogar y eliminar tu cuenta son acciones distintas.</div></details>
+ <details class="help-group"><summary>¿Cómo invito a alguien a mi hogar?</summary><div class="help-answer">Comparte el Código de hogar desde Configuración. La otra persona lo usará para enviar una solicitud. El administrador deberá aceptarla; conocer el código no da acceso automático.</div></details>
+ <details class="help-group"><summary>¿Puedo tener información privada?</summary><div class="help-answer">Sí. Tus eventos y tareas personales, además de tus rutinas, son privados. La información compartida puede ser vista por los integrantes del hogar.</div></details>
+ <details class="help-group"><summary>¿Puedo cambiar mi nombre o imagen?</summary><div class="help-answer">Sí. En Configuración, abre “Mi Perfil” para cambiar tu imagen, nombre de usuario y datos de contacto verificables.</div></details>
+ <details class="help-group"><summary>¿Qué pasa si cambio de teléfono?</summary><div class="help-answer">En la versión completa podrás iniciar sesión en otro dispositivo verificando tu identidad.</div></details>
+ </div></details>
+ <details class="help-group"><summary>Cómo usar Enorden</summary><div class="help-answer">
+ <details class="help-group"><summary>Inicio</summary><div class="help-answer">1. Entra a Inicio para ver el resumen del hogar.<br>2. Revisa las tarjetas de tareas, eventos y compras pendientes.<br>3. Usa el buscador para encontrar información.<br>4. Desliza “Mis módulos” para abrir uno. Mantén presionado un módulo para cambiar su orden.</div></details>
+ <details class="help-group"><summary>Calendario</summary><div class="help-answer">1. Abre Calendario.<br>2. Elige Año, Mes, Semana o Día.<br>3. Usa las flechas para moverte entre fechas.<br>4. Pulsa “+”, completa el nombre, fecha y recordatorio, y guarda.</div></details>
+ <details class="help-group"><summary>Tareas</summary><div class="help-answer">1. Entra a Tareas.<br>2. Pulsa “+” para crear una tarea.<br>3. Escribe lo que necesitas hacer y guarda.<br>4. Marca la casilla al terminar. Puedes eliminarla con “×”.</div></details>
+ <details class="help-group"><summary>Listas</summary><div class="help-answer">1. Abre Listas.<br>2. Pulsa “+” para agregar un producto.<br>3. Escribe su nombre y elige una sección.<br>4. Marca el producto cuando lo compres.</div></details>
+ <details class="help-group"><summary>Finanzas</summary><div class="help-answer">1. Entra a Finanzas desde la navegación inferior.<br>2. Si es tu primera vez, decide si quieres activar un bloqueo.<br>3. Si activas la seguridad, configura tu PIN de prueba.<br>4. La planilla de ingresos, gastos y presupuestos llegará en una siguiente etapa.</div></details>
+ <details class="help-group"><summary>Rutinas</summary><div class="help-answer">1. Abre Rutinas para encontrar hábitos y actividades repetidas.<br>2. En la versión completa podrás crear rutinas, ordenarlas en carpetas y definir días y alarmas.<br>3. Marca cada actividad al completarla y revisa tu cumplimiento.</div></details>
+ <details class="help-group"><summary>Notas</summary><div class="help-answer">1. Entra a Notas para guardar recordatorios breves.<br>2. Crea una nota y elige si será personal o compartida.<br>3. Las notas compartidas estarán disponibles para el hogar. La creación llegará en una siguiente etapa.</div></details>
+ <details class="help-group"><summary>Mapa</summary><div class="help-answer">1. Abre Mapa para consultar el espacio del hogar.<br>2. Cada integrante podrá decidir voluntariamente si comparte su ubicación.<br>3. Solo verás la ubicación de quienes hayan elegido compartirla. Esta función llegará en una siguiente etapa.</div></details>
+ <details class="help-group"><summary>Chat</summary><div class="help-answer">1. Entra a Chat.<br>2. La conversación principal se llamará “Familia”.<br>3. También habrá conversaciones asociadas a tareas.<br>4. Los mensajes tendrán un tiempo de conservación definido. La mensajería llegará en una siguiente etapa.</div></details>
+ </div></details></div></details>
  <div class="plain-heading">Código de hogar</div>
  <div class="home-code">${escapeHTML(homeCode)}</div>
- <div class="toolbar" style="margin-top:10px">
-  <button class="primary-btn" onclick="copyHomeCode()">Copiar</button>
-  <button class="secondary-btn" onclick="shareHomeCode()">Compartir</button>
- </div>
+ <div class="home-code-actions" style="margin-top:10px"><button class="primary-btn" onclick="copyHomeCode()">Copiar</button><button class="secondary-btn" onclick="shareHomeCode()">Compartir</button></div>
  <button class="settings-action danger" onclick="leaveHome()">Abandonar el hogar</button>
  ${isAdmin&&householdMemberCount===1?'<button class="settings-action danger" onclick="deleteHome()">Eliminar el hogar</button>':''}
  <div class="bottom-space"></div>`;
-}function renderFinance(){
+}
+function openProfileImage(){
+ const currentAvatar=localStorage.getItem('enorden_profile_avatar')||'🙂';
+ const savedImage=localStorage.getItem('enorden_profile_image')||'';
+ document.getElementById('modalTitle').textContent='Imagen de Perfil';
+ document.getElementById('modalBody').innerHTML=`
+ <div class="profile-avatar" id="profilePreview" style="${savedImage?'background-image:url('+savedImage+');background-size:cover;background-position:center;':''}">${savedImage?'':currentAvatar}</div>
+ <label for="profileUpload">Cargar una imagen desde este dispositivo</label><input id="profileUpload" type="file" accept="image/*" onchange="previewProfileImage(event)">
+ <p class="settings-note">También puedes elegir un avatar de muestra. Más adelante definiremos su diseño.</p>
+ <div class="avatar-choices">${['🙂','😀','😎','🐱','🌿','⭐'].map(a=>`<button class="avatar-choice ${a===currentAvatar?'selected':''}" onclick="selectProfileAvatar('${a}',this)">${a}</button>`).join('')}</div>
+ <div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileImage()">Guardar</button></div>`;
+ document.getElementById('backdrop').classList.add('show');
+}
+function previewProfileImage(event){
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ if(!file.type.startsWith('image/')){alert('Elige un archivo de imagen.');return}
+ const reader=new FileReader();reader.onload=()=>{const p=document.getElementById('profilePreview');p.textContent='';p.style.backgroundImage='url("'+reader.result+'")';p.style.backgroundSize='cover';p.style.backgroundPosition='center';p.dataset.image=reader.result;p.dataset.avatar='';};reader.readAsDataURL(file);
+}
+function selectProfileAvatar(value,button){
+ document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));
+ button.classList.add('selected');const p=document.getElementById('profilePreview');p.textContent=value;p.style.backgroundImage='';p.dataset.avatar=value;p.dataset.image='';
+}
+function saveProfileImage(){
+ const p=document.getElementById('profilePreview');if(!p)return;
+ const image=p.dataset.image||'',avatar=p.dataset.avatar||p.textContent||'🙂';
+ if(image){localStorage.setItem('enorden_profile_image',image);localStorage.setItem('enorden_profile_avatar','');}
+ else{localStorage.removeItem('enorden_profile_image');localStorage.setItem('enorden_profile_avatar',avatar);}
+ closeModal();renderSettings();
+}
+function openProfileName(){
+ const name=localStorage.getItem('enorden_profile_name')||'Vale';
+ document.getElementById('modalTitle').textContent='Nombre de Usuario';
+ document.getElementById('modalBody').innerHTML=`<label for="profileNameInput">Elige tu nombre de usuario</label><input id="profileNameInput" type="text" maxlength="30" value="${escapeHTML(name)}" placeholder="Nombre y números"><div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileName()">Guardar</button></div>`;
+ document.getElementById('backdrop').classList.add('show');
+}
+function saveProfileName(){
+ const name=document.getElementById('profileNameInput').value.trim();
+ if(!name){alert('Escribe un nombre de usuario.');return}
+ if(!/^[\p{L}\p{N} ._-]+$/u.test(name)){alert('Puedes usar letras, números, espacios, puntos, guiones y guion bajo.');return}
+ const old=localStorage.getItem('enorden_profile_name')||'Vale';
+ if(name!==old){const history=JSON.parse(localStorage.getItem('enorden_profile_name_history')||'[]');history.push({from:old,to:name,at:new Date().toISOString()});localStorage.setItem('enorden_profile_name_history',JSON.stringify(history));localStorage.setItem('enorden_profile_name',name);}
+ closeModal();renderSettings();
+}
+function openProfileContact(){
+ const email=localStorage.getItem('enorden_login_email')||'Correo de acceso no configurado';
+ const alternate=localStorage.getItem('enorden_alternate_email')||'';
+ const whatsapp=localStorage.getItem('enorden_whatsapp')||'';
+ document.getElementById('modalTitle').textContent='Contacto';
+ document.getElementById('modalBody').innerHTML=`
+ <label>Correo con el que ingresaste a Enorden (no editable)</label><div class="profile-readonly">${escapeHTML(email)}</div>
+ <label for="alternateEmail">Correo alternativo</label><input id="alternateEmail" type="email" value="${escapeHTML(alternate)}" placeholder="tucorreo@ejemplo.com"><button class="secondary-btn" onclick="verifyAlternateEmail()">Verificar correo alternativo</button>
+ <p class="settings-note" id="alternateStatus">${localStorage.getItem('enorden_alternate_verified')==='true'?'Correo alternativo verificado.':'Debes verificar el correo para agregarlo.'}</p>
+ <label for="whatsappNumber">WhatsApp de verificación</label><input id="whatsappNumber" type="tel" value="${escapeHTML(whatsapp)}" placeholder="+56 9 1234 5678"><button class="secondary-btn" onclick="verifyWhatsapp()">Verificar WhatsApp</button>
+ <p class="settings-note" id="whatsappStatus">${localStorage.getItem('enorden_whatsapp_verified')==='true'?'WhatsApp verificado.':'Debes verificar el número para agregarlo.'}</p>
+ <div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cerrar</button></div><p class="settings-note">En este prototipo la verificación es una demostración: todavía no se envían correos ni mensajes reales.</p>`;
+ document.getElementById('backdrop').classList.add('show');
+}
+function verifyAlternateEmail(){
+ const email=document.getElementById('alternateEmail').value.trim();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Ingresa un correo con formato válido.');return}
+ const code=String(Math.floor(100000+Math.random()*900000));alert('Demostración: tu código sería '+code+'. En la versión completa llegará a tu correo.');
+ if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_alternate_email',email);localStorage.setItem('enorden_alternate_verified','true');document.getElementById('alternateStatus').textContent='Correo alternativo verificado y guardado.';}else alert('El código no coincide. No se guardó el correo.');
+}
+function verifyWhatsapp(){
+ const number=document.getElementById('whatsappNumber').value.trim();
+ if(!/^\+?[0-9 ()-]{8,20}$/.test(number)){alert('Ingresa un número válido con código de país.');return}
+ const code=String(Math.floor(100000+Math.random()*900000));alert('Demostración: tu código sería '+code+'. En la versión completa llegará por WhatsApp.');
+ if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_whatsapp',number);localStorage.setItem('enorden_whatsapp_verified','true');document.getElementById('whatsappStatus').textContent='WhatsApp verificado y guardado.';}else alert('El código no coincide. No se guardó el número.');
+}
+
+function renderFinance(){
  screen.innerHTML=`
  <div class="page-heading"><h1>Finanzas</h1><p>Organiza los ingresos, gastos y presupuestos del hogar.</p></div>
  <div class="finance-lock"><strong>🔒 Acceso protegido</strong><p>La configuración de bloqueo de este dispositivo se administra en Configuración → Seguridad y dispositivos.</p></div>
