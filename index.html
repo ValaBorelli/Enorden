@@ -139,10 +139,10 @@ h2{font-size:18px;margin-bottom:13px}
 .home-code-actions{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
 .home-code-actions button{min-width:112px}
 .help-group{margin:10px 0}
-.help-group summary{font-weight:700;cursor:pointer;padding:12px 0;color:#30352d;list-style:none}
+.help-group summary{font-weight:700;cursor:pointer;padding:12px 0;color:#30352d;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .help-group summary::-webkit-details-marker{display:none}
-.help-group summary::after{content:'＋';float:right;color:#687066}
-.help-group[open] summary::after{content:'−'}
+.help-group summary::after{content:'⌄';font-size:20px;color:#687066;transition:transform .18s;flex:0 0 auto}
+.help-group[open] > summary::after{transform:rotate(180deg)}
 .help-answer{font-size:13px;line-height:1.55;color:#555b52;padding:0 0 12px}
 .profile-option{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);padding:14px 2px;color:#30352d}
 .profile-option:last-child{border-bottom:0}
@@ -514,6 +514,7 @@ function renderNotifications(){
  <details class="help-group"><summary>Notas</summary><div class="help-answer">1. Entra a Notas para guardar recordatorios breves.<br>2. Crea una nota y elige si será personal o compartida.<br>3. Las notas compartidas estarán disponibles para el hogar. La creación llegará en una siguiente etapa.</div></details>
  <details class="help-group"><summary>Mapa</summary><div class="help-answer">1. Abre Mapa para consultar el espacio del hogar.<br>2. Cada integrante podrá decidir voluntariamente si comparte su ubicación.<br>3. Solo verás la ubicación de quienes hayan elegido compartirla. Esta función llegará en una siguiente etapa.</div></details>
  <details class="help-group"><summary>Chat</summary><div class="help-answer">1. Entra a Chat.<br>2. La conversación principal se llamará “Familia”.<br>3. También habrá conversaciones asociadas a tareas.<br>4. Los mensajes tendrán un tiempo de conservación definido. La mensajería llegará en una siguiente etapa.</div></details>
+  <button class="secondary-btn" type="button" disabled aria-disabled="true" style="width:100%;margin-top:14px;opacity:.55;cursor:not-allowed">Contáctanos</button>
  </div></details></div></details>
  <div class="plain-heading">Código de hogar</div>
  <div class="home-code">${escapeHTML(homeCode)}</div>
