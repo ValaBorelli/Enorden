@@ -96,6 +96,12 @@ h2{font-size:18px;margin-bottom:13px}
 .calendar-grid .calendar-day.high-priority,.year-days .calendar-day.high-priority{outline:2px solid var(--event-border);outline-offset:-2px}
 .calendar-grid .calendar-day.sunday,.year-days .calendar-day.sunday{color:#b9bcb8!important}
 .calendar-search-toggle{font-size:17px;min-width:42px;padding:8px 11px}
+.calendar-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.calendar-heading-row h1{margin:0}
+.calendar-heading-row .calendar-search-toggle{flex:0 0 42px;margin-right:1px}
+.calendar-page-heading{margin-bottom:12px}
+.modal-close-button{width:38px;height:38px;padding:0;font-size:19px;line-height:1;flex:0 0 38px}
+
 .calendar-search-panel{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px;margin:0 0 12px}
 .calendar-search-panel input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit}
 .calendar-search-hint{font-size:12px;padding:12px 3px 3px}
@@ -285,10 +291,10 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 <button class="fab hidden" id="fab" onclick="openAdd()">+</button>
 </div>
 
-<div class="modal-backdrop" id="backdrop" onclick="if(event.target===this)closeModal()">
+<div class="modal-backdrop" id="backdrop">
  <div class="modal">
   <div class="close-row"><div class="modal-heading"><h2 id="modalTitle">Agregar</h2><p id="modalSubtitle" class="event-form-subtitle hidden"></p></div>
-   <button class="small-btn" onclick="closeModal()">Cancelar ✕</button>
+   <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="closeModal()">✕</button>
   </div>
   <div id="modalBody"></div>
  </div>
@@ -545,8 +551,8 @@ function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
  const typeLabel={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario',special:'Fecha especial o feriado'};
- const eventCard=ev=>'<button type="button" class="card" onclick="openEventDetails('+ev.id+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:12px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
- const selectedKey=keyDate(d),todayKey=keyDate(new Date());
+ const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
+ const selectedKey=keyDate(d),today=new Date();today.setHours(0,0,0,0);const todayKey=keyDate(today);
  let content='';
  if(calendarView==='Año'){
   content='<div class="year-grid">'+months.map((name,i)=>{
@@ -558,7 +564,7 @@ function renderCalendar(){
    return '<div class="year-month"><button type="button" class="year-month-title" onclick="selectedDate=new Date('+y+','+i+',1);calendarView=\'Mes\';render()">'+name+'</button><div class="year-days">'+weekdays.map(w=>'<span>'+w[0]+'</span>').join('')+cells+'</div></div>';
   }).join('')+'</div>';
  }else if(calendarView==='Día'){
-  const list=on(d);content='<strong>'+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</strong>'+(list.map(eventCard).join('')||'<div class="empty">No hay eventos para este día.</div>');
+  const list=on(d);content='<strong>'+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</strong>'+(list.map(ev=>eventCard(ev)).join('')||'<div class="empty">No hay eventos para este día.</div>');
  }else if(calendarView==='Semana'){
   const start=new Date(d);start.setDate(d.getDate()-((d.getDay()+6)%7));
   content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:7},(_,i)=>{
@@ -572,10 +578,16 @@ function renderCalendar(){
    return '<button type="button" class="calendar-day '+(date.getDay()===0?'sunday ':'')+(key===todayKey?'today ':'')+(key===selectedKey?'selected ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" aria-pressed="'+(key===selectedKey)+'" onclick="selectCalendarDate('+y+','+m+','+n+')">'+n+'</button>';
   }).join('')+'</div>';
  }
- const upcoming=events.slice().sort((a,b)=>a.date.localeCompare(b.date));
  const selectedEvents=on(d);
- const selectedDaySection=calendarView==='Día'?'':'<div class="section selected-day-events"><h2>Eventos del '+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</h2>'+(selectedEvents.map(eventCard).join('')||'<div class="card empty">No hay eventos para este día.</div>')+'</div>';
- screen.innerHTML='<div class="page-heading"><h1>Calendario</h1><p>Organiza las fechas importantes de tu hogar.</p></div><div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'<button type="button" class="small-btn calendar-today-button" aria-label="Ir a hoy" title="Ir a hoy" onclick="goToToday()">Hoy</button><button type="button" class="small-btn calendar-search-toggle" aria-label="Buscar eventos" title="Buscar eventos" onclick="toggleCalendarSearch()">🔍</button></div>'+(calendarSearchOpen?'<div class="calendar-search-panel"><input id="calendarSearchInput" type="search" placeholder="Buscar eventos por nombre, fecha o tipo..." value="'+escapeHTML(calendarSearchQuery)+'" oninput="updateCalendarSearch(this.value)" autofocus><div id="calendarSearchResults">'+renderCalendarSearchResults()+'</div></div>':'')+'<div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div>'+selectedDaySection+'<div class="section '+(calendarView==='Día'?'hidden':'')+'"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>'<div class="card card-row" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div>'+escapeHTML(ev.title)+'<div class="muted" style="font-size:12px;margin-top:5px">'+escapeHTML(ev.date)+' · '+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+'</div></div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+'</span>':'')+'</div>').join('')||'<div class="card empty">No hay eventos registrados todavía.</div>')+'</div><div class="bottom-space"></div>';
+ const selectedDaySection='<div class="section selected-day-events"><h2>Eventos del '+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</h2>'+(selectedEvents.map(ev=>eventCard(ev)).join('')||'<div class="card empty">No hay eventos para este día.</div>')+'</div>';
+ const upcoming=[];
+ for(let offset=0;offset<7;offset++){
+  const day=new Date(today);day.setDate(today.getDate()+offset);
+  events.filter(ev=>eventOccursOn(ev,day)).forEach(ev=>upcoming.push({...ev,date:keyDate(day)}));
+ }
+ upcoming.sort((a,b)=>a.date.localeCompare(b.date)||(a.allDay?-1:1)||(a.time||'').localeCompare(b.time||''));
+ const upcomingSection='<div class="section upcoming-events"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>eventCard(ev,true)).join('')||'<div class="card empty">No hay eventos en los próximos 7 días.</div>')+'</div>';
+ screen.innerHTML='<div class="page-heading calendar-page-heading"><div class="calendar-heading-row"><h1>Calendario</h1><button type="button" class="small-btn calendar-search-toggle" aria-label="Buscar eventos" title="Buscar eventos" onclick="toggleCalendarSearch()">🔍</button></div><p>Organiza las fechas importantes de tu hogar.</p></div>'+(calendarSearchOpen?'<div class="calendar-search-panel"><input id="calendarSearchInput" type="search" placeholder="Buscar eventos por nombre, fecha o tipo..." value="'+escapeHTML(calendarSearchQuery)+'" oninput="updateCalendarSearch(this.value)" autofocus><div id="calendarSearchResults">'+renderCalendarSearchResults()+'</div></div>':'')+'<div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'<button type="button" class="small-btn calendar-today-button" aria-label="Ir a hoy" title="Ir a hoy" onclick="goToToday()">Hoy</button></div><div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div>'+selectedDaySection+upcomingSection+'<div class="bottom-space"></div>';
 }
 function selectCalendarDate(year,month,day){selectedDate=new Date(year,month,day);render()}
 function goToToday(){selectedDate=new Date();render()}
@@ -1009,7 +1021,11 @@ function openAdd(){
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>'}
  else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
- else{document.getElementById('modalTitle').textContent='Nuevo evento';subtitle.textContent='¿Qué tipo de evento quieres crear?';subtitle.classList.remove('hidden');document.getElementById('modalBody').innerHTML='<div class="event-form-section"><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="special">Fecha especial o feriado</option></select></div><div id="eventFields"></div>'}
+ else{
+  document.getElementById('modalTitle').textContent='Nuevo evento';
+  document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="special">Fecha especial o feriado</option></select></div><div id="eventFields"></div>';
+  document.getElementById('eventType').value='normal';showEventFields();
+ }
  document.getElementById('backdrop').classList.add('show');
 }
 function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
@@ -1086,7 +1102,7 @@ function openEditEvent(id){
 function showEventFields(){
  const type=document.getElementById('eventType').value,w=document.getElementById('eventFields');if(!type){w.innerHTML='';return}
  const ev=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;
- const preset=ev?.date||(calendarView==='Día'?keyDate(selectedDate):'');
+ const preset=ev?.date||keyDate(selectedDate);
  const times=Array.from({length:96},(_,i)=>{const h=String(Math.floor(i/4)).padStart(2,'0'),m=String(i%4*15).padStart(2,'0');return '<option value="'+h+':'+m+'">'+h+':'+m+'</option>'}).join('');
  const taskOptions=tasks.map(t=>'<option value="'+t.id+'">'+escapeHTML(t.title)+'</option>').join('');
  w.innerHTML=
