@@ -574,7 +574,7 @@ function renderNotifications(){
  <div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
  <details class="settings-accordion">
   <summary>Mi Perfil</summary><div class="accordion-content">
-   <div class="profile-avatar" id="settingsAvatar">🙂</div>
+   ${profileAvatarMarkup()}
    <button class="profile-option" onclick="openProfileImage()">🖼️ Imagen de Perfil <span class="muted">›</span></button>
    <button class="profile-option" onclick="openProfileName()">✏️ Nombre de Usuario <span class="muted">›</span></button>
    <button class="profile-option" onclick="openProfileContact()">📧 Contacto <span class="muted">›</span></button>
@@ -639,6 +639,12 @@ function renderNotifications(){
  ${isAdmin&&householdMemberCount===1?'<button class="settings-action danger" onclick="deleteHome()">Eliminar el hogar</button>':''}
  <div class="bottom-space"></div>`;
 }
+function profileAvatarMarkup(){
+ const image=localStorage.getItem('enorden_profile_image')||'';
+ const avatar=localStorage.getItem('enorden_profile_avatar')||'🙂';
+ if(image)return '<img class="profile-avatar" id="settingsAvatar" src="'+escapeHTML(image)+'" alt="Imagen de perfil">';
+ return '<div class="profile-avatar" id="settingsAvatar">'+escapeHTML(avatar)+'</div>';
+}
 function openProfileImage(){
  const currentAvatar=localStorage.getItem('enorden_profile_avatar')||'🙂';
  const savedImage=localStorage.getItem('enorden_profile_image')||'';
@@ -649,6 +655,9 @@ function openProfileImage(){
  <p class="settings-note">También puedes elegir un avatar de muestra. Más adelante definiremos su diseño.</p>
  <div class="avatar-choices">${['🙂','😀','😎','🐱','🌿','⭐'].map(a=>`<button class="avatar-choice ${a===currentAvatar?'selected':''}" onclick="selectProfileAvatar('${a}',this)">${a}</button>`).join('')}</div>
  <div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileImage()">Guardar</button></div>`;
+ const preview=document.getElementById('profilePreview');
+ preview.dataset.image=savedImage;
+ preview.dataset.avatar=savedImage?'':currentAvatar;
  document.getElementById('backdrop').classList.add('show');
 }
 function previewProfileImage(event){
@@ -663,8 +672,10 @@ function selectProfileAvatar(value,button){
 function saveProfileImage(){
  const p=document.getElementById('profilePreview');if(!p)return;
  const image=p.dataset.image||'',avatar=p.dataset.avatar||p.textContent||'🙂';
- if(image){localStorage.setItem('enorden_profile_image',image);localStorage.setItem('enorden_profile_avatar','');}
- else{localStorage.removeItem('enorden_profile_image');localStorage.setItem('enorden_profile_avatar',avatar);}
+ try{
+  if(image){localStorage.setItem('enorden_profile_image',image);localStorage.setItem('enorden_profile_avatar','');}
+  else{localStorage.removeItem('enorden_profile_image');localStorage.setItem('enorden_profile_avatar',avatar);}
+ }catch(error){alert('No se pudo guardar la imagen. Prueba con un archivo más pequeño o elige un avatar.');return}
  closeModal();renderSettings();
 }
 function openProfileName(){
