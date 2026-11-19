@@ -742,6 +742,11 @@ function showEventFields(){
   document.getElementById('eventRepeat').disabled=true;
   toggleEventAllDay();
  }
+ if(type==='anniversary'){
+  document.getElementById('eventPriority').value='high';
+  document.getElementById('eventColor').value='#e88ab8';
+  document.getElementById('eventColorWrap').classList.remove('hidden');
+ }
  updateEventPreview();
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
