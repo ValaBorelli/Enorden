@@ -1117,7 +1117,7 @@ function showEventFields(){
  '<div class="event-preview"><div class="field-label event-preview-heading">Vista previa</div><div id="eventPreview" class="event-preview-content"><div class="event-preview-title">Nombre del evento</div><div class="event-preview-row">Fecha por seleccionar</div></div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
  if(type==='birthday'||type==='anniversary'){document.getElementById('eventRepeat').value='yearly';document.getElementById('eventAllDay').checked=true;document.getElementById('eventAllDay').disabled=true;document.getElementById('eventRepeat').disabled=true}
- if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8'}
+ if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8';toggleEventColor()}
  if(ev){
   document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';
   document.getElementById('eventAllDay').checked=!!ev.allDay;document.querySelector('input[name="eventScope"][value="'+(ev.scope||'personal')+'"]').checked=true;
