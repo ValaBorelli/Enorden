@@ -95,6 +95,15 @@ h2{font-size:18px;margin-bottom:13px}
 .calendar-grid .calendar-day.has-event::before,.year-days .calendar-day.has-event::before{content:'';position:absolute;top:auto;bottom:2px;left:50%;transform:translateX(-50%);width:12px;height:2px;border-radius:2px;background:var(--accent)}
 .calendar-grid .calendar-day.high-priority,.year-days .calendar-day.high-priority{outline:2px solid var(--event-border);outline-offset:-2px}
 .calendar-grid .calendar-day.sunday,.year-days .calendar-day.sunday{color:#b9bcb8!important}
+.calendar-search-toggle{font-size:17px;min-width:42px;padding:8px 11px}
+.calendar-search-panel{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px;margin:0 0 12px}
+.calendar-search-panel input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit}
+.calendar-search-hint{font-size:12px;padding:12px 3px 3px}
+.calendar-search-count{font-size:11px;color:var(--muted);padding:10px 2px 5px}
+.calendar-search-result{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:11px 4px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text)}
+.calendar-search-result:last-child{border-bottom:0}
+.calendar-search-result span{font-size:12px;color:var(--muted)}
+
 .year-days .calendar-day{position:relative;cursor:pointer;border-radius:50%}
 .month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .month-tile{padding:15px 4px;background:var(--surface2);color:white;
@@ -292,6 +301,7 @@ const modules=[
 let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
 if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
 let current='inicio',calendarView='Mes',selectedDate=new Date();
+let calendarSearchOpen=false,calendarSearchQuery='';
 let appLanguage=localStorage.getItem('enorden_language')||'es';
 const appearanceThemes={natural:{name:'Natural',bg:'#EDE8DA',header:'#344E40',text:'#292D29',muted:'#777970',cards:['#FFFFFF','#FFFFFF','#FFFFFF']},night:{name:'Nocturno',bg:'#151817',header:'#263D32',text:'#F1F2EF',muted:'#AEB9B1',accent:'#A8D0B1',cards:['#252B28','#252B28','#252B28']},colorful:{name:'Colorido',bg:'#FFF5E8',header:'#7656B8',text:'#493A70',muted:'#806F99',accent:'#F28B78',cards:['#D9EFF9','#FCE0E7','#FFF0B8']},executive:{name:'Ejecutivo',bg:'#EDF0F3',header:'#24364B',text:'#303A46',muted:'#657386',accent:'#A98750',cards:['#FFFFFF','#FFFFFF','#FFFFFF']}};
 let appTheme=localStorage.getItem('enorden_theme')||'natural';if(!appearanceThemes[appTheme])appTheme='natural';let selectedAppearanceTheme=appTheme;
@@ -546,7 +556,20 @@ function renderCalendar(){
   content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:offset},()=>'<div></div>').join('')+Array.from({length:total},(_,i)=>{const n=i+1,date=new Date(y,m,n),list=on(date),color=borderColor(list);return '<div class="calendar-day '+(date.getDay()===0?'sunday ':'')+(n===new Date().getDate()&&m===new Date().getMonth()&&y===new Date().getFullYear()?'today ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" onclick="selectedDate=new Date('+y+','+m+','+n+');calendarView=\'Día\';render()">'+n+'</div>'}).join('')+'</div>';
  }
  const upcoming=events.slice().sort((a,b)=>a.date.localeCompare(b.date));
- screen.innerHTML='<div class="page-heading"><h1>Calendario</h1><p>Organiza las fechas importantes de tu hogar.</p></div><div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'</div><div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div><div class="section '+(calendarView==='Día'?'hidden':'')+'"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>'<div class="card card-row" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div>'+escapeHTML(ev.title)+'<div class="muted" style="font-size:12px;margin-top:5px">'+escapeHTML(ev.date)+' · '+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+'</div></div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+'</span>':'')+'</div>').join('')||'<div class="card empty">No hay eventos registrados todavía.</div>')+'</div><div class="bottom-space"></div>';
+ screen.innerHTML='<div class="page-heading"><h1>Calendario</h1><p>Organiza las fechas importantes de tu hogar.</p></div><div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'<button type="button" class="small-btn calendar-search-toggle" aria-label="Buscar eventos" title="Buscar eventos" onclick="toggleCalendarSearch()">🔍</button>'+(calendarSearchOpen?'<div class="calendar-search-panel"><input id="calendarSearchInput" type="search" placeholder="Buscar eventos por nombre, fecha o tipo..." value="'+escapeHTML(calendarSearchQuery)+'" oninput="updateCalendarSearch(this.value)" autofocus><div id="calendarSearchResults">'+renderCalendarSearchResults()+'</div></div>':'')+'<div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div><div class="section '+(calendarView==='Día'?'hidden':'')+'"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>'<div class="card card-row" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div>'+escapeHTML(ev.title)+'<div class="muted" style="font-size:12px;margin-top:5px">'+escapeHTML(ev.date)+' · '+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+'</div></div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+'</span>':'')+'</div>').join('')||'<div class="card empty">No hay eventos registrados todavía.</div>')+'</div><div class="bottom-space"></div>';
+}
+function toggleCalendarSearch(){calendarSearchOpen=!calendarSearchOpen;if(!calendarSearchOpen)calendarSearchQuery='';render()}
+function updateCalendarSearch(value){calendarSearchQuery=value;const results=document.getElementById('calendarSearchResults');if(results)results.innerHTML=renderCalendarSearchResults()}
+function renderCalendarSearchResults(){
+ const q=calendarSearchQuery.trim().toLocaleLowerCase('es-CL');
+ if(!q)return '<div class="muted calendar-search-hint">Escribe el nombre, la fecha o el tipo de evento que buscas.</div>';
+ const found=events.filter(ev=>{
+  const dateText=ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
+  const typeText={normal:'evento normal',birthday:'cumpleaños',anniversary:'aniversario',special:'fecha especial feriado'}[ev.type]||'';
+  return [ev.title,dateText,ev.date,typeText,ev.time||''].some(v=>String(v).toLocaleLowerCase('es-CL').includes(q));
+ }).sort((a,b)=>a.date.localeCompare(b.date));
+ if(!found.length)return '<div class="muted calendar-search-hint">No se encontraron eventos.</div>';
+ return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="openEventDetails('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
 }
 function keyDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function changeDate(n){
