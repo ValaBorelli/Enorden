@@ -281,6 +281,31 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .language-choice[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)}
 .language-choice .language-flag{font-size:23px}.language-choice .language-name{flex:1;font-weight:600}.language-choice .language-check{color:var(--accent);font-weight:700;visibility:hidden}.language-choice[aria-checked="true"] .language-check{visibility:visible}
 
+
+/* Primera propuesta visual del módulo Tareas */
+.app.tasks-app{max-width:1100px}
+.tasks-app main{padding-bottom:35px}
+.tasks-app .bottom-nav{width:min(1100px,100%)}
+.tasks-app .fab{right:max(20px,calc((100vw - 1060px)/2 + 20px));bottom:83px}
+.tasks-layout{display:grid;grid-template-columns:clamp(116px,19%,210px) minmax(0,1fr);gap:20px;min-height:calc(100vh - 190px);align-items:stretch}
+.tasks-sidebar{display:flex;flex-direction:column;gap:10px;padding:12px 9px;background:var(--surface);border:1px solid var(--line);border-radius:16px;min-height:100%}
+.tasks-sidebar-item{display:flex;align-items:center;gap:7px;padding:12px 9px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:600;white-space:nowrap}
+.tasks-content{display:flex;align-items:center;justify-content:center;min-width:0;padding:18px 0}
+.tasks-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
+.task-shortcut-card{display:flex;align-items:center;justify-content:center;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);font-size:15px;font-weight:700;text-align:center;box-shadow:0 2px 8px #00000008}
+@media(max-width:700px){
+ .tasks-layout{gap:10px;min-height:calc(100vh - 190px)}
+ .tasks-sidebar{padding:10px 6px;gap:8px}
+ .tasks-sidebar-item{gap:5px;padding:11px 5px;font-size:12px}
+ .tasks-content{padding:12px 0}
+ .tasks-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .task-shortcut-card{min-height:100px;padding:12px 6px;font-size:13px}
+}
+@media(max-width:360px){
+ .tasks-layout{grid-template-columns:108px minmax(0,1fr);gap:8px}
+ .tasks-sidebar-item{font-size:11px}
+ .task-shortcut-card{font-size:12px}
+}
 </style>
 </head>
 <body>
@@ -418,6 +443,7 @@ function renderNav(){
  <span class="nav-icon">${m.emoji}</span><span class="nav-label">${m.name}</span>
  </button>`).join('');
  nav.classList.toggle('hidden',current==='inicio');
+ document.querySelector('.app').classList.toggle('tasks-app',current==='tareas');
  fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current));
  enableReorder(nav);
 }
@@ -649,9 +675,18 @@ function changeDate(n){
  render();
 }
 function renderTasks(){
- screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer, en un solo lugar.</p></div>
- <div class="card"><h2>Pendientes</h2>${tasks.filter(t=>!t.done).map(taskHTML).join('')||'<div class="empty">No tienes tareas pendientes.</div>'}</div>
- <div class="card"><h2>Completadas</h2>${tasks.filter(t=>t.done).map(taskHTML).join('')||'<div class="empty">Todavía no hay tareas completadas.</div>'}</div><div class="bottom-space"></div>`;
+ const shortcuts=['Todas','Pendientes','Realizadas','Familia','Personales','Asignadas'];
+ screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
+ <div class="tasks-layout">
+  <aside class="tasks-sidebar" aria-label="Secciones de tareas">
+   <div class="tasks-sidebar-item">☀️ <span>Mi día</span></div>
+   <div class="tasks-sidebar-item">🫂 <span>Familia</span></div>
+   <div class="tasks-sidebar-item">👤 <span>Personal</span></div>
+  </aside>
+  <section class="tasks-content" aria-label="Accesos directos">
+   <div class="tasks-shortcuts">${shortcuts.map(label=>`<div class="task-shortcut-card">${label}</div>`).join('')}</div>
+  </section>
+ </div>`;
 }
 function taskHTML(t){
  return `<div class="task-row"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><span class="task-name ${t.done?'done':''}">${escapeHTML(t.title)}</span><button class="small-btn" onclick="deleteTask(${t.id})">×</button></div>`;
