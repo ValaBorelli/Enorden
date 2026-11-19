@@ -996,7 +996,18 @@ function openEventMore(id){
  document.getElementById('modalTitle').textContent='Más opciones';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Agrega una cuenta regresiva a tu Inicio.';sub.classList.remove('hidden');
  const exists=eventCountdowns.some(x=>String(x.eventId)===String(id));
- document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">'+(exists?'Ya tienes una cuenta regresiva para este evento.':'Puedes mostrar cuánto falta para este evento debajo de las tarjetas de Inicio.')+'</p></div><button class="primary-btn" style="width:100%" '+(exists?'disabled':'')+' onclick="createEventCountdown('+ev.id+')">'+(exists?'Cuenta regresiva creada':'Crear cuenta regresiva')+'</button>';
+ document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">'+(exists?'Este evento ya tiene una cuenta regresiva en Inicio.':'Puedes mostrar cuánto falta para este evento debajo de las tarjetas de Inicio.')+'</p></div>'+(exists?'<button class="secondary-btn" style="width:100%" onclick="confirmDeleteEventCountdown('+ev.id+')">Eliminar cuenta regresiva</button>':'<button class="primary-btn" style="width:100%" onclick="createEventCountdown('+ev.id+')">Crear cuenta regresiva</button>');
+}
+function confirmDeleteEventCountdown(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ document.getElementById('modalTitle').textContent='Eliminar cuenta regresiva';
+ const sub=document.getElementById('modalSubtitle');sub.textContent='Confirma si deseas quitarla de Inicio.';sub.classList.remove('hidden');
+ document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">¿Quieres eliminar la cuenta regresiva de Inicio? El evento seguirá en tu calendario.</p></div><div class="event-detail-actions"><button class="secondary-btn" onclick="openEventMore('+ev.id+')">Cancelar</button><button class="primary-btn" onclick="deleteEventCountdown('+ev.id+')">Sí, eliminar</button></div>';
+}
+function deleteEventCountdown(id){
+ eventCountdowns=eventCountdowns.filter(x=>String(x.eventId)!==String(id));
+ localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));
+ closeModal();render();
 }
 function createEventCountdown(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
@@ -1007,7 +1018,7 @@ function createEventCountdown(id){
 function renderCountdownWidgets(){
  if(!eventCountdowns.length)return '';
  const today=new Date();today.setHours(0,0,0,0);
- return '<section class="section" aria-label="Cuentas regresivas">'+eventCountdowns.map(c=>{const target=new Date(c.date+'T00:00:00'),days=Math.max(0,Math.ceil((target-today)/86400000));return '<div class="countdown-card"><div class="muted" style="font-size:11px">CUENTA REGRESIVA</div><strong>'+escapeHTML(c.title)+'</strong><div class="countdown-number">'+(days===0?'¡Es hoy!':days+' '+(days===1?'día':'días'))+'</div><div class="countdown-caption">'+target.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})+'</div></div>'}).join('')+'</section>';
+ return '<section class="section" aria-label="Cuentas regresivas">'+eventCountdowns.map(c=>{const target=new Date(c.date+'T00:00:00'),days=Math.max(0,Math.ceil((target-today)/86400000));return '<button type="button" class="countdown-card" onclick="openEventDetails('+c.eventId+')" style="display:block;width:100%;text-align:left;cursor:pointer;color:inherit"><div class="muted" style="font-size:11px">CUENTA REGRESIVA</div><strong>'+escapeHTML(c.title)+'</strong><div class="countdown-number">'+(days===0?'¡Es hoy!':days+' '+(days===1?'día':'días'))+'</div><div class="countdown-caption">'+target.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})+'</div></button>'}).join('')+'</section>';
 }
 function openEditEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
