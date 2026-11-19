@@ -598,7 +598,6 @@ function renderCalendar(){
 }
 function selectCalendarDate(year,month,day){selectedDate=new Date(year,month,day);render()}
 function goToToday(){selectedDate=new Date();render()}
-function goToCalendarEventDate(id){const ev=events.find(x=>String(x.id)===String(id));if(!ev||!ev.date)return;const date=new Date(ev.date+'T12:00:00');if(isNaN(date.getTime()))return;selectedDate=date;calendarSearchOpen=false;calendarSearchQuery='';render()}
 function toggleCalendarSearch(){calendarSearchOpen=!calendarSearchOpen;if(!calendarSearchOpen)calendarSearchQuery='';render()}
 function updateCalendarSearch(value){calendarSearchQuery=value;const results=document.getElementById('calendarSearchResults');if(results)results.innerHTML=renderCalendarSearchResults()}
 function renderCalendarSearchResults(){
@@ -610,7 +609,7 @@ function renderCalendarSearchResults(){
   return [ev.title,dateText,ev.date,typeText,ev.time||''].some(v=>String(v).toLocaleLowerCase('es-CL').includes(q));
  }).sort((a,b)=>a.date.localeCompare(b.date));
  if(!found.length)return '<div class="muted calendar-search-hint">No se encontraron eventos.</div>';
- return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="goToCalendarEventDate('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
+ return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="openEventDetails('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
 }
 function keyDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function changeDate(n){
