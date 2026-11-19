@@ -92,7 +92,7 @@ h2{font-size:18px;margin-bottom:13px}
 .calendar-grid .today{background:var(--green2);color:white}
 /* Los eventos normales se indican solo con un punto, sin borde. */
 .calendar-grid .calendar-day{position:relative;cursor:pointer;border:1px solid transparent}
-.calendar-grid .calendar-day.has-event::before,.year-days .calendar-day.has-event::before{content:'';position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.calendar-grid .calendar-day.has-event::before,.year-days .calendar-day.has-event::before{content:'';position:absolute;top:auto;bottom:2px;left:50%;transform:translateX(-50%);width:12px;height:2px;border-radius:2px;background:var(--accent)}
 .calendar-grid .calendar-day.high-priority,.year-days .calendar-day.high-priority{outline:2px solid var(--event-border);outline-offset:-2px}
 .year-days .calendar-day{position:relative;cursor:pointer;border-radius:50%}
 .month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
