@@ -736,13 +736,12 @@ function showEventFields(){
  '<div class="event-preview"><div class="field-label">Vista previa</div><div id="eventPreview"><div class="event-preview-title">Nombre del evento</div>Selecciona una fecha</div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">Guardar</button></div>';
  if(type==='birthday'||type==='anniversary')document.getElementById('eventRepeat').value='yearly';
- if(type==='birthday'){
+ if(type==='birthday'||type==='anniversary'){
   document.getElementById('eventAllDay').checked=true;
   document.getElementById('eventAllDay').disabled=true;
   document.getElementById('eventRepeat').disabled=true;
   toggleEventAllDay();
  }
- if(type==='anniversary'){document.getElementById('eventAllDay').checked=true;toggleEventAllDay();}
  updateEventPreview();
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
