@@ -219,6 +219,13 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .appearance-swatches{display:flex;gap:5px;margin-top:7px}.appearance-swatches span{width:13px;height:13px;border-radius:50%;border:1px solid #00000018}.appearance-actions{display:flex;gap:9px;margin-top:16px}.appearance-actions button{flex:1;min-height:42px}.appearance-storage-note{font-size:11px;line-height:1.45;color:var(--muted);margin:13px 0 0}
 @media(max-width:360px){.appearance-grid{gap:7px}.appearance-choice{padding:6px}.appearance-mini-body{padding:5px}.appearance-choice-footer strong{font-size:11px}}
 
+
+.language-launcher{display:flex;align-items:center;gap:9px}.language-launcher .language-launch-label{flex:1}
+.language-options{display:grid;gap:9px}
+.language-choice{display:flex;align-items:center;gap:12px;width:100%;padding:13px;border:2px solid var(--line);border-radius:13px;background:var(--surface);color:var(--text);text-align:left}
+.language-choice[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)}
+.language-choice .language-flag{font-size:23px}.language-choice .language-name{flex:1;font-weight:600}.language-choice .language-check{color:var(--accent);font-weight:700;visibility:hidden}.language-choice[aria-checked="true"] .language-check{visibility:visible}
+
 </style>
 </head>
 <body>
@@ -345,7 +352,19 @@ const languageText={
  'Mi Perfil':'Meu perfil','Seguridad y dispositivos':'Segurança e dispositivos','Integrantes del hogar':'Moradores da casa','Ayuda':'Ajuda','Dispositivo actual':'Dispositivo atual','Este es el dispositivo fijado como hogar':'Este é o dispositivo definido como doméstico','Exigir PIN al entrar a Finanzas para todos los integrantes':'Exigir PIN para entrar em Finanças de todos os moradores','Tiempo antes del bloqueo personal de Finanzas':'Tempo para bloqueio pessoal de Finanças','Inmediatamente':'Imediatamente','1 minuto':'1 minuto','5 minutos':'5 minutos','15 minutos':'15 minutos','30 minutos':'30 minutos','Configurar o cambiar PIN de Finanzas':'Configurar ou alterar PIN de Finanças','Imagen de Perfil':'Foto do perfil','Nombre de Usuario':'Nome de usuário','Contacto':'Contato','Administrador':'Administrador','Tú':'Você','Este módulo se desarrollará en su siguiente etapa.':'Este módulo será desenvolvido em uma próxima etapa.','Tu espacio dentro de Enorden.':'Seu espaço no Enorden.','Inicio':'Início','Calendario':'Calendário','Tareas':'Tarefas','Listas':'Listas','Finanzas':'Finanças','Rutinas':'Rotinas','Notas':'Notas','Mapa':'Mapa','Mis módulos':'Meus módulos','Este es tu resumen de hoy.':'Este é o seu resumo de hoje.','Buscar en tu hogar...':'Buscar na sua casa...','Tareas pendientes':'Tarefas pendentes','Eventos pendientes':'Próximos eventos','Compras pendientes':'Compras pendentes','Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.':'Deslize horizontalmente para ver todos os módulos. A ordem pode ser personalizada.','Notificaciones':'Notificações','Aquí se reúnen los avisos de todos tus módulos':'Aqui ficam os avisos de todos os seus módulos.','Agregar':'Adicionar','Cancelar ✕':'Cancelar ✕','Guardar':'Salvar','Guardar tarea':'Salvar tarefa','Nueva tarea':'Nova tarefa','Nombre de la tarea':'Nome da tarefa','¿Qué necesitas hacer?':'O que você precisa fazer?','Agregar producto':'Adicionar produto','Producto':'Produto','Sección':'Seção','Nombre del evento':'Nome do evento','Nuevo evento':'Novo evento','¿Qué tipo de evento quieres crear?':'Que tipo de evento você quer criar?','Selecciona un tipo de evento':'Selecione um tipo de evento','Evento normal':'Evento comum','Cumpleaños':'Aniversário','Aniversario':'Data comemorativa','Nombre':'Nome','Fecha':'Data','Hora':'Hora','Todo el día':'O dia todo','Prioridad':'Prioridade','Alta prioridad: destacar el día en el calendario':'Alta prioridade: destacar o dia no calendário','Repetición':'Repetição','No se repite':'Não se repete','Anualmente':'Anualmente','Mensualmente':'Mensalmente','Diariamente':'Diariamente','Personalizado':'Personalizado','Alerta':'Alerta','Desactivar':'Desativar','Activar':'Ativar','+ Agregar otra alerta':'+ Adicionar outro alerta','Vista previa':'Prévia','Selecciona una fecha':'Selecione uma data','Selecciona una fecha.':'Selecione uma data.','Guardar PIN':'Salvar PIN'
  }
 };
-function changeLanguage(value){if(!['es','en','pt'].includes(value))return;appLanguage=value;localStorage.setItem('enorden_language',value);render()}
+let selectedAppLanguage=appLanguage;
+const appLanguages={es:{flag:'🇨🇱',name:'Español'},en:{flag:'🇺🇸',name:'English'},pt:{flag:'🇧🇷',name:'Português'}};
+function languageChoiceHTML(key){const l=appLanguages[key];return '<button type="button" class="language-choice" role="radio" aria-checked="'+(selectedAppLanguage===key?'true':'false')+'" aria-label="Seleccionar idioma '+l.name+'" onclick="selectAppLanguage(\''+key+'\')"><span class="language-flag">'+l.flag+'</span><span class="language-name">'+l.name+'</span><span class="language-check">✓</span></button>'}
+function openLanguageModal(){
+ selectedAppLanguage=appLanguage;
+ document.getElementById('modalTitle').textContent='Idioma de Enorden';
+ const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='Selecciona el idioma de tu aplicación.';subtitle.classList.remove('hidden');
+ document.getElementById('modalBody').innerHTML='<div class="language-options" role="radiogroup" aria-label="Idiomas disponibles">'+Object.keys(appLanguages).map(languageChoiceHTML).join('')+'</div>'+
+ '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppLanguage()">Guardar</button></div>';
+ document.getElementById('backdrop').classList.add('show');
+}
+function selectAppLanguage(value){if(!appLanguages[value])return;selectedAppLanguage=value;document.querySelectorAll('.language-choice').forEach(card=>card.setAttribute('aria-checked',String(card.getAttribute('aria-label')==='Seleccionar idioma '+appLanguages[value].name)))}
+function saveAppLanguage(){if(!appLanguages[selectedAppLanguage])return;appLanguage=selectedAppLanguage;localStorage.setItem('enorden_language',appLanguage);closeModal();render()}
 
 function applyAppearance(){document.body.dataset.theme=appTheme}
 function appearanceCardHTML(key){
@@ -588,16 +607,7 @@ function renderNotifications(){
  </details>
  <details class="settings-accordion">
   <summary>Personalizar</summary><div class="accordion-content">
-   <details class="settings-accordion" style="margin:8px 0 0;background:transparent">
-    <summary>Idioma</summary><div class="accordion-content">
-     <label for="appLanguage" class="settings-note">Selecciona el idioma de tu aplicación</label>
-     <select id="appLanguage" onchange="changeLanguage(this.value)" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#242820">
-      <option value="es" ${appLanguage==='es'?'selected':''}>🇨🇱 Español</option>
-      <option value="en" ${appLanguage==='en'?'selected':''}>🇺🇸 English</option>
-      <option value="pt" ${appLanguage==='pt'?'selected':''}>🇧🇷 Português</option>
-     </select>
-    </div>
-   </details>
+   <button type="button" class="profile-option language-launcher" onclick="openLanguageModal()"><span>🌐</span><span class="language-launch-label">Idioma</span><span class="muted">›</span></button>
    <button type="button" class="profile-option appearance-launcher" onclick="openAppearanceModal()"><span>🎨</span><span class="appearance-launch-label">Apariencia</span><span class="muted">›</span></button>
    <p class="settings-note">Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.</p>
   </div></details>
