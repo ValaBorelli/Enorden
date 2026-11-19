@@ -975,12 +975,18 @@ function openEventDetails(id){
  editingEventId=null;eventPrefill=null;
  document.getElementById('modalTitle').textContent='Evento';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Vista previa y acciones';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML=eventDetailMarkup(ev)+'<div class="event-detail-actions"><button class="secondary-btn" onclick="duplicateEvent('+ev.id+')">Duplicar</button><button class="primary-btn" onclick="openEditEvent('+ev.id+')">Editar</button><button class="secondary-btn" onclick="deleteEvent('+ev.id+')">Eliminar</button><button class="secondary-btn" onclick="openEventMore('+ev.id+')">Más</button></div>';
+ document.getElementById('modalBody').innerHTML=eventDetailMarkup(ev)+'<div class="event-detail-actions"><button class="secondary-btn" onclick="duplicateEvent('+ev.id+')">Duplicar</button><button class="primary-btn" onclick="openEditEvent('+ev.id+')">Editar</button><button class="secondary-btn" onclick="confirmDeleteEvent('+ev.id+')">Eliminar</button><button class="secondary-btn" onclick="openEventMore('+ev.id+')">Más</button></div>';
+ document.getElementById('backdrop').classList.add('show');
+}
+function confirmDeleteEvent(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ document.getElementById('modalTitle').textContent='Eliminar evento';
+ const sub=document.getElementById('modalSubtitle');sub.textContent='Confirma esta acción antes de continuar.';sub.classList.remove('hidden');
+ document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">¿Quieres eliminar este evento? Esta acción no se puede deshacer.</p></div><div class="event-detail-actions"><button type="button" class="secondary-btn" onclick="openEventDetails('+ev.id+')">Cancelar</button><button type="button" class="primary-btn" onclick="deleteEvent('+ev.id+')">Sí, eliminar</button></div>';
  document.getElementById('backdrop').classList.add('show');
 }
 function deleteEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
- if(!confirm('¿Quieres eliminar el evento “'+ev.title+'”? Esta acción no se puede deshacer.'))return;
  events=events.filter(x=>String(x.id)!==String(id));eventCountdowns=eventCountdowns.filter(x=>String(x.eventId)!==String(id));localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));save();closeModal();render();
 }
 function duplicateEvent(id){
