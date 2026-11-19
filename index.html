@@ -489,20 +489,6 @@ function renderNotifications(){
  screen.innerHTML=`
  <div class="page-heading"><h1>Configuración</h1><p>Administra tu experiencia en Enorden.</p></div>
  <details class="settings-accordion">
-  <summary>Personalizar</summary><div class="accordion-content">
-   <details class="settings-accordion" style="margin:8px 0 0;background:transparent">
-    <summary>Idioma</summary><div class="accordion-content">
-     <label for="appLanguage" class="settings-note">Selecciona el idioma de tu aplicación</label>
-     <select id="appLanguage" onchange="changeLanguage(this.value)" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#242820">
-      <option value="es" ${appLanguage==='es'?'selected':''}>🇨🇱 Español</option>
-      <option value="en" ${appLanguage==='en'?'selected':''}>🇺🇸 English</option>
-      <option value="pt" ${appLanguage==='pt'?'selected':''}>🇧🇷 Português</option>
-     </select>
-    </div>
-   </details>
-   <p class="settings-note">Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.</p>
-  </div></details>
- <details class="settings-accordion">
   <summary>Mi Perfil</summary><div class="accordion-content">
    <div class="profile-avatar" id="settingsAvatar">🙂</div>
    <button class="profile-option" onclick="openProfileImage()">🖼️ Imagen de Perfil <span class="muted">›</span></button>
@@ -535,6 +521,20 @@ function renderNotifications(){
    <p class="settings-note">La administración de integrantes, solicitudes, perfiles y permisos se conectará cuando exista el sistema de cuentas y hogares.</p>
   </div>
  </details>
+ <details class="settings-accordion">
+  <summary>Personalizar</summary><div class="accordion-content">
+   <details class="settings-accordion" style="margin:8px 0 0;background:transparent">
+    <summary>Idioma</summary><div class="accordion-content">
+     <label for="appLanguage" class="settings-note">Selecciona el idioma de tu aplicación</label>
+     <select id="appLanguage" onchange="changeLanguage(this.value)" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#242820">
+      <option value="es" ${appLanguage==='es'?'selected':''}>🇨🇱 Español</option>
+      <option value="en" ${appLanguage==='en'?'selected':''}>🇺🇸 English</option>
+      <option value="pt" ${appLanguage==='pt'?'selected':''}>🇧🇷 Português</option>
+     </select>
+    </div>
+   </details>
+   <p class="settings-note">Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.</p>
+  </div></details>
  <details class="settings-accordion"><summary>Ayuda</summary><div class="accordion-content">
  <details class="help-group help-main-group"><summary>Preguntas frecuentes</summary><div class="help-answer">
  <details class="help-group"><summary>¿Cómo puedo abandonar mi hogar?</summary><div class="help-answer">Entra a Configuración y pulsa “Abandonar el hogar”. Si eres integrante, podrás confirmar tu salida. Si eres administrador, primero debes transferir la administración. Si eres la única persona, puedes eliminar el hogar desde Configuración.</div></details>
