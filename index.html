@@ -161,6 +161,7 @@ h2{font-size:18px;margin-bottom:13px}
 .profile-option{width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);padding:14px 2px;color:#30352d}
 .profile-option:last-child{border-bottom:0}
 .profile-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;background:var(--surface2);display:grid;place-items:center;font-size:36px;margin:8px auto 14px}
+.profile-avatar-trigger{display:block;padding:0;margin:0 auto;border:0;background:transparent;border-radius:50%;cursor:pointer}.profile-avatar-trigger:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 .profile-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:12px}
 .profile-actions button{min-width:100px}
 .profile-readonly{background:#eee8dc;border-radius:9px;padding:12px;margin:6px 0 14px;font-size:14px;overflow-wrap:anywhere}
@@ -575,7 +576,6 @@ function renderNotifications(){
  <details class="settings-accordion">
   <summary>Mi Perfil</summary><div class="accordion-content">
    ${profileAvatarMarkup()}
-   <button class="profile-option" onclick="openProfileImage()">🖼️ Imagen de Perfil <span class="muted">›</span></button>
    <button class="profile-option" onclick="openProfileName()">✏️ Nombre de Usuario <span class="muted">›</span></button>
    <button class="profile-option" onclick="openProfileContact()">📧 Contacto <span class="muted">›</span></button>
    <p class="settings-note">Tus cambios de perfil se guardan en este dispositivo en esta versión de prueba.</p>
@@ -642,8 +642,10 @@ function renderNotifications(){
 function profileAvatarMarkup(){
  const image=localStorage.getItem('enorden_profile_image')||'';
  const avatar=localStorage.getItem('enorden_profile_avatar')||'🙂';
- if(image)return '<img class="profile-avatar" id="settingsAvatar" src="'+escapeHTML(image)+'" alt="Imagen de perfil">';
- return '<div class="profile-avatar" id="settingsAvatar">'+escapeHTML(avatar)+'</div>';
+ const visual=image
+  ? '<img class="profile-avatar" id="settingsAvatar" src="'+escapeHTML(image)+'" alt="">'
+  : '<span class="profile-avatar" id="settingsAvatar" aria-hidden="true">'+escapeHTML(avatar)+'</span>';
+ return '<button type="button" class="profile-avatar-trigger" onclick="openProfileImage()" aria-label="Cambiar imagen de perfil">'+visual+'</button>';
 }
 let profileCropState=null;
 let profilePointers=new Map(),profileGesture=null;
