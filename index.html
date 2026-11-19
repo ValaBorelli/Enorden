@@ -227,6 +227,22 @@ h2{font-size:18px;margin-bottom:13px}
 @media(min-width:440px){.year-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:550px){main{padding:25px}}
 
+
+/* Selector de hora en formato rueda */
+.time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-size:19px;font-weight:700;letter-spacing:1px}
+.time-picker-backdrop{z-index:55}
+.time-picker-modal{width:min(360px,100%);padding:20px;border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0004}
+.time-picker-caption{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 16px}
+.time-wheel-group{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.time-wheel-label{text-align:center;font-size:11px;color:var(--muted);margin-bottom:7px}
+.time-wheel{height:210px;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;scrollbar-width:none;border:1px solid var(--line);border-radius:16px;background:var(--surface2);padding:84px 8px}
+.time-wheel::-webkit-scrollbar{display:none}
+.time-wheel-option{display:block;width:100%;height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:17px;font-weight:500;scroll-snap-align:center}
+.time-wheel-option.selected{background:var(--surface);color:var(--text);font-size:22px;font-weight:800;box-shadow:0 1px 5px #0001}
+.time-wheel-separator{font-size:25px;font-weight:800;color:var(--text);padding-bottom:4px}
+.time-picker-actions{display:flex;gap:9px;margin-top:18px}
+.time-picker-actions button{flex:1;min-height:43px}
+
 /* Temas de apariencia: conservan tipografía, tamaños, formas y distribución */
 :root{--text:#292D29;--header-foreground:#FFFFFF;--header-muted:#DDE6DF;--surface-alt:#FFFFFF;--surface-warm:#FFFFFF;--nav-bg:#FFFFFF;--nav-text:#777970;--accent:#344E40}
 body[data-theme="natural"]{--bg:#EDE8DA;--surface:#FFFFFF;--surface2:#E7E1D4;--green:#344E40;--green2:#344E40;--text:#292D29;--muted:#777970;--line:#D8D2C5;--gold:#A98750;--accent:#344E40;--surface-alt:#FFFFFF;--surface-warm:#FFFFFF;--nav-bg:#FFFFFF;--nav-text:#777970;--header-foreground:#FFFFFF;--header-muted:#DDE6DF}
@@ -297,6 +313,18 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
    <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="closeModal()">✕</button>
   </div>
   <div id="modalBody"></div>
+ </div>
+</div>
+<div class="modal-backdrop time-picker-backdrop" id="timePickerBackdrop" onclick="if(event.target===this)closeTimePicker(false)">
+ <div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="timePickerTitle">
+  <h2 id="timePickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar hora</h2>
+  <p class="time-picker-caption">Formato de 24 horas</p>
+  <div class="time-wheel-group">
+   <div><div class="time-wheel-label">Hora</div><div class="time-wheel" id="timeHourWheel" onscroll="handleTimeWheelScroll('hour')"></div></div>
+   <div class="time-wheel-separator">:</div>
+   <div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="timeMinuteWheel" onscroll="handleTimeWheelScroll('minute')"></div></div>
+  </div>
+  <div class="time-picker-actions"><button class="secondary-btn" onclick="closeTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeTimePicker(true)">Usar hora</button></div>
  </div>
 </div>
 <div class="modal-backdrop anniversary-notice-backdrop" id="anniversaryNotice">
@@ -1113,11 +1141,11 @@ function showEventFields(){
  const type=document.getElementById('eventType').value,w=document.getElementById('eventFields');if(!type){w.innerHTML='';return}
  const ev=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;
  const preset=ev?.date||keyDate(selectedDate);
- const now=eventCreationTime||new Date(),currentTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');const timeValues=Array.from({length:96},(_,i)=>String(Math.floor(i/4)).padStart(2,'0')+':'+String(i%4*15).padStart(2,'0'));if(!timeValues.includes(currentTime))timeValues.push(currentTime);timeValues.sort();const times=timeValues.map(t=>'<option value="'+t+'">'+t+'</option>').join('');
+ const now=eventCreationTime||new Date(),currentTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
  const taskOptions=tasks.map(t=>'<option value="'+t.id+'">'+escapeHTML(t.title)+'</option>').join('');
  w.innerHTML=
  '<div class="event-form-section"><label>Nombre</label><input id="eventName" placeholder="Nombre del evento" oninput="updateEventPreview()"></div>'+
- '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><select id="eventTime" onchange="updateEventPreview()">'+times+'</select></div></div>'+
+ '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openTimePicker()"><span>◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
  '<div class="event-form-section"><label class="event-choice"><input id="eventAllDay" type="checkbox" onchange="toggleEventAllDay()"> Todo el día</label></div>'+
  '<div class="event-form-section"><span class="field-label">¿Dónde se verá?</span><div class="event-choice-row"><label class="event-choice"><input type="radio" name="eventScope" value="personal" checked onchange="updateEventPreview()"> Mi calendario personal</label><label class="event-choice"><input type="radio" name="eventScope" value="family" onchange="updateEventPreview()"> Calendario familiar</label></div></div>'+
  '<div class="event-form-section"><label>Prioridad</label><select id="eventPriority" onchange="toggleEventColor()"><option value="normal">Normal</option><option value="high">Alta prioridad: destacar el día en el calendario</option></select><div id="eventColorWrap" class="hidden"><label>Selecciona el color</label><input id="eventColor" class="event-color" type="color" value="#d65b4a" onchange="updateEventPreview()"></div></div>'+
@@ -1126,11 +1154,11 @@ function showEventFields(){
  '<div class="event-form-section"><span class="field-label">Conectar con otros módulos</span><label class="event-choice"><input id="linkTask" type="checkbox" onchange="toggleEventLink(\'task\')"> Vincular con una tarea</label><div id="linkTaskWrap" class="hidden"><select id="linkTaskId" onchange="updateEventPreview()">'+(taskOptions||'<option value="">No hay tareas guardadas</option>')+'</select></div><label class="event-choice"><input id="linkNote" type="checkbox" onchange="toggleEventLink(\'note\')"> Vincular con una nota</label><div id="linkNoteWrap" class="hidden"><input id="linkNoteId" oninput="updateEventPreview()" placeholder="Referencia de la nota (módulo en desarrollo)"></div><label class="event-choice"><input id="linkExpense" type="checkbox" onchange="toggleEventLink(\'expense\')"> Vincular con un gasto o presupuesto</label><div id="linkExpenseWrap" class="hidden"><input id="linkExpenseId" oninput="updateEventPreview()" placeholder="Referencia del gasto o presupuesto (módulo en desarrollo)"></div></div>'+
  '<div class="event-preview"><div class="field-label event-preview-heading">Vista previa</div><div id="eventPreview" class="event-preview-content"><div class="event-preview-title">Nombre del evento</div><div class="event-preview-row">Fecha por seleccionar</div></div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
- if(!ev)document.getElementById('eventTime').value=currentTime;
+ if(!ev){document.getElementById('eventTime').value=currentTime;document.getElementById('eventTimeText').textContent=currentTime;}
  if(type==='birthday'||type==='anniversary'){document.getElementById('eventRepeat').value='yearly';document.getElementById('eventAllDay').checked=true;document.getElementById('eventAllDay').disabled=true;document.getElementById('eventRepeat').disabled=true}
  if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8';toggleEventColor()}
  if(ev){
-  document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';
+  document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';document.getElementById('eventTimeText').textContent=ev.time||'09:00';
   document.getElementById('eventAllDay').checked=!!ev.allDay;document.querySelector('input[name="eventScope"][value="'+(ev.scope||'personal')+'"]').checked=true;
   document.getElementById('eventPriority').value=ev.priority||'normal';document.getElementById('eventColor').value=ev.color||'#d65b4a';document.getElementById('eventRepeat').value=ev.repeat||'none';
   document.querySelectorAll('input[name="eventWeekday"]').forEach(x=>x.checked=(ev.weekdays||[]).includes(Number(x.value)));
@@ -1139,6 +1167,42 @@ function showEventFields(){
   (ev.links||[]).forEach(link=>{const k=link.type==='task'?'Task':link.type==='note'?'Note':link.type==='expense'?'Expense':null;if(!k)return;document.getElementById('link'+k).checked=true;toggleEventLink(link.type);const f=document.getElementById('link'+k+'Id');if(f)f.value=link.id});
  }else{if(type==='birthday'||type==='anniversary')toggleEventAllDay()}
  updateEventPreview();
+}
+let timePickerDraft={hour:0,minute:0},timePickerOriginal='09:00',timePickerScrollTimer=null;
+function openTimePicker(){
+ const input=document.getElementById('eventTime');if(!input)return;
+ timePickerOriginal=input.value||'09:00';
+ const parts=timePickerOriginal.split(':').map(Number);
+ timePickerDraft={hour:Number.isFinite(parts[0])?parts[0]:9,minute:Number.isFinite(parts[1])?parts[1]:0};
+ renderTimeWheel('hour');renderTimeWheel('minute');
+ document.getElementById('timePickerBackdrop').classList.add('show');
+}
+function renderTimeWheel(kind){
+ const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),count=kind==='hour'?24:60,selected=kind==='hour'?timePickerDraft.hour:timePickerDraft.minute;
+ wheel.innerHTML=Array.from({length:count},(_,i)=>'<button type="button" class="time-wheel-option'+(i===selected?' selected':'')+'" data-value="'+i+'" onclick="chooseTimeWheelValue(\''+kind+'\','+i+')">'+String(i).padStart(2,'0')+'</button>').join('');
+ wheel.scrollTop=selected*42;
+}
+function chooseTimeWheelValue(kind,value){
+ timePickerDraft[kind]=value;const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
+ wheel.scrollTo({top:value*42,behavior:'smooth'});updateTimeWheelSelection(kind);
+}
+function handleTimeWheelScroll(kind){
+ const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
+ const count=kind==='hour'?24:60,index=Math.max(0,Math.min(count-1,Math.round(wheel.scrollTop/42)));
+ timePickerDraft[kind]=index;updateTimeWheelSelection(kind);
+}
+function updateTimeWheelSelection(kind){
+ const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),selected=timePickerDraft[kind];
+ wheel.querySelectorAll('.time-wheel-option').forEach((button,index)=>button.classList.toggle('selected',index===selected));
+}
+function closeTimePicker(apply){
+ const backdrop=document.getElementById('timePickerBackdrop');if(!backdrop)return;
+ if(apply){
+  const value=String(timePickerDraft.hour).padStart(2,'0')+':'+String(timePickerDraft.minute).padStart(2,'0');
+  const input=document.getElementById('eventTime'),label=document.getElementById('eventTimeText');
+  if(input)input.value=value;if(label)label.textContent=value;updateEventPreview();
+ }
+ backdrop.classList.remove('show');
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
 function toggleEventColor(){document.getElementById('eventColorWrap').classList.toggle('hidden',document.getElementById('eventPriority').value!=='high');updateEventPreview()}
