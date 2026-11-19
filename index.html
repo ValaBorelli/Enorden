@@ -331,6 +331,7 @@ let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.type==='special'?{...ev,type:'normal'}:ev);
 let editingEventId=null;
 let eventPrefill=null;
+let eventCreationTime=null;
 let eventCountdowns=JSON.parse(localStorage.getItem('enorden_event_countdowns')||'[]');
 let householdDevice=localStorage.getItem('enorden_household_device')==='true';
 let financeLockChoice=localStorage.getItem('enorden_finance_lock')||'unset';
@@ -1024,7 +1025,7 @@ function renderOther(id){
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
 }
 function openAdd(){
- editingEventId=null;eventPrefill=null;
+ editingEventId=null;eventPrefill=null;eventCreationTime=new Date();
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>'}
  else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
@@ -1112,7 +1113,7 @@ function showEventFields(){
  const type=document.getElementById('eventType').value,w=document.getElementById('eventFields');if(!type){w.innerHTML='';return}
  const ev=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;
  const preset=ev?.date||keyDate(selectedDate);
- const times=Array.from({length:96},(_,i)=>{const h=String(Math.floor(i/4)).padStart(2,'0'),m=String(i%4*15).padStart(2,'0');return '<option value="'+h+':'+m+'">'+h+':'+m+'</option>'}).join('');
+ const now=eventCreationTime||new Date(),currentTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');const timeValues=Array.from({length:96},(_,i)=>String(Math.floor(i/4)).padStart(2,'0')+':'+String(i%4*15).padStart(2,'0'));if(!timeValues.includes(currentTime))timeValues.push(currentTime);timeValues.sort();const times=timeValues.map(t=>'<option value="'+t+'">'+t+'</option>').join('');
  const taskOptions=tasks.map(t=>'<option value="'+t.id+'">'+escapeHTML(t.title)+'</option>').join('');
  w.innerHTML=
  '<div class="event-form-section"><label>Nombre</label><input id="eventName" placeholder="Nombre del evento" oninput="updateEventPreview()"></div>'+
@@ -1125,6 +1126,7 @@ function showEventFields(){
  '<div class="event-form-section"><span class="field-label">Conectar con otros módulos</span><label class="event-choice"><input id="linkTask" type="checkbox" onchange="toggleEventLink(\'task\')"> Vincular con una tarea</label><div id="linkTaskWrap" class="hidden"><select id="linkTaskId" onchange="updateEventPreview()">'+(taskOptions||'<option value="">No hay tareas guardadas</option>')+'</select></div><label class="event-choice"><input id="linkNote" type="checkbox" onchange="toggleEventLink(\'note\')"> Vincular con una nota</label><div id="linkNoteWrap" class="hidden"><input id="linkNoteId" oninput="updateEventPreview()" placeholder="Referencia de la nota (módulo en desarrollo)"></div><label class="event-choice"><input id="linkExpense" type="checkbox" onchange="toggleEventLink(\'expense\')"> Vincular con un gasto o presupuesto</label><div id="linkExpenseWrap" class="hidden"><input id="linkExpenseId" oninput="updateEventPreview()" placeholder="Referencia del gasto o presupuesto (módulo en desarrollo)"></div></div>'+
  '<div class="event-preview"><div class="field-label event-preview-heading">Vista previa</div><div id="eventPreview" class="event-preview-content"><div class="event-preview-title">Nombre del evento</div><div class="event-preview-row">Fecha por seleccionar</div></div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
+ if(!ev)document.getElementById('eventTime').value=currentTime;
  if(type==='birthday'||type==='anniversary'){document.getElementById('eventRepeat').value='yearly';document.getElementById('eventAllDay').checked=true;document.getElementById('eventAllDay').disabled=true;document.getElementById('eventRepeat').disabled=true}
  if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8';toggleEventColor()}
  if(ev){
