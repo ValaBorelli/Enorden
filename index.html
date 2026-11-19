@@ -229,7 +229,7 @@ h2{font-size:18px;margin-bottom:13px}
 
 
 /* Selector de hora en formato rueda */
-.time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-size:15px;font-weight:700;letter-spacing:1px}
+.time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:#242820;font-size:15px;font-weight:700;letter-spacing:1px}.time-display-icon{font-size:23px;line-height:1;color:#242820}.time-display-button #eventTimeText{color:#242820}
 .time-picker-backdrop{z-index:55}
 .time-picker-modal{width:min(360px,100%);padding:20px;border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0004}
 .time-picker-caption{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 16px}
@@ -1145,7 +1145,7 @@ function showEventFields(){
  const taskOptions=tasks.map(t=>'<option value="'+t.id+'">'+escapeHTML(t.title)+'</option>').join('');
  w.innerHTML=
  '<div class="event-form-section"><label>Nombre</label><input id="eventName" placeholder="Nombre del evento" oninput="updateEventPreview()"></div>'+
- '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openTimePicker()"><span>◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
+ '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openTimePicker()"><span class="time-display-icon">◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
  '<div class="event-form-section"><label class="event-choice"><input id="eventAllDay" type="checkbox" onchange="toggleEventAllDay()"> Todo el día</label></div>'+
  '<div class="event-form-section"><span class="field-label">¿Dónde se verá?</span><div class="event-choice-row"><label class="event-choice"><input type="radio" name="eventScope" value="personal" checked onchange="updateEventPreview()"> Mi calendario personal</label><label class="event-choice"><input type="radio" name="eventScope" value="family" onchange="updateEventPreview()"> Calendario familiar</label></div></div>'+
  '<div class="event-form-section"><label>Prioridad</label><select id="eventPriority" onchange="toggleEventColor()"><option value="normal">Normal</option><option value="high">Alta prioridad: destacar el día en el calendario</option></select><div id="eventColorWrap" class="hidden"><label>Selecciona el color</label><input id="eventColor" class="event-color" type="color" value="#d65b4a" onchange="updateEventPreview()"></div></div>'+
