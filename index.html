@@ -127,9 +127,9 @@ h2{font-size:18px;margin-bottom:13px}
 .modal input,.modal select{width:100%;background:#fff;color:#242820;
  border:1px solid #d1c8b8;border-radius:9px;padding:12px;margin:6px 0 13px}
 .modal label{font-size:12px;color:#60645c}
-.close-row{display:flex;justify-content:space-between;align-items:center}
+.close-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start}
 .modal h2{margin:0 0 18px}
-.close-row{margin-bottom:12px;gap:12px}.close-row h2{margin:0;min-width:0}.close-row .small-btn{flex:0 0 auto;white-space:nowrap}.event-form-subtitle{font-size:14px;line-height:1.45;color:#62675e;margin:0 0 18px;position:relative;clear:both}.event-form-section{margin:15px 0}.event-form-section>label:not(.event-choice),.event-form-section>.field-label{display:block;font-size:13px;font-weight:700;color:#42483f;margin:0 0 6px}.event-form-section input:not([type=checkbox]):not([type=color]),.event-form-section select{width:100%;background:#fff;color:#242820;border:1px solid #d1c8b8;border-radius:9px;padding:11px;margin:5px 0 8px}.event-form-section input[type=checkbox],.event-form-section input[type=radio]{accent-color:var(--green2);width:17px;height:17px}.event-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.event-choice-row{display:flex;gap:8px;flex-wrap:wrap}.event-choice{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:12px;margin:5px 0}.event-alert-row{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;align-items:center}.event-preview{background:#f4efe5;border:1px solid var(--line);border-radius:12px;padding:13px;margin:16px 0}.event-preview-title{font-weight:700;font-size:15px;margin-bottom:5px}.event-form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px}.event-form-actions button{min-width:112px}.event-color{width:100%;height:40px;padding:3px!important}.event-days{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.event-days label{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12px}
+.close-row{margin-bottom:12px;grid-template-columns:minmax(0,1fr) auto;gap:10px 12px}.modal-heading{min-width:0}.close-row h2{margin:0;min-width:0;overflow-wrap:anywhere}.close-row .small-btn{justify-self:end;align-self:start;white-space:nowrap;margin:0}.event-form-subtitle{font-size:14px;line-height:1.45;color:#62675e;margin:5px 0 0;overflow-wrap:anywhere}.event-form-section{margin:15px 0}.event-form-section>label:not(.event-choice),.event-form-section>.field-label{display:block;font-size:13px;font-weight:700;color:#42483f;margin:0 0 6px}.event-form-section input:not([type=checkbox]):not([type=color]),.event-form-section select{width:100%;background:#fff;color:#242820;border:1px solid #d1c8b8;border-radius:9px;padding:11px;margin:5px 0 8px}.event-form-section input[type=checkbox],.event-form-section input[type=radio]{accent-color:var(--green2);width:17px;height:17px}.event-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.event-choice-row{display:flex;gap:8px;flex-wrap:wrap}.event-choice{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font-size:12px;margin:5px 0}.event-alert-row{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;align-items:center}.event-preview{background:#f4efe5;border:1px solid var(--line);border-radius:12px;padding:13px;margin:16px 0}.event-preview-title{font-weight:700;font-size:15px;margin-bottom:5px}.event-form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:18px}.event-form-actions button{min-width:112px}.event-color{width:100%;height:40px;padding:3px!important}.event-days{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.event-days label{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12px}
 .event-form-section{min-width:0}
 .event-choice{display:flex;align-items:center;flex-wrap:wrap;max-width:100%;white-space:normal;line-height:1.4}
 .event-choice input[type=checkbox],.event-choice input[type=radio]{flex:0 0 17px;width:17px;min-width:17px;margin:0}
@@ -215,7 +215,7 @@ h2{font-size:18px;margin-bottom:13px}
 
 <div class="modal-backdrop" id="backdrop" onclick="if(event.target===this)closeModal()">
  <div class="modal">
-  <div class="close-row"><h2 id="modalTitle">Agregar</h2>
+  <div class="close-row"><div class="modal-heading"><h2 id="modalTitle">Agregar</h2><p id="modalSubtitle" class="event-form-subtitle hidden"></p></div>
    <button class="small-btn" onclick="closeModal()">Cancelar ✕</button>
   </div>
   <div id="modalBody"></div>
@@ -262,6 +262,7 @@ const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto',
 const weekdays=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 function closeModal(){
  document.getElementById('backdrop').classList.remove('show');
+ const subtitle=document.getElementById('modalSubtitle');if(subtitle){subtitle.textContent='';subtitle.classList.add('hidden')}
 }
 function save(){
  localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
@@ -723,9 +724,10 @@ function renderOther(id){
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
 }
 function openAdd(){
+ const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>'}
  else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
- else{document.getElementById('modalTitle').textContent='Nuevo evento';document.getElementById('modalBody').innerHTML='<p class="event-form-subtitle">¿Qué tipo de evento quieres crear?</p><div class="event-form-section"><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>'}
+ else{document.getElementById('modalTitle').textContent='Nuevo evento';subtitle.textContent='¿Qué tipo de evento quieres crear?';subtitle.classList.remove('hidden');document.getElementById('modalBody').innerHTML='<div class="event-form-section"><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>'}
  document.getElementById('backdrop').classList.add('show');
 }
 function showEventFields(){
