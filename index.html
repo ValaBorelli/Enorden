@@ -229,7 +229,7 @@ h2{font-size:18px;margin-bottom:13px}
 
 
 /* Selector de hora en formato rueda */
-.time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-size:19px;font-weight:700;letter-spacing:1px}
+.time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-size:15px;font-weight:700;letter-spacing:1px}
 .time-picker-backdrop{z-index:55}
 .time-picker-modal{width:min(360px,100%);padding:20px;border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0004}
 .time-picker-caption{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 16px}
@@ -324,7 +324,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
    <div class="time-wheel-separator">:</div>
    <div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="timeMinuteWheel" onscroll="handleTimeWheelScroll('minute')"></div></div>
   </div>
-  <div class="time-picker-actions"><button class="secondary-btn" onclick="closeTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeTimePicker(true)">Usar hora</button></div>
+  <div class="time-picker-actions"><button class="secondary-btn" onclick="closeTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeTimePicker(true)">Aceptar</button></div>
  </div>
 </div>
 <div class="modal-backdrop anniversary-notice-backdrop" id="anniversaryNotice">
