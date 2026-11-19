@@ -290,10 +290,10 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-app .page-heading{flex:0 0 auto}
 .tasks-app .bottom-nav{width:min(1100px,100%)}
 .tasks-app .fab{right:max(20px,calc((100vw - 1060px)/2 + 20px));bottom:83px}
-.tasks-layout{display:grid;grid-template-columns:clamp(116px,19%,210px) minmax(0,1fr);gap:20px;min-height:0;flex:1;align-items:center}
-.tasks-sidebar{display:flex;flex-direction:column;gap:10px;padding:12px 9px 24px;background:var(--surface);border:1px solid var(--line);border-radius:16px;min-height:0;height:auto;align-self:center}
+.tasks-layout{display:grid;grid-template-columns:clamp(116px,19%,210px) minmax(0,1fr);gap:20px;min-height:0;flex:0 0 auto;width:100%;margin:auto 0;align-items:stretch}
+.tasks-sidebar{display:flex;flex-direction:column;gap:10px;padding:12px 9px 24px;background:var(--surface);border:1px solid var(--line);border-radius:16px;min-height:0;height:auto;align-self:stretch;margin-bottom:-12px}
 .tasks-sidebar-item{display:flex;align-items:center;gap:7px;padding:12px 9px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:600;white-space:nowrap}
-.tasks-content{display:flex;align-items:center;justify-content:flex-start;min-width:0;padding:0}
+.tasks-content{display:flex;align-items:flex-start;justify-content:flex-start;min-width:0;padding:0}
 .tasks-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
 .task-shortcut-card{display:flex;align-items:center;justify-content:center;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);font-size:15px;font-weight:700;text-align:center;box-shadow:0 2px 8px #00000008}
 @media(max-width:700px){
