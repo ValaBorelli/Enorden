@@ -90,7 +90,7 @@ h2{font-size:18px;margin-bottom:13px}
 .calendar-grid div{padding:10px 1px;border-radius:8px;font-size:12px;color:#30352d}
 .calendar-grid .weekday{color:#70736c;font-weight:700}
 .calendar-grid .today{background:var(--green2);color:white}
-.calendar-grid .has-event{border:1px solid var(--gold)}
+/* Los eventos normales se indican solo con un punto, sin borde. */
 .calendar-grid .calendar-day{position:relative;cursor:pointer;border:1px solid transparent}
 .calendar-grid .calendar-day.has-event::before,.year-days .calendar-day.has-event::before{content:'';position:absolute;top:4px;left:4px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .calendar-grid .calendar-day.high-priority,.year-days .calendar-day.high-priority{outline:2px solid var(--event-border);outline-offset:-2px}
@@ -217,7 +217,7 @@ body{background:var(--bg);color:var(--text)}.app{color:var(--text)}header{backgr
 body[data-theme="colorful"] .summary-card:nth-child(1),body[data-theme="colorful"] .module-tile:nth-child(3n+1){background:#D9EFF9}
 body[data-theme="colorful"] .summary-card:nth-child(2),body[data-theme="colorful"] .module-tile:nth-child(3n+2){background:#FCE0E7}
 body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful"] .module-tile:nth-child(3n){background:#FFF0B8}
-.small-btn,.secondary-btn{background:var(--surface2);color:var(--text)}.calendar-grid div{color:var(--text)}.calendar-grid .weekday{color:var(--muted)}.calendar-grid .today{background:var(--green2);color:var(--header-foreground)}.calendar-grid .has-event{border-color:var(--accent)}
+.small-btn,.secondary-btn{background:var(--surface2);color:var(--text)}.calendar-grid div{color:var(--text)}.calendar-grid .weekday{color:var(--muted)}.calendar-grid .today{background:var(--green2);color:var(--header-foreground)}
 .month-tile,.year-month{background:var(--surface2);border-color:var(--line);color:var(--text)}.task-row,.setting-row{border-color:var(--line)}.done{color:var(--muted)}.list-section h3{color:var(--text)}.pill{background:var(--surface2);color:var(--text)}
 .bottom-nav{background:var(--nav-bg);border-color:var(--line)}.nav-btn{color:var(--nav-text)}.nav-btn.active{color:var(--header-foreground);background:var(--green2)}.fab{background:var(--green2);color:var(--header-foreground)}
 .modal{background:var(--surface);color:var(--text)}.modal input,.modal select,#appLanguage{background:var(--surface);color:var(--text);border-color:var(--line)}.close-row .small-btn{background:var(--surface2);color:var(--text)}.event-form-subtitle{color:var(--muted)}
