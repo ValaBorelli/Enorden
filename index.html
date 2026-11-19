@@ -96,6 +96,12 @@ h2{font-size:18px;margin-bottom:13px}
 .calendar-grid .calendar-day.high-priority,.year-days .calendar-day.high-priority{outline:2px solid var(--event-border);outline-offset:-2px}
 .calendar-grid .calendar-day.sunday,.year-days .calendar-day.sunday{color:#b9bcb8!important}
 .calendar-search-toggle{font-size:17px;min-width:42px;padding:8px 11px}
+.calendar-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.calendar-heading-row h1{margin:0}
+.calendar-heading-row .calendar-search-toggle{flex:0 0 42px;margin-right:1px}
+.calendar-page-heading{margin-bottom:12px}
+.modal-close-button{width:38px;height:38px;padding:0;font-size:19px;line-height:1;flex:0 0 38px}
+
 .calendar-search-panel{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:11px;margin:0 0 12px}
 .calendar-search-panel input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit}
 .calendar-search-hint{font-size:12px;padding:12px 3px 3px}
@@ -135,7 +141,7 @@ h2{font-size:18px;margin-bottom:13px}
  background:var(--green2);color:white;font-size:29px;z-index:12}
 .modal-backdrop{position:fixed;inset:0;background:#0008;z-index:30;
  display:none;align-items:center;justify-content:center;padding:16px}
-.modal-backdrop.show{display:flex}
+.modal-backdrop.show{display:flex}.anniversary-notice-backdrop{z-index:40}
 .modal{background:#fffaf1;color:#242820;width:min(650px,100%);padding:22px;
  border-radius:20px;max-height:85vh;overflow:auto}
 .modal input,.modal select{width:100%;background:#fff;color:#242820;
@@ -206,6 +212,13 @@ h2{font-size:18px;margin-bottom:13px}
 .year-month strong{display:block;text-align:center;margin-bottom:6px;font-size:12px}
 .year-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center;font-size:9px}
 .year-days span{padding:3px 0}
+.year-month-title{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:center;font-weight:700;margin-bottom:6px;font-size:12px;padding:0;cursor:pointer}
+.year-days .calendar-day{appearance:none;-webkit-appearance:none;width:100%;border:1px solid transparent;background:transparent;color:inherit;font:inherit;border-radius:5px;cursor:pointer;position:relative;padding:3px 0}
+.calendar-grid .calendar-day{appearance:none;-webkit-appearance:none;width:100%;border:1px solid transparent;background:transparent;color:inherit;font:inherit;border-radius:8px;cursor:pointer;position:relative}
+.calendar-grid .calendar-day.selected,.year-days .calendar-day.selected{background:var(--green2);color:#fff!important}
+.calendar-grid .calendar-day.today:not(.selected){box-shadow:inset 0 0 0 1px var(--green2)}
+.calendar-today-button{font-weight:700}
+
 .notification-card{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:start}
 .notification-emoji{font-size:22px}
 .notification-title{font-size:14px;font-weight:700;margin-bottom:4px}
@@ -213,6 +226,22 @@ h2{font-size:18px;margin-bottom:13px}
 .notification-meta{font-size:10px;color:#777;text-align:right}
 @media(min-width:440px){.year-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:550px){main{padding:25px}}
+
+
+/* Selector de hora en formato rueda */
+.time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:#242820;font-size:15px;font-weight:700;letter-spacing:1px}.time-display-icon{font-size:23px;line-height:1;color:#242820}.time-display-button #eventTimeText{color:#242820}
+.time-picker-backdrop{z-index:55}
+.time-picker-modal{width:min(360px,100%);padding:20px;border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0004}
+.time-picker-caption{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 16px}
+.time-wheel-group{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.time-wheel-label{text-align:center;font-size:11px;color:var(--muted);margin-bottom:7px}
+.time-wheel{height:210px;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;scrollbar-width:none;border:1px solid var(--line);border-radius:16px;background:var(--surface2);padding:84px 8px}
+.time-wheel::-webkit-scrollbar{display:none}
+.time-wheel-option{display:block;width:100%;height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:17px;font-weight:500;scroll-snap-align:center}
+.time-wheel-option.selected{background:var(--surface);color:var(--text);font-size:22px;font-weight:800;box-shadow:0 1px 5px #0001}
+.time-wheel-separator{font-size:25px;font-weight:800;color:var(--text);padding-bottom:4px}
+.time-picker-actions{display:flex;gap:9px;margin-top:18px}
+.time-picker-actions button{flex:1;min-height:43px}
 
 /* Temas de apariencia: conservan tipografía, tamaños, formas y distribución */
 :root{--text:#292D29;--header-foreground:#FFFFFF;--header-muted:#DDE6DF;--surface-alt:#FFFFFF;--surface-warm:#FFFFFF;--nav-bg:#FFFFFF;--nav-text:#777970;--accent:#344E40}
@@ -278,12 +307,31 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 <button class="fab hidden" id="fab" onclick="openAdd()">+</button>
 </div>
 
-<div class="modal-backdrop" id="backdrop" onclick="if(event.target===this)closeModal()">
+<div class="modal-backdrop" id="backdrop">
  <div class="modal">
   <div class="close-row"><div class="modal-heading"><h2 id="modalTitle">Agregar</h2><p id="modalSubtitle" class="event-form-subtitle hidden"></p></div>
-   <button class="small-btn" onclick="closeModal()">Cancelar ✕</button>
+   <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="closeModal()">✕</button>
   </div>
   <div id="modalBody"></div>
+ </div>
+</div>
+<div class="modal-backdrop time-picker-backdrop" id="timePickerBackdrop" onclick="if(event.target===this)closeTimePicker(false)">
+ <div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="timePickerTitle">
+  <h2 id="timePickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar hora</h2>
+  <p class="time-picker-caption">Formato de 24 horas</p>
+  <div class="time-wheel-group">
+   <div><div class="time-wheel-label">Hora</div><div class="time-wheel" id="timeHourWheel" onscroll="handleTimeWheelScroll('hour')"></div></div>
+   <div class="time-wheel-separator">:</div>
+   <div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="timeMinuteWheel" onscroll="handleTimeWheelScroll('minute')"></div></div>
+  </div>
+  <div class="time-picker-actions"><button class="secondary-btn" onclick="closeTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeTimePicker(true)">Aceptar</button></div>
+ </div>
+</div>
+<div class="modal-backdrop anniversary-notice-backdrop" id="anniversaryNotice">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="anniversaryNoticeTitle">
+  <div class="close-row"><div class="modal-heading"><h2 id="anniversaryNoticeTitle">Aviso sobre aniversarios</h2></div><button class="small-btn modal-close-button" aria-label="Cerrar aviso" title="Cerrar" onclick="closeAnniversaryNotice()">✕</button></div>
+  <p>Los eventos de tipo Aniversario generan automáticamente una nota para el día del evento en el módulo Notas.</p>
+  <div class="event-form-actions"><button class="primary-btn" onclick="closeAnniversaryNotice()">Aceptar</button></div>
  </div>
 </div>
 
@@ -308,9 +356,10 @@ let appTheme=localStorage.getItem('enorden_theme')||'natural';if(!appearanceThem
 let headerPanelReturn='inicio';
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
-let events=JSON.parse(localStorage.getItem('enorden_events')||'[]');
+let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.type==='special'?{...ev,type:'normal'}:ev);
 let editingEventId=null;
 let eventPrefill=null;
+let eventCreationTime=null;
 let eventCountdowns=JSON.parse(localStorage.getItem('enorden_event_countdowns')||'[]');
 let householdDevice=localStorage.getItem('enorden_household_device')==='true';
 let financeLockChoice=localStorage.getItem('enorden_finance_lock')||'unset';
@@ -537,27 +586,47 @@ function enableReorder(container){
 function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
- const typeLabel={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario',special:'Fecha especial o feriado'};
- const eventCard=ev=>'<button type="button" class="card" onclick="openEventDetails('+ev.id+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:12px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>'
+ const typeLabel={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario'};
+ const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
+ const selectedKey=keyDate(d),today=new Date();today.setHours(0,0,0,0);const todayKey=keyDate(today);
  let content='';
  if(calendarView==='Año'){
   content='<div class="year-grid">'+months.map((name,i)=>{
    const first=(new Date(y,i,1).getDay()+6)%7,total=new Date(y,i+1,0).getDate();
-   const cells=Array.from({length:first},()=>'<span></span>').concat(Array.from({length:total},(_,n)=>{const date=new Date(y,i,n+1),list=on(date),color=borderColor(list);return '<span class="calendar-day '+(date.getDay()===0?'sunday ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'">'+(n+1)+'</span>'})).join('');
-   return '<button class="year-month" onclick="selectedDate=new Date('+y+','+i+',1);calendarView=\'Mes\';render()"><strong>'+name+'</strong><div class="year-days">'+weekdays.map(w=>'<span>'+w[0]+'</span>').join('')+cells+'</div></button>';
+   const cells=Array.from({length:first},()=>'<span></span>').concat(Array.from({length:total},(_,n)=>{
+    const date=new Date(y,i,n+1),key=keyDate(date),list=on(date),color=borderColor(list);
+    return '<button type="button" class="calendar-day '+(date.getDay()===0?'sunday ':'')+(key===todayKey?'today ':'')+(key===selectedKey?'selected ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" aria-label="'+date.toLocaleDateString('es-CL')+'" aria-pressed="'+(key===selectedKey)+'" onclick="selectCalendarDate('+y+','+i+','+(n+1)+')">'+(n+1)+'</button>';
+   })).join('');
+   return '<div class="year-month"><button type="button" class="year-month-title" onclick="selectedDate=new Date('+y+','+i+',1);calendarView=\'Mes\';render()">'+name+'</button><div class="year-days">'+weekdays.map(w=>'<span>'+w[0]+'</span>').join('')+cells+'</div></div>';
   }).join('')+'</div>';
  }else if(calendarView==='Día'){
-  const list=on(d);content='<strong>'+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</strong>'+(list.map(eventCard).join('')||'<div class="empty">No hay eventos para este día.</div>');
+  const list=on(d);content='<strong>'+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</strong>'+(list.map(ev=>eventCard(ev)).join('')||'<div class="empty">No hay eventos para este día.</div>');
  }else if(calendarView==='Semana'){
   const start=new Date(d);start.setDate(d.getDate()-((d.getDay()+6)%7));
-  content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:7},(_,i)=>{const x=new Date(start);x.setDate(start.getDate()+i);const list=on(x),color=borderColor(list);return '<div class="calendar-day '+(x.getDay()===0?'sunday ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" onclick="selectedDate=new Date('+x.getFullYear()+','+x.getMonth()+','+x.getDate()+');calendarView=\'Día\';render()">'+x.getDate()+'</div>'}).join('')+'</div>';
+  content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:7},(_,i)=>{
+   const x=new Date(start);x.setDate(start.getDate()+i);const key=keyDate(x),list=on(x),color=borderColor(list);
+   return '<button type="button" class="calendar-day '+(x.getDay()===0?'sunday ':'')+(key===todayKey?'today ':'')+(key===selectedKey?'selected ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" aria-pressed="'+(key===selectedKey)+'" onclick="selectCalendarDate('+x.getFullYear()+','+x.getMonth()+','+x.getDate()+')">'+x.getDate()+'</button>';
+  }).join('')+'</div>';
  }else{
   const offset=(new Date(y,m,1).getDay()+6)%7,total=new Date(y,m+1,0).getDate();
-  content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:offset},()=>'<div></div>').join('')+Array.from({length:total},(_,i)=>{const n=i+1,date=new Date(y,m,n),list=on(date),color=borderColor(list);return '<div class="calendar-day '+(date.getDay()===0?'sunday ':'')+(n===new Date().getDate()&&m===new Date().getMonth()&&y===new Date().getFullYear()?'today ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" onclick="selectedDate=new Date('+y+','+m+','+n+');calendarView=\'Día\';render()">'+n+'</div>'}).join('')+'</div>';
+  content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:offset},()=>'<div></div>').join('')+Array.from({length:total},(_,i)=>{
+   const n=i+1,date=new Date(y,m,n),key=keyDate(date),list=on(date),color=borderColor(list);
+   return '<button type="button" class="calendar-day '+(date.getDay()===0?'sunday ':'')+(key===todayKey?'today ':'')+(key===selectedKey?'selected ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" aria-pressed="'+(key===selectedKey)+'" onclick="selectCalendarDate('+y+','+m+','+n+')">'+n+'</button>';
+  }).join('')+'</div>';
  }
- const upcoming=events.slice().sort((a,b)=>a.date.localeCompare(b.date));
- screen.innerHTML='<div class="page-heading"><h1>Calendario</h1><p>Organiza las fechas importantes de tu hogar.</p></div><div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'<button type="button" class="small-btn calendar-search-toggle" aria-label="Buscar eventos" title="Buscar eventos" onclick="toggleCalendarSearch()">🔍</button></div>'+(calendarSearchOpen?'<div class="calendar-search-panel"><input id="calendarSearchInput" type="search" placeholder="Buscar eventos por nombre, fecha o tipo..." value="'+escapeHTML(calendarSearchQuery)+'" oninput="updateCalendarSearch(this.value)" autofocus><div id="calendarSearchResults">'+renderCalendarSearchResults()+'</div></div>':'')+'<div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div><div class="section '+(calendarView==='Día'?'hidden':'')+'"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>'<div class="card card-row" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div>'+escapeHTML(ev.title)+'<div class="muted" style="font-size:12px;margin-top:5px">'+escapeHTML(ev.date)+' · '+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+'</div></div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+'</span>':'')+'</div>').join('')||'<div class="card empty">No hay eventos registrados todavía.</div>')+'</div><div class="bottom-space"></div>';
+ const selectedEvents=on(d);
+ const selectedDaySection=calendarView==='Día'?'':'<div class="section selected-day-events"><h2>Eventos del '+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</h2>'+(selectedEvents.map(ev=>eventCard(ev)).join('')||'<div class="card empty">No hay eventos para este día.</div>')+'</div>';
+ const upcoming=[];
+ for(let offset=0;offset<7;offset++){
+  const day=new Date(today);day.setDate(today.getDate()+offset);
+  events.filter(ev=>eventOccursOn(ev,day)).forEach(ev=>upcoming.push({...ev,date:keyDate(day)}));
+ }
+ upcoming.sort((a,b)=>a.date.localeCompare(b.date)||(Number(b.allDay)-Number(a.allDay))||(a.time||'').localeCompare(b.time||''));
+ const upcomingSection='<div class="section upcoming-events"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>eventCard(ev,true)).join('')||'<div class="card empty">No hay eventos en los próximos 7 días.</div>')+'</div>';
+ screen.innerHTML='<div class="page-heading calendar-page-heading"><div class="calendar-heading-row"><h1>Calendario</h1><button type="button" class="small-btn calendar-search-toggle" aria-label="Buscar eventos" title="Buscar eventos" onclick="toggleCalendarSearch()">🔍</button></div><p>Organiza las fechas importantes de tu hogar.</p></div>'+(calendarSearchOpen?'<div class="calendar-search-panel"><input id="calendarSearchInput" type="search" placeholder="Buscar eventos por nombre, fecha o tipo..." value="'+escapeHTML(calendarSearchQuery)+'" oninput="updateCalendarSearch(this.value)" autofocus><div id="calendarSearchResults">'+renderCalendarSearchResults()+'</div></div>':'')+'<div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'<button type="button" class="small-btn calendar-today-button" aria-label="Ir a hoy" title="Ir a hoy" onclick="goToToday()">Hoy</button></div><div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div>'+selectedDaySection+upcomingSection+'<div class="bottom-space"></div>';
 }
+function selectCalendarDate(year,month,day){selectedDate=new Date(year,month,day);render()}
+function goToToday(){selectedDate=new Date();render()}
 function toggleCalendarSearch(){calendarSearchOpen=!calendarSearchOpen;if(!calendarSearchOpen)calendarSearchQuery='';render()}
 function updateCalendarSearch(value){calendarSearchQuery=value;const results=document.getElementById('calendarSearchResults');if(results)results.innerHTML=renderCalendarSearchResults()}
 function renderCalendarSearchResults(){
@@ -565,11 +634,11 @@ function renderCalendarSearchResults(){
  if(!q)return '<div class="muted calendar-search-hint">Escribe el nombre, la fecha o el tipo de evento que buscas.</div>';
  const found=events.filter(ev=>{
   const dateText=ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
-  const typeText={normal:'evento normal',birthday:'cumpleaños',anniversary:'aniversario',special:'fecha especial feriado'}[ev.type]||'';
+  const typeText={normal:'evento normal',birthday:'cumpleaños',anniversary:'aniversario'}[ev.type]||'';
   return [ev.title,dateText,ev.date,typeText,ev.time||''].some(v=>String(v).toLocaleLowerCase('es-CL').includes(q));
  }).sort((a,b)=>a.date.localeCompare(b.date));
  if(!found.length)return '<div class="muted calendar-search-hint">No se encontraron eventos.</div>';
- return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="openEventDetails('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
+ return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="openEventDetails('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
 }
 function keyDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function changeDate(n){
@@ -984,16 +1053,20 @@ function renderOther(id){
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
 }
 function openAdd(){
- editingEventId=null;eventPrefill=null;
+ editingEventId=null;eventPrefill=null;eventCreationTime=new Date();
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>'}
  else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
- else{document.getElementById('modalTitle').textContent='Nuevo evento';subtitle.textContent='¿Qué tipo de evento quieres crear?';subtitle.classList.remove('hidden');document.getElementById('modalBody').innerHTML='<div class="event-form-section"><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="special">Fecha especial o feriado</option></select></div><div id="eventFields"></div>'}
+ else{
+  document.getElementById('modalTitle').textContent='Nuevo evento';
+  document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';
+  document.getElementById('eventType').value='normal';showEventFields();
+ }
  document.getElementById('backdrop').classList.add('show');
 }
 function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
 function eventDetailMarkup(ev){
- const type={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario',special:'Fecha especial o feriado'}[ev.type]||'Evento';
+ const type={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario'}[ev.type]||'Evento';
  const date=ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Sin fecha';
  const rows=[['Tipo',type],['Fecha',date],['Hora',ev.allDay?'Todo el día':(ev.time||'Sin hora')],['Repetición',eventRepeatLabel(ev)],['Alertas',ev.alerts?.length?ev.alerts.map(a=>a.amount+' '+({minutes:'minutos',hours:'horas',days:'días'}[a.unit]||a.unit)+' antes').join(', '):'Sin alertas'],['Calendario',ev.scope==='family'?'Compartido':'Personal'],['Vínculos',(ev.links||[]).length?ev.links.map(l=>({task:'Tareas',note:'Notas',expense:'Finanzas'}[l.type]||l.type)).join(', '):'Ninguno'],['Prioridad',ev.priority==='high'?'Alta':'Normal']];
  return '<div class="event-detail-card" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div class="event-detail-title">'+escapeHTML(ev.title)+'</div><div class="event-detail-list">'+rows.map(r=>'<div class="event-detail-row"><span class="event-detail-label">'+r[0]+'</span><span class="event-detail-value">'+escapeHTML(r[1])+'</span></div>').join('')+'</div></div>';
@@ -1022,7 +1095,7 @@ function duplicateEvent(id){
  eventPrefill=JSON.parse(JSON.stringify(ev));editingEventId=null;
  document.getElementById('modalTitle').textContent='Duplicar evento';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Se creará un evento nuevo con los datos precargados. Puedes modificarlos libremente.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="special">Fecha especial o feriado</option></select></div><div id="eventFields"></div>';
+ document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';
  document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
 }
 function openEventMore(id){
@@ -1059,18 +1132,20 @@ function openEditEvent(id){
  editingEventId=ev.id;
  const sub=document.getElementById('modalSubtitle');document.getElementById('modalTitle').textContent='Editar evento';
  sub.textContent='Modifica los detalles del evento. El tipo no se puede cambiar.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="special">Fecha especial o feriado</option></select></div><div id="eventFields"></div>';
+ document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';
  document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
 }
+function selectEventType(type){document.getElementById('eventType').value=type;showEventFields();if(type==='anniversary'&&editingEventId===null)document.getElementById('anniversaryNotice').classList.add('show')}
+function closeAnniversaryNotice(){document.getElementById('anniversaryNotice').classList.remove('show')}
 function showEventFields(){
  const type=document.getElementById('eventType').value,w=document.getElementById('eventFields');if(!type){w.innerHTML='';return}
  const ev=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;
- const preset=ev?.date||(calendarView==='Día'?keyDate(selectedDate):'');
- const times=Array.from({length:96},(_,i)=>{const h=String(Math.floor(i/4)).padStart(2,'0'),m=String(i%4*15).padStart(2,'0');return '<option value="'+h+':'+m+'">'+h+':'+m+'</option>'}).join('');
+ const preset=ev?.date||keyDate(selectedDate);
+ const now=eventCreationTime||new Date(),currentTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
  const taskOptions=tasks.map(t=>'<option value="'+t.id+'">'+escapeHTML(t.title)+'</option>').join('');
  w.innerHTML=
  '<div class="event-form-section"><label>Nombre</label><input id="eventName" placeholder="Nombre del evento" oninput="updateEventPreview()"></div>'+
- '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><select id="eventTime" onchange="updateEventPreview()">'+times+'</select></div></div>'+
+ '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openTimePicker()"><span class="time-display-icon">◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
  '<div class="event-form-section"><label class="event-choice"><input id="eventAllDay" type="checkbox" onchange="toggleEventAllDay()"> Todo el día</label></div>'+
  '<div class="event-form-section"><span class="field-label">¿Dónde se verá?</span><div class="event-choice-row"><label class="event-choice"><input type="radio" name="eventScope" value="personal" checked onchange="updateEventPreview()"> Mi calendario personal</label><label class="event-choice"><input type="radio" name="eventScope" value="family" onchange="updateEventPreview()"> Calendario familiar</label></div></div>'+
  '<div class="event-form-section"><label>Prioridad</label><select id="eventPriority" onchange="toggleEventColor()"><option value="normal">Normal</option><option value="high">Alta prioridad: destacar el día en el calendario</option></select><div id="eventColorWrap" class="hidden"><label>Selecciona el color</label><input id="eventColor" class="event-color" type="color" value="#d65b4a" onchange="updateEventPreview()"></div></div>'+
@@ -1079,10 +1154,11 @@ function showEventFields(){
  '<div class="event-form-section"><span class="field-label">Conectar con otros módulos</span><label class="event-choice"><input id="linkTask" type="checkbox" onchange="toggleEventLink(\'task\')"> Vincular con una tarea</label><div id="linkTaskWrap" class="hidden"><select id="linkTaskId" onchange="updateEventPreview()">'+(taskOptions||'<option value="">No hay tareas guardadas</option>')+'</select></div><label class="event-choice"><input id="linkNote" type="checkbox" onchange="toggleEventLink(\'note\')"> Vincular con una nota</label><div id="linkNoteWrap" class="hidden"><input id="linkNoteId" oninput="updateEventPreview()" placeholder="Referencia de la nota (módulo en desarrollo)"></div><label class="event-choice"><input id="linkExpense" type="checkbox" onchange="toggleEventLink(\'expense\')"> Vincular con un gasto o presupuesto</label><div id="linkExpenseWrap" class="hidden"><input id="linkExpenseId" oninput="updateEventPreview()" placeholder="Referencia del gasto o presupuesto (módulo en desarrollo)"></div></div>'+
  '<div class="event-preview"><div class="field-label event-preview-heading">Vista previa</div><div id="eventPreview" class="event-preview-content"><div class="event-preview-title">Nombre del evento</div><div class="event-preview-row">Fecha por seleccionar</div></div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
+ if(!ev){document.getElementById('eventTime').value=currentTime;document.getElementById('eventTimeText').textContent=currentTime;}
  if(type==='birthday'||type==='anniversary'){document.getElementById('eventRepeat').value='yearly';document.getElementById('eventAllDay').checked=true;document.getElementById('eventAllDay').disabled=true;document.getElementById('eventRepeat').disabled=true}
- if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8'}
+ if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8';toggleEventColor()}
  if(ev){
-  document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';
+  document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';document.getElementById('eventTimeText').textContent=ev.time||'09:00';
   document.getElementById('eventAllDay').checked=!!ev.allDay;document.querySelector('input[name="eventScope"][value="'+(ev.scope||'personal')+'"]').checked=true;
   document.getElementById('eventPriority').value=ev.priority||'normal';document.getElementById('eventColor').value=ev.color||'#d65b4a';document.getElementById('eventRepeat').value=ev.repeat||'none';
   document.querySelectorAll('input[name="eventWeekday"]').forEach(x=>x.checked=(ev.weekdays||[]).includes(Number(x.value)));
@@ -1091,6 +1167,42 @@ function showEventFields(){
   (ev.links||[]).forEach(link=>{const k=link.type==='task'?'Task':link.type==='note'?'Note':link.type==='expense'?'Expense':null;if(!k)return;document.getElementById('link'+k).checked=true;toggleEventLink(link.type);const f=document.getElementById('link'+k+'Id');if(f)f.value=link.id});
  }else{if(type==='birthday'||type==='anniversary')toggleEventAllDay()}
  updateEventPreview();
+}
+let timePickerDraft={hour:0,minute:0},timePickerOriginal='09:00',timePickerScrollTimer=null;
+function openTimePicker(){
+ const input=document.getElementById('eventTime');if(!input)return;
+ timePickerOriginal=input.value||'09:00';
+ const parts=timePickerOriginal.split(':').map(Number);
+ timePickerDraft={hour:Number.isFinite(parts[0])?parts[0]:9,minute:Number.isFinite(parts[1])?parts[1]:0};
+ renderTimeWheel('hour');renderTimeWheel('minute');
+ document.getElementById('timePickerBackdrop').classList.add('show');
+}
+function renderTimeWheel(kind){
+ const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),count=kind==='hour'?24:60,selected=kind==='hour'?timePickerDraft.hour:timePickerDraft.minute;
+ wheel.innerHTML=Array.from({length:count},(_,i)=>'<button type="button" class="time-wheel-option'+(i===selected?' selected':'')+'" data-value="'+i+'" onclick="chooseTimeWheelValue(\''+kind+'\','+i+')">'+String(i).padStart(2,'0')+'</button>').join('');
+ wheel.scrollTop=selected*42;
+}
+function chooseTimeWheelValue(kind,value){
+ timePickerDraft[kind]=value;const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
+ wheel.scrollTo({top:value*42,behavior:'smooth'});updateTimeWheelSelection(kind);
+}
+function handleTimeWheelScroll(kind){
+ const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
+ const count=kind==='hour'?24:60,index=Math.max(0,Math.min(count-1,Math.round(wheel.scrollTop/42)));
+ timePickerDraft[kind]=index;updateTimeWheelSelection(kind);
+}
+function updateTimeWheelSelection(kind){
+ const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),selected=timePickerDraft[kind];
+ wheel.querySelectorAll('.time-wheel-option').forEach((button,index)=>button.classList.toggle('selected',index===selected));
+}
+function closeTimePicker(apply){
+ const backdrop=document.getElementById('timePickerBackdrop');if(!backdrop)return;
+ if(apply){
+  const value=String(timePickerDraft.hour).padStart(2,'0')+':'+String(timePickerDraft.minute).padStart(2,'0');
+  const input=document.getElementById('eventTime'),label=document.getElementById('eventTimeText');
+  if(input)input.value=value;if(label)label.textContent=value;updateEventPreview();
+ }
+ backdrop.classList.remove('show');
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
 function toggleEventColor(){document.getElementById('eventColorWrap').classList.toggle('hidden',document.getElementById('eventPriority').value!=='high');updateEventPreview()}
