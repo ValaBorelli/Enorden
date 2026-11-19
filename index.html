@@ -283,8 +283,9 @@ let headerPanelReturn='inicio';
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]');
-let eventHoldTimer=null,eventHoldTriggered=false;
 let editingEventId=null;
+let eventPrefill=null;
+let eventCountdowns=JSON.parse(localStorage.getItem('enorden_event_countdowns')||'[]');
 let householdDevice=localStorage.getItem('enorden_household_device')==='true';
 let financeLockChoice=localStorage.getItem('enorden_finance_lock')||'unset';
 let financeLockMinutes=Number(localStorage.getItem('enorden_finance_lock_minutes')||5);
@@ -510,7 +511,7 @@ function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
  const typeLabel={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario',special:'Fecha especial o feriado'};
- const eventCard=ev=>'<button type="button" class="card" onclick="handleEventTap('+ev.id+')" onpointerdown="startEventHold(event,'+ev.id+')" onpointerup="cancelEventHold()" onpointercancel="cancelEventHold()" onpointerleave="cancelEventHold()" oncontextmenu="return false" style="display:block;width:100%;text-align:left;cursor:pointer;touch-action:pan-y;user-select:none;-webkit-user-select:none;margin-top:12px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>'
+ const eventCard=ev=>'<button type="button" class="card" onclick="openEventDetails('+ev.id+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:12px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'💐 ',special:'✨ ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>'
  let content='';
  if(calendarView==='Año'){
   content='<div class="year-grid">'+months.map((name,i)=>{
@@ -941,7 +942,7 @@ function renderOther(id){
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
 }
 function openAdd(){
- editingEventId=null;
+ editingEventId=null;eventPrefill=null;
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<label>Nombre de la tarea</label><input id="newValue" placeholder="¿Qué necesitas hacer?"><button class="primary-btn" onclick="addTask()">Guardar tarea</button>'}
  else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
@@ -951,6 +952,52 @@ function openAdd(){
 function startEventHold(e,id){if(e.button!==undefined&&e.button!==0)return;clearTimeout(eventHoldTimer);eventHoldTriggered=false;eventHoldTimer=setTimeout(()=>{eventHoldTriggered=true;const ev=events.find(x=>String(x.id)===String(id));if(ev&&confirm('¿Quieres borrar el evento "'+ev.title+'"? Esta acción no se puede deshacer.')){events=events.filter(x=>String(x.id)!==String(id));save();render()}},650)}
 function cancelEventHold(){clearTimeout(eventHoldTimer);eventHoldTimer=null}
 function handleEventTap(id){if(eventHoldTriggered){eventHoldTriggered=false;return}openEditEvent(id)}
+function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
+function eventDetailMarkup(ev){
+ const type={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario',special:'Fecha especial o feriado'}[ev.type]||'Evento';
+ const date=ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Sin fecha';
+ const rows=[['Tipo',type],['Fecha',date],['Hora',ev.allDay?'Todo el día':(ev.time||'Sin hora')],['Repetición',eventRepeatLabel(ev)],['Alertas',ev.alerts?.length?ev.alerts.map(a=>a.amount+' '+({minutes:'minutos',hours:'horas',days:'días'}[a.unit]||a.unit)+' antes').join(', '):'Sin alertas'],['Calendario',ev.scope==='family'?'Compartido':'Personal'],['Vínculos',(ev.links||[]).length?ev.links.map(l=>({task:'Tareas',note:'Notas',expense:'Finanzas'}[l.type]||l.type)).join(', '):'Ninguno'],['Prioridad',ev.priority==='high'?'Alta':'Normal']];
+ return '<div class="event-detail-card" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div class="event-detail-title">'+escapeHTML(ev.title)+'</div><div class="event-detail-list">'+rows.map(r=>'<div class="event-detail-row"><span class="event-detail-label">'+r[0]+'</span><span class="event-detail-value">'+escapeHTML(r[1])+'</span></div>').join('')+'</div></div>';
+}
+function openEventDetails(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ editingEventId=null;eventPrefill=null;
+ document.getElementById('modalTitle').textContent='Evento';
+ const sub=document.getElementById('modalSubtitle');sub.textContent='Vista previa y acciones';sub.classList.remove('hidden');
+ document.getElementById('modalBody').innerHTML=eventDetailMarkup(ev)+'<div class="event-detail-actions"><button class="secondary-btn" onclick="duplicateEvent('+ev.id+')">Duplicar</button><button class="primary-btn" onclick="openEditEvent('+ev.id+')">Editar</button><button class="secondary-btn" onclick="deleteEvent('+ev.id+')">Eliminar</button><button class="secondary-btn" onclick="openEventMore('+ev.id+')">Más</button></div>';
+ document.getElementById('backdrop').classList.add('show');
+}
+function deleteEvent(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ if(!confirm('¿Quieres eliminar el evento “'+ev.title+'”? Esta acción no se puede deshacer.'))return;
+ events=events.filter(x=>String(x.id)!==String(id));eventCountdowns=eventCountdowns.filter(x=>String(x.eventId)!==String(id));localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));save();closeModal();render();
+}
+function duplicateEvent(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ eventPrefill=JSON.parse(JSON.stringify(ev));editingEventId=null;
+ document.getElementById('modalTitle').textContent='Duplicar evento';
+ const sub=document.getElementById('modalSubtitle');sub.textContent='Se creará un evento nuevo con los datos precargados. Puedes modificarlos libremente.';sub.classList.remove('hidden');
+ document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="special">Fecha especial o feriado</option></select></div><div id="eventFields"></div>';
+ document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
+}
+function openEventMore(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ document.getElementById('modalTitle').textContent='Más opciones';
+ const sub=document.getElementById('modalSubtitle');sub.textContent='Agrega una cuenta regresiva a tu Inicio.';sub.classList.remove('hidden');
+ const exists=eventCountdowns.some(x=>String(x.eventId)===String(id));
+ document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">'+(exists?'Ya tienes una cuenta regresiva para este evento.':'Puedes mostrar cuánto falta para este evento debajo de las tarjetas de Inicio.')+'</p></div><button class="primary-btn" style="width:100%" '+(exists?'disabled':'')+' onclick="createEventCountdown('+ev.id+')">'+(exists?'Cuenta regresiva creada':'Crear cuenta regresiva')+'</button>';
+}
+function createEventCountdown(id){
+ const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ if(!ev.date||new Date(ev.date+'T23:59:59')<new Date()){alert('La fecha del evento ya pasó. Edita el evento y elige una fecha futura para crear su cuenta regresiva.');return}
+ if(!eventCountdowns.some(x=>String(x.eventId)===String(id)))eventCountdowns.push({eventId:ev.id,title:ev.title,date:ev.date});
+ localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));closeModal();render();
+}
+function renderCountdownWidgets(){
+ if(!eventCountdowns.length)return '';
+ const today=new Date();today.setHours(0,0,0,0);
+ return '<section class="section" aria-label="Cuentas regresivas">'+eventCountdowns.map(c=>{const target=new Date(c.date+'T00:00:00'),days=Math.max(0,Math.ceil((target-today)/86400000));return '<div class="countdown-card"><div class="muted" style="font-size:11px">CUENTA REGRESIVA</div><strong>'+escapeHTML(c.title)+'</strong><div class="countdown-number">'+(days===0?'¡Es hoy!':days+' '+(days===1?'día':'días'))+'</div><div class="countdown-caption">'+target.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})+'</div></div>'}).join('')+'</section>';
+}
 function openEditEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
  editingEventId=ev.id;
@@ -961,7 +1008,7 @@ function openEditEvent(id){
 }
 function showEventFields(){
  const type=document.getElementById('eventType').value,w=document.getElementById('eventFields');if(!type){w.innerHTML='';return}
- const ev=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null;
+ const ev=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;
  const preset=ev?.date||(calendarView==='Día'?keyDate(selectedDate):'');
  const times=Array.from({length:96},(_,i)=>{const h=String(Math.floor(i/4)).padStart(2,'0'),m=String(i%4*15).padStart(2,'0');return '<option value="'+h+':'+m+'">'+h+':'+m+'</option>'}).join('');
  const taskOptions=tasks.map(t=>'<option value="'+t.id+'">'+escapeHTML(t.title)+'</option>').join('');
@@ -1002,7 +1049,7 @@ function similarEventName(a,b){const x=normalizedEventName(a),y=normalizedEventN
 function eventOccursOn(ev,date){const base=new Date((ev.date||'')+'T12:00:00'),target=new Date(date.getFullYear(),date.getMonth(),date.getDate());if(!ev.date||isNaN(base.getTime())||target<new Date(base.getFullYear(),base.getMonth(),base.getDate()))return false;const diff=Math.round((target-new Date(base.getFullYear(),base.getMonth(),base.getDate()))/86400000);if(!ev.repeat||ev.repeat==='none')return diff===0;if(ev.repeat==='daily')return true;if(ev.repeat==='monthly')return target.getDate()===base.getDate();if(ev.repeat==='yearly')return target.getMonth()===base.getMonth()&&target.getDate()===base.getDate();if(ev.repeat==='custom')return Array.isArray(ev.weekdays)&&ev.weekdays.includes((target.getDay()+6)%7);return diff===0}
 function addEvent(){
  const name=document.getElementById('eventName')?.value.trim(),date=document.getElementById('eventDate')?.value;
- const old=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null,type=old?old.type:document.getElementById('eventType')?.value;
+ const old=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null,type=document.getElementById('eventType')?.value;
  if(!type){alert('Selecciona el tipo de evento.');return}if(!name){alert('Escribe el nombre del evento.');return}if(!date){alert('Selecciona una fecha.');return}
  const repeat=document.getElementById('eventRepeat').value,days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>Number(x.value));if(repeat==='custom'&&!days.length){alert('Selecciona al menos un día de la semana.');return}
  const allDay=document.getElementById('eventAllDay').checked,scope=document.querySelector('input[name="eventScope"]:checked')?.value||'personal',priority=document.getElementById('eventPriority').value,alerts=collectEventAlerts(),links=[];
@@ -1012,7 +1059,7 @@ function addEvent(){
  const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!confirm('Ya existe un evento similar en esa fecha ('+dup.title+'). ¿Quieres '+(old?'guardar los cambios':'crearlo')+' de todas formas?'))return;
  const changes={title:name,type,date,time:allDay?null:document.getElementById('eventTime').value,allDay,scope,priority,color:priority==='high'?document.getElementById('eventColor').value:null,repeat,weekdays:repeat==='custom'?days:[],alerts,links};
  if(old)Object.assign(old,changes);else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
- editingEventId=null;save();closeModal();render();
+ editingEventId=null;eventPrefill=null;save();closeModal();render();
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer()});
 window.addEventListener('pagehide',()=>{if(current==='finanzas')startFinanceLockTimer()});
