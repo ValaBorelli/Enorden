@@ -965,8 +965,8 @@ let editingTaskTemplateId=null;
 function editTaskTemplate(id){
  const t=getTaskTemplate(id);if(!t)return;editingTaskTemplateId=Number(id);
  let markup=taskEditorMarkup(t);
- markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask"[\\s\\S]*?<\\/div><\\/div>/,'');
- markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="saveTaskTemplate"[\\s\\S]*?<\\/div>/,'');
+markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask"[\s\S]*?<\/div><\/div>/,'');
+markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="saveTaskTemplate"[\s\S]*?<\/div>/,'');
  markup=markup.replace('onclick="saveTaskEditor()"','onclick="saveTaskTemplateEditor()"');
  markup=markup.replace('Guardar cambios','Guardar plantilla');
  showTaskModal('Editar plantilla',markup);
