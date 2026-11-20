@@ -303,7 +303,14 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .task-subtasks-heading>label{font-size:13px;font-weight:700;color:#42483f}
 .task-add-subtask{padding:7px 10px;font-size:12px;white-space:nowrap}
 .task-subtasks-list{display:grid;gap:7px}
-.task-subtask-input-row{display:grid;grid-template-columns:minmax(0,1fr) 36px;gap:8px;align-items:center}
+.task-subtask-item{display:grid;gap:7px}
+.task-subtask-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto 36px;gap:8px;align-items:center}
+.task-subtask-input-row input{min-width:0}
+.task-add-nested{padding:7px 9px;font-size:11px;white-space:nowrap}
+.task-nested-subtasks{display:grid;gap:7px;margin-left:22px;padding-left:12px;border-left:2px solid var(--line)}
+.task-subtask-level-two{grid-template-columns:minmax(0,1fr) 36px}
+.task-subtask-level-two input{grid-column:1}
+
 .task-subtask-input-row input{margin:0!important}
 .task-subtask-input-row .small-btn{height:36px}
 .task-create-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
@@ -734,18 +741,36 @@ function renderTasks(){
 }
 function addTaskSubtask(){
  const list=document.getElementById('newTaskSubtasks');if(!list)return;
- const row=document.createElement('div');row.className='task-subtask-input-row';
- const input=document.createElement('input');input.type='text';input.maxLength=120;input.placeholder='Nombre de la subtarea';input.setAttribute('aria-label','Nombre de la subtarea');
+ const row=document.createElement('div');row.className='task-subtask-item';
+ const line=document.createElement('div');line.className='task-subtask-input-row';
+ const input=document.createElement('input');input.type='text';input.maxLength=120;input.placeholder='Nombre de la subtarea';input.setAttribute('aria-label','Nombre de la subtarea nivel 1');
+ const nested=document.createElement('button');nested.type='button';nested.className='secondary-btn task-add-nested';nested.textContent='+ Subtarea N2';nested.onclick=()=>addNestedTaskSubtask(row);
  const remove=document.createElement('button');remove.type='button';remove.className='small-btn';remove.textContent='×';remove.setAttribute('aria-label','Eliminar subtarea');remove.onclick=()=>row.remove();
+ line.append(input,nested,remove);
+ const children=document.createElement('div');children.className='task-nested-subtasks';
+ row.append(line,children);list.appendChild(row);input.focus();
+}
+function addNestedTaskSubtask(parentRow){
+ const list=parentRow?.querySelector('.task-nested-subtasks');if(!list)return;
+ const row=document.createElement('div');row.className='task-subtask-input-row task-subtask-level-two';
+ const input=document.createElement('input');input.type='text';input.maxLength=120;input.placeholder='Nombre de la subtarea N2';input.setAttribute('aria-label','Nombre de la subtarea nivel 2');
+ const remove=document.createElement('button');remove.type='button';remove.className='small-btn';remove.textContent='×';remove.setAttribute('aria-label','Eliminar subtarea nivel 2');remove.onclick=()=>row.remove();
  row.append(input,remove);list.appendChild(row);input.focus();
 }
 function addTask(){
  const input=document.getElementById('newValue');if(!input)return;
  const title=input.value.trim();
  if(!title){input.focus();input.setCustomValidity('Escribe el nombre de la tarea.');input.reportValidity();input.setCustomValidity('');return}
- const subtasks=[...document.querySelectorAll('#newTaskSubtasks input')].map(x=>x.value.trim()).filter(Boolean).map((title,index)=>({id:Date.now()+index,title,done:false}));
+ const now=Date.now();
+ const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{
+  const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();
+  if(!name)return null;
+  const id=now+index+1;
+  const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>x.value.trim()).filter(Boolean).map((title,j)=>({id:now+1000+index*100+j,title,done:false,assignable:false,inheritsAssignmentFrom:id}));
+  return {id,title:name,done:false,assignable:true,subtasks:children};
+ }).filter(Boolean);
  const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';
- tasks.push({id:Date.now(),title,done:false,scope,subtasks,createdAt:new Date().toISOString()});
+ tasks.push({id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString()});
  save();closeModal();render();
 }
 function taskHTML(t){
