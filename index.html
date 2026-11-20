@@ -869,6 +869,7 @@ function taskAssignmentMatchesCurrentUser(item){
 }
 function taskIsAssignedToCurrentUser(t){return taskIsPublic(t)&&taskAssignmentMatchesCurrentUser(t)}
 function taskSubtaskIsAssignedToCurrentUser(subtask){return taskAssignmentMatchesCurrentUser(subtask)}
+function taskHasAssignmentsForCurrentUser(t){return taskHasAssignmentsForCurrentUser(t)}
 function taskHasUnread(t){
  const user=localStorage.getItem('enorden_profile_name')||'Vale';
  return Array.isArray(t.unreadBy)?t.unreadBy.includes(user):t.unread===true;
@@ -915,7 +916,7 @@ function renderTasks(){
   {label:'Terminadas',count:tasks.filter(t=>t.done).length,unread:tasks.filter(t=>t.done).some(taskHasUnread)},
   {label:'Familia',count:active.filter(taskIsPublic).length,unread:active.filter(taskIsPublic).some(taskHasUnread)},
   {label:'Personales',count:active.filter(t=>!taskIsPublic(t)).length,unread:active.filter(t=>!taskIsPublic(t)).some(taskHasUnread)},
-  {label:'Asignadas',count:active.filter(taskIsAssignedToCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
+  {label:'Asignadas',count:active.filter(taskHasAssignmentsForCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
  ];
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
