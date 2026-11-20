@@ -285,8 +285,11 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 /* Primera propuesta visual del módulo Tareas */
 .app.tasks-app{max-width:1100px;height:100vh;height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column}
 .tasks-app header{flex:0 0 76px}
-.tasks-app main{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:25px 25px 90px}
-.tasks-app #screen{display:flex;flex:1;min-height:0;flex-direction:column}
+.tasks-app main{flex:1 1 auto;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;display:flex;flex-direction:column;padding:25px 25px 90px;scrollbar-width:thin;scrollbar-color:var(--green2) var(--surface2)}
+.tasks-app main::-webkit-scrollbar{width:8px}
+.tasks-app main::-webkit-scrollbar-track{background:var(--surface2);border-radius:8px}
+.tasks-app main::-webkit-scrollbar-thumb{background:var(--green2);border-radius:8px}
+.tasks-app #screen{display:flex;flex:0 0 auto;min-height:100%;flex-direction:column}
 .tasks-app .page-heading{flex:0 0 auto}
 .tasks-app .bottom-nav{width:min(1100px,100%)}
 .tasks-app .fab{right:max(20px,calc((100vw - 1060px)/2 + 20px));bottom:83px}
