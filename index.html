@@ -918,7 +918,7 @@ function renderTasks(){
   {label:'Asignadas',count:active.filter(taskIsAssignedToCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
  ];
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
- <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
+ <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content" aria-label="Resumen de tareas">
    <div class="tasks-shortcuts">${counts.map(item=>{const action=item.label==='Familia'?"showTaskView(\'family\')":item.label==='Personales'?"showTaskView(\'personal\')":item.label==='Asignadas'?"showTaskView(\'assigned\')":null;const tag=action?'button':'div';return `<${tag} ${action?`type="button" onclick="${action}"`:''} class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</${tag}>`}).join('')}</div>
   </section>
@@ -949,7 +949,7 @@ function renderScopedTasks(scope){
   return subtasks.length?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
- <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
+ <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
    ${taskCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
@@ -973,7 +973,7 @@ function taskDrop(event,taskId,targetId,level,parentId){
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
  screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
- <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
+ <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Resumen de Mi día">
    <div class="card empty">La vista diaria y su organización se diseñarán en la siguiente etapa.</div>
   </section>
