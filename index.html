@@ -302,6 +302,14 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-sidebar-item{width:100%;text-align:left;cursor:pointer}
 .tasks-sidebar-item{justify-content:flex-start}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
+.tasks-layout.is-sidebar-collapsed{grid-template-columns:42px minmax(0,1fr)}
+.tasks-sidebar-toggle{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;min-height:38px;padding:6px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font-size:18px;font-weight:700;cursor:pointer}
+.tasks-sidebar-toggle span{font-size:12px}
+.tasks-sidebar.is-collapsed{width:42px;height:auto;min-height:0;padding:6px;gap:0;align-items:stretch}
+.tasks-sidebar.is-collapsed .tasks-sidebar-item{display:none}
+.tasks-layout.is-sidebar-collapsed .tasks-content{grid-column:2;min-width:0}
+.tasks-layout.is-sidebar-collapsed .family-content{width:100%;min-width:0}
+
 .family-content{display:block;width:100%;min-width:0}.task-action-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-action-menu button{min-height:46px}.task-action-menu button:last-child{grid-column:1/-1}.task-assignment-question{font-size:15px;font-weight:600;margin:0 0 14px}.family-task-card{user-select:none;-webkit-user-select:none}
 .family-task-disclosure>summary{list-style:none;cursor:pointer}
 .family-task-disclosure>summary::-webkit-details-marker{display:none}
@@ -426,6 +434,7 @@ let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
 if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
 let current='inicio',calendarView='Mes',selectedDate=new Date();
 let taskView='overview';
+let taskSidebarCollapsed=false;
 let calendarSearchOpen=false,calendarSearchQuery='';
 let appLanguage=localStorage.getItem('enorden_language')||'es';
 const appearanceThemes={natural:{name:'Natural',bg:'#EDE8DA',header:'#344E40',text:'#292D29',muted:'#777970',cards:['#FFFFFF','#FFFFFF','#FFFFFF']},night:{name:'Nocturno',bg:'#151817',header:'#263D32',text:'#F1F2EF',muted:'#AEB9B1',accent:'#A8D0B1',cards:['#252B28','#252B28','#252B28']},colorful:{name:'Colorido',bg:'#FFF5E8',header:'#7656B8',text:'#493A70',muted:'#806F99',accent:'#F28B78',cards:['#D9EFF9','#FCE0E7','#FFF0B8']},executive:{name:'Ejecutivo',bg:'#EDF0F3',header:'#24364B',text:'#303A46',muted:'#657386',accent:'#A98750',cards:['#FFFFFF','#FFFFFF','#FFFFFF']}};
@@ -746,13 +755,16 @@ function markTaskViewed(id){
  save();
 }
 function taskSidebarHTML(){
- return `<aside class="tasks-sidebar" aria-label="Secciones de tareas">
+ const canCollapse=['today','family','personal'].includes(taskView);
+ return `<aside class="tasks-sidebar${canCollapse&&taskSidebarCollapsed?' is-collapsed':''}" aria-label="Secciones de tareas">
+  ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
   <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">🏠 <span>Inicio</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
  </aside>`;
 }
+function toggleTaskSidebar(){if(!['today','family','personal'].includes(taskView))return;taskSidebarCollapsed=!taskSidebarCollapsed;render();}
 function showTaskView(view){taskView=view;render();}
 function renderTasks(){
  if(taskView==='family'){renderScopedTasks('family');return;}
@@ -768,7 +780,7 @@ function renderTasks(){
   {label:'Asignadas',count:active.filter(taskIsAssignedToCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
  ];
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
- <div class="tasks-layout">${taskSidebarHTML()}
+ <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content" aria-label="Resumen de tareas">
    <div class="tasks-shortcuts">${counts.map(item=>`<div class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</div>`).join('')}</div>
   </section>
@@ -792,7 +804,7 @@ function renderScopedTasks(scope){
   return subtasks.length?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-main"><label class="family-task-line" onclick="event.stopPropagation()"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><div class="family-task-main"><label class="family-task-line"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label></div></article>`;
  }).join('');
  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
- <div class="tasks-layout">${taskSidebarHTML()}
+ <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
    ${taskCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
@@ -816,7 +828,7 @@ function taskDrop(event,taskId,targetId,level,parentId){
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
  screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
- <div class="tasks-layout">${taskSidebarHTML()}
+ <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Resumen de Mi día">
    <div class="card empty">La vista diaria y su organización se diseñarán en la siguiente etapa.</div>
   </section>
