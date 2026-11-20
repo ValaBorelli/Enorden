@@ -297,6 +297,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
 .task-shortcut-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);text-align:center;box-shadow:0 2px 8px #00000008}.task-shortcut-label{font-size:15px;font-weight:700}.task-shortcut-count{font-size:14px;line-height:1;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}.task-unread-dot{position:absolute;top:10px;left:10px;width:9px;height:9px;border-radius:50%;background:#e34b4b;box-shadow:0 0 0 2px var(--surface)}
 .tasks-sidebar-item{width:100%;text-align:left;cursor:pointer}
+.tasks-sidebar-item{justify-content:flex-start}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
 .family-content{display:block;width:100%;min-width:0}
 .family-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:13px}
@@ -733,14 +734,17 @@ function markTaskViewed(id){
 }
 function taskSidebarHTML(){
  return `<aside class="tasks-sidebar" aria-label="Secciones de tareas">
-  <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">☀️ <span>Mi día</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">🏠 <span>Inicio</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
-  <button type="button" class="tasks-sidebar-item" aria-label="Personal">👤 <span>Personal</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
  </aside>`;
 }
 function showTaskView(view){taskView=view;render();}
 function renderTasks(){
- if(taskView==='family'){renderFamilyTasks();return;}
+ if(taskView==='family'){renderScopedTasks('family');return;}
+ if(taskView==='personal'){renderScopedTasks('personal');return;}
+ if(taskView==='today'){renderMyDay();return;}
  const active=tasks.filter(t=>!t.done);
  const counts=[
   {label:'Todas',count:tasks.length,unread:tasks.some(taskHasUnread)},
@@ -757,10 +761,13 @@ function renderTasks(){
   </section>
  </div>`;
 }
-function renderFamilyTasks(){
- const familyTasks=tasks.filter(taskIsPublic);
- const pending=familyTasks.filter(t=>!t.done).length;
- const taskCards=familyTasks.map(t=>{
+function renderScopedTasks(scope){
+ const isFamily=scope==='family';
+ const scopedTasks=tasks.filter(t=>isFamily?taskIsPublic(t):!taskIsPublic(t));
+ const pending=scopedTasks.filter(t=>!t.done).length;
+ const title=isFamily?'Familia':'Personal';
+ const description=isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
+ const taskCards=scopedTasks.map(t=>{
   const subtasks=Array.isArray(t.subtasks)?t.subtasks:[];
   const subHTML=subtasks.map(st=>{
    const nested=Array.isArray(st.subtasks)?st.subtasks:[];
@@ -770,13 +777,22 @@ function renderFamilyTasks(){
   }).join('');
   return `<article class="card family-task-card"><div class="family-task-main"><label class="family-task-line"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="deleteTask(${Number(t.id)})">×</button></div>${subHTML?'<div class="family-subtasks">'+subHTML+'</div>':''}</article>`;
  }).join('');
- screen.innerHTML=`<div class="page-heading"><h1>Familia</h1><p>Las tareas compartidas del hogar, en un solo lugar.</p></div>
+ screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
  <div class="tasks-layout">${taskSidebarHTML()}
-  <section class="tasks-content family-content" aria-label="Tareas de familia">
-   <div class="family-list-heading"><strong>${familyTasks.length} ${familyTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
-   ${taskCards||'<div class="card empty">Todavía no hay tareas familiares. Puedes crear una con el botón +.</div>'}
+  <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
+   <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
+   ${taskCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
   </section>
  </div><div class="bottom-space"></div>`;
+}
+function renderFamilyTasks(){renderScopedTasks('family');}
+function renderMyDay(){
+ screen.innerHTML=`<div class="page-heading"><h1>Mi día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
+ <div class="tasks-layout">${taskSidebarHTML()}
+  <section class="tasks-content family-content" aria-label="Resumen de Mi día">
+   <div class="card empty">La vista diaria y su organización se diseñarán en la siguiente etapa.</div>
+  </section>
+ </div>`;
 }
 function toggleTaskLevel(taskId,subtaskId,nestedId){
  const task=tasks.find(t=>Number(t.id)===taskId);if(!task)return;
