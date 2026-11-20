@@ -744,7 +744,8 @@ function addTask(){
  const title=input.value.trim();
  if(!title){input.focus();input.setCustomValidity('Escribe el nombre de la tarea.');input.reportValidity();input.setCustomValidity('');return}
  const subtasks=[...document.querySelectorAll('#newTaskSubtasks input')].map(x=>x.value.trim()).filter(Boolean).map((title,index)=>({id:Date.now()+index,title,done:false}));
- tasks.push({id:Date.now(),title,done:false,scope:'personal',subtasks,createdAt:new Date().toISOString()});
+ const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';
+ tasks.push({id:Date.now(),title,done:false,scope,subtasks,createdAt:new Date().toISOString()});
  save();closeModal();render();
 }
 function taskHTML(t){
@@ -1149,7 +1150,7 @@ function renderOther(id){
 function openAdd(){
  editingEventId=null;eventPrefill=null;eventCreationTime=new Date();
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
- if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" placeholder="¿Qué necesitas hacer?" autocomplete="off"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list"></div></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="addTask()">Guardar</button></div>'}
+ if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<div class="event-form-section task-create-section"><label for="newTaskScope">¿Dónde se verá?</label><select id="newTaskScope" aria-label="Dónde se verá la tarea"><option value="personal" selected>Tareas Personales</option><option value="family">Tareas Familia</option></select></div><div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" placeholder="¿Qué necesitas hacer?" autocomplete="off"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list"></div></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="addTask()">Guardar</button></div>'}
  else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
  else{
   document.getElementById('modalTitle').textContent='Nuevo evento';
