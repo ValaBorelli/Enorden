@@ -765,7 +765,7 @@ function renderScopedTasks(scope){
  const isFamily=scope==='family';
  const scopedTasks=tasks.filter(t=>isFamily?taskIsPublic(t):!taskIsPublic(t));
  const pending=scopedTasks.filter(t=>!t.done).length;
- const title=isFamily?'Familia':'Personal';
+ const title=isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
  const taskCards=scopedTasks.map(t=>{
   const subtasks=Array.isArray(t.subtasks)?t.subtasks:[];
@@ -787,7 +787,7 @@ function renderScopedTasks(scope){
 }
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
- screen.innerHTML=`<div class="page-heading"><h1>Mi día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
+ screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
  <div class="tasks-layout">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Resumen de Mi día">
    <div class="card empty">La vista diaria y su organización se diseñarán en la siguiente etapa.</div>
