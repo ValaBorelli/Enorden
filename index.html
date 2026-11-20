@@ -374,6 +374,19 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
  .tasks-sidebar-item{font-size:11px}
  .task-shortcut-card{font-size:12px}
 }
+
+/* Tareas: mantener cada nombre en su propia fila y evitar cortes dentro de palabras.
+   Se aplica igual con el panel lateral visible u oculto. */
+.family-task-line{align-items:flex-start}
+.family-task-line>span:not(.task-assignee),
+.family-task-line>strong{
+ min-width:0;
+ white-space:normal;
+ overflow-wrap:break-word;
+ word-break:normal;
+ hyphens:manual;
+}
+
 </style>
 </head>
 <body>
