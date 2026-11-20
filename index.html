@@ -569,7 +569,7 @@ let appTheme=localStorage.getItem('enorden_theme')||'natural';if(!appearanceThem
 let headerPanelReturn='inicio';
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
-let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.type==='special'?{...ev,type:'normal'}:ev);
+let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.taskId!=null?{...ev,type:'event_task'}:ev.type==='special'?{...ev,type:'normal'}:ev);
 let editingEventId=null;
 let eventPrefill=null;
 let eventCreationTime=null;
