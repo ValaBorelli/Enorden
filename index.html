@@ -621,6 +621,7 @@ function toggleHeaderPanel(id){
 function navigate(id){
  if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
  if(id==='finanzas'&&current!=='finanzas'){requestFinanceAccess();return}
+ if(id==='tareas'&&current!=='tareas')taskView='overview';
  current=id;render();window.scrollTo(0,0);
 }
 function renderNav(){
