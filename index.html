@@ -869,7 +869,7 @@ function taskAssignmentMatchesCurrentUser(item){
 }
 function taskIsAssignedToCurrentUser(t){return taskIsPublic(t)&&taskAssignmentMatchesCurrentUser(t)}
 function taskSubtaskIsAssignedToCurrentUser(subtask){return taskAssignmentMatchesCurrentUser(subtask)}
-function taskHasAssignmentsForCurrentUser(t){return taskHasAssignmentsForCurrentUser(t)}
+function taskHasAssignmentsForCurrentUser(t){return taskIsPublic(t)&&(taskIsAssignedToCurrentUser(t)||(t.subtasks||[]).some(taskSubtaskIsAssignedToCurrentUser))}
 function taskHasUnread(t){
  const user=localStorage.getItem('enorden_profile_name')||'Vale';
  return Array.isArray(t.unreadBy)?t.unreadBy.includes(user):t.unread===true;
@@ -928,7 +928,7 @@ function renderTasks(){
 function renderScopedTasks(scope){
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
- const scopedTasks=tasks.filter(t=>isAssigned?(taskIsPublic(t)&&(taskIsAssignedToCurrentUser(t)||(t.subtasks||[]).some(taskSubtaskIsAssignedToCurrentUser))):isFamily?taskIsPublic(t):!taskIsPublic(t));
+ const scopedTasks=tasks.filter(t=>isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
  const pending=scopedTasks.filter(t=>!t.done).length;
  const title=isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
