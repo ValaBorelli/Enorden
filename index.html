@@ -1037,14 +1037,17 @@ function renderScopedTasks(scope){
   return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure" ontoggle="rememberTaskDisclosure('task:${Number(t.id)}',this.open)" ${expandedTaskDisclosures.has('task:'+t.id)?'open':''}><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
  if(isAll){
-  const personalTasks=scopedTasks.filter(t=>!taskIsPublic(t)&&!taskIsScheduledForFuture(t));
-  const familyTasks=scopedTasks.filter(t=>taskIsPublic(t)&&!taskIsScheduledForFuture(t));
-  const scheduledPersonal=scopedTasks.filter(t=>!taskIsPublic(t)&&taskIsScheduledForFuture(t));
-  const scheduledFamily=scopedTasks.filter(t=>taskIsPublic(t)&&taskIsScheduledForFuture(t));
+  const completedTasks=scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t));
+  const activeTasks=scopedTasks.filter(t=>!completedTasks.includes(t));
+  const personalTasks=activeTasks.filter(t=>!taskIsPublic(t)&&!taskIsScheduledForFuture(t));
+  const familyTasks=activeTasks.filter(t=>taskIsPublic(t)&&!taskIsScheduledForFuture(t));
+  const scheduledPersonal=activeTasks.filter(t=>!taskIsPublic(t)&&taskIsScheduledForFuture(t));
+  const scheduledFamily=activeTasks.filter(t=>taskIsPublic(t)&&taskIsScheduledForFuture(t));
   const personalHTML=renderTaskCards(personalTasks);
   const familyHTML=renderTaskCards(familyTasks);
   const scheduledPersonalHTML=renderTaskCards(scheduledPersonal);
   const scheduledFamilyHTML=renderTaskCards(scheduledFamily);
+  const completedHTML=renderTaskCards(completedTasks);
   screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
  <div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
@@ -1057,6 +1060,7 @@ function renderScopedTasks(scope){
      <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Familia</h3>${scheduledFamilyHTML||'<div class="card empty">No hay tareas familiares programadas.</div>'}</section>
     </div>
    </details>
+   <details class="task-scheduled-section" ontoggle="rememberTaskSection('all:completed',this.open)" ${expandedTaskSections.has('all:completed')?'open':''}><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedHTML||'<div class="card empty">Todavía no hay tareas terminadas.</div>'}</div></details>
   </section>
  </div><div class="bottom-space"></div>`;
   return;
