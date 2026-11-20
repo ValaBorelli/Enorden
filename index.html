@@ -395,6 +395,38 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
  hyphens:none;
 }
 
+
+/* Evitar que tareas y subtareas ensanchen su tarjeta por el ancho mínimo del contenido. */
+.family-task-card,
+.family-task-card>.family-task-disclosure,
+.family-task-card .family-subtasks,
+.family-task-card .family-subtask,
+.family-task-card .family-subtask-disclosure,
+.family-task-card .family-nested-list{
+ min-width:0;
+ max-width:100%;
+}
+.family-task-card .family-task-main,
+.family-task-card .family-task-line,
+.family-task-card .family-task-disclosure>summary,
+.family-task-card .family-subtask-disclosure>summary,
+.family-task-card .family-task-disclosure>summary>.family-task-line{
+ min-width:0;
+ max-width:100%;
+}
+.family-task-card .family-subtasks,
+.family-task-card .family-nested-list{
+ grid-template-columns:minmax(0,1fr);
+}
+.family-task-card .family-subtask{
+ grid-template-columns:minmax(0,1fr);
+}
+.family-task-card .family-task-line>span:not(.task-assignee),
+.family-task-card .family-task-line>strong{
+ min-width:0;
+ max-width:100%;
+}
+
 </style>
 </head>
 <body>
