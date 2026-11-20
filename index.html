@@ -295,7 +295,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-sidebar-item{display:flex;align-items:center;gap:7px;padding:12px 9px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);color:var(--text);font-size:14px;font-weight:600;white-space:nowrap}
 .tasks-content{display:flex;align-items:flex-start;justify-content:flex-start;min-width:0;padding:0}
 .tasks-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
-.task-shortcut-card{display:flex;align-items:center;justify-content:center;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);font-size:15px;font-weight:700;text-align:center;box-shadow:0 2px 8px #00000008}
+.task-shortcut-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);text-align:center;box-shadow:0 2px 8px #00000008}.task-shortcut-label{font-size:15px;font-weight:700}.task-shortcut-count{font-size:29px;line-height:1;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}.task-unread-dot{position:absolute;top:10px;left:10px;width:9px;height:9px;border-radius:50%;background:#e34b4b;box-shadow:0 0 0 2px var(--surface)}
 @media(max-width:700px){
  .tasks-app main{padding:21px 17px 90px}
  .tasks-layout{gap:10px;min-height:0}
@@ -678,8 +678,35 @@ function changeDate(n){
  else selectedDate.setDate(selectedDate.getDate()+n);
  render();
 }
+function taskIsPublic(t){return t.scope==='family'||t.scope==='public'||t.visibility==='public'||t.public===true}
+function taskIsAssignedToCurrentUser(t){
+ const user=localStorage.getItem('enorden_profile_name')||'Vale';
+ const email=localStorage.getItem('enorden_login_email')||'';
+ return taskIsPublic(t)&&(t.assignedTo===user||t.assignedTo===email||t.assignedToUserId===localStorage.getItem('enorden_user_id'));
+}
+function taskHasUnread(t){
+ const user=localStorage.getItem('enorden_profile_name')||'Vale';
+ return Array.isArray(t.unreadBy)?t.unreadBy.includes(user):t.unread===true;
+}
+function markTaskViewed(id){
+ const t=tasks.find(x=>String(x.id)===String(id));if(!t)return;
+ const user=localStorage.getItem('enorden_profile_name')||'Vale';
+ if(Array.isArray(t.unreadBy))t.unreadBy=t.unreadBy.filter(x=>x!==user);
+ if(t.unread===true)t.unread=false;
+ if(!Array.isArray(t.readBy))t.readBy=[];
+ if(!t.readBy.includes(user))t.readBy.push(user);
+ save();
+}
 function renderTasks(){
- const shortcuts=['Todas','Pendientes','Realizadas','Familia','Personales','Asignadas'];
+ const active=tasks.filter(t=>!t.done);
+ const counts=[
+  {label:'Todas',count:tasks.length,unread:tasks.some(taskHasUnread)},
+  {label:'Pendientes',count:active.length,unread:active.some(taskHasUnread)},
+  {label:'Terminadas',count:tasks.filter(t=>t.done).length,unread:tasks.filter(t=>t.done).some(taskHasUnread)},
+  {label:'Familia',count:active.filter(taskIsPublic).length,unread:active.filter(taskIsPublic).some(taskHasUnread)},
+  {label:'Personales',count:active.filter(t=>!taskIsPublic(t)).length,unread:active.filter(t=>!taskIsPublic(t)).some(taskHasUnread)},
+  {label:'Asignadas',count:active.filter(taskIsAssignedToCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
+ ];
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
  <div class="tasks-layout">
   <aside class="tasks-sidebar" aria-label="Secciones de tareas">
@@ -687,8 +714,8 @@ function renderTasks(){
    <div class="tasks-sidebar-item">🫂 <span>Familia</span></div>
    <div class="tasks-sidebar-item">👤 <span>Personal</span></div>
   </aside>
-  <section class="tasks-content" aria-label="Accesos directos">
-   <div class="tasks-shortcuts">${shortcuts.map(label=>`<div class="task-shortcut-card">${label}</div>`).join('')}</div>
+  <section class="tasks-content" aria-label="Resumen de tareas">
+   <div class="tasks-shortcuts">${counts.map(item=>`<div class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</div>`).join('')}</div>
   </section>
  </div>`;
 }
