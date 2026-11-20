@@ -731,7 +731,7 @@ function renderHome(){
   <button onclick="doSearch()" aria-label="Buscar">⌕</button>
  </div>
  <div class="summary-grid">
-  <button class="summary-card" onclick="navigate('tareas')">
+  <button class="summary-card" onclick="navigate('tareas');showTaskView('pending')">
    <div class="number">${pending}</div><div class="label">Tareas pendientes</div>
   </button>
   <button class="summary-card" onclick="navigate('calendario')">
