@@ -900,7 +900,6 @@ function taskSidebarHTML(){
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
-  <button type="button" class="tasks-sidebar-item ${taskView==='assigned'?'active':''}" onclick="showTaskView('assigned')">📌 <span>Asignadas</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='templates'?'active':''}" onclick="showTaskView('templates')">📋 <span>Mis Plantillas</span></button>
   ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
  </aside>`;
