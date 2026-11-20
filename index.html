@@ -825,7 +825,7 @@ function renderCalendar(){
    return '<div class="year-month"><button type="button" class="year-month-title" onclick="selectedDate=new Date('+y+','+i+',1);calendarView=\'Mes\';render()">'+name+'</button><div class="year-days">'+weekdays.map(w=>'<span>'+w[0]+'</span>').join('')+cells+'</div></div>';
   }).join('')+'</div>';
  }else if(calendarView==='Día'){
-  const list=on(d);content='<strong>'+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</strong>'+(list.map(ev=>eventCard(ev)).join('')||'<div class="empty">No hay eventos para este día.</div>');
+  const list=on(d).sort((a,b)=>(Number(b.allDay)-Number(a.allDay))||(a.time||'').localeCompare(b.time||''));content='<strong>'+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</strong>'+(list.map(ev=>eventCard(ev)).join('')||'<div class="empty">No hay eventos para este día.</div>');
  }else if(calendarView==='Semana'){
   const start=new Date(d);start.setDate(d.getDate()-((d.getDay()+6)%7));
   content='<div class="calendar-grid">'+weekdays.map(w=>'<div class="weekday">'+w+'</div>').join('')+Array.from({length:7},(_,i)=>{
@@ -839,7 +839,7 @@ function renderCalendar(){
    return '<button type="button" class="calendar-day '+(date.getDay()===0?'sunday ':'')+(key===todayKey?'today ':'')+(key===selectedKey?'selected ':'')+(list.length?'has-event ':'')+(color?'high-priority':'')+'" style="'+(color?'--event-border:'+color+';':'')+'" aria-pressed="'+(key===selectedKey)+'" onclick="selectCalendarDate('+y+','+m+','+n+')">'+n+'</button>';
   }).join('')+'</div>';
  }
- const selectedEvents=on(d);
+ const selectedEvents=on(d).sort((a,b)=>(Number(b.allDay)-Number(a.allDay))||(a.time||'').localeCompare(b.time||''));
  const selectedDaySection=calendarView==='Día'?'':'<div class="section selected-day-events"><h2>Eventos del '+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</h2>'+(selectedEvents.map(ev=>eventCard(ev)).join('')||'<div class="card empty">No hay eventos para este día.</div>')+'</div>';
  const upcoming=getUpcomingCalendarEvents();
  const upcomingSection='<div class="section upcoming-events"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>eventCard(ev,true)).join('')||'<div class="card empty">No hay eventos en los próximos 7 días.</div>')+'</div>';
