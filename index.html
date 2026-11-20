@@ -493,7 +493,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
   grid-template-columns:18px minmax(0,1fr) 54px 20px;
  }
 }
-</style>
+.my-day-section{margin-bottom:18px}.my-day-task-list{display:flex;flex-direction:column;gap:8px}.my-day-task-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;padding:14px 16px;border:1px solid var(--border,#e5e5e5);border-radius:14px;background:var(--card,#fff);color:inherit;cursor:pointer;font:inherit}.my-day-task-row:active{transform:scale(.995)}.my-day-task-title{min-width:0;display:flex;flex-direction:column;gap:4px}.my-day-task-kind{flex:0 0 auto;margin-left:auto;font-size:1.15rem}.my-day-assigned-detail{font-size:.82rem;color:var(--muted,#777)}.my-day-assigned-section{margin-top:14px}</style>
 </head>
 <body>
 <div class="app">
@@ -1098,10 +1098,24 @@ function taskDrop(event,taskId,targetId,level,parentId){
 }
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
- screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
+ const pendingTasks=tasks.filter(t=>(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t));
+ const assignedTasks=tasks.filter(t=>taskHasAssignmentsForCurrentUser(t));
+ const pendingRows=pendingTasks.map(t=>{
+  const family=taskIsPublic(t);
+  return '<button type="button" class="my-day-task-row" onclick="showTaskView(\''+(family?'family':'personal')+'\')"><span class="my-day-task-title">'+escapeHTML(t.title)+'</span><span class="my-day-task-kind" aria-label="'+(family?'Familia':'Personal')+'">'+(family?'🫂':'👤')+'</span></button>';
+ }).join('');
+ const assignedRows=assignedTasks.map(t=>{
+  const rootAssigned=taskIsAssignedToCurrentUser(t);
+  const assignedSubs=(t.subtasks||[]).filter(st=>taskSubtaskIsAssignedToCurrentUser(st));
+  const assignedNested=(t.subtasks||[]).flatMap(st=>(st.subtasks||[]).filter(n=>taskSubtaskIsAssignedToCurrentUser(n)).map(n=>({title:n.title,parent:st.title})));
+  const details=[...assignedSubs.map(st=>st.title),...assignedNested.map(n=>n.title)];
+  return '<button type="button" class="my-day-task-row my-day-assigned-row" onclick="showTaskView(\'assigned\')"><span class="my-day-task-title">'+escapeHTML(t.title)+(details.length?'<small class="my-day-assigned-detail">'+details.map(x=>escapeHTML(x)).join(' · ')+'</small>':'')+'</span><span class="my-day-task-kind" aria-label="Familia">🫂</span></button>';
+ }).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Un resumen de tus tareas pendientes y las tareas asignadas a ti.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Resumen de Mi día">
-   <div class="card empty">La vista diaria y su organización se diseñarán en la siguiente etapa.</div>
+   <section class="my-day-section"><h2 class="task-group-title">Tareas pendientes</h2><div class="my-day-task-list">${pendingRows||'<div class="card empty">No tienes tareas pendientes.</div>'}</div></section>
+   <details class="task-scheduled-section my-day-assigned-section" ontoggle="rememberTaskSection('today:assigned',this.open)" ${expandedTaskSections.has('today:assigned')?'open':''}><summary><span class="task-scheduled-heading">Asignadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${assignedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content"><div class="my-day-task-list">${assignedRows||'<div class="card empty">No tienes tareas asignadas.</div>'}</div></div></details>
   </section>
  </div>`;
 }
