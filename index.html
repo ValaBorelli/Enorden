@@ -326,6 +326,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-app #screen{overflow-x:hidden;overflow-y:auto;flex:1 1 0;min-height:0}
 .tasks-layout:has(.family-content){flex:0 0 auto;min-height:max-content;align-items:start}
 
+.task-group-section{margin-top:14px}.task-group-title{font-size:15px;margin:0 0 10px;color:var(--text)}.task-scheduled-section{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:13px;overflow:hidden}.task-scheduled-section>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}.task-scheduled-section>summary::-webkit-details-marker{display:none}.task-scheduled-section>summary::after{content:'⌄';font-size:20px;color:var(--muted);transition:transform .15s}.task-scheduled-section[open]>summary::after{transform:rotate(180deg)}.task-scheduled-content{padding:0 12px 4px;border-top:1px solid var(--line)}.task-scheduled-content .card:last-child{margin-bottom:8px}
 .family-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:13px}
 .family-task-card{padding:12px 14px}
 .family-task-main{display:flex;align-items:center;justify-content:space-between;gap:10px}.family-task-summary{display:block;cursor:pointer;list-style:none}.family-task-summary::-webkit-details-marker{display:none}.family-task-summary>.family-task-line{width:100%}.family-subtask-disclosure>summary{cursor:pointer;list-style:none}.family-subtask-disclosure>summary::-webkit-details-marker{display:none}.task-assignee{font-size:11px;color:var(--muted);font-weight:500;white-space:nowrap}
@@ -936,7 +937,7 @@ function renderScopedTasks(scope){
  const title=isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
  const assigneeLabel=value=>value?'<span class="task-assignee">· '+escapeHTML(value)+'</span>':'';
- const taskCards=scopedTasks.map(t=>{
+ const renderTaskCards=list=>list.map(t=>{
   const rootAssigned=isAssigned&&taskIsAssignedToCurrentUser(t);
   const allSubtasks=Array.isArray(t.subtasks)?t.subtasks:[];
   const subtasks=isPending?(isAssigned&&!rootAssigned?allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&!st.done):allSubtasks.filter(st=>!st.done)):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
@@ -953,11 +954,17 @@ function renderScopedTasks(scope){
   const mainLine=`<div class="family-task-main"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></div>`;
   return subtasks.length?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
+ const splitScheduled=isFamily||scope==='personal';
+ const normalTasks=splitScheduled?scopedTasks.filter(t=>!t.scheduledDate):scopedTasks;
+ const scheduledTasks=splitScheduled?scopedTasks.filter(t=>!!t.scheduledDate):[];
+ const normalCards=renderTaskCards(normalTasks);
+ const scheduledCards=renderTaskCards(scheduledTasks);
  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
-   ${taskCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
+   <section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section>
+   ${splitScheduled?`<details class="task-scheduled-section"><summary>Tareas programadas <span class="muted">(${scheduledTasks.length})</span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
   </section>
  </div><div class="bottom-space"></div>`;
 }
