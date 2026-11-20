@@ -713,6 +713,15 @@ function render(){
  else renderOther(current);
  applyLanguage();
 }
+function getUpcomingCalendarEvents(){
+ const today=new Date();today.setHours(0,0,0,0);
+ const upcoming=[];
+ for(let offset=0;offset<7;offset++){
+  const day=new Date(today);day.setDate(today.getDate()+offset);
+  events.filter(ev=>eventOccursOn(ev,day)).forEach(ev=>upcoming.push({...ev,date:keyDate(day)}));
+ }
+ return upcoming.sort((a,b)=>a.date.localeCompare(b.date)||(Number(b.allDay)-Number(a.allDay))||(a.time||'').localeCompare(b.time||''));
+}
 function renderHome(){
  const d=new Date();
  const day=d.toLocaleDateString('es-CL',{weekday:'long'});
@@ -720,7 +729,7 @@ function renderHome(){
  const pending=tasks.filter(t=>!t.done).length;
  const shopping=products.filter(p=>!p.bought).length;
  const todayKey=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
- const upcoming=events.filter(e=>e.date>=todayKey).length;
+ const upcoming=getUpcomingCalendarEvents().length;
  screen.innerHTML=`
  <div class="dayline"><strong>${day},</strong><span>${date}</span></div>
  <div class="greeting">Hola Vale 👋</div>
@@ -832,12 +841,7 @@ function renderCalendar(){
  }
  const selectedEvents=on(d);
  const selectedDaySection=calendarView==='Día'?'':'<div class="section selected-day-events"><h2>Eventos del '+d.toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})+'</h2>'+(selectedEvents.map(ev=>eventCard(ev)).join('')||'<div class="card empty">No hay eventos para este día.</div>')+'</div>';
- const upcoming=[];
- for(let offset=0;offset<7;offset++){
-  const day=new Date(today);day.setDate(today.getDate()+offset);
-  events.filter(ev=>eventOccursOn(ev,day)).forEach(ev=>upcoming.push({...ev,date:keyDate(day)}));
- }
- upcoming.sort((a,b)=>a.date.localeCompare(b.date)||(Number(b.allDay)-Number(a.allDay))||(a.time||'').localeCompare(b.time||''));
+ const upcoming=getUpcomingCalendarEvents();
  const upcomingSection='<div class="section upcoming-events"><h2>Próximos eventos</h2>'+(upcoming.map(ev=>eventCard(ev,true)).join('')||'<div class="card empty">No hay eventos en los próximos 7 días.</div>')+'</div>';
  screen.innerHTML='<div class="page-heading calendar-page-heading"><div class="calendar-heading-row"><h1>Calendario</h1><button type="button" class="small-btn calendar-search-toggle" aria-label="Buscar eventos" title="Buscar eventos" onclick="toggleCalendarSearch()">🔍</button></div><p>Organiza las fechas importantes de tu hogar.</p></div>'+(calendarSearchOpen?'<div class="calendar-search-panel"><input id="calendarSearchInput" type="search" placeholder="Buscar eventos por nombre, fecha o tipo..." value="'+escapeHTML(calendarSearchQuery)+'" oninput="updateCalendarSearch(this.value)" autofocus><div id="calendarSearchResults">'+renderCalendarSearchResults()+'</div></div>':'')+'<div class="toolbar">'+['Año','Mes','Semana','Día'].map(v=>'<button class="small-btn '+(calendarView===v?'active':'')+'" onclick="calendarView=\''+v+'\';render()">'+v+'</button>').join('')+'<button type="button" class="small-btn calendar-today-button" aria-label="Ir a hoy" title="Ir a hoy" onclick="goToToday()">Hoy</button></div><div class="card"><div class="card-row"><button class="small-btn" onclick="changeDate(-1)">‹</button><strong>'+(calendarView==='Año'?y:calendarView==='Día'?d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):months[m]+' '+y)+'</strong><button class="small-btn" onclick="changeDate(1)">›</button></div><div style="margin-top:16px">'+content+'</div></div>'+selectedDaySection+upcomingSection+'<div class="bottom-space"></div>';
 }
