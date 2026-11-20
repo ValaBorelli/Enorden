@@ -299,7 +299,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-sidebar-item{width:100%;text-align:left;cursor:pointer}
 .tasks-sidebar-item{justify-content:flex-start}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
-.family-content{display:block;width:100%;min-width:0}
+.family-content{display:block;width:100%;min-width:0}.task-action-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-action-menu button{min-height:46px}.task-action-menu button:last-child{grid-column:1/-1}.task-assignment-question{font-size:15px;font-weight:600;margin:0 0 14px}.family-task-card{user-select:none;-webkit-user-select:none}
 .family-task-disclosure>summary{list-style:none;cursor:pointer}
 .family-task-disclosure>summary::-webkit-details-marker{display:none}
 .family-task-disclosure>summary::after{content:'⌄';font-size:20px;color:var(--muted);transition:transform .18s}
@@ -781,12 +781,12 @@ function renderScopedTasks(scope){
   const subtasks=Array.isArray(t.subtasks)?t.subtasks:[];
   const subHTML=subtasks.map(st=>{
    const nested=Array.isArray(st.subtasks)?st.subtasks:[];
-   return `<div class="family-subtask" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(st.id)},'sub',null)" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(st.id)},'sub',null)">
+   return `<div class="family-subtask" onpointerdown="taskLongPressStart(event,${Number(t.id)},${Number(st.id)})" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(st.id)},'sub',null)" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(st.id)},'sub',null)">
     <label class="family-task-line"><input type="checkbox" ${st.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${st.done?'done':''}">${escapeHTML(st.title)}</span></label>
     ${nested.length?'<div class="family-nested-list">'+nested.map(n=>`<label class="family-task-line family-task-level-two" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})"><input type="checkbox" ${n.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></label>`).join('')+'</div>':''}
    </div>`;
   }).join('');
-  return subtasks.length?`<article class="card family-task-card"><details class="family-task-disclosure"><summary class="family-task-main"><label class="family-task-line" onclick="event.stopPropagation()"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="event.preventDefault();event.stopPropagation();deleteTask(${Number(t.id)})">×</button></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card"><div class="family-task-main"><label class="family-task-line"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="deleteTask(${Number(t.id)})">×</button></div></article>`;
+  return subtasks.length?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-main"><label class="family-task-line" onclick="event.stopPropagation()"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><div class="family-task-main"><label class="family-task-line"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="deleteTask(${Number(t.id)})">×</button></div></article>`;
  }).join('');
  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
  <div class="tasks-layout">${taskSidebarHTML()}
@@ -797,6 +797,10 @@ function renderScopedTasks(scope){
  </div><div class="bottom-space"></div>`;
 }
 let taskDragData=null;
+let taskPressTimer=null;
+let taskPressTriggered=false;
+let taskEditorId=null;
+let taskAssignmentTarget=null;
 function taskDragStart(event,taskId,itemId,level,parentId){
  taskDragData={taskId,itemId,level,parentId};event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',String(itemId));
 }
@@ -860,23 +864,14 @@ function addNestedTaskSubtask(parentRow){
  const remove=document.createElement('button');remove.type='button';remove.className='small-btn';remove.textContent='×';remove.setAttribute('aria-label','Eliminar subtarea nivel 2');remove.onclick=()=>row.remove();
  row.append(input,remove);list.appendChild(row);input.focus();
 }
-function addTask(){
- const input=document.getElementById('newValue');if(!input)return;
- const title=input.value.trim();
- if(!title){input.focus();input.setCustomValidity('Escribe el nombre de la tarea.');input.reportValidity();input.setCustomValidity('');return}
- const now=Date.now();
- const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{
-  const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();
-  if(!name)return null;
-  const id=now+index+1;
-  const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>x.value.trim()).filter(Boolean).map((title,j)=>({id:now+1000+index*100+j,title,done:false,assignable:false,inheritsAssignmentFrom:id}));
-  return {id,title:name,done:false,assignable:true,subtasks:children};
- }).filter(Boolean);
- const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';
- subtasks.forEach(item=>{item.assignable=scope==='family'});
- tasks.push({id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString()});
- save();closeModal();render();
-}
+function openTaskActions(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('¿Qué quieres hacer?','<div class="task-action-menu"><button class="secondary-btn" onclick="confirmDeleteTask('+t.id+')">Borrar</button><button class="secondary-btn" onclick="openTaskEditor('+t.id+')">Editar</button><button class="secondary-btn" onclick="duplicateTask('+t.id+')">Duplicar</button><button class="secondary-btn" onclick="openTaskAssignment('+t.id+',null)">Asignar</button><button class="primary-btn" onclick="closeModal()">Cancelar</button></div>')}
+function confirmDeleteTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('Confirmar eliminación','<p>¿Quieres borrar «'+escapeHTML(t.title)+'» y todas sus subtareas?</p><div class="event-detail-actions"><button class="secondary-btn" onclick="openTaskActions('+t.id+')">Cancelar</button><button class="primary-btn" onclick="deleteTask('+t.id+')">Sí, borrar</button></div>')}
+function duplicateTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;const copy=JSON.parse(JSON.stringify(t));let seed=Date.now();copy.id=seed++;copy.subtasks=(copy.subtasks||[]).map(st=>({...st,id:seed++,subtasks:(st.subtasks||[]).map(n=>({...n,id:seed++}))}));copy.title=t.title+' (copia)';copy.done=false;copy.createdAt=new Date().toISOString();tasks.push(copy);save();closeModal();render()}
+function currentHouseholdMember(){return localStorage.getItem('enorden_profile_name')||'Vale'}
+function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task)return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>')}
+function saveTaskAssignment(){if(!taskAssignmentTarget)return;const task=tasks.find(x=>Number(x.id)===Number(taskAssignmentTarget.taskId));if(!task)return;const value=document.getElementById('taskAssignee')?.value||currentHouseholdMember();if(taskAssignmentTarget.subtaskId==null)task.assignedTo=value;else{const sub=(task.subtasks||[]).find(x=>Number(x.id)===Number(taskAssignmentTarget.subtaskId));if(sub)sub.assignedTo=value}taskAssignmentTarget=null;save();closeModal();render()}
+function taskLongPressStart(event,taskId,subtaskId){if(event.target.closest('input,button,select,summary'))return;clearTimeout(taskPressTimer);taskPressTimer=setTimeout(()=>{taskPressTriggered=true;if(subtaskId==null)openTaskActions(taskId);else openTaskAssignment(taskId,subtaskId)},550)}
+function taskLongPressEnd(){clearTimeout(taskPressTimer)}
 function taskHTML(t){
  return `<div class="task-row"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><span class="task-name ${t.done?'done':''}">${escapeHTML(t.title)}</span><button class="small-btn" onclick="deleteTask(${t.id})">×</button></div>`;
 }
@@ -1276,18 +1271,29 @@ function renderOther(id){
  const m=modules.find(x=>x.id===id);
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
 }
+function taskEditorMarkup(task){
+ const subtasks=task?.subtasks||[];
+ return '<div class="event-form-section task-create-section"><label for="newTaskScope">¿Dónde se verá?</label><select id="newTaskScope"><option value="personal" '+((task?.scope||'personal')==='personal'?'selected':'')+'>Tareas Personales</option><option value="family" '+(task?.scope==='family'?'selected':'')+'>Tareas Familia</option></select></div><div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" value="'+escapeHTML(task?.title||'')+'" placeholder="¿Qué necesitas hacer?"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list">'+subtasks.map(st=>'<div class="task-subtask-item"><div class="task-subtask-input-row"><input type="text" maxlength="120" value="'+escapeHTML(st.title)+'"><button type="button" class="secondary-btn task-add-nested" onclick="addNestedTaskSubtask(this.closest(\'.task-subtask-item\'))">+ Subtarea N2</button><button type="button" class="small-btn" onclick="this.closest(\'.task-subtask-item\').remove()">×</button></div><div class="task-nested-subtasks">'+(st.subtasks||[]).map(n=>'<div class="task-subtask-input-row task-subtask-level-two"><input type="text" maxlength="120" value="'+escapeHTML(n.title)+'"><button type="button" class="small-btn" onclick="this.parentElement.remove()">×</button></div>').join('')+'</div></div>').join('')+'</div></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveTaskEditor()">'+(task?'Guardar cambios':'Guardar')+'</button></div>';
+}
+function showTaskModal(title,body){document.getElementById('modalTitle').textContent=title;const sub=document.getElementById('modalSubtitle');sub.textContent='';sub.classList.add('hidden');document.getElementById('modalBody').innerHTML=body;document.getElementById('backdrop').classList.add('show')}
+function openTaskEditor(id){const task=id==null?null:tasks.find(t=>Number(t.id)===Number(id));if(id!=null&&!task)return;taskEditorId=task?task.id:null;showTaskModal(task?'Editar tarea':'Nueva tarea',taskEditorMarkup(task))}
 function openAdd(){
  editingEventId=null;eventPrefill=null;eventCreationTime=new Date();
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
- if(current==='tareas'){document.getElementById('modalTitle').textContent='Nueva tarea';document.getElementById('modalBody').innerHTML='<div class="event-form-section task-create-section"><label for="newTaskScope">¿Dónde se verá?</label><select id="newTaskScope" aria-label="Dónde se verá la tarea"><option value="personal" selected>Tareas Personales</option><option value="family">Tareas Familia</option></select></div><div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" placeholder="¿Qué necesitas hacer?" autocomplete="off"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list"></div></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="addTask()">Guardar</button></div>'}
- else if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
- else{
-  document.getElementById('modalTitle').textContent='Nuevo evento';
-  document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';
-  document.getElementById('eventType').value='normal';showEventFields();
- }
+ if(current==='tareas'){openTaskEditor(null);return}
+ if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
+ else{document.getElementById('modalTitle').textContent='Nuevo evento';document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';document.getElementById('eventType').value='normal';showEventFields()}
  document.getElementById('backdrop').classList.add('show');
 }
+function saveTaskEditor(){
+ const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea.');return}
+ const now=Date.now(),old=taskEditorId==null?null:tasks.find(t=>Number(t.id)===Number(taskEditorId));
+ const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();if(!name)return null;const prev=old?.subtasks?.[index],id=prev?.id??now+index+1;const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev?.subtasks?.[j]})).filter(x=>x.title).map((x,j)=>({id:x.prev?.id??now+1000+index*100+j,title:x.title,done:x.prev?.done??false,assignable:false,inheritsAssignmentFrom:id}));return {id,title:name,done:prev?.done??false,assignable:true,subtasks:children,...(prev?.assignedTo?{assignedTo:prev.assignedTo}:{})}}).filter(Boolean);
+ const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';subtasks.forEach(x=>x.assignable=scope==='family');
+ if(old){old.title=title;old.scope=scope;old.assignable=scope==='family';old.subtasks=subtasks;syncTaskCompletion(old)}else tasks.push({id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString()});
+ save();taskEditorId=null;closeModal();render();
+}
+function addTask(){saveTaskEditor()}
 function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
 function eventDetailMarkup(ev){
  const type={normal:'Evento normal',birthday:'Cumpleaños',anniversary:'Aniversario'}[ev.type]||'Evento';
