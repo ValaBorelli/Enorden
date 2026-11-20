@@ -302,6 +302,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .task-shortcut-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);text-align:center;box-shadow:0 2px 8px #00000008}.task-shortcut-label{font-size:15px;font-weight:700}.task-shortcut-count{font-size:14px;line-height:1;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}.task-unread-dot{position:absolute;top:10px;left:10px;width:9px;height:9px;border-radius:50%;background:#e34b4b;box-shadow:0 0 0 2px var(--surface)}
 .tasks-sidebar-item{width:100%;text-align:left;cursor:pointer}
 .tasks-sidebar-item{justify-content:flex-start}
+.tasks-sidebar-item.shared-sidebar-item{justify-content:center;text-align:center;gap:6px;padding-left:6px;padding-right:6px}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
 .tasks-layout.is-sidebar-collapsed{grid-template-columns:42px minmax(0,1fr)}
 .tasks-sidebar-toggle{display:flex;align-items:center;justify-content:center;gap:4px;align-self:flex-end;width:auto;min-width:32px;min-height:28px;margin-top:auto;padding:3px 7px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer}
@@ -903,7 +904,7 @@ function taskSidebarHTML(){
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='templates'?'active':''}" onclick="showTaskView('templates')">📋 <span>Mis Plantillas</span></button>
-  <button type="button" class="tasks-sidebar-item ${taskView==='shared'?'active':''}" onclick="showTaskView('shared')">🔗 <span>Compartido</span></button>
+  <button type="button" class="tasks-sidebar-item shared-sidebar-item ${taskView==='shared'?'active':''}" onclick="showTaskView('shared')">🔗 <span>Compartido</span></button>
   ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
  </aside>`;
 }
