@@ -378,6 +378,8 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 /* Tareas y subtareas N1/N2: ajustar nombres por palabras, nunca por letras.
    Se aplica igual con el panel lateral visible u oculto. */
 .family-task-line{align-items:flex-start}
+/* Mantener el responsable centrado verticalmente respecto del nombre, sin alterar su tipografía. */
+.family-task-line>.task-assignee{align-self:center}
 .family-task-line>span:not(.task-assignee),
 .family-task-line>strong{
  min-width:0;
