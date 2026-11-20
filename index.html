@@ -959,7 +959,8 @@ function renderScopedTasks(scope){
   const rootAssigned=(isAssigned||isPending)&&taskIsAssignedToCurrentUser(t);
   const allSubtasks=Array.isArray(t.subtasks)?t.subtasks:[];
   const taskDone=!!t.done&&!taskHasPendingSubtasks(t);
-  const subtasks=isPending?(!rootAssigned?allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&(!st.done||(st.subtasks||[]).some(n=>!n.done))):allSubtasks.filter(st=>!st.done||(st.subtasks||[]).some(n=>!n.done))):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
+  const showAllPendingSubtasks=isPending&&(!taskIsPublic(t)||rootAssigned||taskIsScheduledForFuture(t));
+  const subtasks=isPending?(showAllPendingSubtasks?allSubtasks.filter(st=>!st.done||(st.subtasks||[]).some(n=>!n.done)):allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&(!st.done||(st.subtasks||[]).some(n=>!n.done)))):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
   const subHTML=subtasks.map(st=>{
    const nestedAll=Array.isArray(st.subtasks)?st.subtasks:[];
    const nested=isPending?nestedAll.filter(n=>!n.done):nestedAll;
