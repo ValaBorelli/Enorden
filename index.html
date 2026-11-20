@@ -95,6 +95,7 @@ h2{font-size:18px;margin-bottom:13px}
 .shared-project-confirm-layer{z-index:10060;background:rgba(0,0,0,.68)}
 .shared-project-confirm p{font-size:14px;line-height:1.5;color:#4c5564;margin:0}
 .shared-project-confirm footer{justify-content:space-between}
+.shared-project-title-row{display:flex;align-items:center;gap:7px;padding:20px 17px 12px;color:#f5f7ff}.shared-project-title-row h1{font-size:23px;line-height:1.25;margin:0;overflow-wrap:anywhere}.shared-project-title-edit{flex:0 0 auto;border:0;background:transparent;color:inherit;padding:4px;font-size:18px;line-height:1;cursor:pointer;border-radius:7px}.shared-project-title-edit:focus-visible{outline:2px solid #8ba9ff;outline-offset:2px}
 
 .page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
@@ -608,6 +609,8 @@ let taskSidebarCollapsed=false;
 let activeSharedProjectId=null;
 let sharedProjectDraft=null;
 let sharedProjectCancelConfirm=false;
+let sharedProjectNameEdit=null;
+let sharedProjectEditCancelConfirm=false;
 let expandedTaskDisclosures=new Set();
 let expandedTaskSections=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
@@ -981,6 +984,11 @@ function dismissCancelSharedProject(){sharedProjectCancelConfirm=false;render()}
 function confirmCancelSharedProject(){
  sharedProjectDraft=null;sharedProjectCancelConfirm=false;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0);
 }
+function editSharedProjectName(){const project=loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));if(!project)return;sharedProjectNameEdit={id:project.id,name:project.name||''};sharedProjectEditCancelConfirm=false;render()}
+function saveSharedProjectName(){const name=(document.getElementById('sharedProjectEditName')?.value||'').trim();if(!name){document.getElementById('sharedProjectEditName')?.focus();return}const projects=loadSharedProjects(),index=projects.findIndex(item=>String(item.id)===String(sharedProjectNameEdit?.id));if(index<0){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render();return}projects[index]={...projects[index],name};saveSharedProjects(projects);sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
+function requestCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=true;render()}
+function dismissCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=false;render()}
+function confirmCancelSharedProjectNameEdit(){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
 function renderSharedProjectWorkspace(){
  const project=sharedProjectDraft&&String(sharedProjectDraft.id)===String(activeSharedProjectId)?sharedProjectDraft:loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));
  if(!project){activeSharedProjectId=null;renderSharedProjectsPage();return}
@@ -988,6 +996,12 @@ function renderSharedProjectWorkspace(){
  if(sharedProjectDraft&&String(sharedProjectDraft.id)===String(activeSharedProjectId)){
   screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectModalTitle"><header><h2 id="sharedProjectModalTitle">Nuevo Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="requestCancelSharedProject()">×</button></header><label for="sharedProjectName">Nombre del proyecto</label><input id="sharedProjectName" type="text" maxlength="80" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProject()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveNewSharedProject()">Guardar</button></footer></section></div>`);
   if(sharedProjectCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectConfirmTitle"><header><h2 id="sharedProjectConfirmTitle">Cancelar creación</h2></header><p>¿Estás seguro de que quieres cancelar la creación del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProject()">No, continuar creando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProject()">Sí, cancelar</button></footer></section></div>`);
+ }else{
+  screen.insertAdjacentHTML('beforeend',`<div class="shared-project-title-row"><h1>${escapeHTML(project.name||'Proyecto')}</h1><button type="button" class="shared-project-title-edit" onclick="editSharedProjectName()" aria-label="Editar nombre del proyecto" title="Editar nombre del proyecto">✏️</button></div>`);
+  if(sharedProjectNameEdit&&String(sharedProjectNameEdit.id)===String(project.id)){
+   screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectEditModalTitle"><header><h2 id="sharedProjectEditModalTitle">Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="requestCancelSharedProjectNameEdit()">×</button></header><label for="sharedProjectEditName">Nombre del proyecto</label><input id="sharedProjectEditName" type="text" maxlength="80" value="${escapeHTML(sharedProjectNameEdit.name)}" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProjectNameEdit()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveSharedProjectName()">Guardar</button></footer></section></div>`);
+   if(sharedProjectEditCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectEditConfirmTitle"><header><h2 id="sharedProjectEditConfirmTitle">Cancelar edición</h2></header><p>¿Estás seguro de que quieres cancelar la edición del nombre del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProjectNameEdit()">No, continuar editando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProjectNameEdit()">Sí, cancelar</button></footer></section></div>`);
+  }
  }
 }
 function renderSharedProjectsPage(){
