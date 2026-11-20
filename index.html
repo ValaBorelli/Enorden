@@ -940,7 +940,7 @@ function renderTasks(){
 }
 let templatePressTimer=null;
 function renderTaskTemplatesPlaceholder(){
- const templates=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]');
+ const templates=loadTaskTemplates();
  const cards=templates.map(t=>{
   const subtasks=(t.subtasks||[]).map(st=>{
    const nested=(st.subtasks||[]).map(n=>'<div class="family-task-line family-task-level-two"><span>'+escapeHTML(n.title)+'</span></div>').join('');
@@ -959,7 +959,8 @@ function renderTaskTemplatesPlaceholder(){
 function templateLongPressStart(event,id){if(event.target.closest('button,input'))return;clearTimeout(templatePressTimer);templatePressTimer=setTimeout(()=>openTemplateActions(id),550)}
 function templateLongPressEnd(){clearTimeout(templatePressTimer)}
 function openTemplateActions(id){const t=getTaskTemplate(id);if(!t)return;showTaskModal('Opciones de plantilla','<div class="task-action-menu"><button class="secondary-btn" onclick="deleteTaskTemplate('+Number(t.id)+')">Borrar</button><button class="secondary-btn" onclick="editTaskTemplate('+Number(t.id)+')">Editar</button><button class="secondary-btn" onclick="confirmReuseTaskTemplate('+Number(t.id)+')">Reutilizar</button><button class="primary-btn" onclick="closeModal()">Cancelar</button></div>')}
-function getTaskTemplate(id){return JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').find(t=>Number(t.id)===Number(id))}
+function loadTaskTemplates(){const list=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]');let changed=false;list.forEach(t=>{if(t.scheduledDate){t.wasScheduled=true;t.scheduledDate=null;changed=true}});if(changed)localStorage.setItem('enorden_task_templates',JSON.stringify(list));return list}
+function getTaskTemplate(id){return loadTaskTemplates().find(t=>Number(t.id)===Number(id))}
 function deleteTaskTemplate(id){const list=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').filter(t=>Number(t.id)!==Number(id));localStorage.setItem('enorden_task_templates',JSON.stringify(list));closeModal();renderTaskTemplatesPlaceholder()}
 let editingTaskTemplateId=null;
 function editTaskTemplate(id){
