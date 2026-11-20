@@ -735,7 +735,7 @@ function renderHome(){
   <button class="summary-card" onclick="navigate('tareas');showTaskView('pending')">
    <div class="number">${pending}</div><div class="label">Tareas pendientes</div>
   </button>
-  <button class="summary-card" onclick="navigate('calendario')">
+  <button class="summary-card" onclick="selectedDate=new Date();navigate('calendario')">
    <div class="number">${upcoming}</div><div class="label">Eventos pendientes</div>
   </button>
   <button class="summary-card" onclick="navigate('listas')">
