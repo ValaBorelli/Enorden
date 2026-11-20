@@ -1596,7 +1596,7 @@ function showEventFields(){
   document.getElementById('eventPriority').value=ev.priority||'normal';document.getElementById('eventColor').value=ev.color||'#d65b4a';document.getElementById('eventRepeat').value=ev.repeat||'none';
   document.querySelectorAll('input[name="eventWeekday"]').forEach(x=>x.checked=(ev.weekdays||[]).includes(Number(x.value)));
   toggleCustomDays();toggleEventColor();toggleEventAllDay();
-  if(ev.alerts?.length){document.getElementById('eventAlertState').value='on';document.getElementById('eventAlertsWrap').classList.remove('hidden');ev.alerts.forEach(al=>{addEventAlert();const row=document.getElementById('eventAlertRows').lastElementChild;row.querySelector('input').value=al.amount;row.querySelector('select').value=al.unit})}
+  if(ev.alerts?.length){document.getElementById('eventAlertState').value='on';document.getElementById('eventAlertsWrap').classList.remove('hidden');ev.alerts.forEach(al=>{addEventAlert();const row=document.getElementById('eventAlertRows').lastElementChild;row.querySelector('input').value=al.amount;row.querySelector('button.event-alert-number').textContent=al.amount;row.querySelector('select').value=al.unit;row.dataset.previousUnit=al.unit})}
  }else{if(type==='birthday'||type==='anniversary')toggleEventAllDay()}
  updateEventPreview();
 }
