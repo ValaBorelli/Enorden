@@ -943,11 +943,14 @@ function taskIsScheduledForFuture(task){
 function taskIsScheduledPast(task){
  return !!task?.scheduledDate&&String(task.scheduledDate)<taskTodayKey();
 }
+function taskHasPendingSubtasks(task){
+ return (Array.isArray(task?.subtasks)?task.subtasks:[]).some(st=>!st.done||(Array.isArray(st.subtasks)?st.subtasks:[]).some(n=>!n.done));
+}
 function renderScopedTasks(scope){
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
  const isPending=scope==='pending';
- const scopedTasks=tasks.filter(t=>isPending?!t.done&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
+ const scopedTasks=tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
  const pending=scopedTasks.filter(t=>!t.done).length;
  const title=isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
@@ -955,19 +958,21 @@ function renderScopedTasks(scope){
  const renderTaskCards=list=>list.map(t=>{
   const rootAssigned=(isAssigned||isPending)&&taskIsAssignedToCurrentUser(t);
   const allSubtasks=Array.isArray(t.subtasks)?t.subtasks:[];
-  const subtasks=isPending?(!rootAssigned?allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&!st.done):allSubtasks.filter(st=>!st.done)):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
+  const taskDone=!!t.done&&!taskHasPendingSubtasks(t);
+  const subtasks=isPending?(!rootAssigned?allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&(!st.done||(st.subtasks||[]).some(n=>!n.done))):allSubtasks.filter(st=>!st.done||(st.subtasks||[]).some(n=>!n.done))):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
   const subHTML=subtasks.map(st=>{
    const nestedAll=Array.isArray(st.subtasks)?st.subtasks:[];
    const nested=isPending?nestedAll.filter(n=>!n.done):nestedAll;
+   const subtaskDone=!!st.done&&!nestedAll.some(n=>!n.done);
    const responsible=st.assignedTo||t.assignedTo||'';
    const nestedHTML=nested.map(n=>`<div class="family-task-line family-task-level-two" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})"><input type="checkbox" ${n.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></div>`).join('');
    return `<div class="family-subtask" onpointerdown="taskLongPressStart(event,${Number(t.id)},${Number(st.id)})" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(st.id)},'sub',null)" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(st.id)},'sub',null)">
-    ${nested.length?`<details class="family-subtask-disclosure"><summary class="family-task-line"><input type="checkbox" ${st.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${st.done?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</summary><div class="family-nested-list">${nestedHTML}</div></details>`:`<div class="family-task-line"><input type="checkbox" ${st.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${st.done?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</div>`}
+    ${nested.length?`<details class="family-subtask-disclosure"><summary class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</summary><div class="family-nested-list">${nestedHTML}</div></details>`:`<div class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</div>`}
    </div>`;
   }).join('');
-  const mainCheckbox=isAssigned&&!rootAssigned?'':`<input type="checkbox" ${t.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTask(${Number(t.id)})">`;
-  const mainLine=`<div class="family-task-main"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></div>`;
-  return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
+  const mainCheckbox=(isAssigned||isPending)&&!rootAssigned?'':`<input type="checkbox" ${taskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTask(${Number(t.id)})">`;
+  const mainLine=`<div class="family-task-main"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></div>`;
+  return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
  const splitScheduled=isFamily||scope==='personal'||isPending;
  const completedTasks=splitScheduled&&!isPending?scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t)):[];
