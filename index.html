@@ -172,7 +172,7 @@ h2{font-size:18px;margin-bottom:13px}
 .event-form-actions button{flex:1;min-width:0;white-space:normal;line-height:1.25;padding:12px 8px}
 .event-form-section input,.event-form-section select{min-width:0;max-width:100%}
 
-.shared-project-app{background:#080b13;min-height:100vh}.shared-project-app body{background:#080b13}.shared-project-app main{background:#080b13;color:#f5f7ff}.shared-project-app .shared-project-workspace{min-height:calc(100vh - 160px);background:radial-gradient(ellipse at 50% 0%,#101d43 0%,#080b13 48%,#05070c 100%);margin:0;padding:0}.shared-project-app .bottom-nav{background:#fffaf1}.shared-project-app .fab{display:none!important}.bottom-space{height:75px}
+.shared-project-app{background:#080b13;min-height:100vh}.shared-project-mode{background:#080b13}.shared-project-app main{padding:0;background:#080b13;color:#f5f7ff}.shared-project-app .shared-project-workspace{min-height:calc(100vh - 160px);background:radial-gradient(ellipse at 50% 0%,#101d43 0%,#080b13 48%,#05070c 100%);margin:0;padding:0}.shared-project-app .bottom-nav{background:#fffaf1}.shared-project-app .fab{display:none!important}.bottom-space{height:75px}
 .plain-heading{font-size:16px;font-weight:700;margin:23px 0 8px;color:#242820}
 .home-code{font-size:25px;font-weight:800;letter-spacing:2px;color:#39ed63;
  background:#1c3225;border-radius:12px;padding:15px;text-align:center;overflow-wrap:anywhere}
@@ -665,6 +665,7 @@ function renderNav(){
  nav.classList.toggle('hidden',current==='inicio');
  document.querySelector('.app').classList.toggle('tasks-app',current==='tareas');
  document.querySelector('.app').classList.toggle('shared-project-app',current==='tareas'&&activeSharedProjectId!==null);
+ document.body.classList.toggle('shared-project-mode',current==='tareas'&&activeSharedProjectId!==null);
  fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current)||(current==='tareas'&&(taskView==='shared'||activeSharedProjectId!==null)));
  enableReorder(nav);
 }
