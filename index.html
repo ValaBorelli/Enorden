@@ -907,7 +907,7 @@ function taskSidebarHTML(){
  </aside>`;
 }
 function toggleTaskSidebar(){
- if(!['today','family','personal','assigned','pending'].includes(taskView))return;
+ if(!['today','family','personal','assigned','pending','templates'].includes(taskView))return;
  const disclosures=Array.from(screen.querySelectorAll('.family-task-disclosure,.family-subtask-disclosure'));
  const openStates=disclosures.map(item=>item.open);
  taskSidebarCollapsed=!taskSidebarCollapsed;
