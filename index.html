@@ -562,7 +562,7 @@ const modules=[
 let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
 if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
 let current='inicio',calendarView='Mes',selectedDate=new Date();
-let taskView='overview';
+let taskView='today';
 let taskSidebarCollapsed=false;
 let expandedTaskDisclosures=new Set();
 let expandedTaskSections=new Set();
@@ -624,7 +624,7 @@ function toggleHeaderPanel(id){
 function navigate(id){
  if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
  if(id==='finanzas'&&current!=='finanzas'){requestFinanceAccess();return}
- if(id==='tareas'&&current!=='tareas')taskView='overview';
+ if(id==='tareas'&&current!=='tareas')taskView='today';
  current=id;render();window.scrollTo(0,0);
 }
 function renderNav(){
@@ -898,7 +898,7 @@ function markTaskViewed(id){
 function taskSidebarHTML(){
  const canCollapse=['today','family','personal','assigned','pending','templates'].includes(taskView);
  return `<aside class="tasks-sidebar${canCollapse&&taskSidebarCollapsed?' is-collapsed':''}" aria-label="Secciones de tareas">
-  <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">🏠 <span>Inicio</span></button>
+  <button type="button" class="tasks-sidebar-item" style="display:none" aria-hidden="true" tabindex="-1" onclick="showTaskView('overview')">🏠 <span>Inicio 2</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
@@ -915,7 +915,7 @@ function toggleTaskSidebar(){
  const updated=screen.querySelectorAll('.family-task-disclosure,.family-subtask-disclosure');
  updated.forEach((item,index)=>{if(index<openStates.length)item.open=openStates[index]});
 }
-function showTaskView(view){taskView=view;render();}
+function showTaskView(view){taskView=view==='overview'?'today':view;render();}
 function renderTasks(){
  if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
  if(taskView==='all'){renderScopedTasks('all');return;}
