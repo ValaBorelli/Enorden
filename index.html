@@ -564,6 +564,7 @@ if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.i
 let current='inicio',calendarView='Mes',selectedDate=new Date();
 let taskView='overview';
 let taskSidebarCollapsed=false;
+let expandedTaskDisclosures=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
 let appLanguage=localStorage.getItem('enorden_language')||'es';
 const appearanceThemes={natural:{name:'Natural',bg:'#EDE8DA',header:'#344E40',text:'#292D29',muted:'#777970',cards:['#FFFFFF','#FFFFFF','#FFFFFF']},night:{name:'Nocturno',bg:'#151817',header:'#263D32',text:'#F1F2EF',muted:'#AEB9B1',accent:'#A8D0B1',cards:['#252B28','#252B28','#252B28']},colorful:{name:'Colorido',bg:'#FFF5E8',header:'#7656B8',text:'#493A70',muted:'#806F99',accent:'#F28B78',cards:['#D9EFF9','#FCE0E7','#FFF0B8']},executive:{name:'Ejecutivo',bg:'#EDF0F3',header:'#24364B',text:'#303A46',muted:'#657386',accent:'#A98750',cards:['#FFFFFF','#FFFFFF','#FFFFFF']}};
@@ -1027,12 +1028,12 @@ function renderScopedTasks(scope){
    const responsible=st.assignedTo||t.assignedTo||'';
    const nestedHTML=nested.map(n=>`<div class="family-task-line family-task-level-two" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})"><input type="checkbox" ${n.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></div>`).join('');
    return `<div class="family-subtask" onpointerdown="taskLongPressStart(event,${Number(t.id)},${Number(st.id)})" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(st.id)},'sub',null)" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(st.id)},'sub',null)">
-    ${nested.length?`<details class="family-subtask-disclosure"><summary class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</summary><div class="family-nested-list">${nestedHTML}</div></details>`:`<div class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</div>`}
+    ${nested.length?`<details class="family-subtask-disclosure" ontoggle="rememberTaskDisclosure('sub:${Number(t.id)}:${Number(st.id)}',this.open)" ${expandedTaskDisclosures.has('sub:'+t.id+':'+st.id)?'open':''}><summary class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</summary><div class="family-nested-list">${nestedHTML}</div></details>`:`<div class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</div>`}
    </div>`;
   }).join('');
   const mainCheckbox=(isAssigned||isPending)&&!rootAssigned?'':`<input type="checkbox" ${taskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTask(${Number(t.id)})">`;
   const mainLine=`<div class="family-task-main"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></div>`;
-  return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
+  return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure" ontoggle="rememberTaskDisclosure('task:${Number(t.id)}',this.open)" ${expandedTaskDisclosures.has('task:'+t.id)?'open':''}><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
  if(isAll){
   const personalTasks=scopedTasks.filter(t=>!taskIsPublic(t)&&!taskIsScheduledForFuture(t));
@@ -1107,11 +1108,33 @@ function syncTaskCompletion(task){
  });
  if(subs.length)task.done=subs.every(st=>!!st.done);
 }
+function rememberTaskDisclosure(key,isOpen){
+ if(isOpen)expandedTaskDisclosures.add(key);else expandedTaskDisclosures.delete(key);
+}
+function expandTaskDisclosure(taskId,subtaskId=null){
+ expandedTaskDisclosures.add('task:'+taskId);
+ if(subtaskId!==null)expandedTaskDisclosures.add('sub:'+taskId+':'+subtaskId);
+}
+function setTaskTreeDone(task,done){
+ if(!task)return;
+ task.done=done;
+ (task.subtasks||[]).forEach(st=>{
+  st.done=done;
+  (st.subtasks||[]).forEach(n=>{n.done=done});
+ });
+}
 function toggleTaskLevel(taskId,subtaskId,nestedId){
  const task=tasks.find(t=>Number(t.id)===taskId);if(!task)return;
  const sub=(task.subtasks||[]).find(s=>Number(s.id)===subtaskId);if(!sub)return;
- if(nestedId===null)sub.done=!sub.done;
- else{const nested=(sub.subtasks||[]).find(n=>Number(n.id)===nestedId);if(nested)nested.done=!nested.done}
+ if(nestedId===null){
+  const next=!sub.done;sub.done=next;
+  (sub.subtasks||[]).forEach(n=>{n.done=next});
+  expandTaskDisclosure(taskId,subtaskId);
+ }else{
+  const nested=(sub.subtasks||[]).find(n=>Number(n.id)===nestedId);if(!nested)return;
+  nested.done=!nested.done;
+  expandTaskDisclosure(taskId,subtaskId);
+ }
  syncTaskCompletion(task);save();render();
 }
 function moveTaskSubtask(taskId,fromId,toId,level,parentId){
@@ -1154,7 +1177,7 @@ function taskLongPressEnd(){clearTimeout(taskPressTimer)}
 function taskHTML(t){
  return `<div class="task-row"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><span class="task-name ${t.done?'done':''}">${escapeHTML(t.title)}</span><button class="small-btn" onclick="deleteTask(${t.id})">×</button></div>`;
 }
-function toggleTask(id){const t=tasks.find(x=>x.id===id);if(t)t.done=!t.done;save();render()}
+function toggleTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(t){setTaskTreeDone(t,!t.done);expandTaskDisclosure(t.id)}save();render()}
 function deleteTask(id){const task=tasks.find(x=>Number(x.id)===Number(id));if(task)events=events.filter(ev=>String(ev.taskId)!==String(task.id));tasks=tasks.filter(x=>Number(x.id)!==Number(id));save();closeModal();render()}
 function renderLists(){
  const sections=['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras','Listo'];
