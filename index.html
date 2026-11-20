@@ -953,9 +953,9 @@ function renderScopedTasks(scope){
  const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
  const assigneeLabel=value=>value?'<span class="task-assignee">· '+escapeHTML(value)+'</span>':'';
  const renderTaskCards=list=>list.map(t=>{
-  const rootAssigned=isAssigned&&taskIsAssignedToCurrentUser(t);
+  const rootAssigned=(isAssigned||isPending)&&taskIsAssignedToCurrentUser(t);
   const allSubtasks=Array.isArray(t.subtasks)?t.subtasks:[];
-  const subtasks=isPending?(isAssigned&&!rootAssigned?allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&!st.done):allSubtasks.filter(st=>!st.done)):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
+  const subtasks=isPending?(!rootAssigned?allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&!st.done):allSubtasks.filter(st=>!st.done)):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
   const subHTML=subtasks.map(st=>{
    const nestedAll=Array.isArray(st.subtasks)?st.subtasks:[];
    const nested=isPending?nestedAll.filter(n=>!n.done):nestedAll;
@@ -969,9 +969,9 @@ function renderScopedTasks(scope){
   const mainLine=`<div class="family-task-main"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></div>`;
   return subtasks.length?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
- const splitScheduled=isFamily||scope==='personal';
- const completedTasks=splitScheduled?scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t)):[];
- const normalTasks=splitScheduled?scopedTasks.filter(t=>!t.done&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t)):scopedTasks;
+ const splitScheduled=isFamily||scope==='personal'||isPending;
+ const completedTasks=splitScheduled&&!isPending?scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t)):[];
+ const normalTasks=splitScheduled?scopedTasks.filter(t=>!t.done&&!taskIsScheduledForFuture(t)&&(!taskIsScheduledPast(t)||isPending)):scopedTasks;
  const scheduledTasks=splitScheduled?scopedTasks.filter(t=>!t.done&&taskIsScheduledForFuture(t)):[];
  const normalCards=renderTaskCards(normalTasks);
  const scheduledCards=renderTaskCards(scheduledTasks);
