@@ -285,11 +285,11 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 /* Primera propuesta visual del módulo Tareas */
 .app.tasks-app{max-width:1100px;height:100vh;height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column}
 .tasks-app header{flex:0 0 76px}
-.tasks-app main{flex:1 1 auto;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;display:flex;flex-direction:column;padding:25px 25px 90px;scrollbar-width:thin;scrollbar-color:var(--green2) var(--surface2)}
+.tasks-app main{flex:1 1 0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;display:flex;flex-direction:column;padding:25px 25px 90px;scrollbar-width:thin;scrollbar-color:var(--green2) var(--surface2)}
 .tasks-app main::-webkit-scrollbar{width:8px}
 .tasks-app main::-webkit-scrollbar-track{background:var(--surface2);border-radius:8px}
 .tasks-app main::-webkit-scrollbar-thumb{background:var(--green2);border-radius:8px}
-.tasks-app #screen{display:flex;flex:0 0 auto;min-height:100%;flex-direction:column}
+.tasks-app #screen{display:flex;flex:1 1 0;min-height:0;flex-direction:column;overflow-x:hidden;overflow-y:auto}
 .tasks-app .page-heading{flex:0 0 auto}
 .tasks-app .bottom-nav{width:min(1100px,100%)}
 .tasks-app .fab{right:max(20px,calc((100vw - 1060px)/2 + 20px));bottom:83px}
@@ -310,7 +310,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .family-subtask[draggable="true"],.family-task-level-two[draggable="true"]{cursor:grab;touch-action:pan-y}
 .family-subtask:active,.family-task-level-two:active{cursor:grabbing}
 .tasks-app main{overflow-y:auto;overscroll-behavior:contain}
-.tasks-app #screen{overflow:visible}
+.tasks-app #screen{overflow-x:hidden;overflow-y:auto;flex:1 1 0;min-height:0}
 .tasks-layout:has(.family-content){flex:0 0 auto;min-height:max-content;align-items:start}
 
 .family-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:13px}
