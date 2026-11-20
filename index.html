@@ -427,6 +427,43 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
  max-width:100%;
 }
 
+
+/* Reservar columnas independientes para el nombre y el responsable de cada N1. */
+.family-subtask>.family-task-line,
+.family-subtask-disclosure>summary.family-task-line{
+ display:grid;
+ grid-template-columns:18px minmax(0,1fr) 88px;
+ align-items:start;
+ column-gap:10px;
+ width:100%;
+ min-width:0;
+ box-sizing:border-box;
+}
+.family-subtask-disclosure>summary.family-task-line{padding-right:20px}
+.family-subtask>.family-task-line>input,
+.family-subtask-disclosure>summary.family-task-line>input{grid-column:1}
+.family-subtask>.family-task-line>span:not(.task-assignee),
+.family-subtask-disclosure>summary.family-task-line>span:not(.task-assignee){
+ grid-column:2;
+ min-width:0;
+}
+.family-subtask>.family-task-line>.task-assignee,
+.family-subtask-disclosure>summary.family-task-line>.task-assignee{
+ grid-column:3;
+ width:auto;
+ min-width:0;
+ flex:none;
+ margin:0;
+ white-space:normal;
+ overflow-wrap:anywhere;
+}
+@media(max-width:420px){
+ .family-subtask>.family-task-line,
+ .family-subtask-disclosure>summary.family-task-line{
+  grid-template-columns:18px minmax(0,1fr) 68px;
+ }
+}
+
 </style>
 </head>
 <body>
