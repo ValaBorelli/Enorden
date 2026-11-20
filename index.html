@@ -916,6 +916,7 @@ function toggleTaskSidebar(){
 function showTaskView(view){taskView=view;render();}
 function renderTasks(){
  if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
+ if(taskView==='all'){renderScopedTasks('all');return;}
  if(taskView==='family'){renderScopedTasks('family');return;}
  if(taskView==='personal'){renderScopedTasks('personal');return;}
  if(taskView==='today'){renderMyDay();return;}
@@ -933,7 +934,7 @@ function renderTasks(){
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned','pending'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content" aria-label="Resumen de tareas">
-   <div class="tasks-shortcuts">${counts.map(item=>{const action=item.label==='Pendientes'?"showTaskView(\'pending\')":item.label==='Familia'?"showTaskView(\'family\')":item.label==='Personales'?"showTaskView(\'personal\')":item.label==='Asignadas'?"showTaskView(\'assigned\')":null;const tag=action?'button':'div';return `<${tag} ${action?`type="button" onclick="${action}"`:''} class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</${tag}>`}).join('')}</div>
+   <div class="tasks-shortcuts">${counts.map(item=>{const action=item.label==='Todas'?"showTaskView(\'all\')":item.label==='Pendientes'?"showTaskView(\'pending\')":item.label==='Familia'?"showTaskView(\'family\')":item.label==='Personales'?"showTaskView(\'personal\')":item.label==='Asignadas'?"showTaskView(\'assigned\')":null;const tag=action?'button':'div';return `<${tag} ${action?`type="button" onclick="${action}"`:''} class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</${tag}>`}).join('')}</div>
   </section>
  </div>`;
 }
@@ -959,13 +960,14 @@ function taskHasPendingSubtasks(task){
  return (Array.isArray(task?.subtasks)?task.subtasks:[]).some(st=>!st.done||(Array.isArray(st.subtasks)?st.subtasks:[]).some(n=>!n.done));
 }
 function renderScopedTasks(scope){
+ const isAll=scope==='all';
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
  const isPending=scope==='pending';
- const scopedTasks=tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
+ const scopedTasks=isAll?tasks.slice():tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
  const pending=scopedTasks.filter(t=>!t.done||taskHasPendingSubtasks(t)).length;
- const title=isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
- const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
+ const title=isAll?'Todas las tareas':isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
+ const description=isAll?'Todas las tareas disponibles, incluidas las pendientes, programadas y terminadas.':isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
  const assigneeLabel=value=>value?'<span class="task-assignee">· '+escapeHTML(value)+'</span>':'';
  const renderTaskCards=list=>list.map(t=>{
   const rootAssigned=(isAssigned||isPending)&&taskIsAssignedToCurrentUser(t);
