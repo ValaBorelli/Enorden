@@ -565,6 +565,7 @@ let current='inicio',calendarView='Mes',selectedDate=new Date();
 let taskView='overview';
 let taskSidebarCollapsed=false;
 let expandedTaskDisclosures=new Set();
+let expandedTaskSections=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
 let appLanguage=localStorage.getItem('enorden_language')||'es';
 const appearanceThemes={natural:{name:'Natural',bg:'#EDE8DA',header:'#344E40',text:'#292D29',muted:'#777970',cards:['#FFFFFF','#FFFFFF','#FFFFFF']},night:{name:'Nocturno',bg:'#151817',header:'#263D32',text:'#F1F2EF',muted:'#AEB9B1',accent:'#A8D0B1',cards:['#252B28','#252B28','#252B28']},colorful:{name:'Colorido',bg:'#FFF5E8',header:'#7656B8',text:'#493A70',muted:'#806F99',accent:'#F28B78',cards:['#D9EFF9','#FCE0E7','#FFF0B8']},executive:{name:'Ejecutivo',bg:'#EDF0F3',header:'#24364B',text:'#303A46',muted:'#657386',accent:'#A98750',cards:['#FFFFFF','#FFFFFF','#FFFFFF']}};
@@ -1050,7 +1051,7 @@ function renderScopedTasks(scope){
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
    <section class="task-group-section"><h2 class="task-group-title">Tareas Personales</h2>${personalHTML||'<div class="card empty">Todavía no hay tareas personales.</div>'}</section>
    <section class="task-group-section"><h2 class="task-group-title">Tareas Familia</h2>${familyHTML||'<div class="card empty">Todavía no hay tareas familiares.</div>'}</section>
-   <details class="task-scheduled-section"><summary><span class="task-scheduled-heading">Tareas Programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledPersonal.length+scheduledFamily.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary>
+   <details class="task-scheduled-section" ontoggle="rememberTaskSection('all:scheduled',this.open)" ${expandedTaskSections.has('all:scheduled')?'open':''}><summary><span class="task-scheduled-heading">Tareas Programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledPersonal.length+scheduledFamily.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary>
     <div class="task-scheduled-content">
      <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Personales</h3>${scheduledPersonalHTML||'<div class="card empty">No hay tareas personales programadas.</div>'}</section>
      <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Familia</h3>${scheduledFamilyHTML||'<div class="card empty">No hay tareas familiares programadas.</div>'}</section>
@@ -1071,7 +1072,7 @@ function renderScopedTasks(scope){
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
-   ${splitScheduled?`<section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section><details class="task-scheduled-section"><summary><span class="task-scheduled-heading">Tareas programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>${!isPending?`<details class="task-scheduled-section"><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedCards||'<div class="card empty">Todavía no hay tareas terminadas en esta sección.</div>'}</div></details>`:''}`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
+   ${splitScheduled?`<section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section><details class="task-scheduled-section" ontoggle="rememberTaskSection('${taskView}:scheduled',this.open)" ${expandedTaskSections.has(taskView+':scheduled')?'open':''}><summary><span class="task-scheduled-heading">Tareas programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>${!isPending?`<details class="task-scheduled-section" ontoggle="rememberTaskSection('${taskView}:completed',this.open)" ${expandedTaskSections.has(taskView+':completed')?'open':''}><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedCards||'<div class="card empty">Todavía no hay tareas terminadas en esta sección.</div>'}</div></details>`:''}`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
   </section>
  </div><div class="bottom-space"></div>`;
 }
@@ -1110,6 +1111,9 @@ function syncTaskCompletion(task){
 }
 function rememberTaskDisclosure(key,isOpen){
  if(isOpen)expandedTaskDisclosures.add(key);else expandedTaskDisclosures.delete(key);
+}
+function rememberTaskSection(key,isOpen){
+ if(isOpen)expandedTaskSections.add(key);else expandedTaskSections.delete(key);
 }
 function expandTaskDisclosure(taskId,subtaskId=null){
  expandedTaskDisclosures.add('task:'+taskId);
