@@ -375,16 +375,24 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
  .task-shortcut-card{font-size:12px}
 }
 
-/* Tareas: mantener cada nombre en su propia fila y evitar cortes dentro de palabras.
+/* Tareas y subtareas N1/N2: ajustar nombres por palabras, nunca por letras.
    Se aplica igual con el panel lateral visible u oculto. */
 .family-task-line{align-items:flex-start}
 .family-task-line>span:not(.task-assignee),
 .family-task-line>strong{
  min-width:0;
  white-space:normal;
- overflow-wrap:break-word;
+ overflow-wrap:normal;
  word-break:normal;
- hyphens:manual;
+ hyphens:none;
+}
+/* Las N2 tienen menos ancho por la sangría: conservar el ajuste por espacios. */
+.family-task-level-two>span:not(.task-assignee){
+ min-width:0;
+ white-space:normal;
+ overflow-wrap:normal;
+ word-break:normal;
+ hyphens:none;
 }
 
 </style>
