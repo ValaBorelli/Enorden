@@ -894,13 +894,14 @@ function markTaskViewed(id){
  save();
 }
 function taskSidebarHTML(){
- const canCollapse=['today','family','personal','assigned','pending'].includes(taskView);
+ const canCollapse=['today','family','personal','assigned','pending','templates'].includes(taskView);
  return `<aside class="tasks-sidebar${canCollapse&&taskSidebarCollapsed?' is-collapsed':''}" aria-label="Secciones de tareas">
   <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">🏠 <span>Inicio</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
-   <button type="button" class="tasks-sidebar-item ${taskView==='assigned'?'active':''}" onclick="showTaskView('assigned')">📌 <span>Asignadas</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='assigned'?'active':''}" onclick="showTaskView('assigned')">📌 <span>Asignadas</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='templates'?'active':''}" onclick="showTaskView('templates')">📋 <span>Mis Plantillas</span></button>
   ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
  </aside>`;
 }
@@ -915,6 +916,7 @@ function toggleTaskSidebar(){
 }
 function showTaskView(view){taskView=view;render();}
 function renderTasks(){
+ if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
  if(taskView==='family'){renderScopedTasks('family');return;}
  if(taskView==='personal'){renderScopedTasks('personal');return;}
  if(taskView==='today'){renderMyDay();return;}
@@ -933,6 +935,14 @@ function renderTasks(){
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned','pending'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content" aria-label="Resumen de tareas">
    <div class="tasks-shortcuts">${counts.map(item=>{const action=item.label==='Pendientes'?"showTaskView(\'pending\')":item.label==='Familia'?"showTaskView(\'family\')":item.label==='Personales'?"showTaskView(\'personal\')":item.label==='Asignadas'?"showTaskView(\'assigned\')":null;const tag=action?'button':'div';return `<${tag} ${action?`type="button" onclick="${action}"`:''} class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</${tag}>`}).join('')}</div>
+  </section>
+ </div>`;
+}
+function renderTaskTemplatesPlaceholder(){
+ screen.innerHTML=`<div class="page-heading"><h1>Mis Plantillas</h1><p>Aquí podrás consultar y administrar las plantillas de tus tareas.</p></div>
+ <div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
+  <section class="tasks-content" aria-label="Mis plantillas de tareas">
+   <div class="empty-state"><div class="empty-state-icon">📋</div><h2>Próximamente</h2><p>Estamos preparando este espacio para que puedas guardar, editar y reutilizar tus plantillas de tareas.</p></div>
   </section>
  </div>`;
 }
