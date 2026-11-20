@@ -428,39 +428,48 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 }
 
 
-/* Separar nombre y responsable en N1 y reservar una columna para la flecha. */
+/* N1: columnas aisladas para casilla, nombre, responsable y flecha. */
 .family-subtask>.family-task-line,
 .family-subtask-disclosure>summary.family-task-line{
  display:grid;
- grid-template-columns:18px minmax(0,1fr) 88px;
+ grid-template-columns:18px minmax(0,1fr) 72px;
  align-items:start;
  column-gap:8px;
  width:100%;
  min-width:0;
+ max-width:100%;
  box-sizing:border-box;
 }
 .family-subtask>.family-task-line>input,
-.family-subtask-disclosure>summary.family-task-line>input{grid-column:1;grid-row:1}
+.family-subtask-disclosure>summary.family-task-line>input{
+ grid-column:1;
+ grid-row:1;
+}
 .family-subtask>.family-task-line>span:not(.task-assignee),
 .family-subtask-disclosure>summary.family-task-line>span:not(.task-assignee){
  grid-column:2;
  grid-row:1;
  min-width:0;
+ max-width:100%;
+ white-space:normal;
+ overflow-wrap:normal;
+ word-break:normal;
 }
 .family-subtask>.family-task-line>.task-assignee,
 .family-subtask-disclosure>summary.family-task-line>.task-assignee{
  grid-column:3;
  grid-row:1;
- width:auto;
+ display:block;
+ width:100%;
  min-width:0;
- flex:none;
+ max-width:100%;
  margin:0;
- white-space:normal;
- overflow-wrap:anywhere;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ white-space:nowrap;
 }
-/* La flecha pertenece a la última columna y permanece a la derecha del nombre. */
 .family-subtask-disclosure>summary.family-task-line{
- grid-template-columns:18px minmax(0,1fr) 88px 20px;
+ grid-template-columns:18px minmax(0,1fr) 72px 20px;
  padding-right:0;
 }
 .family-subtask-disclosure>summary.family-task-line::after{
@@ -472,13 +481,12 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 }
 @media(max-width:420px){
  .family-subtask>.family-task-line{
-  grid-template-columns:18px minmax(0,1fr) 68px;
+  grid-template-columns:18px minmax(0,1fr) 60px;
  }
  .family-subtask-disclosure>summary.family-task-line{
-  grid-template-columns:18px minmax(0,1fr) 68px 20px;
+  grid-template-columns:18px minmax(0,1fr) 60px 20px;
  }
 }
-
 </style>
 </head>
 <body>
