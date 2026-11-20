@@ -951,7 +951,7 @@ function renderScopedTasks(scope){
  const isAssigned=scope==='assigned';
  const isPending=scope==='pending';
  const scopedTasks=tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
- const pending=scopedTasks.filter(t=>!t.done).length;
+ const pending=scopedTasks.filter(t=>!t.done||taskHasPendingSubtasks(t)).length;
  const title=isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
  const assigneeLabel=value=>value?'<span class="task-assignee">· '+escapeHTML(value)+'</span>':'';
@@ -976,8 +976,8 @@ function renderScopedTasks(scope){
  }).join('');
  const splitScheduled=isFamily||scope==='personal'||isPending;
  const completedTasks=splitScheduled&&!isPending?scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t)):[];
- const normalTasks=splitScheduled?scopedTasks.filter(t=>!t.done&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t)):scopedTasks;
- const scheduledTasks=splitScheduled?scopedTasks.filter(t=>!t.done&&taskIsScheduledForFuture(t)):[];
+ const normalTasks=splitScheduled?scopedTasks.filter(t=>(!t.done||(isPending&&taskHasPendingSubtasks(t)))&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t)):scopedTasks;
+ const scheduledTasks=splitScheduled?scopedTasks.filter(t=>(!t.done||(isPending&&taskHasPendingSubtasks(t)))&&taskIsScheduledForFuture(t)):[];
  const normalCards=renderTaskCards(normalTasks);
  const scheduledCards=renderTaskCards(scheduledTasks);
  const completedCards=renderTaskCards(completedTasks);
