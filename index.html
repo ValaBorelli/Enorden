@@ -1481,7 +1481,7 @@ function openAdd(){
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){openTaskEditor(null);return}
  if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
- else{document.getElementById('modalTitle').textContent='Nuevo evento';document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="event_task">Evento Tarea</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';document.getElementById('eventType').value='normal';showEventFields()}
+ else{document.getElementById('modalTitle').textContent='Nuevo evento';document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';document.getElementById('eventType').value='normal';showEventFields()}
  document.getElementById('backdrop').classList.add('show');
 }
 function toggleTaskSchedule(){const enabled=document.getElementById('scheduleTask')?.checked;document.getElementById('taskScheduleOptions')?.classList.toggle('hidden',!enabled);if(!enabled)taskScheduleDate='';}
@@ -1567,8 +1567,8 @@ function openEditEvent(id){
  editingEventId=ev.id;
  const sub=document.getElementById('modalSubtitle');document.getElementById('modalTitle').textContent='Editar evento';
  sub.textContent='Modifica los detalles del evento. El tipo no se puede cambiar.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';
- document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
+ document.getElementById('modalBody').innerHTML=(ev.type==='event_task'?'<div class="event-form-section"><label>Tipo de evento</label><input type="hidden" id="eventType" value="event_task"><div class="muted">Evento Tarea · Creado automáticamente desde el módulo Tareas</div></div>':'<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div>')+'<div id="eventFields"></div>';
+ if(ev.type!=='event_task')document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
 }
 function selectEventType(type){document.getElementById('eventType').value=type;showEventFields();if(type==='anniversary'&&editingEventId===null)document.getElementById('anniversaryNotice').classList.add('show')}
 function closeAnniversaryNotice(){document.getElementById('anniversaryNotice').classList.remove('show')}
@@ -1650,7 +1650,7 @@ function eventOccursOn(ev,date){const base=new Date((ev.date||'')+'T12:00:00'),t
 function addEvent(){
  const name=document.getElementById('eventName')?.value.trim(),date=document.getElementById('eventDate')?.value;
  const old=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null,type=document.getElementById('eventType')?.value;
- if(!type){alert('Selecciona el tipo de evento.');return}if(!name){alert('Escribe el nombre del evento.');return}if(!date){alert('Selecciona una fecha.');return}
+ if(!type||!['normal','birthday','anniversary','event_task'].includes(type)||(type==='event_task'&&old?.taskId==null)){alert('Selecciona un tipo de evento válido.');return}if(!name){alert('Escribe el nombre del evento.');return}if(!date){alert('Selecciona una fecha.');return}
  const repeat=document.getElementById('eventRepeat').value,days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>Number(x.value));if(repeat==='custom'&&!days.length){alert('Selecciona al menos un día de la semana.');return}
  const allDay=document.getElementById('eventAllDay').checked,scope=document.querySelector('input[name="eventScope"]:checked')?.value||'personal',priority=document.getElementById('eventPriority').value,alerts=collectEventAlerts(),links=(old?.links||eventPrefill?.links||[]).map(link=>({...link}));
  const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!confirm('Ya existe un evento similar en esa fecha ('+dup.title+'). ¿Quieres '+(old?'guardar los cambios':'crearlo')+' de todas formas?'))return;
