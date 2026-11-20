@@ -79,6 +79,7 @@ h2{font-size:18px;margin-bottom:13px}
  border-radius:14px;padding:15px;margin-bottom:11px;color:#242820}
 .card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .page-heading{margin-bottom:18px}
+.shared-project-section{margin:0 0 22px}.shared-project-section h2{font-size:15px;margin:0 0 8px;color:#42483f}.shared-project-row{width:100%;display:flex;align-items:center;gap:11px;padding:13px 10px;border:0;border-bottom:1px solid var(--line);background:transparent;color:#242820;text-align:left}.shared-project-icon{font-size:20px;flex:0 0 25px}.shared-project-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.shared-project-info strong{font-size:14px;overflow-wrap:anywhere}.shared-project-info small{font-size:11px;color:var(--muted)}.shared-project-arrow{font-size:23px;color:var(--muted)}.shared-project-empty{padding:10px 2px 15px;font-size:12px;color:var(--muted)}
 .page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
@@ -941,9 +942,17 @@ function toggleTaskSidebar(){
  updated.forEach((item,index)=>{if(index<openStates.length)item.open=openStates[index]});
 }
 function showTaskView(view){taskView=view==='overview'?'today':view;render();}
+function renderSharedProjectsPage(){
+ const projects=[];
+ const pinnedProjects=projects.filter(project=>project.pinned);
+ const otherProjects=projects.filter(project=>!project.pinned);
+ const renderProjectRows=list=>list.map(project=>`<button type="button" class="shared-project-row" onclick="openSharedProject(\'${escapeHTML(String(project.id))}\')"><span class="shared-project-icon">📁</span><span class="shared-project-info"><strong>${escapeHTML(project.name)}</strong><small>${escapeHTML(project.meta||'Proyecto compartido')}</small></span><span class="shared-project-arrow">›</span></button>`).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Proyectos Compartidos</h1><p>Organiza proyectos y trabaja en ellos junto a otras personas.</p></div><div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}<section class="tasks-content family-content" aria-label="Proyectos Compartidos"><div class="shared-project-section"><h2>Proyectos anclados</h2>${renderProjectRows(pinnedProjects)||'<div class="shared-project-empty">Aquí aparecerán los proyectos que ancles.</div>'}</div><div class="shared-project-section"><h2>Otros proyectos</h2>${renderProjectRows(otherProjects)||'<div class="card empty">Todavía no tienes proyectos compartidos.</div>'}</div></section></div>`;
+}
+function openSharedProject(id){/* La navegación a páginas de proyecto se implementará en la siguiente etapa. */}
 function renderTasks(){
  if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
- if(taskView==='shared'){renderScopedTasks('shared');return;}
+ if(taskView==='shared'){renderSharedProjectsPage();return;}
  if(taskView==='all'){renderScopedTasks('all');return;}
  if(taskView==='family'){renderScopedTasks('family');return;}
  if(taskView==='personal'){renderScopedTasks('personal');return;}
