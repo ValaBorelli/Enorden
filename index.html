@@ -1098,8 +1098,10 @@ function taskDrop(event,taskId,targetId,level,parentId){
 }
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
- const pendingTasks=tasks.filter(t=>(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t));
- const assignedTasks=tasks.filter(t=>taskHasAssignmentsForCurrentUser(t));
+ const todayKey=taskTodayKey();
+ const isPendingToday=t=>(!t.done||taskHasPendingSubtasks(t))&&(!t.scheduledDate||String(t.scheduledDate)===todayKey);
+ const pendingTasks=tasks.filter(isPendingToday);
+ const assignedTasks=tasks.filter(t=>isPendingToday(t)&&taskHasAssignmentsForCurrentUser(t));
  const pendingRows=pendingTasks.map(t=>{
   const family=taskIsPublic(t);
   return '<button type="button" class="my-day-task-row" onclick="showTaskView(\''+(family?'family':'personal')+'\')"><span class="my-day-task-title">'+escapeHTML(t.title)+'</span><span class="my-day-task-kind" aria-label="'+(family?'Familia':'Personal')+'">'+(family?'🫂':'👤')+'</span></button>';
