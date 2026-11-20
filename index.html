@@ -80,6 +80,22 @@ h2{font-size:18px;margin-bottom:13px}
 .card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .page-heading{margin-bottom:18px}
 .shared-project-section{margin:0 0 22px}.shared-project-section h2{font-size:15px;margin:0 0 8px;color:#42483f}.shared-project-create{margin:0 0 25px}.shared-project-create h2{font-size:17px;margin:0 0 11px}.shared-project-create button{width:100%;min-height:48px;border:1px solid #2459ff;border-radius:12px;background:#1748e8;color:#fff;font-weight:700;box-shadow:0 5px 18px #1748e844}.shared-project-create button:active{background:#1038bd}.shared-project-row{width:100%;display:flex;align-items:center;gap:11px;padding:13px 10px;border:0;border-bottom:1px solid var(--line);background:transparent;color:#242820;text-align:left}.shared-project-icon{font-size:20px;flex:0 0 25px}.shared-project-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.shared-project-info strong{font-size:14px;overflow-wrap:anywhere}.shared-project-info small{font-size:11px;color:var(--muted)}.shared-project-arrow{font-size:23px;color:var(--muted)}.shared-project-empty{padding:10px 2px 15px;font-size:12px;color:var(--muted)}
+.shared-project-modal-layer{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.58)}
+.shared-project-modal{width:min(100%,420px);background:#fff;color:#17191d;border:1px solid #dce1ea;border-radius:18px;padding:21px;box-shadow:0 22px 70px #0006}
+.shared-project-modal header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.shared-project-modal h2{font-size:19px;margin:0;font-weight:750}
+.shared-project-modal-x{border:0;background:transparent;color:#606775;font-size:29px;line-height:1;padding:0 3px;cursor:pointer}
+.shared-project-modal label{display:block;font-size:14px;font-weight:650;margin-bottom:9px}
+.shared-project-modal input{width:100%;box-sizing:border-box;border:1px solid #cbd2df;border-radius:10px;padding:13px 12px;font:inherit;font-size:14px;outline:none}
+.shared-project-modal input:focus{border-color:#2463ff;box-shadow:0 0 0 3px #2463ff22}
+.shared-project-modal footer{display:flex;justify-content:flex-end;gap:9px;margin-top:27px;flex-wrap:wrap}
+.shared-project-modal footer button{border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
+.shared-project-cancel{border:1px solid #cbd2df;background:#fff;color:#303746}
+.shared-project-save{border:1px solid #1755ed;background:#1755ed;color:#fff}
+.shared-project-confirm-layer{z-index:10060;background:rgba(0,0,0,.68)}
+.shared-project-confirm p{font-size:14px;line-height:1.5;color:#4c5564;margin:0}
+.shared-project-confirm footer{justify-content:space-between}
+
 .page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
@@ -590,6 +606,8 @@ let current='inicio',calendarView='Mes',selectedDate=new Date();
 let taskView='today';
 let taskSidebarCollapsed=false;
 let activeSharedProjectId=null;
+let sharedProjectDraft=null;
+let sharedProjectCancelConfirm=false;
 let expandedTaskDisclosures=new Set();
 let expandedTaskSections=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
@@ -949,13 +967,28 @@ function showTaskView(view){taskView=view==='overview'?'today':view;render();}
 function loadSharedProjects(){try{const value=JSON.parse(localStorage.getItem('enorden_shared_projects')||'[]');return Array.isArray(value)?value:[]}catch{return []}}
 function saveSharedProjects(projects){localStorage.setItem('enorden_shared_projects',JSON.stringify(projects))}
 function createSharedProject(){
- const projects=loadSharedProjects(),project={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'Nuevo proyecto',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido'};
- projects.unshift(project);saveSharedProjects(projects);activeSharedProjectId=project.id;render();window.scrollTo(0,0);
+ sharedProjectDraft={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido'};
+ sharedProjectCancelConfirm=false;activeSharedProjectId=sharedProjectDraft.id;render();window.scrollTo(0,0);
+}
+function saveNewSharedProject(){
+ const name=(document.getElementById('sharedProjectName')?.value||'').trim();
+ if(!name){document.getElementById('sharedProjectName')?.focus();return}
+ const projects=loadSharedProjects();projects.unshift({...sharedProjectDraft,name});saveSharedProjects(projects);
+ sharedProjectDraft=null;sharedProjectCancelConfirm=false;render();window.scrollTo(0,0);
+}
+function requestCancelSharedProject(){sharedProjectCancelConfirm=true;render()}
+function dismissCancelSharedProject(){sharedProjectCancelConfirm=false;render()}
+function confirmCancelSharedProject(){
+ sharedProjectDraft=null;sharedProjectCancelConfirm=false;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0);
 }
 function renderSharedProjectWorkspace(){
- const project=loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));
+ const project=sharedProjectDraft&&String(sharedProjectDraft.id)===String(activeSharedProjectId)?sharedProjectDraft:loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));
  if(!project){activeSharedProjectId=null;renderSharedProjectsPage();return}
  screen.innerHTML='<div class="shared-project-workspace" aria-label="Página de proyecto"></div>';
+ if(sharedProjectDraft&&String(sharedProjectDraft.id)===String(activeSharedProjectId)){
+  screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectModalTitle"><header><h2 id="sharedProjectModalTitle">Nuevo Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="requestCancelSharedProject()">×</button></header><label for="sharedProjectName">Nombre del proyecto</label><input id="sharedProjectName" type="text" maxlength="80" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProject()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveNewSharedProject()">Guardar</button></footer></section></div>`);
+  if(sharedProjectCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectConfirmTitle"><header><h2 id="sharedProjectConfirmTitle">Cancelar creación</h2></header><p>¿Estás seguro de que quieres cancelar la creación del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProject()">No, continuar creando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProject()">Sí, cancelar</button></footer></section></div>`);
+ }
 }
 function renderSharedProjectsPage(){
  const projects=loadSharedProjects();
