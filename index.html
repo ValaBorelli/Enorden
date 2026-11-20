@@ -303,16 +303,20 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-sidebar-item{justify-content:flex-start}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
 .tasks-layout.is-sidebar-collapsed{grid-template-columns:42px minmax(0,1fr)}
-.tasks-sidebar-toggle{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;min-height:38px;padding:6px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--text);font-size:18px;font-weight:700;cursor:pointer}
-.tasks-sidebar-toggle span{font-size:12px}
+.tasks-sidebar-toggle{display:flex;align-items:center;justify-content:center;gap:4px;align-self:flex-end;width:auto;min-width:32px;min-height:28px;margin-top:auto;padding:3px 7px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer}
+.tasks-sidebar-toggle span{font-size:10px}
 .tasks-sidebar.is-collapsed{width:42px;height:auto;min-height:0;padding:6px;gap:0;align-items:stretch}
+.tasks-sidebar.is-collapsed .tasks-sidebar-toggle{align-self:center;width:28px;min-width:28px;padding:3px}
 .tasks-sidebar.is-collapsed .tasks-sidebar-item{display:none}
 .tasks-layout.is-sidebar-collapsed .tasks-content{grid-column:2;min-width:0}
 .tasks-layout.is-sidebar-collapsed .family-content{width:100%;min-width:0}
 
 .family-content{display:block;width:100%;min-width:0}.task-action-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-action-menu button{min-height:46px}.task-action-menu button:last-child{grid-column:1/-1}.task-assignment-question{font-size:15px;font-weight:600;margin:0 0 14px}.family-task-card{user-select:none;-webkit-user-select:none}
-.family-task-disclosure>summary{list-style:none;cursor:pointer}
-.family-task-disclosure>summary::-webkit-details-marker{display:none}
+.family-task-disclosure>summary,.family-subtask-disclosure>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%}
+.family-task-disclosure>summary::-webkit-details-marker,.family-subtask-disclosure>summary::-webkit-details-marker{display:none}
+.family-task-disclosure>summary::after,.family-subtask-disclosure>summary::after{content:'›';margin-left:auto;flex:0 0 auto;font-size:22px;line-height:1;color:var(--muted);transform:rotate(0deg);transition:transform .15s ease}
+.family-task-disclosure[open]>summary::after,.family-subtask-disclosure[open]>summary::after{transform:rotate(90deg)}
+.family-task-disclosure>summary>.family-task-line{flex:1;min-width:0}
 .family-task-disclosure>summary::after{content:'⌄';font-size:20px;color:var(--muted);transition:transform .18s}
 .family-task-disclosure[open]>summary::after{transform:rotate(180deg)}
 .family-subtask[draggable="true"],.family-task-level-two[draggable="true"]{cursor:grab;touch-action:pan-y}
@@ -757,11 +761,11 @@ function markTaskViewed(id){
 function taskSidebarHTML(){
  const canCollapse=['today','family','personal'].includes(taskView);
  return `<aside class="tasks-sidebar${canCollapse&&taskSidebarCollapsed?' is-collapsed':''}" aria-label="Secciones de tareas">
-  ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
   <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">🏠 <span>Inicio</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
+  ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
  </aside>`;
 }
 function toggleTaskSidebar(){if(!['today','family','personal'].includes(taskView))return;taskSidebarCollapsed=!taskSidebarCollapsed;render();}
@@ -886,8 +890,8 @@ function openTaskActions(id){const t=tasks.find(x=>Number(x.id)===Number(id));if
 function confirmDeleteTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('Confirmar eliminación','<p>¿Quieres borrar «'+escapeHTML(t.title)+'» y todas sus subtareas?</p><div class="event-detail-actions"><button class="secondary-btn" onclick="openTaskActions('+t.id+')">Cancelar</button><button class="primary-btn" onclick="deleteTask('+t.id+')">Sí, borrar</button></div>')}
 function duplicateTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;const copy=JSON.parse(JSON.stringify(t));let seed=Date.now();copy.id=seed++;copy.subtasks=(copy.subtasks||[]).map(st=>({...st,id:seed++,subtasks:(st.subtasks||[]).map(n=>({...n,id:seed++}))}));copy.title=t.title+' (copia)';copy.done=false;copy.createdAt=new Date().toISOString();tasks.push(copy);save();closeModal();render()}
 function currentHouseholdMember(){return localStorage.getItem('enorden_profile_name')||'Vale'}
-function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task)return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>')}
-function saveTaskAssignment(){if(!taskAssignmentTarget)return;const task=tasks.find(x=>Number(x.id)===Number(taskAssignmentTarget.taskId));if(!task)return;const value=document.getElementById('taskAssignee')?.value||currentHouseholdMember();if(taskAssignmentTarget.subtaskId==null)task.assignedTo=value;else{const sub=(task.subtasks||[]).find(x=>Number(x.id)===Number(taskAssignmentTarget.subtaskId));if(sub)sub.assignedTo=value}taskAssignmentTarget=null;save();closeModal();render()}
+function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task)return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="" '+(!assigned?'selected':'')+'>Sin asignar</option><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>')}
+function saveTaskAssignment(){if(!taskAssignmentTarget)return;const task=tasks.find(x=>Number(x.id)===Number(taskAssignmentTarget.taskId));if(!task)return;const value=document.getElementById('taskAssignee')?.value??'';if(taskAssignmentTarget.subtaskId==null){if(value)task.assignedTo=value;else delete task.assignedTo}else{const sub=(task.subtasks||[]).find(x=>Number(x.id)===Number(taskAssignmentTarget.subtaskId));if(sub){if(value)sub.assignedTo=value;else delete sub.assignedTo}}taskAssignmentTarget=null;save();closeModal();render()}
 function taskLongPressStart(event,taskId,subtaskId){if(event.target.closest('input,button,select'))return;clearTimeout(taskPressTimer);taskPressTimer=setTimeout(()=>{taskPressTriggered=true;if(subtaskId==null)openTaskActions(taskId);else openTaskAssignment(taskId,subtaskId)},550)}
 function taskLongPressEnd(){clearTimeout(taskPressTimer)}
 function taskHTML(t){
