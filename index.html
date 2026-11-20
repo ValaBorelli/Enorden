@@ -1489,7 +1489,7 @@ function confirmDeleteEvent(id){
 }
 function deleteEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
- events=events.filter(x=>String(x.id)!==String(id));eventCountdowns=eventCountdowns.filter(x=>String(x.eventId)!==String(id));localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));save();closeModal();render();
+ if(ev.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(ev.taskId));if(linkedTask){linkedTask.scheduledDate=null;linkedTask.calendarEventId=null;}}events=events.filter(x=>String(x.id)!==String(id));eventCountdowns=eventCountdowns.filter(x=>String(x.eventId)!==String(id));localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));save();closeModal();render();
 }
 function duplicateEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
@@ -1627,7 +1627,7 @@ function addEvent(){
  if(document.getElementById('linkExpense').checked){const id=document.getElementById('linkExpenseId').value.trim();if(id)links.push({type:'expense',id})}
  const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!confirm('Ya existe un evento similar en esa fecha ('+dup.title+'). ¿Quieres '+(old?'guardar los cambios':'crearlo')+' de todas formas?'))return;
  const changes={title:name,type,date,time:allDay?null:document.getElementById('eventTime').value,allDay,scope,priority,color:priority==='high'?document.getElementById('eventColor').value:null,repeat,weekdays:repeat==='custom'?days:[],alerts,links};
- if(old)Object.assign(old,changes);else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
+ if(old){Object.assign(old,changes);if(old.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(old.taskId));if(linkedTask)linkedTask.scheduledDate=date;}}else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
  editingEventId=null;eventPrefill=null;save();closeModal();render();
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer()});
