@@ -550,6 +550,29 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 </div>
 
 <script>
+/*
+ * COMPARTIDO — ESPECIFICACIÓN FUNCIONAL
+ * La definición completa y vigente de este módulo está en COMPARTIDO_SPEC.md.
+ * Compartido es un sistema de PROYECTOS independiente de las tareas normales.
+ * No reutilizar scope='shared' como si fuera el nuevo modelo de proyectos.
+ * Los proyectos se crean desde Compartido, cada uno tiene página propia basada
+ * en una plantilla común, listado/orden/anclaje por usuario y participantes
+ * con acceso individual. El documento especifica vencimiento a 7 días desde
+ * la creación, aviso 1 día antes, eliminación por el creador con confirmación,
+ * enlace único por proyecto, solicitudes individuales (máximo 3 por usuario),
+ * permisos, asignaciones solo después de conceder acceso y transferencia de
+ * administración antes de abandonar un proyecto.
+ *
+ * IMPORTANTE: la primera etapa usa almacenamiento local como prototipo.
+ * Esto NO equivale a colaboración multiusuario sincronizada. Notificaciones
+ * fiables, vencimiento independiente de sesión, invitaciones y permisos reales
+ * requieren backend centralizado antes de producción.
+ *
+ * Mantener Compartido separado de Personal/Familia/Mi día/Asignadas/Todas,
+ * del calendario y de las plantillas normales. Desde Compartido tampoco se
+ * crean tareas normales. Consultar COMPARTIDO_SPEC.md antes de ampliar reglas.
+ */
+
 const modules=[
  {id:'calendario',name:'Calendario',emoji:'📅'},
  {id:'tareas',name:'Tareas',emoji:'✓'},
