@@ -896,18 +896,19 @@ function markTaskViewed(id){
  save();
 }
 function taskSidebarHTML(){
- const canCollapse=['today','family','personal','assigned','pending','templates'].includes(taskView);
+ const canCollapse=['today','family','personal','assigned','pending','templates','shared'].includes(taskView);
  return `<aside class="tasks-sidebar${canCollapse&&taskSidebarCollapsed?' is-collapsed':''}" aria-label="Secciones de tareas">
   <button type="button" class="tasks-sidebar-item" style="display:none" aria-hidden="true" tabindex="-1" onclick="showTaskView('overview')">🏠 <span>Inicio 2</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='templates'?'active':''}" onclick="showTaskView('templates')">📋 <span>Mis Plantillas</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='shared'?'active':''}" onclick="showTaskView('shared')">🔗 <span>Compartido</span></button>
   ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
  </aside>`;
 }
 function toggleTaskSidebar(){
- if(!['today','family','personal','assigned','pending','templates'].includes(taskView))return;
+ if(!['today','family','personal','assigned','pending','templates','shared'].includes(taskView))return;
  const disclosures=Array.from(screen.querySelectorAll('.family-task-disclosure,.family-subtask-disclosure'));
  const openStates=disclosures.map(item=>item.open);
  taskSidebarCollapsed=!taskSidebarCollapsed;
@@ -918,6 +919,10 @@ function toggleTaskSidebar(){
 function showTaskView(view){taskView=view==='overview'?'today':view;render();}
 function renderTasks(){
  if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
+ if(taskView==='shared'){
+  screen.innerHTML=`<div class="page-heading"><h1>Compartido</h1><p>Esta página estará disponible próximamente.</p></div><div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}<section class="tasks-content family-content" aria-label="Compartido"></section></div>`;
+  return;
+ }
  if(taskView==='all'){renderScopedTasks('all');return;}
  if(taskView==='family'){renderScopedTasks('family');return;}
  if(taskView==='personal'){renderScopedTasks('personal');return;}
