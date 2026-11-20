@@ -876,6 +876,8 @@ function taskAssignmentMatchesCurrentUser(item){
 }
 function taskIsAssignedToCurrentUser(t){return taskIsPublic(t)&&taskAssignmentMatchesCurrentUser(t)}
 function taskSubtaskIsAssignedToCurrentUser(subtask){return taskAssignmentMatchesCurrentUser(subtask)}
+function taskHasAnyAssignment(item){return !!item&&((typeof item.assignedTo==='string'&&item.assignedTo.trim()!=='')||(typeof item.assignedToUserId==='string'&&item.assignedToUserId.trim()!==''));}
+function taskHasAnyAssignments(t){return taskIsPublic(t)&&(taskHasAnyAssignment(t)||(t.subtasks||[]).some(taskHasAnyAssignment))}
 function taskHasAssignmentsForCurrentUser(t){return taskIsPublic(t)&&(taskIsAssignedToCurrentUser(t)||(t.subtasks||[]).some(taskSubtaskIsAssignedToCurrentUser))}
 function taskHasUnread(t){
  const user=localStorage.getItem('enorden_profile_name')||'Vale';
@@ -950,7 +952,7 @@ function renderScopedTasks(scope){
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
  const isPending=scope==='pending';
- const scopedTasks=tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
+ const scopedTasks=tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
  const pending=scopedTasks.filter(t=>!t.done||taskHasPendingSubtasks(t)).length;
  const title=isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
@@ -959,7 +961,7 @@ function renderScopedTasks(scope){
   const rootAssigned=(isAssigned||isPending)&&taskIsAssignedToCurrentUser(t);
   const allSubtasks=Array.isArray(t.subtasks)?t.subtasks:[];
   const taskDone=!!t.done&&!taskHasPendingSubtasks(t);
-  const showAllPendingSubtasks=isPending&&(!taskIsPublic(t)||rootAssigned||taskIsScheduledForFuture(t));
+  const showAllPendingSubtasks=isPending&&(!taskIsPublic(t)||rootAssigned||taskIsScheduledForFuture(t)||(!taskHasAnyAssignments(t)&&!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()));
   const subtasks=isPending?(showAllPendingSubtasks?allSubtasks.filter(st=>!st.done||(st.subtasks||[]).some(n=>!n.done)):allSubtasks.filter(st=>taskSubtaskIsAssignedToCurrentUser(st)&&(!st.done||(st.subtasks||[]).some(n=>!n.done)))):isAssigned&&!rootAssigned?allSubtasks.filter(taskSubtaskIsAssignedToCurrentUser):allSubtasks;
   const subHTML=subtasks.map(st=>{
    const nestedAll=Array.isArray(st.subtasks)?st.subtasks:[];
