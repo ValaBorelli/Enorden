@@ -300,6 +300,16 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-sidebar-item{justify-content:flex-start}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
 .family-content{display:block;width:100%;min-width:0}
+.family-task-disclosure>summary{list-style:none;cursor:pointer}
+.family-task-disclosure>summary::-webkit-details-marker{display:none}
+.family-task-disclosure>summary::after{content:'⌄';font-size:20px;color:var(--muted);transition:transform .18s}
+.family-task-disclosure[open]>summary::after{transform:rotate(180deg)}
+.family-subtask[draggable="true"],.family-task-level-two[draggable="true"]{cursor:grab;touch-action:pan-y}
+.family-subtask:active,.family-task-level-two:active{cursor:grabbing}
+.tasks-app main{overflow-y:auto;overscroll-behavior:contain}
+.tasks-app #screen{overflow:visible}
+.tasks-layout:has(.family-content){flex:0 0 auto;min-height:max-content;align-items:start}
+
 .family-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:13px}
 .family-task-card{padding:12px 14px}
 .family-task-main{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -771,11 +781,12 @@ function renderScopedTasks(scope){
   const subtasks=Array.isArray(t.subtasks)?t.subtasks:[];
   const subHTML=subtasks.map(st=>{
    const nested=Array.isArray(st.subtasks)?st.subtasks:[];
-   return `<div class="family-subtask"><label class="family-task-line"><input type="checkbox" ${st.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${st.done?'done':''}">${escapeHTML(st.title)}</span></label>
-    ${nested.length?'<div class="family-nested-list">'+nested.map(n=>`<label class="family-task-line family-task-level-two"><input type="checkbox" ${n.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></label>`).join('')+'</div>':''}
+   return `<div class="family-subtask" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(st.id)},'sub',null)" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(st.id)},'sub',null)">
+    <label class="family-task-line"><input type="checkbox" ${st.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${st.done?'done':''}">${escapeHTML(st.title)}</span></label>
+    ${nested.length?'<div class="family-nested-list">'+nested.map(n=>`<label class="family-task-line family-task-level-two" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})"><input type="checkbox" ${n.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></label>`).join('')+'</div>':''}
    </div>`;
   }).join('');
-  return `<article class="card family-task-card"><div class="family-task-main"><label class="family-task-line"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="deleteTask(${Number(t.id)})">×</button></div>${subHTML?'<div class="family-subtasks">'+subHTML+'</div>':''}</article>`;
+  return `<article class="card family-task-card"><details class="family-task-disclosure" ${subtasks.length?'':'disabled'}><summary class="family-task-main"><label class="family-task-line" onclick="event.stopPropagation()"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="event.preventDefault();event.stopPropagation();deleteTask(${Number(t.id)})">×</button></summary>${subHTML?'<div class="family-subtasks">'+subHTML+'</div>':''}</details>${subtasks.length?'':'<div class="family-task-main"><label class="family-task-line"><input type="checkbox" '+(t.done?'checked':'')+' onchange="toggleTask('+Number(t.id)+')"><strong class="'+(t.done?'done':'')+'">'+escapeHTML(t.title)+'</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="deleteTask('+Number(t.id)+')">×</button></div>'}</article>`;
  }).join('');
  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
  <div class="tasks-layout">${taskSidebarHTML()}
@@ -784,6 +795,16 @@ function renderScopedTasks(scope){
    ${taskCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
   </section>
  </div><div class="bottom-space"></div>`;
+}
+let taskDragData=null;
+function taskDragStart(event,taskId,itemId,level,parentId){
+ taskDragData={taskId,itemId,level,parentId};event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',String(itemId));
+}
+function taskDrop(event,taskId,targetId,level,parentId){
+ event.preventDefault();if(!taskDragData)return;
+ const drag=taskDragData;taskDragData=null;
+ if(Number(drag.taskId)!==Number(taskId)||drag.level!==level||Number(drag.parentId||0)!==Number(parentId||0))return;
+ moveTaskSubtask(taskId,drag.itemId,targetId,level,parentId);
 }
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
@@ -794,11 +815,31 @@ function renderMyDay(){
   </section>
  </div>`;
 }
+function syncTaskCompletion(task){
+ if(!task)return;
+ const subs=Array.isArray(task.subtasks)?task.subtasks:[];
+ subs.forEach(st=>{
+  const children=Array.isArray(st.subtasks)?st.subtasks:[];
+  if(children.length)st.done=children.every(n=>!!n.done);
+ });
+ if(subs.length)task.done=subs.every(st=>!!st.done);
+}
 function toggleTaskLevel(taskId,subtaskId,nestedId){
  const task=tasks.find(t=>Number(t.id)===taskId);if(!task)return;
  const sub=(task.subtasks||[]).find(s=>Number(s.id)===subtaskId);if(!sub)return;
  if(nestedId===null)sub.done=!sub.done;
  else{const nested=(sub.subtasks||[]).find(n=>Number(n.id)===nestedId);if(nested)nested.done=!nested.done}
+ syncTaskCompletion(task);save();render();
+}
+function moveTaskSubtask(taskId,fromId,toId,level,parentId){
+ const task=tasks.find(t=>Number(t.id)===Number(taskId));if(!task)return;
+ const list=level==='nested'?(task.subtasks||[]).find(s=>Number(s.id)===Number(parentId))?.subtasks:task.subtasks;
+ if(!Array.isArray(list))return;
+ const from=list.findIndex(x=>Number(x.id)===Number(fromId)),to=list.findIndex(x=>Number(x.id)===Number(toId));
+ if(from<0||to<0||from===to)return;
+ const item=list[from],target=list[to];
+ if(!confirm('¿Confirmas mover «'+item.title+'» '+(from<to?'después de ':'antes de ')+'«'+target.title+'»?'))return;
+ list.splice(from,1);list.splice(list.indexOf(target)+(from<to?1:0),0,item);
  save();render();
 }
 function addTaskSubtask(){
