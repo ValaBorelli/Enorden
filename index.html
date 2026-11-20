@@ -296,6 +296,19 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .tasks-content{display:flex;align-items:flex-start;justify-content:flex-start;min-width:0;padding:0}
 .tasks-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%}
 .task-shortcut-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);text-align:center;box-shadow:0 2px 8px #00000008}.task-shortcut-label{font-size:15px;font-weight:700}.task-shortcut-count{font-size:14px;line-height:1;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}.task-unread-dot{position:absolute;top:10px;left:10px;width:9px;height:9px;border-radius:50%;background:#e34b4b;box-shadow:0 0 0 2px var(--surface)}
+.tasks-sidebar-item{width:100%;text-align:left;cursor:pointer}
+.tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
+.family-content{display:block;width:100%;min-width:0}
+.family-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;font-size:13px}
+.family-task-card{padding:12px 14px}
+.family-task-main{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.family-task-line{display:flex;align-items:center;gap:10px;min-width:0;font-size:14px;line-height:1.4}
+.family-task-line input{width:18px;height:18px;flex:0 0 18px;accent-color:var(--green2)}
+.family-task-line span,.family-task-line strong{overflow-wrap:anywhere}
+.family-subtasks{margin:10px 0 0 28px;padding-left:12px;border-left:2px solid var(--line);display:grid;gap:9px}
+.family-subtask{display:grid;gap:8px}
+.family-nested-list{margin-left:26px;padding-left:11px;border-left:2px solid var(--line);display:grid;gap:7px}
+.family-task-level-two{font-size:13px;color:var(--muted)}
 .task-create-section{margin:14px 0}
 .task-create-section>label{display:block;font-size:13px;font-weight:700;color:#42483f;margin:0 0 6px}
 .task-create-section input{margin:0!important}
@@ -398,6 +411,7 @@ const modules=[
 let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
 if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
 let current='inicio',calendarView='Mes',selectedDate=new Date();
+let taskView='overview';
 let calendarSearchOpen=false,calendarSearchQuery='';
 let appLanguage=localStorage.getItem('enorden_language')||'es';
 const appearanceThemes={natural:{name:'Natural',bg:'#EDE8DA',header:'#344E40',text:'#292D29',muted:'#777970',cards:['#FFFFFF','#FFFFFF','#FFFFFF']},night:{name:'Nocturno',bg:'#151817',header:'#263D32',text:'#F1F2EF',muted:'#AEB9B1',accent:'#A8D0B1',cards:['#252B28','#252B28','#252B28']},colorful:{name:'Colorido',bg:'#FFF5E8',header:'#7656B8',text:'#493A70',muted:'#806F99',accent:'#F28B78',cards:['#D9EFF9','#FCE0E7','#FFF0B8']},executive:{name:'Ejecutivo',bg:'#EDF0F3',header:'#24364B',text:'#303A46',muted:'#657386',accent:'#A98750',cards:['#FFFFFF','#FFFFFF','#FFFFFF']}};
@@ -717,7 +731,16 @@ function markTaskViewed(id){
  if(!t.readBy.includes(user))t.readBy.push(user);
  save();
 }
+function taskSidebarHTML(){
+ return `<aside class="tasks-sidebar" aria-label="Secciones de tareas">
+  <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">☀️ <span>Mi día</span></button>
+  <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
+  <button type="button" class="tasks-sidebar-item" aria-label="Personal">👤 <span>Personal</span></button>
+ </aside>`;
+}
+function showTaskView(view){taskView=view;render();}
 function renderTasks(){
+ if(taskView==='family'){renderFamilyTasks();return;}
  const active=tasks.filter(t=>!t.done);
  const counts=[
   {label:'Todas',count:tasks.length,unread:tasks.some(taskHasUnread)},
@@ -728,16 +751,39 @@ function renderTasks(){
   {label:'Asignadas',count:active.filter(taskIsAssignedToCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
  ];
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
- <div class="tasks-layout">
-  <aside class="tasks-sidebar" aria-label="Secciones de tareas">
-   <div class="tasks-sidebar-item">☀️ <span>Mi día</span></div>
-   <div class="tasks-sidebar-item">🫂 <span>Familia</span></div>
-   <div class="tasks-sidebar-item">👤 <span>Personal</span></div>
-  </aside>
+ <div class="tasks-layout">${taskSidebarHTML()}
   <section class="tasks-content" aria-label="Resumen de tareas">
    <div class="tasks-shortcuts">${counts.map(item=>`<div class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</div>`).join('')}</div>
   </section>
  </div>`;
+}
+function renderFamilyTasks(){
+ const familyTasks=tasks.filter(taskIsPublic);
+ const pending=familyTasks.filter(t=>!t.done).length;
+ const taskCards=familyTasks.map(t=>{
+  const subtasks=Array.isArray(t.subtasks)?t.subtasks:[];
+  const subHTML=subtasks.map(st=>{
+   const nested=Array.isArray(st.subtasks)?st.subtasks:[];
+   return `<div class="family-subtask"><label class="family-task-line"><input type="checkbox" ${st.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${st.done?'done':''}">${escapeHTML(st.title)}</span></label>
+    ${nested.length?'<div class="family-nested-list">'+nested.map(n=>`<label class="family-task-line family-task-level-two"><input type="checkbox" ${n.done?'checked':''} onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></label>`).join('')+'</div>':''}
+   </div>`;
+  }).join('');
+  return `<article class="card family-task-card"><div class="family-task-main"><label class="family-task-line"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${Number(t.id)})"><strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong></label><button type="button" class="small-btn" aria-label="Eliminar tarea" onclick="deleteTask(${Number(t.id)})">×</button></div>${subHTML?'<div class="family-subtasks">'+subHTML+'</div>':''}</article>`;
+ }).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Familia</h1><p>Las tareas compartidas del hogar, en un solo lugar.</p></div>
+ <div class="tasks-layout">${taskSidebarHTML()}
+  <section class="tasks-content family-content" aria-label="Tareas de familia">
+   <div class="family-list-heading"><strong>${familyTasks.length} ${familyTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
+   ${taskCards||'<div class="card empty">Todavía no hay tareas familiares. Puedes crear una con el botón +.</div>'}
+  </section>
+ </div><div class="bottom-space"></div>`;
+}
+function toggleTaskLevel(taskId,subtaskId,nestedId){
+ const task=tasks.find(t=>Number(t.id)===taskId);if(!task)return;
+ const sub=(task.subtasks||[]).find(s=>Number(s.id)===subtaskId);if(!sub)return;
+ if(nestedId===null)sub.done=!sub.done;
+ else{const nested=(sub.subtasks||[]).find(n=>Number(n.id)===nestedId);if(nested)nested.done=!nested.done}
+ save();render();
 }
 function addTaskSubtask(){
  const list=document.getElementById('newTaskSubtasks');if(!list)return;
