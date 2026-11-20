@@ -770,6 +770,7 @@ function addTask(){
   return {id,title:name,done:false,assignable:true,subtasks:children};
  }).filter(Boolean);
  const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';
+ subtasks.forEach(item=>{item.assignable=scope==='family'});
  tasks.push({id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString()});
  save();closeModal();render();
 }
