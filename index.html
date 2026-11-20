@@ -362,16 +362,16 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 
 @media(max-width:700px){
  .tasks-app main{padding:21px 17px 90px}
- .tasks-layout{gap:10px;min-height:0}
- .tasks-sidebar{padding:10px 6px;gap:8px;height:320px}
- .tasks-sidebar-item{gap:5px;padding:11px 5px;font-size:12px}
+ .tasks-layout{grid-template-columns:96px minmax(0,1fr);gap:8px;min-height:0}
+ .tasks-sidebar{padding:10px 5px;gap:8px;height:320px}
+ .tasks-sidebar-item{gap:5px;padding:11px 5px;font-size:11px;white-space:normal;line-height:1.2}
  .tasks-content{padding:0}
  .tasks-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
  .task-shortcut-card{min-height:100px;padding:12px 6px;font-size:13px}
 }
 @media(max-width:360px){
- .tasks-layout{grid-template-columns:108px minmax(0,1fr);gap:8px}
- .tasks-sidebar-item{font-size:11px}
+ .tasks-layout{grid-template-columns:88px minmax(0,1fr);gap:7px}
+ .tasks-sidebar-item{font-size:10px;padding:10px 4px}
  .task-shortcut-card{font-size:12px}
 }
 
@@ -481,10 +481,10 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 }
 @media(max-width:420px){
  .family-subtask>.family-task-line{
-  grid-template-columns:18px minmax(0,1fr) 60px;
+  grid-template-columns:18px minmax(0,1fr) 54px;
  }
  .family-subtask-disclosure>summary.family-task-line{
-  grid-template-columns:18px minmax(0,1fr) 60px 20px;
+  grid-template-columns:18px minmax(0,1fr) 54px 20px;
  }
 }
 </style>
