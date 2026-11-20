@@ -975,7 +975,7 @@ markup=markup.replace(/<div class="event-form-section task-create-section"><labe
 function saveTaskTemplateEditor(){
  const t=getTaskTemplate(editingTaskTemplateId);if(!t)return;
  const title=document.getElementById('newValue')?.value.trim();if(!title){document.getElementById('newValue')?.focus();return}
- const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map(row=>({title:row.querySelector(':scope > .task-subtask-input-row input')?.value.trim(),subtasks:[...row.querySelectorAll('.task-nested-subtasks input')].map(x=>x.value.trim()).filter(Boolean).map(title=>({title,done:false,assignable:false}))})).filter(x=>x.title).map(st=>({...st,done:false,assignable:t.scope==='family'}));
+ const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{const prev=t.subtasks?.[index]||{};const title=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();const nested=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev.subtasks?.[j]})).filter(x=>x.title).map(x=>({...x.prev,title:x.title,done:false,assignable:false}));return title?{...prev,title,done:false,assignable:t.scope==='family',subtasks:nested}:null}).filter(Boolean);
  t.title=title;t.scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';t.assignable=t.scope==='family';t.subtasks=subtasks;
  localStorage.setItem('enorden_task_templates',JSON.stringify(JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').map(x=>Number(x.id)===Number(t.id)?t:x)));
  editingTaskTemplateId=null;closeModal();renderTaskTemplatesPlaceholder();
