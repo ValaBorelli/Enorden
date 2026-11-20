@@ -938,13 +938,57 @@ function renderTasks(){
   </section>
  </div>`;
 }
+let templatePressTimer=null;
 function renderTaskTemplatesPlaceholder(){
- screen.innerHTML=`<div class="page-heading"><h1>Mis Plantillas</h1><p>Aquí podrás consultar y administrar las plantillas de tus tareas.</p></div>
+ const templates=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]');
+ const cards=templates.map(t=>{
+  const subtasks=(t.subtasks||[]).map(st=>{
+   const nested=(st.subtasks||[]).map(n=>'<div class="family-task-line family-task-level-two"><span>'+escapeHTML(n.title)+'</span></div>').join('');
+   return '<div class="family-subtask">'+(nested?'<details class="family-subtask-disclosure"><summary class="family-task-line"><span>'+escapeHTML(st.title)+'</span></summary><div class="family-nested-list">'+nested+'</div></details>':'<div class="family-task-line"><span>'+escapeHTML(st.title)+'</span></div>')+'</div>';
+  }).join('');
+  return '<article class="card family-task-card template-task-card" onpointerdown="templateLongPressStart(event,'+Number(t.id)+')" onpointerup="templateLongPressEnd()" onpointerleave="templateLongPressEnd()" onpointercancel="templateLongPressEnd()" oncontextmenu="event.preventDefault()"><div class="family-task-main"><div class="family-task-line"><strong>'+escapeHTML(t.title)+'</strong></div></div>'+(subtasks?'<div class="family-subtasks">'+subtasks+'</div>':'')+'</article>';
+ }).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Mis Plantillas</h1><p>Tus tareas guardadas para reutilizarlas cuando quieras.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
-  <section class="tasks-content" aria-label="Mis plantillas de tareas">
-   <div class="empty-state"><div class="empty-state-icon">📋</div><h2>Próximamente</h2><p>Estamos preparando este espacio para que puedas guardar, editar y reutilizar tus plantillas de tareas.</p></div>
+  <section class="tasks-content family-content" aria-label="Mis plantillas de tareas">
+   <div class="family-list-heading"><strong>${templates.length} ${templates.length===1?'plantilla':'plantillas'}</strong><span class="muted">Mantén presionada una plantilla para ver sus opciones</span></div>
+   ${cards||'<div class="card empty">Todavía no tienes plantillas guardadas. Puedes guardar una tarea desde sus opciones o al crearla.</div>'}
   </section>
- </div>`;
+ </div><div class="bottom-space"></div>`;
+}
+function templateLongPressStart(event,id){if(event.target.closest('button,input'))return;clearTimeout(templatePressTimer);templatePressTimer=setTimeout(()=>openTemplateActions(id),550)}
+function templateLongPressEnd(){clearTimeout(templatePressTimer)}
+function openTemplateActions(id){const t=getTaskTemplate(id);if(!t)return;showTaskModal('Opciones de plantilla','<div class="task-action-menu"><button class="secondary-btn" onclick="deleteTaskTemplate('+Number(t.id)+')">Borrar</button><button class="secondary-btn" onclick="editTaskTemplate('+Number(t.id)+')">Editar</button><button class="secondary-btn" onclick="confirmReuseTaskTemplate('+Number(t.id)+')">Reutilizar</button><button class="primary-btn" onclick="closeModal()">Cancelar</button></div>')}
+function getTaskTemplate(id){return JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').find(t=>Number(t.id)===Number(id))}
+function deleteTaskTemplate(id){const list=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').filter(t=>Number(t.id)!==Number(id));localStorage.setItem('enorden_task_templates',JSON.stringify(list));closeModal();renderTaskTemplatesPlaceholder()}
+let editingTaskTemplateId=null;
+function editTaskTemplate(id){
+ const t=getTaskTemplate(id);if(!t)return;editingTaskTemplateId=Number(id);
+ let markup=taskEditorMarkup(t);
+ markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask"[\\s\\S]*?<\\/div><\\/div>/,'');
+ markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="saveTaskTemplate"[\\s\\S]*?<\\/div>/,'');
+ markup=markup.replace('onclick="saveTaskEditor()"','onclick="saveTaskTemplateEditor()"');
+ markup=markup.replace('Guardar cambios','Guardar plantilla');
+ showTaskModal('Editar plantilla',markup);
+}
+function saveTaskTemplateEditor(){
+ const t=getTaskTemplate(editingTaskTemplateId);if(!t)return;
+ const title=document.getElementById('newValue')?.value.trim();if(!title){document.getElementById('newValue')?.focus();return}
+ const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map(row=>({title:row.querySelector(':scope > .task-subtask-input-row input')?.value.trim(),subtasks:[...row.querySelectorAll('.task-nested-subtasks input')].map(x=>x.value.trim()).filter(Boolean).map(title=>({title,done:false,assignable:false}))})).filter(x=>x.title).map(st=>({...st,done:false,assignable:t.scope==='family'}));
+ t.title=title;t.scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';t.assignable=t.scope==='family';t.subtasks=subtasks;
+ localStorage.setItem('enorden_task_templates',JSON.stringify(JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').map(x=>Number(x.id)===Number(t.id)?t:x)));
+ editingTaskTemplateId=null;closeModal();renderTaskTemplatesPlaceholder();
+}
+function confirmReuseTaskTemplate(id){
+ const t=getTaskTemplate(id);if(!t)return;
+ showTaskModal('Reutilizar plantilla','<p>¿Quieres crear una tarea nueva a partir de «'+escapeHTML(t.title)+'»?</p>'+(t.wasScheduled?' <p><strong>Recuerda:</strong> esta plantilla proviene de una tarea programada. La nueva tarea se creará sin fecha; podrás programarla nuevamente si lo deseas.</p>':'')+'<div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="reuseTaskTemplate('+Number(t.id)+')">Crear tarea</button></div>');
+}
+function reuseTaskTemplate(id){
+ const t=getTaskTemplate(id);if(!t)return;
+ const copy=JSON.parse(JSON.stringify(t));let seed=Date.now();copy.id=seed++;copy.done=false;copy.scheduledDate=null;delete copy.wasScheduled;copy.createdAt=new Date().toISOString();
+ copy.subtasks=(copy.subtasks||[]).map(st=>({...st,id:seed++,done:false,subtasks:(st.subtasks||[]).map(n=>({...n,id:seed++,done:false}))}));
+ tasks.push(copy);save();closeModal();render();
+ if(t.wasScheduled)showTaskModal('Plantilla de tarea programada','<p>Esta plantilla originalmente correspondía a una tarea programada. La nueva tarea se creó <strong>sin programación</strong>. Si lo necesitas, puedes asignarle una nueva fecha desde la edición de la tarea.</p><div class="event-detail-actions"><button class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
 function taskTodayKey(){
  const today=new Date();
@@ -1526,7 +1570,8 @@ function updateTaskScheduleLabel(){const input=document.getElementById('taskSche
 function showTaskScheduleWarning(){const existing=document.getElementById('taskScheduleWarning');if(existing)existing.remove();const overlay=document.createElement('div');overlay.id='taskScheduleWarning';overlay.className='task-validation-backdrop';overlay.innerHTML='<section class="task-validation-modal" role="alertdialog" aria-modal="true" aria-labelledby="taskScheduleWarningTitle"><h3 id="taskScheduleWarningTitle">Falta elegir una fecha</h3><p>Para programar esta tarea, primero debes seleccionar la fecha en que quieres realizarla.</p><div class="task-validation-actions"><button type="button" class="primary-btn" onclick="document.getElementById(\'taskScheduleWarning\')?.remove()">Entendido</button></div></section>';document.body.appendChild(overlay);overlay.querySelector('button')?.focus();}
 function storeTaskTemplate(task){
  if(!task)return null;
- const template={id:Date.now()+Math.floor(Math.random()*1000),title:task.title,scope:task.scope||'personal',assignable:task.scope==='family',subtasks:JSON.parse(JSON.stringify(task.subtasks||[])).map(st=>({...st,done:false,subtasks:(st.subtasks||[]).map(n=>({...n,done:false}))})),scheduledDate:task.scheduledDate||null,createdAt:new Date().toISOString()};
+ const wasScheduled=!!task.scheduledDate;
+ const template={id:Date.now()+Math.floor(Math.random()*1000),title:task.title,scope:task.scope||'personal',assignable:task.scope==='family',subtasks:JSON.parse(JSON.stringify(task.subtasks||[])).map(st=>({...st,done:false,subtasks:(st.subtasks||[]).map(n=>({...n,done:false}))})),scheduledDate:null,wasScheduled,createdAt:new Date().toISOString()};
  template.subtasks.forEach(st=>{st.assignable=template.scope==='family';(st.subtasks||[]).forEach(n=>{n.assignable=false})});
  const templates=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]');
  templates.push(template);localStorage.setItem('enorden_task_templates',JSON.stringify(templates));
@@ -1535,7 +1580,7 @@ function storeTaskTemplate(task){
 function saveTaskAsTemplateFromTask(id){
  const task=tasks.find(t=>Number(t.id)===Number(id));if(!task)return;
  const template=storeTaskTemplate(task);
- showTaskModal('Plantilla guardada','<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
 function saveTaskEditor(){
  const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea.');return}
@@ -1544,7 +1589,7 @@ function saveTaskEditor(){
  const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';subtasks.forEach(x=>x.assignable=scope==='family');
  const scheduleEnabled=!!document.getElementById('scheduleTask')?.checked;const date=scheduleEnabled?(document.getElementById('taskScheduleDate')?.value||''):'';if(scheduleEnabled&&!date){showTaskScheduleWarning();return;}
  let savedTask;if(old){old.title=title;old.scope=scope;old.assignable=scope==='family';old.subtasks=subtasks;old.scheduledDate=date||null;syncTaskCompletion(old);savedTask=old}else{savedTask={id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString(),scheduledDate:date||null};tasks.push(savedTask)}
- syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate)showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate)showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
 function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;if(!ev.color)ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
 function addTask(){saveTaskEditor()}
