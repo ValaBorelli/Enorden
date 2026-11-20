@@ -1106,8 +1106,8 @@ function renderMyDay(){
  }).join('');
  const assignedRows=assignedTasks.map(t=>{
   const rootAssigned=taskIsAssignedToCurrentUser(t);
-  const assignedSubs=(t.subtasks||[]).filter(st=>taskSubtaskIsAssignedToCurrentUser(st));
-  const assignedNested=(t.subtasks||[]).flatMap(st=>(st.subtasks||[]).filter(n=>taskSubtaskIsAssignedToCurrentUser(n)).map(n=>({title:n.title,parent:st.title})));
+  const assignedSubs=rootAssigned?(t.subtasks||[]):(t.subtasks||[]).filter(st=>taskSubtaskIsAssignedToCurrentUser(st));
+  const assignedNested=(t.subtasks||[]).flatMap(st=>(rootAssigned?(st.subtasks||[]):(st.subtasks||[]).filter(n=>taskSubtaskIsAssignedToCurrentUser(n))).map(n=>({title:n.title,parent:st.title})));
   const details=[...assignedSubs.map(st=>st.title),...assignedNested.map(n=>n.title)];
   return '<button type="button" class="my-day-task-row my-day-assigned-row" onclick="showTaskView(\'assigned\')"><span class="my-day-task-title">'+escapeHTML(t.title)+(details.length?'<small class="my-day-assigned-detail">'+details.map(x=>escapeHTML(x)).join(' · ')+'</small>':'')+'</span><span class="my-day-task-kind" aria-label="Familia">🫂</span></button>';
  }).join('');
