@@ -928,6 +928,12 @@ function renderTasks(){
   </section>
  </div>`;
 }
+function taskIsScheduledForFuture(task){
+ if(!task?.scheduledDate)return false;
+ const today=new Date();
+ const todayKey=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+ return String(task.scheduledDate)>todayKey;
+}
 function renderScopedTasks(scope){
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
@@ -955,8 +961,8 @@ function renderScopedTasks(scope){
   return subtasks.length?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${t.done?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
  const splitScheduled=isFamily||scope==='personal';
- const normalTasks=splitScheduled?scopedTasks.filter(t=>!t.scheduledDate):scopedTasks;
- const scheduledTasks=splitScheduled?scopedTasks.filter(t=>!!t.scheduledDate):[];
+ const normalTasks=splitScheduled?scopedTasks.filter(t=>!taskIsScheduledForFuture(t)):scopedTasks;
+ const scheduledTasks=splitScheduled?scopedTasks.filter(taskIsScheduledForFuture):[];
  const normalCards=renderTaskCards(normalTasks);
  const scheduledCards=renderTaskCards(scheduledTasks);
  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
