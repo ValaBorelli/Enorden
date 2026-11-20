@@ -963,8 +963,7 @@ function renderScopedTasks(scope){
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
-   <section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section>
-   ${splitScheduled?`<details class="task-scheduled-section"><summary>Tareas programadas <span class="muted">(${scheduledTasks.length})</span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
+   ${splitScheduled?`<section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section><details class="task-scheduled-section"><summary>Tareas programadas <span class="muted">(${scheduledTasks.length})</span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
   </section>
  </div><div class="bottom-space"></div>`;
 }
