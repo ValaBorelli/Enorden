@@ -1949,6 +1949,27 @@ const entertainmentDemoCatalog=[
  {id:'demo-series-7',title:'The Bear',type:'tv',year:2022,genres:['Drama','Comedia'],overview:'Un chef vuelve a Chicago para hacerse cargo del restaurante familiar.',seasons:4},
  {id:'demo-series-8',title:'Wednesday',type:'tv',year:2022,genres:['Misterio','Comedia','Fantasía'],overview:'Una estudiante investiga sucesos extraños en una academia llena de personajes peculiares.',seasons:2}
 ];
+/*
+ * REVISAR / PROPUESTA DE ARQUITECTURA (NO IMPLEMENTADA):
+ * Evaluar Cloudflare Workers como intermediario seguro entre EnOrden (alojado
+ * en Netlify) y proveedores externos como TMDB. La propuesta busca mantener
+ * las consultas al catálogo fuera de Netlify para no consumir sus créditos
+ * de funciones de servidor, y guardar las credenciales del proveedor como
+ * secretos del servicio intermediario, nunca en el código cliente.
+ *
+ * Antes de decidir o implementar:
+ * - Revisar los límites, cuotas, condiciones y posibles costos vigentes del
+ *   plan gratuito de Cloudflare Workers.
+ * - Comparar esos límites con el uso esperado y probar paginación, caché,
+ *   tiempos de espera, errores y protección ante exceso de solicitudes.
+ * - Confirmar el estado y las condiciones actuales del plan/créditos de Netlify.
+ * - Mantener la integración detrás de la interfaz intercambiable de proveedores.
+ * - Asegurar que una caída o límite del intermediario/TMDB afecte solo a
+ *   Entretención y no al resto de EnOrden.
+ *
+ * Esta es solo una alternativa pendiente de evaluación; no constituye una
+ * decisión técnica definitiva ni autoriza cambios en otros módulos.
+ */
 const entertainmentProviders={
  demo:{
   id:'demo',name:'Catálogo de demostración',
