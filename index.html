@@ -979,10 +979,12 @@ function toggleTaskSidebar(){
  updated.forEach((item,index)=>{if(index<openStates.length)item.open=openStates[index]});
 }
 function showTaskView(view){taskView=view==='overview'?'today':view;render();}
-function loadSharedProjects(){try{const value=JSON.parse(localStorage.getItem('enorden_shared_projects')||'[]');return Array.isArray(value)?value:[]}catch{return []}}
+function generateSharedProjectCode(existing=[]){let code='';do{code='EO-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}while(existing.some(project=>(project.code||'').toUpperCase()===code));return code}
+function getSharedProjectLink(project){return location.origin+location.pathname+'?proyecto='+encodeURIComponent(project.id)}
+function loadSharedProjects(){try{const value=JSON.parse(localStorage.getItem('enorden_shared_projects')||'[]');if(!Array.isArray(value))return [];let changed=false;value.forEach(project=>{if(!project.code){project.code=generateSharedProjectCode(value.filter(other=>other!==project));changed=true}if(!project.id){project.id='project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);changed=true}});if(changed)localStorage.setItem('enorden_shared_projects',JSON.stringify(value));return value}catch{return []}}
 function saveSharedProjects(projects){localStorage.setItem('enorden_shared_projects',JSON.stringify(projects))}
 function createSharedProject(){
- sharedProjectDraft={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido',code:'EO-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase(),participants:[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}],requests:[]};
+ sharedProjectDraft={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido',code:generateSharedProjectCode(loadSharedProjects()),participants:[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}],requests:[]};
  sharedProjectCancelConfirm=false;activeSharedProjectId=sharedProjectDraft.id;render();window.scrollTo(0,0);
 }
 function saveNewSharedProject(){
