@@ -16,10 +16,22 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - La integración deberá respetar paginación, límites y condiciones del proveedor.
 - Los datos recibidos se normalizarán al formato interno de Entretención.
 
-## 3. Datos propios
+## 3. Datos propios y caché
 - EnOrden guardará preferencias del usuario y favoritos, no el catálogo externo completo.
 - Los favoritos conservarán identificadores de origen y metadatos mínimos para poder reconocerlos si cambia el proveedor.
 - Cualquier caché será limitada, temporal y separada de los datos personales.
+- La caché conservará únicamente los datos externos necesarios para mejorar el rendimiento y evitar consultas repetidas; no se convertirá en una copia permanente del catálogo completo.
+- La política de actualización será independiente según el tipo de dato:
+  - **Títulos y sinopsis:** actualizar cada 1 mes.
+  - **Pósteres:** actualizar cada 1 año.
+  - **Disponibilidad de streaming:** actualizar cada 1 semana.
+- Una consulta fallida no debe borrar ni reemplazar la última información obtenida correctamente.
+- Cuando falle una actualización, conservar la última versión exitosa y programar un nuevo intento para 24 horas después del fallo.
+- Si el nuevo intento también falla, conservar los datos exitosos anteriores y volver a programar el siguiente intento 24 horas después. Repetir hasta obtener una respuesta exitosa.
+- Cuando una actualización tenga éxito, reemplazar la versión almacenada por los datos nuevos y eliminar el reintento pendiente asociado a ese dato.
+- El registro operativo mínimo de una falla será la referencia necesaria para conocer el momento del fallo y el próximo intento. No se necesita conservar un historial detallado de fallas.
+- Los intentos automáticos en segundo plano son deseables para mantener la información actualizada aunque la aplicación esté cerrada. La programación real dependerá de las capacidades del servicio de ejecución elegido; no se debe prometer una ejecución puntual en dispositivos móviles si la plataforma no puede garantizarla. Si no existe ejecución en segundo plano, al reactivarse el servicio se deberá ejecutar el reintento pendiente cuando ya hayan transcurrido las 24 horas.
+- La política de caché debe implementarse en una capa desacoplada del proveedor, para que cambiar de proveedor o de infraestructura no obligue a rehacer la lógica de Entretención.
 
 ## 4. Filtros
 - Tipo: película, serie o indistinto.
@@ -62,7 +74,7 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - El encabezado de la ventana dice exactamente «Tu resultado».
 - El contenido principal se organiza en dos columnas: póster a la izquierda, con aproximadamente un tercio del ancho útil, y texto a la derecha. El póster conserva sin cambios su fondo, tratamiento, proporción y ajuste de imagen actuales.
 - La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver trailer»; sección «Dónde verla» con los servicios disponibles como chips.
-- La sección «Dónde verla» debe mostrarse siempre, aunque no existan plataformas disponibles o la consulta falle. Su contenido dependerá del estado de la consulta, según las reglas de la sección 9.
+- La sección «Dónde verla» debe mostrarse siempre, aunque no existan plataformas disponibles o la consulta falle. Su contenido dependerá del estado de la consulta, según las reglas de la sección 10.
 - El botón de favoritos se ubica debajo de «Ver trailer» y utiliza exactamente el mismo estilo visual que los demás botones de acciones de la ficha (fondo, borde, esquinas, tipografía y espaciado).
 - El ícono de corazón aparece a la izquierda del texto y es ligeramente más pequeño que en la versión anterior. Cuando el título no está guardado muestra ♡, con interior transparente y contorno negro; cuando está guardado muestra ♥ relleno de negro.
 - El texto cambia según el estado: «Añadir a favoritos» cuando no está guardado y «En favoritos» cuando sí lo está.
@@ -94,7 +106,6 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - La región consultada, las fechas de consulta o actualización y los demás metadatos técnicos del proceso de búsqueda se conservarán únicamente para uso interno. No se mostrarán en la ficha ni al usuario.
 
 ## 10. Pendientes de producción
-
 - **REVISAR / PROPUESTA NO IMPLEMENTADA:** evaluar Cloudflare Workers como intermediario seguro entre EnOrden (alojado en Netlify) y TMDB u otros proveedores. El objetivo sería evitar que las consultas al catálogo consuman créditos de funciones de Netlify y mantener las credenciales fuera del cliente.
 - Antes de elegir esta alternativa, revisar los límites y costos vigentes del plan gratuito de Cloudflare Workers, compararlos con el uso esperado, comprobar el estado del plan/créditos de Netlify y probar seguridad, caché, paginación, errores y aislamiento de fallos. La propuesta no es todavía una decisión definitiva.
 - Integrar TMDB mediante una capa segura de servidor/proxy y revisar sus condiciones.
