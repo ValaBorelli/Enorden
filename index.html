@@ -80,6 +80,18 @@ h2{font-size:18px;margin-bottom:13px}
 .card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .page-heading{margin-bottom:18px}
 .shared-project-section{margin:0 0 22px}.shared-project-section h2{font-size:15px;margin:0 0 8px;color:#42483f}.shared-project-create{margin:0 0 25px}.shared-project-create h2{font-size:17px;margin:0 0 11px}.shared-project-create button{width:100%;min-height:48px;border:1px solid #2459ff;border-radius:12px;background:#1748e8;color:#fff;font-weight:700;box-shadow:0 5px 18px #1748e844}.shared-project-create button:active{background:#1038bd}.shared-project-row{width:100%;display:flex;align-items:center;gap:11px;padding:13px 10px;border:0;border-bottom:1px solid var(--line);background:transparent;color:#242820;text-align:left}.shared-project-icon{font-size:20px;flex:0 0 25px}.shared-project-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.shared-project-info strong{font-size:14px;overflow-wrap:anywhere}.shared-project-info small{font-size:11px;color:var(--muted)}.shared-project-arrow{font-size:23px;color:var(--muted)}.shared-project-empty{padding:10px 2px 15px;font-size:12px;color:var(--muted)}
+.shared-project-row{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.shared-project-action-layer{z-index:10055}
+.shared-project-action-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.shared-project-action-options button{min-height:48px;border-radius:10px;border:1px solid #1755ed;background:#1755ed;color:#fff;font-weight:700}
+.shared-project-action-options button+button{background:#fff;color:#1755ed}
+.shared-project-sort-list{display:flex;flex-direction:column;gap:0;max-height:55vh;overflow:auto;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;touch-action:pan-y}
+.shared-project-sort-row{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:12px 10px;border:0;border-bottom:1px solid #e5e7eb;background:#fff;color:#20242b;text-align:left;font-size:14px;touch-action:none;user-select:none;-webkit-user-select:none}
+.shared-project-sort-row:last-child{border-bottom:0}
+.shared-project-sort-row.dragging{background:#eaf0ff;box-shadow:inset 0 0 0 2px #1755ed;border-radius:8px}
+.shared-project-sort-grip{font-size:18px;color:#8792a3}
+.shared-project-sort-empty{padding:18px 5px;color:#667085;font-size:13px;text-align:center}
+
 .shared-project-modal-layer{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.58)}
 .shared-project-modal{position:relative;width:min(100%,420px);background:#fff;color:#17191d;border:1px solid #dce1ea;border-radius:18px;padding:21px;box-shadow:0 22px 70px #0006}
 .shared-project-modal header{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:24px;background:transparent;padding-right:28px}
@@ -624,6 +636,9 @@ let sharedProjectEditCancelConfirm=false;
 let sharedProjectDeleteConfirm=false;
 let sharedProjectUsersOpen=false,sharedProjectJoinOpen=false,sharedProjectJoinNotice='';
 let sharedProjectRoleChangeDraft=null,sharedProjectRoleChangeConfirm=false;
+let sharedProjectActionId=null,sharedProjectActionOpen=false,sharedProjectMoveOpen=false,sharedProjectMoveSection='other',sharedProjectMoveIds=[];
+let sharedProjectHoldTimer=null,sharedProjectSuppressClick=false,sharedProjectDraggingId=null,sharedProjectDragTimer=null;
+
 let expandedTaskDisclosures=new Set();
 let expandedTaskSections=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
@@ -1039,15 +1054,77 @@ function renderSharedProjectWorkspace(){
   if(sharedProjectDeleteConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectDeleteConfirmTitle"><header><h2 id="sharedProjectDeleteConfirmTitle">Eliminar proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="dismissDeleteSharedProject()">×</button></header><p>¿Estás seguro de que quieres eliminar este proyecto? Se eliminará de Proyectos Compartidos y su página dejará de estar disponible.</p><footer><button type="button" class="shared-project-cancel" onclick="dismissDeleteSharedProject()">Cancelar</button><button type="button" class="shared-project-delete" onclick="confirmDeleteSharedProject()">Eliminar</button></footer></section></div>`);if(sharedProjectUsersOpen){const people=project.participants||[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}];screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true"><header><h2>Usuarios del proyecto</h2><button type="button" class="shared-project-modal-x" onclick="closeSharedProjectUsers()">×</button></header>'+people.map((u,i)=>'<div class="shared-project-user-row"><div><div class="shared-project-user-name">'+escapeHTML(u.name)+'</div><small>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[u.role]||'Solo lectura')+'</small></div>'+(i===0?'<select aria-label="Tus permisos" onchange="requestOwnSharedProjectRoleChange('+i+',this.value)"><option value="admin" '+(u.role==='admin'?'selected':'')+'>Administrador</option><option value="write" '+(u.role==='write'?'selected':'')+'>Lectura y escritura</option><option value="read" '+(u.role==='read'?'selected':'')+'>Solo lectura</option></select>':'<select aria-label="Permisos de '+escapeHTML(u.name)+'" onchange="changeSharedProjectRole('+i+',this.value)"><option value="admin" '+(u.role==='admin'?'selected':'')+'>Administrador</option><option value="write" '+(u.role==='write'?'selected':'')+'>Lectura y escritura</option><option value="read" '+(u.role==='read'?'selected':'')+'>Solo lectura</option></select>')+'</div>').join('')+'<footer><button type="button" class="shared-project-save" onclick="closeSharedProjectUsers()">Listo</button></footer></section></div>');if(sharedProjectRoleChangeConfirm&&sharedProjectRoleChangeDraft){const current=people[sharedProjectRoleChangeDraft.index]?.role||'admin',next=sharedProjectRoleChangeDraft.role;screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="dialog" aria-modal="true"><header><h2>Confirmar cambio de permisos</h2></header><p>¿Quieres cambiar tus permisos de <strong>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[current])+'</strong> a <strong>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[next])+'</strong>?</p><footer><button type="button" class="shared-project-cancel" onclick="cancelOwnSharedProjectRoleChange()">Cancelar</button><button type="button" class="shared-project-save" onclick="confirmOwnSharedProjectRoleChange()">Confirmar</button></footer></section></div>')}}
  }
 }
+
 function renderSharedProjectsPage(){
  const projects=loadSharedProjects();
- const pinnedProjects=projects.filter(project=>project.pinned);
- const otherProjects=projects.filter(project=>!project.pinned);
- const renderProjectRows=list=>list.map(project=>`<button type="button" class="shared-project-row" onclick="openSharedProject(\'${escapeHTML(String(project.id))}\')"><span class="shared-project-icon">📁</span><span class="shared-project-info"><strong>${escapeHTML(project.name)}</strong><small>${escapeHTML(project.meta||'Proyecto compartido')}</small></span><span class="shared-project-arrow">›</span></button>`).join('');
- screen.innerHTML=`<div class="page-heading"><h1>Proyectos Compartidos</h1><p>Organiza proyectos y trabaja en ellos junto a otras personas.</p></div><div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}<section class="tasks-content family-content" aria-label="Proyectos Compartidos"><div class="shared-project-create"><h2>Crear nuevo proyecto</h2><div class="shared-project-create-actions"><button type="button" onclick="createSharedProject()">＋ Crear proyecto</button><button type="button" onclick="openSharedProjectJoin()">Unirse</button></div></div><div class="shared-project-section"><h2>Proyectos anclados</h2>${renderProjectRows(pinnedProjects)||'<div class="shared-project-empty">Aquí aparecerán los proyectos que ancles.</div>'}</div><div class="shared-project-section"><h2>Otros proyectos</h2>${renderProjectRows(otherProjects)||'<div class="card empty">Todavía no tienes proyectos compartidos.</div>'}</div></section></div>`;
+ const pinnedProjects=orderedSharedProjectIds(projects,'pinned');
+ const otherProjects=orderedSharedProjectIds(projects,'other');
+ const renderProjectRows=list=>list.map(project=>`<button type="button" class="shared-project-row" onpointerdown="startSharedProjectHold(event,'${escapeHTML(String(project.id))}')" onpointerup="endSharedProjectHold()" onpointercancel="endSharedProjectHold()" onpointerleave="endSharedProjectHold()" oncontextmenu="event.preventDefault();openSharedProjectAction('${escapeHTML(String(project.id))}')" onclick="openSharedProject('${escapeHTML(String(project.id))}')"><span class="shared-project-icon">📁</span><span class="shared-project-info"><strong>${escapeHTML(project.name)}</strong><small>${escapeHTML(project.meta||'Proyecto compartido')}</small></span><span class="shared-project-arrow">›</span></button>`).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Proyectos Compartidos</h1><p>Organiza proyectos y trabaja en ellos junto a otras personas.</p></div><div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}<section class="tasks-content family-content" aria-label="Proyectos Compartidos"><div class="shared-project-create"><h2>Crear nuevo proyecto</h2><div class="shared-project-create-actions"><button type="button" onclick="createSharedProject()">＋ Crear proyecto</button><button type="button" onclick="openSharedProjectJoin()">Unirse</button></div></div><div class="shared-project-section"><h2>Proyectos anclados</h2>${renderProjectRows(pinnedProjects)||'<div class="shared-project-empty">Aquí aparecerán los proyectos que ancles.</div>'}</div><div class="shared-project-section"><h2>Proyectos</h2>${renderProjectRows(otherProjects)||'<div class="card empty">Todavía no tienes proyectos compartidos.</div>'}</div></section></div>`;
  if(sharedProjectJoinOpen){const note=sharedProjectJoinNotice==='sent'?'Tu solicitud para unirte al proyecto ha sido enviada.':sharedProjectJoinNotice==='invalid'?'El código ingresado no es válido.':sharedProjectJoinNotice==='pending'?'Ya tienes una solicitud pendiente o alcanzaste el máximo de tres solicitudes.':'';screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true"><header><h2>Unirse a un proyecto</h2><button type="button" class="shared-project-modal-x" onclick="closeSharedProjectJoin()">×</button></header><label for="sharedProjectJoinCode">Código del proyecto</label><input id="sharedProjectJoinCode" placeholder="Ingresa el código" maxlength="20" oninput="this.value=this.value.toUpperCase()">'+(note?'<div class="shared-project-modal-notice">'+note+'</div>':'')+'<footer><button type="button" class="shared-project-cancel" onclick="closeSharedProjectJoin()">Cancelar</button><button type="button" class="shared-project-save" onclick="submitSharedProjectJoin()">Listo</button></footer></section></div>')}
+ if(sharedProjectActionOpen){
+  const project=projects.find(p=>String(p.id)===String(sharedProjectActionId));
+  if(project){const pinned=!!project.pinned;screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-action-layer" onclick="if(event.target===this)closeSharedProjectAction()"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectActionTitle"><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="closeSharedProjectAction()">×</button><header><h2 id="sharedProjectActionTitle">¿Qué quieres hacer?</h2></header><div class="shared-project-action-options"><button type="button" onclick="${pinned?'applySharedProjectPin(false)':'applySharedProjectPin(true)'}">${pinned?'Desanclar':'Anclar'}</button><button type="button" onclick="openSharedProjectMove('${pinned?'pinned':'other'}')">Mover</button></div></section></div>`)}
+ }
+ if(sharedProjectMoveOpen){
+  const list=sharedProjectMoveIds.map(id=>projects.find(p=>String(p.id)===id)).filter(Boolean);
+  const rows=list.map(p=>`<button type="button" class="shared-project-sort-row" data-project-id="${escapeHTML(String(p.id))}" onpointerdown="startSharedProjectSortHold(event,'${escapeHTML(String(p.id))}')" onpointermove="moveSharedProjectSort(event)" onpointerup="endSharedProjectSortHold(event)" onpointercancel="endSharedProjectSortHold(event)"><span class="shared-project-sort-grip">⠿</span><span>${escapeHTML(p.name)}</span></button>`).join('');
+  screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer" onclick="if(event.target===this)closeSharedProjectMove(false)"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectMoveTitle"><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="closeSharedProjectMove(false)">×</button><header><h2 id="sharedProjectMoveTitle">Mover proyecto</h2></header><p style="font-size:12px;color:#667085;margin:0 0 13px">Mantén presionado un proyecto y arrástralo para cambiar su posición.</p><div class="shared-project-sort-list" id="sharedProjectSortList">${rows||'<div class="shared-project-sort-empty">No hay otros proyectos en esta sección.</div>'}</div><footer><button type="button" class="shared-project-cancel" onclick="closeSharedProjectMove(false)">Cancelar</button><button type="button" class="shared-project-save" onclick="closeSharedProjectMove(true)">Listo</button></footer></section></div>`);
+ }
 }
-function openSharedProject(id){activeSharedProjectId=id;render();window.scrollTo(0,0)}
+
+function openSharedProjectAction(id){
+ sharedProjectActionId=String(id);sharedProjectActionOpen=true;renderSharedProjectsPage();
+}
+function closeSharedProjectAction(){sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage()}
+function applySharedProjectPin(pin){
+ const projects=loadSharedProjects(),project=projects.find(p=>String(p.id)===String(sharedProjectActionId));if(!project)return;
+ const id=String(project.id),prefs=loadSharedProjectPrefs(),from=project.pinned?'pinnedOrder':'projectOrder',to=pin?'pinnedOrder':'projectOrder';
+ project.pinned=!!pin;
+ prefs[from]=(Array.isArray(prefs[from])?prefs[from].map(String):[]).filter(x=>x!==id);
+ prefs[to]=[id,...(Array.isArray(prefs[to])?prefs[to].map(String).filter(x=>x!==id):[])];
+ saveSharedProjects(projects);saveSharedProjectPrefs(prefs);
+ sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage();
+}
+function openSharedProjectMove(section){
+ const projects=loadSharedProjects();sharedProjectMoveSection=section;
+ sharedProjectMoveIds=orderedSharedProjectIds(projects,section==='pinned'?'pinned':'other').map(p=>String(p.id));
+ sharedProjectActionOpen=false;sharedProjectMoveOpen=true;renderSharedProjectsPage();
+}
+function closeSharedProjectMove(save){
+ if(save){
+  const prefs=loadSharedProjectPrefs(),key=sharedProjectMoveSection==='pinned'?'pinnedOrder':'projectOrder';
+  prefs[key]=[...document.querySelectorAll('#sharedProjectSortList [data-project-id]')].map(el=>el.dataset.projectId);
+  saveSharedProjectPrefs(prefs);
+ }
+ sharedProjectMoveOpen=false;sharedProjectDraggingId=null;sharedProjectDragTimer=null;renderSharedProjectsPage();
+}
+function startSharedProjectSortHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;
+ clearTimeout(sharedProjectDragTimer);const row=event.currentTarget;
+ sharedProjectDragTimer=setTimeout(()=>{sharedProjectDraggingId=String(id);row.classList.add('dragging');try{row.setPointerCapture(event.pointerId)}catch{}},320);
+}
+function moveSharedProjectSort(event){
+ if(!sharedProjectDraggingId)return;
+ event.preventDefault();
+ const moving=document.querySelector('#sharedProjectSortList [data-project-id="'+CSS.escape(sharedProjectDraggingId)+'"]');
+ const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('#sharedProjectSortList [data-project-id]');
+ if(!moving||!target||moving===target)return;
+ const rect=target.getBoundingClientRect(),before=event.clientY<rect.top+rect.height/2;
+ target.parentNode.insertBefore(moving,before?target:target.nextSibling);
+}
+function endSharedProjectSortHold(event){
+ clearTimeout(sharedProjectDragTimer);sharedProjectDragTimer=null;
+ if(sharedProjectDraggingId){document.querySelectorAll('.shared-project-sort-row').forEach(row=>row.classList.remove('dragging'));sharedProjectDraggingId=null;}
+}
+function startSharedProjectHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;
+ clearTimeout(sharedProjectHoldTimer);sharedProjectSuppressClick=false;
+ sharedProjectHoldTimer=setTimeout(()=>{sharedProjectSuppressClick=true;openSharedProjectAction(id)},480);
+}
+function endSharedProjectHold(){clearTimeout(sharedProjectHoldTimer);sharedProjectHoldTimer=null}
+function openSharedProject(id){if(sharedProjectSuppressClick){sharedProjectSuppressClick=false;return}activeSharedProjectId=id;render();window.scrollTo(0,0)}
+
 function renderTasks(){
  if(activeSharedProjectId!==null){renderSharedProjectWorkspace();return;}
  if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
