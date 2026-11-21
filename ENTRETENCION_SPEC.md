@@ -32,6 +32,9 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - La cantidad de segmentos visibles no limita el tamaño del catálogo.
 - Mostrará hasta 12 títulos elegibles elegidos aleatoriamente.
 - El resultado debe coincidir exactamente con uno de los segmentos visibles.
+- El resultado ganador se mostrará en una ventana superpuesta sobre la ruleta, no como una ficha fija debajo de ella.
+- La ventana conservará las acciones de la ficha actual (tráiler, favoritos e información de disponibilidad) para poder revisarlas y ajustarlas posteriormente.
+- La ventana tendrá un botón X en la esquina superior derecha para cerrarla y volver a ver la ruleta.
 - No se repetirán ganadores dentro de una sesión.
 - «Otra oportunidad» elegirá nuevos candidatos entre los títulos elegibles que aún no hayan resultado ganadores.
 - «Nueva sesión» reiniciará los ganadores de la sesión, sin borrar favoritos ni preferencias.
