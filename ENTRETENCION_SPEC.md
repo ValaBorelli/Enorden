@@ -50,18 +50,23 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Si hay menos de 12 títulos disponibles, se mostrarán todos.
 
 ## 6. Tráileres
-- La primera implementación utilizará búsquedas directas en YouTube mediante la URL de resultados; no requiere API ni credenciales.
-- El botón principal de la ficha del título se llamará exactamente **«Buscar trailer»** y abrirá YouTube con una búsqueda que incluya el título, el año cuando esté disponible y el idioma preferido.
-- El usuario será quien revise los resultados y seleccione el video que desea ver. EnOrden no elegirá automáticamente un video ni afirmará que sea oficial, auténtico o verificado.
-- Si no encuentra un resultado adecuado en el idioma preferido, la ficha ofrecerá búsquedas alternativas para el mismo título en otros idiomas. Como la búsqueda directa no permite a EnOrden saber si el usuario encontró un resultado, estas alternativas estarán disponibles para que el usuario las pruebe manualmente.
-- Orden de búsqueda para español: español latino; español de España; inglés.
-- Orden de búsqueda para inglés: inglés primero; después se ofrecerán los idiomas alternativos disponibles.
-- Orden de búsqueda para portugués: portugués primero; después se ofrecerán los idiomas alternativos disponibles.
-- Si en el futuro EnOrden incorpora más idiomas, el idioma configurado globalmente será la primera búsqueda y se podrán ofrecer búsquedas alternativas en otros idiomas soportados.
+- La primera implementación utilizará una búsqueda directa en YouTube mediante la URL de resultados; no requiere API ni credenciales.
+- El botón de la ficha del resultado se llamará exactamente **«Ver trailer»** y abrirá una única búsqueda que incluya el título, el año cuando esté disponible y el idioma preferido configurado en EnOrden.
+- La búsqueda priorizará español latino para español; inglés para inglés; portugués para portugués. Para otros idiomas futuros, se utilizará primero el idioma configurado.
+- No se mostrarán al usuario botones ni enlaces de búsquedas alternativas. La selección del video seguirá siendo responsabilidad del usuario; EnOrden no elegirá automáticamente un video ni afirmará que sea oficial, auténtico o verificado.
 - Las búsquedas se construirán dinámicamente a partir del título y año del resultado; no se guardarán enlaces fijos de tráiler en el catálogo.
-- **MEJORA FUTURA:** evaluar la integración de una API de YouTube o de otro proveedor intercambiable para localizar un tráiler específico y entregar candidatos con metadatos fiables de título, idioma y fuente. Esta integración no forma parte de la implementación actual y deberá evaluarse antes de incorporarla.
+- **MEJORA FUTURA:** evaluar una API de YouTube u otro proveedor intercambiable para localizar un tráiler específico y entregar candidatos con metadatos fiables de título, idioma y fuente. Esta integración no forma parte de la implementación actual.
 
-## 7. Idioma
+## 7. Ficha del resultado
+- El resultado ganador aparece en una ventana modal superpuesta a la ruleta. La X superior derecha la cierra y devuelve la vista a la ruleta.
+- El encabezado de la ventana dice exactamente «Tu resultado».
+- El contenido principal se organiza en dos columnas: póster a la izquierda, con aproximadamente un tercio del ancho útil, y texto a la derecha. El póster conserva sin cambios su fondo, tratamiento, proporción y ajuste de imagen actuales.
+- La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver trailer»; sección «Dónde verla» con los servicios disponibles como chips.
+- Si no existen datos de disponibilidad, la sección «Dónde verla» informa discretamente que todavía no hay datos para Chile, sin mostrar plataformas ficticias.
+- Al pie de la ficha aparece un botón «Favoritos» con icono de corazón. Sin seleccionar, es transparente y delineado; seleccionado, tiene fondo negro. La acción conserva la lógica y persistencia actual de favoritos.
+- La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
+
+## 8. Idioma
 - La preferencia de idioma de tráileres se derivará del idioma global de EnOrden.
 - Para español, la variante inicial será español latino (es-419), seguida de español de España (es-ES) y luego inglés.
 - Para inglés y portugués, se priorizará el idioma configurado.
@@ -69,13 +74,16 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Las etiquetas de búsqueda indicarán claramente el idioma o variante que se está consultando.
 - La búsqueda textual de YouTube no garantiza que los resultados estén en el idioma solicitado; el usuario debe comprobar el video antes de reproducirlo.
 
-## 8. Seguridad y condiciones
+## 9. Seguridad y condiciones
 - Las credenciales de proveedores externos no se expondrán en el código cliente.
 - Antes de publicar se revisarán términos de uso, atribución, límites de API y licencias, especialmente para uso comercial.
 - **PENDIENTE / RECORDATORIO COMERCIAL:** si EnOrden pasa a ser una aplicación comercial, recordar a Vale revisar y confirmar la licencia de la base de datos/proveedor de películas y series (inicialmente TMDB), sus condiciones de uso comercial, atribución, restricciones y posibles costos antes de lanzar o monetizar el servicio.
+- La ficha del resultado reserva una sección «Dónde verla» y presenta los servicios disponibles como chips. No se deben inventar servicios ni disponibilidad: si el proveedor no entrega datos para Chile, se mostrará un mensaje discreto de disponibilidad aún no consultable.
+- Los datos de cada servicio deberán llegar desde un proveedor de disponibilidad intercambiable e incluir, cuando existan, enlaces de aplicación, web y tienda por plataforma. La interfaz podrá priorizar un enlace universal/de aplicación y utilizar el enlace de tienda como alternativa cuando el proveedor o el entorno permitan determinar que la aplicación no está disponible.
+- Un enlace web normal no garantiza que se abra la aplicación instalada ni permite detectar por sí solo si está instalada. No prometer ese comportamiento hasta implementar y probar enlaces universales/deep links y fallback específicos para Android e iOS.
 - Si se incorpora disponibilidad de streaming, deberá indicar la región consultada y la fecha de actualización.
 
-## 9. Pendientes de producción
+## 10. Pendientes de producción
 
 - **REVISAR / PROPUESTA NO IMPLEMENTADA:** evaluar Cloudflare Workers como intermediario seguro entre EnOrden (alojado en Netlify) y TMDB u otros proveedores. El objetivo sería evitar que las consultas al catálogo consuman créditos de funciones de Netlify y mantener las credenciales fuera del cliente.
 - Antes de elegir esta alternativa, revisar los límites y costos vigentes del plan gratuito de Cloudflare Workers, compararlos con el uso esperado, comprobar el estado del plan/créditos de Netlify y probar seguridad, caché, paginación, errores y aislamiento de fallos. La propuesta no es todavía una decisión definitiva.
