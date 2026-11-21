@@ -118,6 +118,7 @@ Este documento regula las tareas normales de EnOrden. No regula los proyectos de
 - Reutilizar una plantilla crea una tarea nueva; no reactiva ni modifica la tarea o plantilla de origen.
 - Todas las opciones de una plantilla deben poder modificarse al editarla.
 - La página «Mis plantillas de tareas» muestra las plantillas guardadas y estas aparecen contraídas por defecto.
+- Cada plantilla conserva la acción «Eliminar», que solicita confirmación antes de borrarla.
 - Al mantener pulsada una plantilla durante más de 5 segundos, se pregunta si se desea reutilizarla:
   - **Sí:** abre el flujo de creación/edición de una tarea nueva basada en la plantilla. Guardar crea una tarea nueva y conserva intacta la plantilla original.
   - **No:** abre la edición de la plantilla. Debe avisarse que esta acción no crea una tarea; guardar modifica únicamente la plantilla.
