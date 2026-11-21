@@ -612,6 +612,20 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .entertainment-note{font-size:11px;line-height:1.45;color:var(--muted);margin-top:12px}
 @media(max-width:390px){.entertainment-result{grid-template-columns:94px minmax(0,1fr);gap:10px}.entertainment-poster{width:94px;min-height:141px}.entertainment-type-options{grid-template-columns:1fr}.entertainment-genre-grid{grid-template-columns:1fr 1fr}}
 
+
+/* Entretención: chips de plataformas accesibles y créditos al pie de la ficha. */
+.entertainment-streaming-chip{min-height:32px;align-items:center;justify-content:center;cursor:default}
+a.entertainment-streaming-chip{cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+a.entertainment-streaming-chip:hover{border-color:var(--green2);transform:translateY(-1px)}
+a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);outline-offset:2px}
+.entertainment-credits{display:flex;flex-direction:column;gap:7px;margin-top:17px;padding-top:13px;border-top:1px solid var(--line);font-size:10px;line-height:1.45;color:var(--muted)}
+.entertainment-credits-title{font-size:11px;color:var(--white)}
+.entertainment-credit-tmdb{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.entertainment-credit-tmdb a{display:inline-flex;align-items:center;flex:0 0 auto}
+.entertainment-credit-tmdb img{display:block;width:94px;max-width:100%;height:auto}
+.entertainment-credit-tmdb span{min-width:0;flex:1 1 220px}
+.entertainment-credit-streaming{font-size:10px}
+@media(max-width:390px){.entertainment-credit-tmdb{align-items:flex-start;flex-direction:column;gap:6px}}
 </style>
 </head>
 <body>
@@ -2046,7 +2060,7 @@ const entertainmentProviders={
     if(!filters.noYear&&(item.year<filters.yearFrom||item.year>filters.yearTo))return false;
     if(filters.genres.length&&!item.genres.some(g=>filters.genres.includes(g)))return false;
     return true;
-   }).map(item=>({...item,source:'demo',posterUrl:null,trailerUrl:null,streamingProviders:[]}));
+   }).map(item=>({...item,source:'demo',posterUrl:null,trailerUrl:null,streamingProviders:[],streamingAvailabilityStatus:'error'}));
   }
  }
 };
@@ -2087,17 +2101,52 @@ function entertainmentTrailerSearchOptions(item){
  return [{language,label:entertainmentTrailerLanguageLabel(language),url:'https://www.youtube.com/results?search_query='+encodeURIComponent(query),preferred:true}];
 }
 function entertainmentStreamingMarkup(item){
- const services=Array.isArray(item?.streamingProviders)?item.streamingProviders:[];
- if(!services.length)return '<div class="entertainment-streaming"><strong class="entertainment-streaming-title">Dónde verla</strong><span class="entertainment-streaming-empty">Disponibilidad en Chile aún no disponible.</span></div>';
- const chips=services.map(service=>{
-  const name=typeof service==='string'?service:String(service?.name||'Servicio');
-  const link=typeof service==='object'?(entertainmentSafeLink(service.appUrl)||entertainmentSafeLink(service.webUrl)||entertainmentSafeLink(service.storeUrl)):'';
-  return link?'<a class="entertainment-streaming-chip" href="'+escapeHTML(link)+'" target="_blank" rel="noopener noreferrer">'+escapeHTML(name)+'</a>':'<span class="entertainment-streaming-chip">'+escapeHTML(name)+'</span>';
- }).join('');
- return '<div class="entertainment-streaming"><strong class="entertainment-streaming-title">Dónde verla</strong><div class="entertainment-streaming-tags">'+chips+'</div></div>';
+ const availability=item?.streamingAvailability&&typeof item.streamingAvailability==='object'?item.streamingAvailability:{};
+ const declaredStatus=availability.status||item?.streamingAvailabilityStatus;
+ const currentProviders=Array.isArray(availability.providers)?availability.providers:(Array.isArray(item?.streamingProviders)?item.streamingProviders:[]);
+ const status=declaredStatus||(currentProviders.length?'success':'error');
+ const lastSuccessfulProviders=Array.isArray(availability.lastSuccessfulProviders)
+  ?availability.lastSuccessfulProviders
+  :Array.isArray(item?.lastSuccessfulStreamingProviders)
+   ?item.lastSuccessfulStreamingProviders
+   :(status==='error'?currentProviders:[]);
+ const services=status==='error'?lastSuccessfulProviders:(status==='success'?currentProviders:[]);
+ let content='';
+ if(!services.length){
+  const message=status==='success'
+   ?'Lo sentimos, no se encuentran plataformas de Streaming disponibles'
+   :'No se pudo obtener la disponibilidad en este momento';
+  content='<span class="entertainment-streaming-empty">'+message+'</span>';
+ }else{
+  const chips=services.map(service=>{
+   const objectService=service&&typeof service==='object';
+   const name=typeof service==='string'?service:String(service?.name||'Servicio');
+   const universalLink=objectService?entertainmentSafeLink(service.universalUrl):'';
+   const appLink=objectService?entertainmentSafeLink(service.appUrl):'';
+   const webLink=objectService?entertainmentSafeLink(service.webUrl):'';
+   const storeLink=objectService?entertainmentSafeLink(service.storeUrl):'';
+   const appUnavailable=objectService&&(service.appAvailable===false||service.appInstalled===false);
+   const link=universalLink||appLink||webLink||(appUnavailable?storeLink:'');
+   return link
+    ?'<a class="entertainment-streaming-chip" href="'+escapeHTML(link)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir '+escapeHTML(name)+'">'+escapeHTML(name)+'</a>'
+    :'<span class="entertainment-streaming-chip" aria-label="'+escapeHTML(name)+'">'+escapeHTML(name)+'</span>';
+  }).join('');
+  content='<div class="entertainment-streaming-tags">'+chips+'</div>';
+ }
+ return '<div class="entertainment-streaming"><strong class="entertainment-streaming-title">Dónde verla</strong>'+content+'</div>';
+}
+function renderEntertainmentCredits(){
+ const logoUrl='https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg';
+ return '<footer class="entertainment-credits" aria-label="Créditos y fuentes">'+
+  '<strong class="entertainment-credits-title">Créditos y fuentes</strong>'+
+  '<div class="entertainment-credit-tmdb"><a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" aria-label="The Movie Database">'+
+  '<img src="'+logoUrl+'" alt="TMDB"></a>'+
+  '<span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span></div>'+
+  '<div class="entertainment-credit-streaming">Disponibilidad informada por JustWatch a través de TMDB</div>'+
+  '</footer>';
 }
 function closeEntertainmentResult(){entertainmentResultOpen=false;renderEntertainment()}
-function renderEntertainmentResultModal(resultMarkup){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+'</div></div>'}
+function renderEntertainmentResultModal(resultMarkup){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+renderEntertainmentCredits()+'</div></div>'}
 function renderEntertainment(){
  const provider=getEntertainmentProvider();
  const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id)).length;
