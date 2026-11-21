@@ -2012,16 +2012,60 @@ function entertainmentWheelMarkup(){
  const ballTop=entertainmentBallLanded?'calc(50% - 36%)':'calc(50% - 46%)';
  return '<div class="entertainment-wheel-track" aria-hidden="true"></div><div class="entertainment-wheel" id="entertainmentWheel" style="background:conic-gradient(from -90deg,'+stops+');transform:rotate('+entertainmentWheelRotation+'deg)" role="img" aria-label="Ruleta de casino con '+items.length+' títulos">'+labels+'<div class="entertainment-wheel-hub">ENORDEN</div></div><div class="entertainment-ball-orbit" id="entertainmentBallOrbit" style="transform:rotate('+entertainmentBallAngle+'deg)"><span class="entertainment-ball" id="entertainmentBall" style="top:'+ballTop+'" role="img" aria-label="Bola blanca de la ruleta"></span></div>';
 }
-function entertainmentTrailerLink(item){if(item.trailerOfficial!==true||item.trailerVerified!==true||!item.trailerLanguage||!item.requestedLanguage||item.trailerLanguage!==item.requestedLanguage)return '';return entertainmentSafeLink(item.trailerUrl)}
+/* DECISIÓN: el proveedor de tráileres es independiente del proveedor de catálogo.
+   Los candidatos deben llegar con verificación de oficialidad y metadatos de idioma.
+   TODO: conectar la consulta real de YouTube/TMDB mediante un servicio seguro; no buscar
+   ni mostrar resultados de texto sin verificar el canal oficial y el idioma del video. */
+const entertainmentTrailerProviderSettings={activeProvider:'youtube',allowOtherLanguages:true};
+const entertainmentTrailerProviders={
+ youtube:{
+  id:'youtube',name:'YouTube',
+  getCandidates(item){return Array.isArray(item.trailers)?item.trailers:[]}
+ }
+};
+function entertainmentRequestedTrailerLanguage(){
+ return ({es:'es-CL',en:'en-US',pt:'pt-BR'})[appLanguage]||appLanguage||'es-CL';
+}
+function entertainmentNormalizeLanguage(language){return String(language||'').trim().replace('_','-').toLowerCase()}
+function entertainmentTrailerInfo(item){
+ const provider=entertainmentTrailerProviders[entertainmentTrailerProviderSettings.activeProvider];
+ if(!provider||!item)return null;
+ let candidates=provider.getCandidates(item).filter(candidate=>
+  candidate&&candidate.official===true&&candidate.verified===true&&
+  entertainmentSafeLink(candidate.url)&&candidate.language
+ );
+ if(!candidates.length&&item.trailerOfficial===true&&item.trailerVerified===true&&item.trailerUrl&&item.trailerLanguage){
+  candidates=[{url:item.trailerUrl,language:item.trailerLanguage,official:true,verified:true}];
+ }
+ if(!candidates.length)return null;
+ const requested=entertainmentNormalizeLanguage(entertainmentRequestedTrailerLanguage());
+ const requestedBase=requested.split('-')[0];
+ const rank=language=>{
+  const normalized=entertainmentNormalizeLanguage(language);
+  if(normalized===requested)return 0;
+  if(normalized.split('-')[0]===requestedBase)return 1;
+  return 2;
+ };
+ candidates.sort((a,b)=>rank(a.language)-rank(b.language));
+ const selected=candidates[0];
+ if(rank(selected.language)>0&&!entertainmentTrailerProviderSettings.allowOtherLanguages)return null;
+ return {url:entertainmentSafeLink(selected.url),language:selected.language,preferredLanguageMatch:rank(selected.language)===0};
+}
+function entertainmentTrailerLanguageLabel(language){
+ const labels={es:'Español',en:'Inglés',pt:'Portugués',fr:'Francés',de:'Alemán',it:'Italiano',ja:'Japonés',ko:'Coreano',zh:'Chino'};
+ const base=entertainmentNormalizeLanguage(language).split('-')[0];
+ return labels[base]||String(language||'Idioma no identificado').toUpperCase();
+}
 function closeEntertainmentResult(){entertainmentResultOpen=false;renderEntertainment()}
 function renderEntertainmentResultModal(resultMarkup){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+'</div></div>'}
 function renderEntertainment(){
  const provider=getEntertainmentProvider();
  const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id)).length;
  const result=entertainmentCurrent;
+ const trailerInfo=result?entertainmentTrailerInfo(result):null;
  const poster=result?.posterUrl&&entertainmentSafeLink(result.posterUrl)?'<img src="'+escapeHTML(result.posterUrl)+'" alt="Póster de '+escapeHTML(result.title)+'">':'<span>🎬</span>';
  const typeLabel=item=>item.type==='movie'?'Película':'Serie';
- const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions'+(entertainmentTrailerLink(result)?' has-trailer':'')+'">'+(entertainmentTrailerLink(result)?'<a href="'+escapeHTML(entertainmentTrailerLink(result))+'" target="_blank" rel="noopener noreferrer">Ver tráiler oficial</a>':'<span class="entertainment-note">No hay un tráiler oficial verificado en el idioma configurado.</span>')+'<button onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')">'+(entertainmentFavorites.some(f=>((typeof f==='string'?f:f.id)===result.id))?'♥ En favoritos':'♡ Guardar favorito')+'</button></div></div></div>'+(result.streamingProviders?.length?'<p class="entertainment-note">Disponible en: '+escapeHTML(result.streamingProviders.join(', '))+'</p>':'<p class="entertainment-note">La disponibilidad en plataformas de Chile se incorporará al conectar una fuente que entregue esos datos.</p>')+'</div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
+ const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div'<div class="entertainment-actions'+(trailerInfo?.url?' has-trailer':'')+'">'+(trailerInfo?.url?'<a href="'+escapeHTML(trailerInfo.url)+'" target="_blank" rel="noopener noreferrer">Ver tráiler oficial · '+escapeHTML(entertainmentTrailerLanguageLabel(trailerInfo.language))+'</a>':'<span class="entertainment-note">No hay un tráiler oficial verificado disponible.</span>')+'<button onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')">'+(entertainmentFavorites.some(f=>((typeof f==='string'?f:f.id)===result.id))?'♥ En favoritos':'♡ Guardar favorito')+'</button></div></div></div>'+(result.streamingProviders?.length?'<p class="entertainment-note">Disponible en: '+escapeHTML(result.streamingProviders.join(', '))+'</p>':'<p class="entertainment-note">La disponibilidad en plataformas de Chile se incorporará al conectar una fuente que entregue esos datos.</p>')+'</div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
  const favoriteItems=entertainmentFavorites.map(entry=>typeof entry==='string'?(entertainmentPool.find(x=>x.id===entry)||entertainmentDemoCatalog.find(x=>x.id===entry)):entry).filter(Boolean);
  screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
 }
