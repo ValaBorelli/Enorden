@@ -1322,7 +1322,7 @@ function renderTasks(){
   {label:'Terminadas',count:tasks.filter(t=>t.done).length,unread:tasks.filter(t=>t.done).some(taskHasUnread)},
   {label:'Familia',count:active.filter(taskIsPublic).length,unread:active.filter(taskIsPublic).some(taskHasUnread)},
   {label:'Personales',count:active.filter(t=>!taskIsPublic(t)).length,unread:active.filter(t=>!taskIsPublic(t)).some(taskHasUnread)},
-  {label:'Asignadas',count:active.filter(taskHasAssignmentsForCurrentUser).length,unread:active.filter(taskIsAssignedToCurrentUser).some(taskHasUnread)}
+  {label:'Asignadas',count:tasks.filter(t=>t.scope!=='shared'&&taskHasAssignmentsForCurrentUser(t)&&(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t)).length,unread:tasks.filter(t=>t.scope!=='shared'&&taskHasAssignmentsForCurrentUser(t)&&(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t)).some(taskHasUnread)}
  ];
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned','pending'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
@@ -1403,7 +1403,7 @@ function renderScopedTasks(scope){
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
  const isPending=scope==='pending';
- const scopedTasks=isAll?tasks.filter(t=>t.scope!=='shared'):tasks.filter(t=>isShared?t.scope==='shared':isPending?t.scope!=='shared'&&(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t)&&t.scope!=='shared');
+ const scopedTasks=isAll?tasks.filter(t=>t.scope!=='shared'):tasks.filter(t=>isShared?t.scope==='shared':isPending?t.scope!=='shared'&&(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t)&&(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t):isFamily?taskIsPublic(t):!taskIsPublic(t)&&t.scope!=='shared');
  const pending=scopedTasks.filter(t=>!t.done||taskHasPendingSubtasks(t)).length;
  const title=isShared?'Tareas Compartido':isAll?'Todas las tareas':isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
  const description=isShared?'Tus tareas privadas de la categoría Compartido.':isAll?'Todas las tareas disponibles, incluidas las pendientes, programadas y terminadas.':isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
@@ -1449,8 +1449,8 @@ function renderScopedTasks(scope){
    <section class="task-group-section"><h2 class="task-group-title">Tareas Familia</h2>${familyHTML||'<div class="card empty">Todavía no hay tareas familiares.</div>'}</section>
    <details class="task-scheduled-section" ontoggle="rememberTaskSection('all:scheduled',this.open)" ${expandedTaskSections.has('all:scheduled')?'open':''}><summary><span class="task-scheduled-heading">Tareas Programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledPersonal.length+scheduledFamily.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary>
     <div class="task-scheduled-content">
-     <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Personales</h3>${scheduledPersonalHTML||'<div class="card empty">No hay tareas personales programadas.</div>'}</section>
-     <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Familia</h3>${scheduledFamilyHTML||'<div class="card empty">No hay tareas familiares programadas.</div>'}</section>
+     <section class="task-group-section"><h3 class="task-group-title">Personales</h3>${scheduledPersonalHTML||'<div class="card empty">No hay tareas personales programadas.</div>'}</section>
+     <section class="task-group-section"><h3 class="task-group-title">Familiares</h3>${scheduledFamilyHTML||'<div class="card empty">No hay tareas familiares programadas.</div>'}</section>
     </div>
    </details>
    <details class="task-scheduled-section" ontoggle="rememberTaskSection('all:completed',this.open)" ${expandedTaskSections.has('all:completed')?'open':''}><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedHTML||'<div class="card empty">Todavía no hay tareas terminadas.</div>'}</div></details>
