@@ -533,7 +533,56 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
   grid-template-columns:18px minmax(0,1fr) 54px 20px;
  }
 }
-.my-day-section{margin-bottom:18px}.my-day-task-list{display:flex;flex-direction:column;gap:8px}.my-day-task-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;padding:14px 16px;border:1px solid var(--border,#e5e5e5);border-radius:14px;background:var(--card,#fff);color:inherit;cursor:pointer;font:inherit}.my-day-task-row:active{transform:scale(.995)}.my-day-task-title{min-width:0;display:flex;flex-direction:column;gap:4px}.my-day-task-kind{flex:0 0 auto;margin-left:auto;font-size:1.15rem}.my-day-assigned-detail{font-size:.82rem;color:var(--muted,#777)}.my-day-assigned-section{margin-top:14px}</style>
+.my-day-section{margin-bottom:18px}.my-day-task-list{display:flex;flex-direction:column;gap:8px}.my-day-task-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;padding:14px 16px;border:1px solid var(--border,#e5e5e5);border-radius:14px;background:var(--card,#fff);color:inherit;cursor:pointer;font:inherit}.my-day-task-row:active{transform:scale(.995)}.my-day-task-title{min-width:0;display:flex;flex-direction:column;gap:4px}.my-day-task-kind{flex:0 0 auto;margin-left:auto;font-size:1.15rem}.my-day-assigned-detail{font-size:.82rem;color:var(--muted,#777)}.my-day-assigned-section{margin-top:14px}
+/* ENTRETENCIÓN — estilos aislados del resto de módulos */
+.entertainment-page{padding-bottom:24px}
+.entertainment-hero{position:relative;overflow:hidden;text-align:center;padding:26px 18px 22px;border-radius:20px;background:linear-gradient(145deg,#203f39,#397267);color:#fff;margin-bottom:17px}
+.entertainment-hero:before,.entertainment-hero:after{content:'✦';position:absolute;color:#ffffff25;font-size:75px}
+.entertainment-hero:before{top:-23px;left:12px}.entertainment-hero:after{bottom:-32px;right:15px}
+.entertainment-wheel{width:154px;height:154px;margin:17px auto 15px;border:8px solid #e9d8ae;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fffaf1 0 43%,#d7b56c 44% 47%,#fffaf1 48%);box-shadow:0 8px 22px #102c2755;color:#24564f;font-size:54px}
+.entertainment-spin{width:100%;max-width:290px;min-height:48px;border:0;border-radius:12px;background:#f2d99f;color:#263d35;font-weight:800}
+.entertainment-spin:disabled{opacity:.6;cursor:not-allowed}
+.entertainment-subtitle{font-size:13px;line-height:1.5;color:#e8eee9;margin:0 auto 13px;max-width:330px}
+.entertainment-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.entertainment-toolbar button{flex:1;min-width:125px}
+.entertainment-result{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;align-items:start}
+.entertainment-poster{width:112px;min-height:164px;aspect-ratio:2/3;border-radius:12px;background:linear-gradient(155deg,#d6c5a2,#45665b);display:grid;place-items:center;overflow:hidden;color:#fff;font-size:42px;text-align:center}
+.entertainment-poster img{width:100%;height:100%;object-fit:cover}
+.entertainment-result h2{font-size:19px;line-height:1.2;margin:0 0 5px}
+.entertainment-meta{font-size:11px;color:var(--muted);margin-bottom:9px}
+.entertainment-overview{font-size:12px;line-height:1.5;margin:0 0 10px}
+.entertainment-tags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}
+.entertainment-tag{font-size:10px;padding:4px 7px;border-radius:20px;background:var(--surface2);color:var(--white)}
+.entertainment-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.entertainment-actions a,.entertainment-actions button{font-size:11px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface2);color:var(--white)}
+.entertainment-modal-layer{position:fixed;inset:0;z-index:10070;background:#0009;display:flex;align-items:center;justify-content:center;padding:15px}
+.entertainment-modal{width:min(520px,100%);max-height:88vh;overflow:auto;background:var(--surface);color:var(--white);border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:0 20px 60px #0005}
+.entertainment-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.entertainment-modal-head h2{margin:0;font-size:20px}
+.entertainment-modal-close{border:0;background:var(--surface2);color:var(--white);border-radius:50%;width:35px;height:35px;font-size:20px}
+.entertainment-form-section{margin:17px 0}
+.entertainment-form-section>strong{display:block;font-size:13px;margin-bottom:9px}
+.entertainment-type-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.entertainment-type-option{position:relative}
+.entertainment-type-option input{position:absolute;opacity:0}
+.entertainment-type-option span{display:grid;place-items:center;min-height:47px;padding:7px 4px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:12px;text-align:center}
+.entertainment-type-option input:checked+span{border:2px solid var(--green2);background:#dce9df;color:#214b40;font-weight:700}
+.entertainment-genre-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.entertainment-genre{display:flex;align-items:center;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:var(--bg);font-size:12px}
+.entertainment-genre input{accent-color:var(--green2);width:16px;height:16px;margin:0}
+.entertainment-year-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.entertainment-year-row label{font-size:11px;color:var(--muted)}
+.entertainment-year-row input{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--white);padding:10px}
+.entertainment-no-year{display:flex;align-items:center;gap:8px;font-size:12px;margin-top:11px}
+.entertainment-modal-actions{display:flex;justify-content:space-between;gap:9px;margin-top:20px}
+.entertainment-modal-actions button{min-width:110px}
+.entertainment-favorite-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.entertainment-favorite-row strong{font-size:13px}.entertainment-favorite-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.entertainment-favorite-row button{margin-left:auto}
+.entertainment-note{font-size:11px;line-height:1.45;color:var(--muted);margin-top:12px}
+@media(max-width:390px){.entertainment-result{grid-template-columns:94px minmax(0,1fr);gap:10px}.entertainment-poster{width:94px;min-height:141px}.entertainment-type-options{grid-template-columns:1fr}.entertainment-genre-grid{grid-template-columns:1fr 1fr}}
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -631,6 +680,11 @@ else{
  modules.forEach(m=>{if(!order.includes(m.id))order.push(m.id);});
 }
 let current='inicio',calendarView='Mes',selectedDate=new Date();
+
+let entertainmentSetupOpen=false,entertainmentReady=false,entertainmentFilters=null;
+let entertainmentPool=[],entertainmentCurrent=null,entertainmentShownIds=new Set(),entertainmentFavorites=JSON.parse(localStorage.getItem('enorden_entertainment_favorites')||'[]');
+if(!Array.isArray(entertainmentFavorites))entertainmentFavorites=[];
+
 let taskView='today';
 let taskSidebarCollapsed=false;
 let activeSharedProjectId=null;
@@ -797,6 +851,7 @@ function render(){
  else if(current==='configuracion')renderSettings();
  else if(current==='finanzas')renderFinance();
  else if(current==='chat')renderChat();
+ else if(current==='entretenimiento')renderEntertainment();
  else renderOther(current);
  applyLanguage();
 }
@@ -1860,6 +1915,102 @@ function deleteHome(){
  if(householdRole!=='admin'||householdMemberCount!==1){alert('Solo el administrador cuando es el único integrante puede eliminar el hogar.');return}
  if(confirm('¿Eliminar el hogar? Esta acción no se puede deshacer. En esta versión de prueba no se borrarán datos reales.'))alert('La eliminación del hogar se habilitará cuando exista el sistema de cuentas.');
 }
+
+/* ENTRETENCIÓN — capa de proveedores desacoplada del motor del módulo.
+   El proveedor de demostración permite probar la experiencia sin credenciales.
+   Para producción se conectará un proveedor autorizado mediante este mismo contrato. */
+const entertainmentGenres=['Acción','Aventura','Animación','Ciencia ficción','Comedia','Crimen','Documental','Drama','Fantasía','Misterio','Romance','Suspenso','Terror','Familia','Historia','Musical'];
+const entertainmentDemoCatalog=[
+ {id:'demo-film-1',title:'Interestelar',type:'movie',year:2014,genres:['Ciencia ficción','Aventura','Drama'],overview:'Un grupo de exploradores emprende una misión que podría asegurar el futuro de la humanidad.',runtime:169},
+ {id:'demo-film-2',title:'Jurassic Park',type:'movie',year:1993,genres:['Aventura','Ciencia ficción','Suspenso'],overview:'Un parque temático con dinosaurios vivos se convierte en una lucha por sobrevivir.',runtime:127},
+ {id:'demo-film-3',title:'Shrek',type:'movie',year:2001,genres:['Animación','Comedia','Fantasía','Familia'],overview:'Un ogro emprende una aventura inesperada para recuperar la tranquilidad de su pantano.',runtime:90},
+ {id:'demo-film-4',title:'El viaje de Chihiro',type:'movie',year:2001,genres:['Animación','Fantasía','Aventura'],overview:'Una niña entra en un mundo mágico y debe encontrar la forma de regresar a casa.',runtime:125},
+ {id:'demo-film-5',title:'Knives Out',type:'movie',year:2019,genres:['Misterio','Comedia','Crimen','Drama'],overview:'Un detective investiga la muerte de un escritor dentro de una familia llena de secretos.',runtime:130},
+ {id:'demo-film-6',title:'Mad Max: Fury Road',type:'movie',year:2015,genres:['Acción','Aventura','Ciencia ficción'],overview:'Una huida a través del desierto se transforma en una persecución de alto riesgo.',runtime:120},
+ {id:'demo-film-7',title:'Orgullo y prejuicio',type:'movie',year:2005,genres:['Romance','Drama'],overview:'Una joven de carácter independiente enfrenta las expectativas sociales y sus propios sentimientos.',runtime:129},
+ {id:'demo-film-8',title:'Get Out',type:'movie',year:2017,genres:['Terror','Misterio','Suspenso'],overview:'Una visita familiar aparentemente normal revela una situación cada vez más inquietante.',runtime:104},
+ {id:'demo-film-9',title:'Coco',type:'movie',year:2017,genres:['Animación','Familia','Aventura','Musical'],overview:'Un niño apasionado por la música descubre la historia de su familia en una aventura extraordinaria.',runtime:105},
+ {id:'demo-film-10',title:'The Grand Budapest Hotel',type:'movie',year:2014,genres:['Comedia','Aventura','Drama'],overview:'Un conserje y su joven aprendiz quedan envueltos en una aventura alrededor de una valiosa obra de arte.',runtime:99},
+ {id:'demo-film-11',title:'Dune',type:'movie',year:2021,genres:['Ciencia ficción','Aventura','Drama'],overview:'El heredero de una familia noble llega a un planeta desértico clave para el destino del universo.',runtime:155},
+ {id:'demo-film-12',title:'Scream',type:'movie',year:1996,genres:['Terror','Misterio','Suspenso'],overview:'Un grupo de jóvenes recibe llamadas amenazantes de alguien que conoce sus secretos.',runtime:111},
+ {id:'demo-series-1',title:'Dark',type:'tv',year:2017,genres:['Ciencia ficción','Misterio','Drama','Suspenso'],overview:'La desaparición de un niño revela conexiones entre varias familias y distintas épocas.',seasons:3},
+ {id:'demo-series-2',title:'The Office',type:'tv',year:2005,genres:['Comedia'],overview:'La vida cotidiana de los trabajadores de una oficina queda registrada en formato de falso documental.',seasons:9},
+ {id:'demo-series-3',title:'The Last of Us',type:'tv',year:2023,genres:['Drama','Aventura','Acción'],overview:'Dos sobrevivientes atraviesan un mundo devastado y construyen un vínculo inesperado.',seasons:2},
+ {id:'demo-series-4',title:'Stranger Things',type:'tv',year:2016,genres:['Ciencia ficción','Terror','Drama','Aventura'],overview:'Un grupo de amigos descubre fenómenos inexplicables en su pequeño pueblo.',seasons:5},
+ {id:'demo-series-5',title:'Brooklyn Nine-Nine',type:'tv',year:2013,genres:['Comedia','Crimen'],overview:'Un equipo de detectives resuelve casos mientras lidia con el caos de su comisaría.',seasons:8},
+ {id:'demo-series-6',title:'The Crown',type:'tv',year:2016,genres:['Drama','Historia'],overview:'Un drama sobre la vida pública y privada de la familia real británica.',seasons:6},
+ {id:'demo-series-7',title:'The Bear',type:'tv',year:2022,genres:['Drama','Comedia'],overview:'Un chef vuelve a Chicago para hacerse cargo del restaurante familiar.',seasons:4},
+ {id:'demo-series-8',title:'Wednesday',type:'tv',year:2022,genres:['Misterio','Comedia','Fantasía'],overview:'Una estudiante investiga sucesos extraños en una academia llena de personajes peculiares.',seasons:2}
+];
+const entertainmentProviders={
+ demo:{
+  id:'demo',name:'Catálogo de demostración',
+  async discover(filters){
+   return entertainmentDemoCatalog.filter(item=>{
+    if(filters.type!=='any'&&item.type!==filters.type)return false;
+    if(!filters.noYear&&(item.year<filters.yearFrom||item.year>filters.yearTo))return false;
+    if(filters.genres.length&&!item.genres.some(g=>filters.genres.includes(g)))return false;
+    return true;
+   }).map(item=>({...item,source:'demo',posterUrl:null,trailerUrl:null,streamingProviders:[]}));
+  }
+ }
+};
+const entertainmentProviderSettings={activeProvider:'demo'};
+function getEntertainmentProvider(){return entertainmentProviders[entertainmentProviderSettings.activeProvider]||entertainmentProviders.demo}
+function entertainmentSafeLink(url){return /^https?:\/\//i.test(String(url||''))?String(url):''}
+function entertainmentTrailerLink(item){const direct=entertainmentSafeLink(item.trailerUrl);return direct||('https://www.youtube.com/results?search_query='+encodeURIComponent((item.title||'')+' tráiler oficial'))}
+function renderEntertainment(){
+ const provider=getEntertainmentProvider();
+ const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id)).length;
+ const result=entertainmentCurrent;
+ const poster=result?.posterUrl&&entertainmentSafeLink(result.posterUrl)?'<img src="'+escapeHTML(result.posterUrl)+'" alt="Póster de '+escapeHTML(result.title)+'">':'<span>🎬</span>';
+ const typeLabel=item=>item.type==='movie'?'Película':'Serie';
+ const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions"><a href="'+escapeHTML(entertainmentTrailerLink(result))+'" target="_blank" rel="noopener noreferrer">'+(result.trailerUrl?'Ver tráiler':'Buscar tráiler')+'</a><button onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')">'+(entertainmentFavorites.includes(result.id)?'♥ En favoritos':'♡ Guardar favorito')+'</button></div></div></div>'+(result.streamingProviders?.length?'<p class="entertainment-note">Disponible en: '+escapeHTML(result.streamingProviders.join(', '))+'</p>':'<p class="entertainment-note">La disponibilidad en plataformas de Chile se incorporará al conectar una fuente que entregue esos datos.</p>')+'</div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
+ const favoriteItems=entertainmentFavorites.map(id=>entertainmentPool.find(x=>x.id===id)||entertainmentDemoCatalog.find(x=>x.id===id)).filter(Boolean);
+ screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel">🎡</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'">'+(entertainmentReady?(remaining?'Girar la ruleta':'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result?'<div class="section"><div class="section-title">Tu resultado</div>'+resultMarkup+'</div>':'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
+}
+function renderEntertainmentSetupModal(){
+ const selected=entertainmentFilters||{type:'any',genres:[],yearFrom:1980,yearTo:new Date().getFullYear(),noYear:true};
+ return '<div class="entertainment-modal-layer" onclick="if(event.target===this)cancelEntertainmentSetup()"><div class="entertainment-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentSetupTitle"><div class="entertainment-modal-head"><h2 id="entertainmentSetupTitle">Entretención</h2><button class="entertainment-modal-close" onclick="cancelEntertainmentSetup()" aria-label="Cerrar">×</button></div><div class="entertainment-form-section"><strong>¿Qué quieres ver?</strong><div class="entertainment-type-options"><label class="entertainment-type-option"><input type="radio" name="entertainmentType" value="movie" '+(selected.type==='movie'?'checked':'')+'><span>🎬 Película</span></label><label class="entertainment-type-option"><input type="radio" name="entertainmentType" value="tv" '+(selected.type==='tv'?'checked':'')+'><span>📺 Serie</span></label><label class="entertainment-type-option"><input type="radio" name="entertainmentType" value="any" '+(selected.type==='any'?'checked':'')+'><span>Me da igual</span></label></div></div><div class="entertainment-form-section"><strong>¿Qué géneros te interesan hoy?</strong><div class="entertainment-genre-grid">'+entertainmentGenres.map(g=>'<label class="entertainment-genre"><input type="checkbox" name="entertainmentGenre" value="'+escapeHTML(g)+'" '+(selected.genres.includes(g)?'checked':'')+'> '+escapeHTML(g)+'</label>').join('')+'</div><p class="entertainment-note">Si eliges varios géneros, aparecerán títulos que coincidan con cualquiera de ellos o con una combinación.</p></div><div class="entertainment-form-section"><strong>¿De qué época?</strong><label class="entertainment-no-year"><input id="entertainmentNoYear" type="checkbox" '+(selected.noYear?'checked':'')+' onchange="toggleEntertainmentYearFields()"> No me importa el año</label><div class="entertainment-year-row" id="entertainmentYearFields" '+(selected.noYear?'style="opacity:.45"':'')+'><label>Desde<input id="entertainmentYearFrom" type="number" min="1888" max="'+new Date().getFullYear()+'" value="'+selected.yearFrom+'" '+(selected.noYear?'disabled':'')+'></label><label>Hasta<input id="entertainmentYearTo" type="number" min="1888" max="'+new Date().getFullYear()+'" value="'+selected.yearTo+'" '+(selected.noYear?'disabled':'')+'></label></div></div><div class="entertainment-modal-actions"><button class="secondary-btn" onclick="cancelEntertainmentSetup()">Cancelar</button><button class="primary-btn" onclick="applyEntertainmentSetup()">Listo</button></div></div></div>';
+}
+function toggleEntertainmentYearFields(){
+ const noYear=document.getElementById('entertainmentNoYear')?.checked;
+ ['entertainmentYearFrom','entertainmentYearTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=!!noYear});
+ const wrap=document.getElementById('entertainmentYearFields');if(wrap)wrap.style.opacity=noYear?'.45':'1';
+}
+function openEntertainmentSetup(){entertainmentSetupOpen=true;renderEntertainment()}
+function cancelEntertainmentSetup(){entertainmentSetupOpen=false;entertainmentReady=false;entertainmentFilters=null;entertainmentPool=[];entertainmentCurrent=null;entertainmentShownIds=new Set();renderEntertainment()}
+async function applyEntertainmentSetup(){
+ const type=document.querySelector('input[name="entertainmentType"]:checked')?.value||'any';
+ const genres=[...document.querySelectorAll('input[name="entertainmentGenre"]:checked')].map(x=>x.value);
+ const noYear=document.getElementById('entertainmentNoYear').checked;
+ const yearFrom=noYear?1888:Number(document.getElementById('entertainmentYearFrom').value);
+ const yearTo=noYear?new Date().getFullYear():Number(document.getElementById('entertainmentYearTo').value);
+ if(!noYear&&(!Number.isInteger(yearFrom)||!Number.isInteger(yearTo)||yearFrom<1888||yearTo>new Date().getFullYear()||yearFrom>yearTo)){alert('Revisa el rango de años.');return}
+ entertainmentFilters={type,genres,yearFrom,yearTo,noYear};
+ entertainmentSetupOpen=false;entertainmentCurrent=null;entertainmentShownIds=new Set();
+ try{
+  const provider=getEntertainmentProvider();
+  entertainmentPool=await provider.discover(entertainmentFilters);
+  entertainmentReady=true;
+  renderEntertainment();
+  if(!entertainmentPool.length)alert('No encontramos títulos que coincidan con esos filtros. Puedes cambiar tus preferencias e intentarlo nuevamente.');
+ }catch(error){entertainmentReady=false;alert('No fue posible cargar el catálogo. Inténtalo nuevamente.');renderEntertainment()}
+}
+function spinEntertainment(){
+ const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id));
+ if(!remaining.length){alert('Ya viste todos los títulos disponibles para esta búsqueda. Puedes iniciar una nueva sesión o cambiar tus preferencias.');renderEntertainment();return}
+ const chosen=remaining[Math.floor(Math.random()*remaining.length)];
+ entertainmentShownIds.add(chosen.id);entertainmentCurrent=chosen;renderEntertainment();
+}
+function resetEntertainmentSession(){entertainmentShownIds=new Set();entertainmentCurrent=null;renderEntertainment()}
+function toggleEntertainmentFavorite(id){
+ if(entertainmentFavorites.includes(id))entertainmentFavorites=entertainmentFavorites.filter(x=>x!==id);
+ else entertainmentFavorites.push(id);
+ localStorage.setItem('enorden_entertainment_favorites',JSON.stringify(entertainmentFavorites));
+ renderEntertainment();
+}
+
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
