@@ -1055,6 +1055,53 @@ function renderSharedProjectWorkspace(){
  }
 }
 
+
+function loadSharedProjectPrefs(){
+ try{const value=JSON.parse(localStorage.getItem('enorden_shared_project_prefs')||'{}');return value&&typeof value==='object'?value:{}}catch{return {}}
+}
+function saveSharedProjectPrefs(prefs){localStorage.setItem('enorden_shared_project_prefs',JSON.stringify(prefs))}
+function orderedSharedProjectIds(projects,section){
+ const pinned=section==='pinned',items=projects.filter(p=>!!p.pinned===pinned),ids=items.map(p=>String(p.id)),prefs=loadSharedProjectPrefs(),key=pinned?'pinnedOrder':'projectOrder';
+ let order=Array.isArray(prefs[key])?prefs[key].map(String).filter(id=>ids.includes(id)):[];
+ const newIds=ids.filter(id=>!order.includes(id));
+ order=[...newIds,...order];
+ if(order.length!==ids.length||!Array.isArray(prefs[key])){prefs[key]=order;saveSharedProjectPrefs(prefs)}
+ return order.map(id=>items.find(p=>String(p.id)===id)).filter(Boolean);
+}
+function openSharedProjectAction(id){sharedProjectActionId=String(id);sharedProjectActionOpen=true;renderSharedProjectsPage()}
+function closeSharedProjectAction(){sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage()}
+function applySharedProjectPin(pin){
+ const projects=loadSharedProjects(),project=projects.find(p=>String(p.id)===String(sharedProjectActionId));if(!project)return;
+ const id=String(project.id),prefs=loadSharedProjectPrefs(),from=project.pinned?'pinnedOrder':'projectOrder',to=pin?'pinnedOrder':'projectOrder';
+ project.pinned=!!pin;prefs[from]=(Array.isArray(prefs[from])?prefs[from].map(String):[]).filter(x=>x!==id);
+ prefs[to]=[id,...(Array.isArray(prefs[to])?prefs[to].map(String).filter(x=>x!==id):[])];
+ saveSharedProjects(projects);saveSharedProjectPrefs(prefs);sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage();
+}
+function openSharedProjectMove(section){
+ const projects=loadSharedProjects();sharedProjectMoveSection=section;
+ sharedProjectMoveIds=orderedSharedProjectIds(projects,section==='pinned'?'pinned':'other').map(p=>String(p.id));
+ sharedProjectActionOpen=false;sharedProjectMoveOpen=true;renderSharedProjectsPage();
+}
+function closeSharedProjectMove(save){
+ if(save){const prefs=loadSharedProjectPrefs(),key=sharedProjectMoveSection==='pinned'?'pinnedOrder':'projectOrder';prefs[key]=[...document.querySelectorAll('#sharedProjectSortList [data-project-id]')].map(el=>el.dataset.projectId);saveSharedProjectPrefs(prefs)}
+ sharedProjectMoveOpen=false;sharedProjectDraggingId=null;sharedProjectDragTimer=null;renderSharedProjectsPage();
+}
+function startSharedProjectSortHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;clearTimeout(sharedProjectDragTimer);const row=event.currentTarget;
+ sharedProjectDragTimer=setTimeout(()=>{sharedProjectDraggingId=String(id);row.classList.add('dragging');try{row.setPointerCapture(event.pointerId)}catch{}},320);
+}
+function moveSharedProjectSort(event){
+ if(!sharedProjectDraggingId)return;event.preventDefault();
+ const moving=document.querySelector('#sharedProjectSortList [data-project-id="'+CSS.escape(sharedProjectDraggingId)+'"]');
+ const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('#sharedProjectSortList [data-project-id]');
+ if(!moving||!target||moving===target)return;const rect=target.getBoundingClientRect(),before=event.clientY<rect.top+rect.height/2;target.parentNode.insertBefore(moving,before?target:target.nextSibling);
+}
+function endSharedProjectSortHold(){clearTimeout(sharedProjectDragTimer);sharedProjectDragTimer=null;if(sharedProjectDraggingId){document.querySelectorAll('.shared-project-sort-row').forEach(row=>row.classList.remove('dragging'));sharedProjectDraggingId=null}}
+function startSharedProjectHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;clearTimeout(sharedProjectHoldTimer);sharedProjectSuppressClick=false;
+ sharedProjectHoldTimer=setTimeout(()=>{sharedProjectSuppressClick=true;openSharedProjectAction(id)},480);
+}
+function endSharedProjectHold(){clearTimeout(sharedProjectHoldTimer);sharedProjectHoldTimer=null}
 function renderSharedProjectsPage(){
  const projects=loadSharedProjects();
  const pinnedProjects=orderedSharedProjectIds(projects,'pinned');
