@@ -723,6 +723,7 @@ let activeSharedProjectId=null;
 let sharedProjectPanelOpen=false;
 let sharedProjectDraft=null;
 let sharedProjectCancelConfirm=false;
+let sharedProjectExitOpen=false,sharedProjectExitTarget=null;
 let sharedProjectNameEdit=null;
 let sharedProjectEditCancelConfirm=false;
 let sharedProjectDeleteConfirm=false;
@@ -803,7 +804,7 @@ function toggleHeaderPanel(id){
  current=id;render();window.scrollTo(0,0);
 }
 function navigate(id){
- if(id==='tareas'&&current==='tareas'&&activeSharedProjectId!==null){activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0);return}
+ if(current==='tareas'&&activeSharedProjectId!==null){if(sharedProjectExitOpen)return;requestSharedProjectExit(id);return}
  if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
  if(id==='finanzas'&&current!=='finanzas'){requestFinanceAccess();return}
  if(id==='tareas'&&current!=='tareas')taskView='today';
@@ -1111,15 +1112,37 @@ function createSharedProject(){
  sharedProjectCancelConfirm=false;activeSharedProjectId=sharedProjectDraft.id;render();window.scrollTo(0,0);
 }
 function saveNewSharedProject(){
- const name=(document.getElementById('sharedProjectName')?.value||'').trim();
+ const name=(document.getElementById('sharedProjectName')?.value||sharedProjectDraft?.name||'').trim();
  if(!name){document.getElementById('sharedProjectName')?.focus();return}
  const projects=loadSharedProjects();projects.unshift({...sharedProjectDraft,name});saveSharedProjects(projects);
  sharedProjectDraft=null;sharedProjectCancelConfirm=false;render();window.scrollTo(0,0);
 }
-function requestCancelSharedProject(){sharedProjectCancelConfirm=true;render()}
+function requestCancelSharedProject(){const input=document.getElementById('sharedProjectName');if(sharedProjectDraft&&input)sharedProjectDraft.name=input.value;sharedProjectCancelConfirm=true;render()}
 function dismissCancelSharedProject(){sharedProjectCancelConfirm=false;render()}
-function confirmCancelSharedProject(){
- sharedProjectDraft=null;sharedProjectCancelConfirm=false;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0);
+function confirmCancelSharedProject(){sharedProjectDraft=null;sharedProjectCancelConfirm=false;sharedProjectExitOpen=false;sharedProjectExitTarget=null;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0)}
+function requestSharedProjectExit(target){
+ const createName=document.getElementById('sharedProjectName');if(sharedProjectDraft&&createName)sharedProjectDraft.name=createName.value;
+ const editName=document.getElementById('sharedProjectEditName');if(sharedProjectNameEdit&&editName)sharedProjectNameEdit.name=editName.value;
+ sharedProjectExitTarget=target;sharedProjectExitOpen=true;renderSharedProjectWorkspace();
+}
+function dismissSharedProjectExit(){sharedProjectExitOpen=false;sharedProjectExitTarget=null;renderSharedProjectWorkspace()}
+function confirmSharedProjectExit(saveChanges){
+ const target=sharedProjectExitTarget;
+ if(saveChanges&&sharedProjectDraft){
+  const name=(document.getElementById('sharedProjectName')?.value||sharedProjectDraft.name||'').trim();
+  if(!name){sharedProjectExitOpen=false;sharedProjectExitTarget=null;renderSharedProjectWorkspace();document.getElementById('sharedProjectName')?.focus();return}
+  const projects=loadSharedProjects();projects.unshift({...sharedProjectDraft,name});saveSharedProjects(projects);sharedProjectDraft=null;
+ }else if(saveChanges&&sharedProjectNameEdit){
+  const name=(document.getElementById('sharedProjectEditName')?.value||sharedProjectNameEdit.name||'').trim();
+  if(!name){sharedProjectExitOpen=false;sharedProjectExitTarget=null;renderSharedProjectWorkspace();document.getElementById('sharedProjectEditName')?.focus();return}
+  const projects=loadSharedProjects(),index=projects.findIndex(item=>String(item.id)===String(sharedProjectNameEdit.id));
+  if(index>=0){projects[index]={...projects[index],name};saveSharedProjects(projects)}
+  sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;
+ }else if(saveChanges){saveSharedProjects(loadSharedProjects())}
+ if(!saveChanges){sharedProjectDraft=null;sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;sharedProjectCancelConfirm=false}
+ sharedProjectExitOpen=false;sharedProjectExitTarget=null;activeSharedProjectId=null;sharedProjectPanelOpen=false;sharedProjectUsersOpen=false;
+ if(target==='tareas'){taskView='shared';render();window.scrollTo(0,0);return}
+ navigate(target||'inicio');
 }
 function editSharedProjectName(){const project=loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));if(!project)return;sharedProjectNameEdit={id:project.id,name:project.name||''};sharedProjectEditCancelConfirm=false;render()}
 function saveSharedProjectName(){const name=(document.getElementById('sharedProjectEditName')?.value||'').trim();if(!name){document.getElementById('sharedProjectEditName')?.focus();return}const projects=loadSharedProjects(),index=projects.findIndex(item=>String(item.id)===String(sharedProjectNameEdit?.id));if(index<0){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render();return}projects[index]={...projects[index],name};saveSharedProjects(projects);sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
