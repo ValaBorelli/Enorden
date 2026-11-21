@@ -52,6 +52,7 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 ## 8. Seguridad y condiciones
 - Las credenciales de proveedores externos no se expondrán en el código cliente.
 - Antes de publicar se revisarán términos de uso, atribución, límites de API y licencias, especialmente para uso comercial.
+- **PENDIENTE / RECORDATORIO COMERCIAL:** si EnOrden pasa a ser una aplicación comercial, recordar a Vale revisar y confirmar la licencia de la base de datos/proveedor de películas y series (inicialmente TMDB), sus condiciones de uso comercial, atribución, restricciones y posibles costos antes de lanzar o monetizar el servicio.
 - Si se incorpora disponibilidad de streaming, deberá indicar la región consultada y la fecha de actualización.
 
 ## 9. Pendientes de producción
