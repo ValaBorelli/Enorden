@@ -41,6 +41,27 @@ Organización individual por usuario:
 - El contenido y la organización interna de los proyectos se definirán e implementarán por etapas.
 - La creación de proyectos es independiente de la creación/edición de tareas normales.
 
+### 3.1. Ventana de creación del proyecto
+
+- Al seleccionar «Crear proyecto», se abre una página provisional del proyecto con una ventana centrada titulada exactamente «Nuevo Proyecto».
+- La ventana contiene el campo «Nombre del proyecto» y los botones «Guardar», «Cancelar» y «X».
+- El nombre ingresado será el nombre definitivo del proyecto y el que se mostrará en la lista de Proyectos Compartidos.
+- «Guardar» registra el proyecto y deja al usuario dentro de su página individual.
+- «Cancelar» abre una confirmación preguntando si desea cancelar la creación, con las opciones «Sí, cancelar» y «Seguir creando».
+- «Sí, cancelar» descarta la página provisional y vuelve a Proyectos Compartidos. «Seguir creando» cierra la confirmación y mantiene abierta la creación.
+- La «X» cancela directamente la creación, descarta la página provisional y vuelve a Proyectos Compartidos.
+- Pulsar fuera de la ventana no realiza ninguna acción ni la cierra.
+
+### 3.2. Confirmación al salir de un proyecto
+
+- Si el usuario intenta salir de una página individual de proyecto mediante cualquier botón de la navegación inferior, debe mostrarse una ventana con la pregunta exacta: «Quieres guardar antes de salir del proyecto?».
+- La ventana ofrece «Guardar», «Salir sin guardar», «Cancelar» y una «X».
+- «Guardar» conserva los cambios pendientes y permite salir del proyecto.
+- «Salir sin guardar» descarta los cambios pendientes y permite salir.
+- «Cancelar» y la «X» cierran únicamente la confirmación y mantienen al usuario dentro del proyecto.
+- Si la salida se solicita desde una creación todavía no guardada, «Guardar» debe validar que exista un nombre antes de registrar el proyecto; «Salir sin guardar» descarta la creación provisional.
+- Si la salida se solicita mientras se edita el nombre del proyecto, «Guardar» confirma el nuevo nombre y «Salir sin guardar» descarta ese cambio pendiente.
+
 ## 4. Duración y vencimiento
 
 Reglas iniciales:
