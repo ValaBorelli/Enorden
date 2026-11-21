@@ -62,12 +62,14 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - El encabezado de la ventana dice exactamente «Tu resultado».
 - El contenido principal se organiza en dos columnas: póster a la izquierda, con aproximadamente un tercio del ancho útil, y texto a la derecha. El póster conserva sin cambios su fondo, tratamiento, proporción y ajuste de imagen actuales.
 - La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver trailer»; sección «Dónde verla» con los servicios disponibles como chips.
-- Si no existen datos de disponibilidad, la sección «Dónde verla» informa discretamente que todavía no hay datos para Chile, sin mostrar plataformas ficticias.
+- La sección «Dónde verla» debe mostrarse siempre, aunque no existan plataformas disponibles o la consulta falle. Su contenido dependerá del estado de la consulta, según las reglas de la sección 9.
 - El botón de favoritos se ubica debajo de «Ver trailer» y utiliza exactamente el mismo estilo visual que los demás botones de acciones de la ficha (fondo, borde, esquinas, tipografía y espaciado).
 - El ícono de corazón aparece a la izquierda del texto y es ligeramente más pequeño que en la versión anterior. Cuando el título no está guardado muestra ♡, con interior transparente y contorno negro; cuando está guardado muestra ♥ relleno de negro.
 - El texto cambia según el estado: «Añadir a favoritos» cuando no está guardado y «En favoritos» cuando sí lo está.
 - Al pulsarlo agrega o quita el título de favoritos mediante la función y persistencia existentes.
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
+- En la parte inferior de la ventana se conservarán los créditos de los proveedores de datos, separados del contenido de disponibilidad. La atribución del catálogo debe identificar a TMDB e incluir su logotipo y el aviso: “This product uses the TMDb API but is not endorsed or certified by TMDb”. La atribución de disponibilidad debe indicar: «Disponibilidad informada por JustWatch a través de TMDB».
+- Los créditos no deben presentar a JustWatch como fuente de títulos, pósteres o sinopsis, ni sugerir que TMDB o JustWatch patrocinan o respaldan EnOrden.
 
 ## 8. Idioma
 - La preferencia de idioma de tráileres se derivará del idioma global de EnOrden.
@@ -81,10 +83,15 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Las credenciales de proveedores externos no se expondrán en el código cliente.
 - Antes de publicar se revisarán términos de uso, atribución, límites de API y licencias, especialmente para uso comercial.
 - **PENDIENTE / RECORDATORIO COMERCIAL:** si EnOrden pasa a ser una aplicación comercial, recordar a Vale revisar y confirmar la licencia de la base de datos/proveedor de películas y series (inicialmente TMDB), sus condiciones de uso comercial, atribución, restricciones y posibles costos antes de lanzar o monetizar el servicio.
-- La ficha del resultado reserva una sección «Dónde verla» y presenta los servicios disponibles como chips. No se deben inventar servicios ni disponibilidad: si el proveedor no entrega datos para Chile, se mostrará un mensaje discreto de disponibilidad aún no consultable.
+- La ficha del resultado siempre mostrará la sección «Dónde verla». Su contenido seguirá estas reglas:
+  1. **Consulta exitosa con plataformas disponibles:** mostrar los nombres de las plataformas disponibles como chips, con sus enlaces correspondientes cuando existan.
+  2. **Consulta exitosa sin plataformas disponibles:** mantener el encabezado y mostrar exactamente: «Lo sentimos, no se encuentran plataformas de Streaming disponibles».
+  3. **Consulta fallida sin datos anteriores:** mantener el encabezado y mostrar exactamente: «No se pudo obtener la disponibilidad en este momento».
+  4. **Consulta fallida con datos anteriores:** conservar las plataformas de la última consulta exitosa, sin mostrar una alerta de error ni una fecha de actualización.
+- No se deben inventar servicios ni disponibilidad.
 - Los datos de cada servicio deberán llegar desde un proveedor de disponibilidad intercambiable e incluir, cuando existan, enlaces de aplicación, web y tienda por plataforma. La interfaz podrá priorizar un enlace universal/de aplicación y utilizar el enlace de tienda como alternativa cuando el proveedor o el entorno permitan determinar que la aplicación no está disponible.
 - Un enlace web normal no garantiza que se abra la aplicación instalada ni permite detectar por sí solo si está instalada. No prometer ese comportamiento hasta implementar y probar enlaces universales/deep links y fallback específicos para Android e iOS.
-- Si se incorpora disponibilidad de streaming, deberá indicar la región consultada y la fecha de actualización.
+- La región consultada, las fechas de consulta o actualización y los demás metadatos técnicos del proceso de búsqueda se conservarán únicamente para uso interno. No se mostrarán en la ficha ni al usuario.
 
 ## 10. Pendientes de producción
 
