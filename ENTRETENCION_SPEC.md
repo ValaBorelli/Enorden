@@ -29,7 +29,7 @@ EnOrden conservará únicamente información que tenga una función concreta en 
 - País o región de disponibilidad.
 - Procedencia de los datos.
 - Referencias de caché, conservando únicamente la última referencia necesaria.
-- Favoritos del usuario.
+- Favoritos del usuario. Los favoritos conservarán identificadores de origen y metadatos mínimos para poder reconocerlos si cambia el proveedor.
 - Relaciones entre identificadores de proveedores, cuando exista una correspondencia confiable.
 
 ### 3.2. Datos que no se conservarán
@@ -69,7 +69,7 @@ Se conservará internamente la referencia de la última actualización exitosa d
 - Si vuelve a fallar, programar el siguiente intento otras 24 horas después.
 - Repetir hasta obtener una respuesta válida.
 - Cuando tenga éxito, actualizar la información y eliminar el reintento pendiente.
-- No conservar un historial de fallos, solamente la referencia necesaria para el próximo intento.
+- No conservar un historial de fallos, solamente la referencia necesaria para conocer el momento del fallo y el próximo intento.
 - Los intentos automáticos en segundo plano son deseables para mantener la información actualizada aunque la aplicación esté cerrada. La programación real dependerá de las capacidades del servicio de ejecución elegido; no se debe prometer una ejecución puntual en dispositivos móviles si la plataforma no puede garantizarla.
 - Si no existe ejecución en segundo plano, al reactivarse el servicio se deberá ejecutar el reintento pendiente cuando ya hayan transcurrido las 24 horas.
 - La política de caché debe implementarse en una capa desacoplada del proveedor, para que cambiar de proveedor o de infraestructura no obligue a rehacer la lógica de Entretención.
@@ -176,7 +176,7 @@ Cuando el usuario presione el nombre de una plataforma:
 - Se podrán incorporar enlaces directos a películas o series específicas, cuando exista una dirección confiable y válida para la región correspondiente.
 - Cada plataforma deberá probarse individualmente. No se asumirá que todas permiten los mismos enlaces ni que todos los dispositivos se comportan igual.
 
-Los datos de cada servicio podrán incluir, cuando existan, enlaces universal/de aplicación, web y tienda. La interfaz podrá priorizar un enlace universal/de aplicación y utilizar el enlace de tienda como alternativa cuando el proveedor o el entorno permitan determinar que la aplicación no está disponible. Un enlace web normal no garantiza que se abra la aplicación instalada ni permite detectar por sí solo si está instalada. No se prometerá ese comportamiento hasta implementar y probar enlaces universales/deep links y fallback específicos para Android e iOS.
+Los datos de cada servicio deberán llegar desde un proveedor de disponibilidad intercambiable e incluir, cuando existan, enlaces universal/de aplicación, web y tienda. La interfaz podrá priorizar un enlace universal/de aplicación y utilizar el enlace de tienda como alternativa cuando el proveedor o el entorno permitan determinar que la aplicación no está disponible. Un enlace web normal no garantiza que se abra la aplicación instalada ni permite detectar por sí solo si está instalada. No se prometerá ese comportamiento hasta implementar y probar enlaces universales/deep links y fallback específicos para Android e iOS.
 
 Para cada plataforma, el orden de enlaces será: `universalUrl`, `appUrl`, `webUrl`. `storeUrl` solo podrá usarse como alternativa cuando el proveedor o el entorno indique explícitamente que la aplicación no está disponible (por ejemplo, `appAvailable=false` o `appInstalled=false`).
 
