@@ -540,18 +540,18 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .entertainment-hero:before,.entertainment-hero:after{content:'✦';position:absolute;color:#ffffff25;font-size:75px}
 .entertainment-hero:before{top:-23px;left:12px}.entertainment-hero:after{bottom:-32px;right:15px}
 /* DECISIÓN: la ruleta usa una paleta de casino fija, independiente del tema personal de EnOrden. */
-.entertainment-wheel-stage{position:relative;width:min(330px,88vw);aspect-ratio:1;margin:22px auto 20px;border-radius:50%;padding:0;background:radial-gradient(circle at 32% 25%,#6b552f 0,#241d17 43%,#080808 76%);border:2px solid #d8b66e;box-shadow:0 15px 32px #0009,inset 0 2px 8px #fff4c455,inset 0 -9px 18px #000b;perspective:900px;isolation:isolate}
+.entertainment-wheel-stage{position:relative;width:min(300px,calc(100vw - 56px),calc(100% - 12px));aspect-ratio:1;margin:20px auto 18px;border-radius:50%;padding:0;background:radial-gradient(circle at 32% 25%,#6b552f 0,#241d17 43%,#080808 76%);border:2px solid #d8b66e;box-shadow:0 12px 25px #0008,inset 0 2px 8px #fff4c455,inset 0 -9px 18px #000b;perspective:900px;isolation:isolate;flex:0 1 auto;max-width:100%;
 .entertainment-wheel-stage:before{content:'';position:absolute;inset:5px;border-radius:50%;border:5px solid #8d682d;box-shadow:0 0 0 2px #f4dda1,0 0 0 5px #2b2114,inset 0 0 0 2px #f6df9a;pointer-events:none;z-index:4}
 .entertainment-wheel-stage:after{content:'';position:absolute;inset:11px;border-radius:50%;border:1px solid #f5dfa0aa;box-shadow:inset 0 0 12px #000b;pointer-events:none;z-index:3}
 .entertainment-wheel-track{position:absolute;inset:13px;border-radius:50%;border:7px dotted #d4b36d;box-shadow:0 0 0 2px #3b2c18,inset 0 0 0 2px #f5dfa0;opacity:.95}
 .entertainment-wheel{position:absolute;inset:22px;border:8px ridge #c39a50;border-radius:50%;overflow:hidden;background:#171717;box-shadow:0 7px 14px #000b,inset 0 0 0 2px #f5dfa0,inset 0 0 22px #000;will-change:transform;transform:rotate(0deg)}
-.entertainment-wheel-label{position:absolute;left:50%;top:50%;width:55px;max-height:25px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:8.5px;line-height:1.1;font-weight:800;letter-spacing:-.15px;color:#f8efd9;text-shadow:0 1px 3px #000,0 0 4px #000;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-91px) rotate(calc(-1 * var(--angle)));pointer-events:none}
+.entertainment-wheel-label{position:absolute;left:50%;top:50%;width:var(--label-width,52px);max-height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:var(--label-font,8px);line-height:1.1;font-weight:800;letter-spacing:-.2px;color:#f8efd9;text-shadow:0 1px 3px #000,0 0 4px #000;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-91px) rotate(calc(-1 * var(--angle)));pointer-events:none}
 .entertainment-wheel-label.is-ivory{color:#241c12;text-shadow:0 1px 1px #fff8}
-.entertainment-wheel-hub{position:absolute;left:50%;top:50%;width:57px;height:57px;transform:translate(-50%,-50%);display:grid;place-items:center;border:5px double #e7c879;border-radius:50%;background:radial-gradient(circle at 32% 25%,#fff6d8,#b48b43 62%,#493319);color:#17120d;font-family:Georgia,serif;font-size:10px;font-weight:900;letter-spacing:1px;text-shadow:0 1px #fff8;box-shadow:0 3px 10px #000b,inset 0 1px 5px #fff9;z-index:2}
+.entertainment-wheel-hub{position:absolute;left:50%;top:50%;width:60px;height:60px;max-width:calc(100% - 18px);transform:translate(-50%,-50%);display:grid;place-items:center;border:5px double #e7c879;border-radius:50%;background:radial-gradient(circle at 32% 25%,#fff6d8,#b48b43 62%,#493319);color:#17120d;font-family:Georgia,serif;font-size:9px;font-weight:900;letter-spacing:.45px;white-space:nowrap;text-shadow:0 1px #fff8;box-shadow:0 3px 10px #000b,inset 0 1px 5px #fff9;z-index:2;overflow:hidden}
 .entertainment-ball-orbit{position:absolute;inset:0;border-radius:50%;z-index:5;pointer-events:none;will-change:transform;transform:rotate(0deg)}
 .entertainment-ball{position:absolute;left:50%;top:calc(50% - 46%);width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff 0,#fff 35%,#e9e9e9 65%,#9b9b9b 100%);border:1px solid #fff;box-shadow:0 0 5px 2px #fff9,0 2px 5px #000b;will-change:top;z-index:6}
 .entertainment-wheel-stage.is-spinning{filter:drop-shadow(0 0 13px #d7b46c88)}
-@media(max-width:390px){.entertainment-wheel-label{width:48px;font-size:7.5px;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-78px) rotate(calc(-1 * var(--angle)))}.entertainment-ball{width:12px;height:12px}}
+@media(max-width:390px){.entertainment-wheel{inset:20px}.entertainment-wheel-label{transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-82px) rotate(calc(-1 * var(--angle)))}.entertainment-ball{width:12px;height:12px}}
 .entertainment-spin{width:100%;max-width:290px;min-height:48px;border:0;border-radius:12px;background:#f2d99f;color:#263d35;font-weight:800}
 .entertainment-spin:disabled{opacity:.6;cursor:not-allowed}
 .entertainment-subtitle{font-size:13px;line-height:1.5;color:#e8eee9;margin:0 auto 13px;max-width:330px}
@@ -2005,7 +2005,10 @@ function entertainmentWheelMarkup(){
  const items=entertainmentWheelItems.length?entertainmentWheelItems:Array.from({length:8},()=>({title:'¿?'}));
  const slice=360/items.length;
  const stops=items.map((item,i)=>{const start=i*slice,end=(i+1)*slice,divider=Math.max(start,end-.85);return palette[i%palette.length]+' '+start+'deg '+divider+'deg,#d7b66e '+divider+'deg '+end+'deg'}).join(',');
- const labels=items.map((item,i)=>{const ivory=['#e8ddc6','#f2e8d4','#d9c9a9'].includes(palette[i%palette.length]),title=String(item.title||'¿?');return '<span class="entertainment-wheel-label'+(ivory?' is-ivory':'')+'" title="'+escapeHTML(title)+'" style="--angle:'+((i+.5)*slice)+'deg">'+escapeHTML(title.length>15?title.slice(0,14)+'…':title)+'</span>'}).join('');
+ const labelWidth=items.length>=11?39:items.length>=9?44:items.length>=7?49:54;
+ const labelFont=items.length>=11?6.8:items.length>=9?7.2:7.8;
+ const maxLabelLength=items.length>=11?8:items.length>=9?10:items.length>=7?12:14;
+ const labels=items.map((item,i)=>{const ivory=['#e8ddc6','#f2e8d4','#d9c9a9'].includes(palette[i%palette.length]),title=String(item.title||'¿?'),shortTitle=title.length>maxLabelLength?title.slice(0,maxLabelLength-1)+'…':title;return '<span class="entertainment-wheel-label'+(ivory?' is-ivory':'')+'" title="'+escapeHTML(title)+'" style="--angle:'+((i+.5)*slice)+'deg;--label-width:'+labelWidth+'px;--label-font:'+labelFont+'px">'+escapeHTML(shortTitle)+'</span>'}).join('');
  const ballTop=entertainmentBallLanded?'calc(50% - 36%)':'calc(50% - 46%)';
  return '<div class="entertainment-wheel-track" aria-hidden="true"></div><div class="entertainment-wheel" id="entertainmentWheel" style="background:conic-gradient(from -90deg,'+stops+');transform:rotate('+entertainmentWheelRotation+'deg)" role="img" aria-label="Ruleta de casino con '+items.length+' títulos">'+labels+'<div class="entertainment-wheel-hub">ENORDEN</div></div><div class="entertainment-ball-orbit" id="entertainmentBallOrbit" style="transform:rotate('+entertainmentBallAngle+'deg)"><span class="entertainment-ball" id="entertainmentBall" style="top:'+ballTop+'" role="img" aria-label="Bola blanca de la ruleta"></span></div>';
 }
@@ -2066,16 +2069,16 @@ function spinEntertainment(){
  entertainmentPendingWinner=entertainmentWheelItems[winnerIndex];
  const slice=360/entertainmentWheelItems.length,center=(winnerIndex+.5)*slice,currentRotation=entertainmentWheelRotation;
  const finalBallAngle=Math.random()*360,currentWheelAngle=((currentRotation%360)+360)%360;
- const wheelDelta=(finalBallAngle-((currentWheelAngle+center)%360)+360)%360,target=currentRotation+360*5+wheelDelta;
- const ballStart=((entertainmentBallAngle%360)+360)%360,ballDelta=(ballStart-finalBallAngle+360)%360,ballTarget=ballStart-360*7-ballDelta;
+ const wheelDelta=(finalBallAngle-((currentWheelAngle+center)%360)+360)%360,target=currentRotation+360*4+wheelDelta;
+ const ballStart=((entertainmentBallAngle%360)+360)%360,ballDelta=(ballStart-finalBallAngle+360)%360,ballTarget=ballStart-360*5-ballDelta;
  entertainmentWheelSpinning=true;entertainmentBallLanded=false;renderEntertainment();
  const wheel=document.getElementById('entertainmentWheel'),orbit=document.getElementById('entertainmentBallOrbit'),ball=document.getElementById('entertainmentBall');
  if(!wheel||!orbit||!ball){entertainmentWheelSpinning=false;return}
- const duration=6800,easing='cubic-bezier(.12,.72,.12,1)';
+ const duration=8200,easing='cubic-bezier(.28,.12,.24,1)';
  wheel.style.transform='rotate('+currentRotation+'deg)';orbit.style.transform='rotate('+ballStart+'deg)';ball.style.top='calc(50% - 46%)';
  if(typeof wheel.animate==='function'&&typeof orbit.animate==='function'&&typeof ball.animate==='function'){
   entertainmentWheelAnimation=wheel.animate([{transform:'rotate('+currentRotation+'deg)'},{transform:'rotate('+target+'deg)'}],{duration,easing,fill:'forwards'});
-  entertainmentBallOrbitAnimation=orbit.animate([{transform:'rotate('+ballStart+'deg)'},{transform:'rotate('+ballTarget+'deg)'}],{duration,easing:'cubic-bezier(.08,.7,.16,1)',fill:'forwards'});
+  entertainmentBallOrbitAnimation=orbit.animate([{transform:'rotate('+ballStart+'deg)'},{transform:'rotate('+ballTarget+'deg)'}],{duration,easing:'cubic-bezier(.32,.12,.25,1)',fill:'forwards'});
   entertainmentBallDropAnimation=ball.animate([
    {top:'calc(50% - 46%)',offset:0},{top:'calc(50% - 46%)',offset:.78},
    {top:'calc(50% - 38%)',offset:.86},{top:'calc(50% - 42%)',offset:.90},
@@ -2084,7 +2087,7 @@ function spinEntertainment(){
   ],{duration,easing:'linear',fill:'forwards'});
  }else{
   wheel.style.transition='transform '+duration+'ms '+easing;orbit.style.transition='transform '+duration+'ms cubic-bezier(.08,.7,.16,1)';
-  ball.style.transition='top 1450ms ease-in-out 5350ms';
+  ball.style.transition='top 1750ms ease-in-out 6450ms';
   requestAnimationFrame(()=>{wheel.style.transform='rotate('+target+'deg)';orbit.style.transform='rotate('+ballTarget+'deg)';ball.style.top='calc(50% - 36%)'});
  }
  if(entertainmentWheelTimer)clearTimeout(entertainmentWheelTimer);
