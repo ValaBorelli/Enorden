@@ -2100,6 +2100,29 @@ function entertainmentTrailerSearchOptions(item){
  const query=[item.title,item.year,searchTerms[language]||('trailer '+entertainmentTrailerLanguageLabel(language))].filter(Boolean).join(' ');
  return [{language,label:entertainmentTrailerLanguageLabel(language),url:'https://www.youtube.com/results?search_query='+encodeURIComponent(query),preferred:true}];
 }
+function entertainmentStreamingModality(service){
+ if(!service||typeof service!=='object')return '';
+ const value=String(service.modality||service.monetizationType||service.monetization_type||'').toLowerCase().replace(/[ -]/g,'_');
+ if(['subscription','flatrate','streaming','suscripcion','suscripción'].includes(value))return 'subscription';
+ if(['rent','rental','alquiler'].includes(value))return 'rent';
+ if(['buy','purchase','compra'].includes(value))return 'buy';
+ if(['free','gratis'].includes(value))return 'free';
+ if(['ads','with_ads','free_with_ads','ads_supported','gratis_con_publicidad'].includes(value))return 'ads';
+ return '';
+}
+function entertainmentStreamingChip(service){
+ const objectService=service&&typeof service==='object';
+ const name=typeof service==='string'?service:String(service?.name||'Servicio');
+ const universalLink=objectService?entertainmentSafeLink(service.universalUrl):'';
+ const appLink=objectService?entertainmentSafeLink(service.appUrl):'';
+ const webLink=objectService?entertainmentSafeLink(service.webUrl):'';
+ const storeLink=objectService?entertainmentSafeLink(service.storeUrl):'';
+ const appUnavailable=objectService&&(service.appAvailable===false||service.appInstalled===false);
+ const link=universalLink||appLink||webLink||(appUnavailable?storeLink:'');
+ return link
+  ?'<a class="entertainment-streaming-chip" href="'+escapeHTML(link)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir '+escapeHTML(name)+'">'+escapeHTML(name)+'</a>'
+  :'<span class="entertainment-streaming-chip" aria-label="'+escapeHTML(name)+'">'+escapeHTML(name)+'</span>';
+}
 function entertainmentStreamingMarkup(item){
  const availability=item?.streamingAvailability&&typeof item.streamingAvailability==='object'?item.streamingAvailability:{};
  const declaredStatus=availability.status||item?.streamingAvailabilityStatus;
@@ -2113,40 +2136,40 @@ function entertainmentStreamingMarkup(item){
  const services=status==='error'?lastSuccessfulProviders:(status==='success'?currentProviders:[]);
  let content='';
  if(!services.length){
-  const message=status==='success'
-   ?'Lo sentimos, no se encuentran plataformas de Streaming disponibles'
-   :'No se pudo obtener la disponibilidad en este momento';
-  content='<span class="entertainment-streaming-empty">'+message+'</span>';
+  if(status!=='success')content='<span class="entertainment-streaming-empty">No se pudo obtener la disponibilidad en este momento</span>';
  }else{
-  const chips=services.map(service=>{
-   const objectService=service&&typeof service==='object';
-   const name=typeof service==='string'?service:String(service?.name||'Servicio');
-   const universalLink=objectService?entertainmentSafeLink(service.universalUrl):'';
-   const appLink=objectService?entertainmentSafeLink(service.appUrl):'';
-   const webLink=objectService?entertainmentSafeLink(service.webUrl):'';
-   const storeLink=objectService?entertainmentSafeLink(service.storeUrl):'';
-   const appUnavailable=objectService&&(service.appAvailable===false||service.appInstalled===false);
-   const link=universalLink||appLink||webLink||(appUnavailable?storeLink:'');
-   return link
-    ?'<a class="entertainment-streaming-chip" href="'+escapeHTML(link)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir '+escapeHTML(name)+'">'+escapeHTML(name)+'</a>'
-    :'<span class="entertainment-streaming-chip" aria-label="'+escapeHTML(name)+'">'+escapeHTML(name)+'</span>';
-  }).join('');
-  content='<div class="entertainment-streaming-tags">'+chips+'</div>';
+  const labels={subscription:'Suscripción',rent:'Alquiler',buy:'Compra',free:'Gratis',ads:'Gratis con publicidad'};
+  const grouped={subscription:[],rent:[],buy:[],free:[],ads:[],other:[]};
+  services.forEach(service=>{
+   const modality=entertainmentStreamingModality(service);
+   grouped[modality||'other'].push(service);
+  });
+  const sections=Object.keys(labels).filter(key=>grouped[key].length).map(key=>
+   '<div class="entertainment-streaming-group"><span class="entertainment-streaming-group-label">'+labels[key]+'</span><div class="entertainment-streaming-tags">'+grouped[key].map(entertainmentStreamingChip).join('')+'</div></div>'
+  ).join('');
+  const other=grouped.other.length?'<div class="entertainment-streaming-tags">'+grouped.other.map(entertainmentStreamingChip).join('')+'</div>':'';
+  content=sections+other;
  }
  return '<div class="entertainment-streaming"><strong class="entertainment-streaming-title">Dónde verla</strong>'+content+'</div>';
 }
-function renderEntertainmentCredits(){
+function renderEntertainmentCredits(item){
+ const catalogSource=String(item?.catalogSource||item?.source||'').toLowerCase();
+ const availability=item?.streamingAvailability&&typeof item.streamingAvailability==='object'?item.streamingAvailability:{};
+ const availabilitySource=String(availability.source||item?.availabilitySource||'').toLowerCase();
+ const hasTMDB=catalogSource==='tmdb'||catalogSource.includes('themoviedb');
+ const hasJustWatch=availabilitySource==='justwatch'||availabilitySource.includes('justwatch');
+ if(!hasTMDB&&!hasJustWatch)return '';
  const logoUrl='https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg';
  return '<footer class="entertainment-credits" aria-label="Créditos y fuentes">'+
   '<strong class="entertainment-credits-title">Créditos y fuentes</strong>'+
-  '<div class="entertainment-credit-tmdb"><a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" aria-label="The Movie Database">'+
+  (hasTMDB?'<div class="entertainment-credit-tmdb"><a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" aria-label="The Movie Database">'+
   '<img src="'+logoUrl+'" alt="TMDB"></a>'+
-  '<span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span></div>'+
-  '<div class="entertainment-credit-streaming">Disponibilidad informada por JustWatch a través de TMDB</div>'+
+  '<span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span></div>':'')+
+  (hasJustWatch?'<div class="entertainment-credit-streaming">Disponibilidad informada por JustWatch a través de TMDB</div>':'')+
   '</footer>';
 }
 function closeEntertainmentResult(){entertainmentResultOpen=false;renderEntertainment()}
-function renderEntertainmentResultModal(resultMarkup){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+renderEntertainmentCredits()+'</div></div>'}
+function renderEntertainmentResultModal(resultMarkup,result){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+renderEntertainmentCredits(result)+'</div></div>'}
 function renderEntertainment(){
  const provider=getEntertainmentProvider();
  const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id)).length;
@@ -2157,7 +2180,7 @@ function renderEntertainment(){
  const isFavorite=result&&entertainmentFavorites.some(f=>((typeof f==='string'?f:f.id)===result.id));
   const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions">'+(trailerSearchOptions.length?'<a href="'+escapeHTML(trailerSearchOptions[0].url)+'" target="_blank" rel="noopener noreferrer">Ver trailer</a>':'<span class="entertainment-note">No se pudo preparar la búsqueda del tráiler.</span>')+'<button type="button" class="entertainment-favorite-button'+(isFavorite?' is-favorite':'')+'" aria-pressed="'+(isFavorite?'true':'false')+'" aria-label="'+(isFavorite?'Quitar de favoritos':'Agregar a favoritos')+'" onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')"><span class="entertainment-favorite-icon" aria-hidden="true">'+(isFavorite?'♥':'♡')+'</span><span>'+(isFavorite?'En favoritos':'Añadir a favoritos')+'</span></button></div>'+entertainmentStreamingMarkup(result)+'</div></div></div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
   const favoriteItems=entertainmentFavorites.map(entry=>typeof entry==='string'?(entertainmentPool.find(x=>x.id===entry)||entertainmentDemoCatalog.find(x=>x.id===entry)):entry).filter(Boolean);
- screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
+ screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup,result):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
 }
 function renderEntertainmentSetupModal(){
  const selected=entertainmentFilters||{type:'any',genres:[],yearFrom:1980,yearTo:new Date().getFullYear(),noYear:true};
