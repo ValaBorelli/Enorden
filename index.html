@@ -769,12 +769,26 @@ function closeModal(){
  document.getElementById('backdrop').classList.remove('show');
  const subtitle=document.getElementById('modalSubtitle');if(subtitle){subtitle.textContent='';subtitle.classList.add('hidden')}
 }
+function pruneExpiredCompletedTasks(){
+ const now=Date.now(),retention=7*24*60*60*1000;let changed=false;
+ tasks=tasks.filter(task=>{
+  if(!task.done){if(task.completedAt){delete task.completedAt;changed=true}return true}
+  if(taskHasPendingSubtasks(task)){if(task.completedAt){delete task.completedAt;changed=true}return true}
+  const completedAt=Date.parse(task.completedAt||'');
+  if(!Number.isFinite(completedAt)){task.completedAt=new Date(now).toISOString();changed=true;return true}
+  if(now-completedAt>=retention){events=events.filter(ev=>String(ev.taskId)!==String(task.id));changed=true;return false}
+  return true;
+ });
+ return changed;
+}
 function save(){
+ pruneExpiredCompletedTasks();
  localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
  localStorage.setItem('enorden_products',JSON.stringify(products));
  localStorage.setItem('enorden_events',JSON.stringify(events));
  localStorage.setItem('enorden_order',JSON.stringify(order));
 }
+if(pruneExpiredCompletedTasks())save();
 function escapeHTML(s){
  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
@@ -1481,6 +1495,8 @@ function syncTaskCompletion(task){
   if(children.length)st.done=children.every(n=>!!n.done);
  });
  if(subs.length)task.done=subs.every(st=>!!st.done);
+ if(task.done&&!taskHasPendingSubtasks(task)){if(!task.completedAt)task.completedAt=new Date().toISOString()}
+ else delete task.completedAt;
 }
 function rememberTaskDisclosure(key,isOpen){
  if(isOpen)expandedTaskDisclosures.add(key);else expandedTaskDisclosures.delete(key);
@@ -1495,6 +1511,7 @@ function expandTaskDisclosure(taskId,subtaskId=null){
 function setTaskTreeDone(task,done){
  if(!task)return;
  task.done=done;
+ if(done)task.completedAt=new Date().toISOString();else delete task.completedAt;
  (task.subtasks||[]).forEach(st=>{
   st.done=done;
   (st.subtasks||[]).forEach(n=>{n.done=done});
@@ -2200,7 +2217,7 @@ function saveTaskEditor(){
  if(scope==='shared'){const clearAssignments=item=>{if(!item)return;delete item.assignedTo;delete item.assignedToUserId;(item.subtasks||[]).forEach(clearAssignments)};clearAssignments(savedTask)}
  syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate)showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
-function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate||task.scope==='shared'){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;if(!ev.color)ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
+function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate||task.scope==='shared'){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
 function addTask(){saveTaskEditor()}
 function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
 function eventDetailMarkup(ev){
