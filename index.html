@@ -106,7 +106,7 @@ h2{font-size:18px;margin-bottom:13px}
 .shared-project-menu-action:active{background:#ffffff12}
 .shared-project-menu-hide{align-self:center;margin-top:5px;padding:6px 10px;border:0;border-radius:6px;background:transparent;color:#aab6c8;font-size:11px}
 
-.page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
+.shared-project-create-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.shared-project-create-actions button{width:100%;min-height:48px;border:1px solid #2459ff;border-radius:12px;background:#1748e8;color:#fff;font-weight:700}.shared-project-create-actions button+button{background:#fff;color:#1748e8}.shared-project-link-tools{border-top:1px solid #26364b;margin-top:6px;padding:11px 9px 4px;color:#f5f7ff}.shared-project-link-tools strong{display:block;font-size:12px;margin-bottom:7px}.shared-project-link-value{font-size:10px;color:#aebbd0;overflow-wrap:anywhere}.shared-project-link-buttons{display:flex;gap:7px;margin-top:8px}.shared-project-link-buttons button{flex:1;border:1px solid #52647d;border-radius:7px;padding:7px;background:#1b2b40;color:#fff;font-size:11px}.shared-project-code{display:block;width:100%;margin-top:8px;border:0;background:transparent;color:#aebbd0;font-size:10px;text-align:left;letter-spacing:1px}.shared-project-user-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #e5e7eb}.shared-project-user-name{font-weight:700;font-size:13px}.shared-project-user-row select{max-width:145px;border:1px solid #cbd2df;border-radius:8px;padding:7px;background:#fff;color:#20242b;font-size:11px}.shared-project-modal-notice{text-align:center;padding:10px 0;color:#4c5564;font-size:14px}.page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
 .small-btn{background:var(--surface2);color:#30352d;white-space:nowrap}
@@ -622,6 +622,7 @@ let sharedProjectCancelConfirm=false;
 let sharedProjectNameEdit=null;
 let sharedProjectEditCancelConfirm=false;
 let sharedProjectDeleteConfirm=false;
+let sharedProjectUsersOpen=false,sharedProjectJoinOpen=false,sharedProjectJoinNotice='';
 let expandedTaskDisclosures=new Set();
 let expandedTaskSections=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
@@ -981,7 +982,7 @@ function showTaskView(view){taskView=view==='overview'?'today':view;render();}
 function loadSharedProjects(){try{const value=JSON.parse(localStorage.getItem('enorden_shared_projects')||'[]');return Array.isArray(value)?value:[]}catch{return []}}
 function saveSharedProjects(projects){localStorage.setItem('enorden_shared_projects',JSON.stringify(projects))}
 function createSharedProject(){
- sharedProjectDraft={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido'};
+ sharedProjectDraft={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido',code:'EO-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase(),participants:[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}],requests:[]};
  sharedProjectCancelConfirm=false;activeSharedProjectId=sharedProjectDraft.id;render();window.scrollTo(0,0);
 }
 function saveNewSharedProject(){
@@ -1001,6 +1002,18 @@ function requestCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=tru
 function dismissCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=false;render()}
 function confirmCancelSharedProjectNameEdit(){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
 function toggleSharedProjectPanel(){sharedProjectPanelOpen=!sharedProjectPanelOpen;renderSharedProjectWorkspace()}
+
+function openSharedProjectUsers(){sharedProjectUsersOpen=true;sharedProjectPanelOpen=false;renderSharedProjectWorkspace()}
+function closeSharedProjectUsers(){sharedProjectUsersOpen=false;renderSharedProjectWorkspace()}
+function changeSharedProjectRole(i,role){const a=loadSharedProjects(),p=a.find(x=>String(x.id)===String(activeSharedProjectId));if(!p||!p.participants||!p.participants[i]||p.participants[i].role==='admin')return;p.participants[i].role=role;saveSharedProjects(a);renderSharedProjectWorkspace()}
+function getSharedProjectLink(p){return location.origin+location.pathname+'?proyecto='+encodeURIComponent(p.id)}
+function copySharedProjectCode(){const p=loadSharedProjects().find(x=>String(x.id)===String(activeSharedProjectId));if(p&&navigator.clipboard)navigator.clipboard.writeText(p.code||'')}
+function copySharedProjectLink(){const p=loadSharedProjects().find(x=>String(x.id)===String(activeSharedProjectId));if(p&&navigator.clipboard)navigator.clipboard.writeText(getSharedProjectLink(p))}
+async function shareSharedProjectLink(){const p=loadSharedProjects().find(x=>String(x.id)===String(activeSharedProjectId));if(!p)return;const url=getSharedProjectLink(p);if(navigator.share){try{await navigator.share({title:p.name||'Proyecto compartido',url})}catch(e){}}else if(navigator.clipboard){navigator.clipboard.writeText(url);alert('Enlace copiado')}}
+function openSharedProjectJoin(){sharedProjectJoinOpen=true;sharedProjectJoinNotice='';renderSharedProjectsPage()}
+function closeSharedProjectJoin(){sharedProjectJoinOpen=false;sharedProjectJoinNotice='';renderSharedProjectsPage()}
+function submitSharedProjectJoin(){const c=(document.getElementById('sharedProjectJoinCode')?.value||'').trim().toUpperCase(),a=loadSharedProjects(),p=a.find(x=>(x.code||'').toUpperCase()===c);if(!p){sharedProjectJoinNotice='invalid';renderSharedProjectsPage();return}p.requests=p.requests||[];p.requests.push({user:'Tú',status:'pending',createdAt:new Date().toISOString()});saveSharedProjects(a);sharedProjectJoinNotice='sent';renderSharedProjectsPage()}
+
 function requestDeleteSharedProject(){sharedProjectDeleteConfirm=true;renderSharedProjectWorkspace()}
 function dismissDeleteSharedProject(){sharedProjectDeleteConfirm=false;renderSharedProjectWorkspace()}
 function confirmDeleteSharedProject(){const id=activeSharedProjectId;if(id===null)return;const projects=loadSharedProjects().filter(item=>String(item.id)!==String(id));saveSharedProjects(projects);sharedProjectDeleteConfirm=false;sharedProjectPanelOpen=false;sharedProjectDraft=null;sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0)}
