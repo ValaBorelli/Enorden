@@ -56,6 +56,9 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Si se incorpora disponibilidad de streaming, deberá indicar la región consultada y la fecha de actualización.
 
 ## 9. Pendientes de producción
+
+- **REVISAR / PROPUESTA NO IMPLEMENTADA:** evaluar Cloudflare Workers como intermediario seguro entre EnOrden (alojado en Netlify) y TMDB u otros proveedores. El objetivo sería evitar que las consultas al catálogo consuman créditos de funciones de Netlify y mantener las credenciales fuera del cliente.
+- Antes de elegir esta alternativa, revisar los límites y costos vigentes del plan gratuito de Cloudflare Workers, compararlos con el uso esperado, comprobar el estado del plan/créditos de Netlify y probar seguridad, caché, paginación, errores y aislamiento de fallos. La propuesta no es todavía una decisión definitiva.
 - Integrar TMDB mediante una capa segura de servidor/proxy y revisar sus condiciones.
 - Resolver búsqueda y verificación de tráileres oficiales por idioma/variante.
 - Definir si la disponibilidad de streaming en Chile forma parte de la primera versión pública.
