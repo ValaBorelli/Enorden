@@ -63,3 +63,12 @@
 - Este documento y los manuales de cada módulo son la referencia persistente del proyecto.
 - Al continuar EnOrden en un chat nuevo, revisar primero `ENORDEN_RULES.md` y luego el `NOMBRE_SPEC.md` del módulo que se trabajará.
 - Si el repositorio o los documentos no están disponibles, informar esa limitación y no asumir que las reglas siguen siendo las mismas de memoria.
+
+## 8. Principio de actualización acumulativa de decisiones
+
+- Las decisiones nuevas deben incorporarse a la documentación cuando complementen o terminen de definir reglas ya existentes.
+- Una decisión nueva no reemplaza, elimina ni debilita una regla anterior compatible.
+- Al actualizar un documento, conservar las reglas anteriores que sigan vigentes e integrar las nuevas en la sección correspondiente; evitar duplicaciones innecesarias sin perder su contenido.
+- Si una decisión nueva contradice una regla anterior, no escoger automáticamente cuál prevalece ni sobrescribir ninguna: identificar el conflicto y solicitar a Vale una definición explícita.
+- Las decisiones que todavía no estén suficientemente definidas deben registrarse como pendientes, indicando con claridad qué falta decidir o validar. No completar vacíos mediante suposiciones.
+- Antes de dar por terminada una revisión documental, contrastar las decisiones recientes acordadas con los documentos existentes y verificar que estén registradas en el manual correspondiente.
