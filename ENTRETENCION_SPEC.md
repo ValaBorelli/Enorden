@@ -42,6 +42,8 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - El resultado ganador se mostrará en una ventana superpuesta sobre la ruleta, no como una ficha fija debajo de ella.
 - La ventana conservará las acciones de la ficha actual (tráiler, favoritos e información de disponibilidad) para poder revisarlas y ajustarlas posteriormente.
 - La ventana tendrá un botón X en la esquina superior derecha para cerrarla y volver a ver la ruleta.
+- La configuración de la ruleta se abrirá en una ventana modal; sus controles (tipo, géneros y rango de años) deben permanecer dentro de ella.
+- Abrir o cancelar la configuración no debe borrar los filtros aplicados, el catálogo cargado, los favoritos, el resultado ni el progreso de la sesión. Los cambios solo se aplican al pulsar «Listo»; «Cancelar», la X o tocar fuera de la ventana solo la cierran.
 - No se repetirán ganadores dentro de una sesión.
 - «Otra oportunidad» elegirá nuevos candidatos entre los títulos elegibles que aún no hayan resultado ganadores.
 - «Nueva sesión» reiniciará los ganadores de la sesión, sin borrar favoritos ni preferencias.
