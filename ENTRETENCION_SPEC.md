@@ -63,7 +63,7 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - El contenido principal se organiza en dos columnas: póster a la izquierda, con aproximadamente un tercio del ancho útil, y texto a la derecha. El póster conserva sin cambios su fondo, tratamiento, proporción y ajuste de imagen actuales.
 - La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver trailer»; sección «Dónde verla» con los servicios disponibles como chips.
 - Si no existen datos de disponibilidad, la sección «Dónde verla» informa discretamente que todavía no hay datos para Chile, sin mostrar plataformas ficticias.
-- Al pie de la ficha aparece un botón «Favoritos» con icono de corazón. Sin seleccionar, es transparente y delineado; seleccionado, tiene fondo negro. La acción conserva la lógica y persistencia actual de favoritos.
+- El botón de favorito conserva exactamente el aspecto, la ubicación y los textos que tenía antes de la actualización de la ficha: junto a la acción del tráiler, muestra «♡ Guardar favorito» cuando el título no está guardado y «♥ En favoritos» cuando sí lo está. Al pulsarlo agrega o quita el título de favoritos mediante la función y persistencia existentes.
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
 
 ## 8. Idioma
