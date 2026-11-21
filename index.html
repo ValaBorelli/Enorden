@@ -1323,7 +1323,7 @@ function renderTaskTemplatesPlaceholder(){
   </section>
  </div><div class="bottom-space"></div>`;
 }
-function templateLongPressStart(event,id){if(event.target.closest('button,input'))return;clearTimeout(templatePressTimer);templatePressTriggered=false;templatePressTimer=setTimeout(()=>{templatePressTriggered=true;openTemplateActions(id)},5000)}
+function templateLongPressStart(event,id){if(event.target.closest('button,input'))return;clearTimeout(templatePressTimer);templatePressTriggered=false;templatePressTimer=setTimeout(()=>{templatePressTriggered=true;openTemplateActions(id)},5100)}
 function templateLongPressEnd(){clearTimeout(templatePressTimer)}
 function handleTemplateCardClick(event){if(!templatePressTriggered)return;event.preventDefault();event.stopPropagation();templatePressTriggered=false}
 function openTemplateActions(id){const t=getTaskTemplate(id);if(!t)return;showTaskModal('¿Quieres reutilizar esta plantilla?','<p>¿Quieres crear una tarea nueva a partir de «'+escapeHTML(t.title)+'»?</p><div class="event-detail-actions"><button class="secondary-btn" onclick="editTaskTemplate('+Number(t.id)+')">No, editar plantilla</button><button class="primary-btn" onclick="reuseTaskTemplate('+Number(t.id)+')">Sí, reutilizar</button></div>')}
