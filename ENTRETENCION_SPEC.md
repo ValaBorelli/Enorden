@@ -99,6 +99,7 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Antes de elegir esta alternativa, revisar los límites y costos vigentes del plan gratuito de Cloudflare Workers, compararlos con el uso esperado, comprobar el estado del plan/créditos de Netlify y probar seguridad, caché, paginación, errores y aislamiento de fallos. La propuesta no es todavía una decisión definitiva.
 - Integrar TMDB mediante una capa segura de servidor/proxy y revisar sus condiciones.
 - Evaluar e implementar, si se autoriza, una API de YouTube u otro proveedor para localizar tráileres específicos y obtener metadatos fiables.
-- Definir si la disponibilidad de streaming en Chile forma parte de la primera versión pública.
+- **PENDIENTE DE VALIDACIÓN:** comprobar que la consulta de disponibilidad de streaming en Chile mediante el proveedor elegido funciona de forma estable y entrega resultados confiables. Esta función no es todavía un requisito obligatorio para la primera versión pública.
+- Una vez realizadas las pruebas y revisado el trabajo restante del módulo, decidir si la disponibilidad de streaming se incluye en el lanzamiento inicial o se reserva para una actualización posterior.
 - Persistir favoritos/preferencias en la cuenta del usuario cuando exista sistema de cuentas.
 - Añadir estados de carga, error, catálogo vacío, límites del proveedor y funcionamiento sin conexión.
