@@ -72,3 +72,61 @@
 - Si una decisión nueva contradice una regla anterior, no escoger automáticamente cuál prevalece ni sobrescribir ninguna: identificar el conflicto y solicitar a Vale una definición explícita.
 - Las decisiones que todavía no estén suficientemente definidas deben registrarse como pendientes, indicando con claridad qué falta decidir o validar. No completar vacíos mediante suposiciones.
 - Antes de dar por terminada una revisión documental, contrastar las decisiones recientes acordadas con los documentos existentes y verificar que estén registradas en el manual correspondiente.
+
+
+## 9. Arquitectura general y proveedores
+
+- Cada módulo tendrá su propia configuración, proveedores, fuentes de datos, caché y reglas de funcionamiento.
+- Cambiar un proveedor en un módulo no debe alterar otros módulos, aunque compartan una fuente.
+- Los proveedores deben poder reemplazarse sin reconstruir la interfaz ni la lógica del módulo.
+- Los errores de un proveedor no deben detener el funcionamiento de otros módulos.
+- Las credenciales de API deben mantenerse protegidas y nunca exponerse en el código público del navegador.
+- La arquitectura debe permitir utilizar intermediarios o servicios de servidor para conectar proveedores externos.
+- Cada módulo debe conservar la independencia de su configuración, fuentes, proveedores, caché y reglas, respetando las interfaces o contratos compartidos que se hayan definido.
+
+## 10. Fuentes y créditos
+
+- En Configuración, debajo de Ayuda, existirá un desplegable llamado **Fuentes y créditos**.
+- Cada nueva base de datos, API o proveedor externo deberá registrarse allí.
+- La sección será centralizada: los módulos no tendrán que mantener sus propias copias de las atribuciones.
+- Las atribuciones dependerán del proveedor configurado y de la procedencia real de los datos. Si se reemplaza un proveedor, deberán actualizarse las referencias correspondientes.
+- Se distinguirán proveedores actuales y fuentes históricas.
+- Se conservarán los créditos de fuentes anteriores mientras existan datos que dependan de ellas o sus condiciones exijan mantenerlos.
+- No es necesario atribuir individualmente cada pequeño texto de una ficha si una atribución conjunta representa correctamente las fuentes involucradas.
+- Las categorías y su visibilidad serán:
+  - **Visible:** Proveedores.
+  - **Visible:** Fuentes originales.
+  - **Visible:** Atribuciones.
+  - **Visible:** Licencias y condiciones (parte informativa).
+  - **Interna:** Estado de conexión.
+  - **Interna:** Países y regiones configurados.
+  - **Interna:** Fechas de consulta.
+  - **Interna:** Procedencia detallada de cada dato.
+  - **Interna:** Historial de cambios.
+  - **Nunca visibles:** Credenciales API.
+
+## 11. Almacenamiento mínimo necesario
+
+- EnOrden almacenará únicamente los datos necesarios para el funcionamiento de sus módulos, la experiencia del usuario, la administración de caché, la trazabilidad de las fuentes y la conservación de información que el usuario haya decidido guardar.
+- Cada módulo determinará los datos concretos que necesita conservar, respetando esta regla general.
+- No se conservarán copias duplicadas, respuestas completas de proveedores cuando solo se utiliza una parte, historiales innecesarios ni datos sin utilidad funcional.
+- Las reglas particulares de almacenamiento y caché de cada módulo se documentarán en su SPEC correspondiente.
+
+## 12. Actualizaciones y usuarios de prueba
+
+- Las actualizaciones importantes de EnOrden se probarán primero con usuarios específicos de prueba.
+- Los usuarios de prueba recibirán notificaciones manuales indicando qué deben probar.
+- Después de validar la actualización, los usuarios generales recibirán un aviso con al menos 24 horas de anticipación.
+- La publicación general ocurrirá después de la aprobación.
+- El sistema deberá permitir activar una versión para determinados usuarios sin que los demás la reciban accidentalmente.
+- Estas reglas se aplican a futuras actualizaciones importantes, no solamente a cambios de proveedores.
+- El desarrollo del sistema de usuarios y grupos de publicación gradual queda pendiente.
+
+## 13. Preparación comercial y condiciones legales
+
+- EnOrden no será comercial por ahora.
+- La arquitectura se preparará técnicamente para una futura versión comercial.
+- Las condiciones, licencias, permisos, costos y contratos de cada proveedor deberán revisarse antes de monetizar.
+- Tener una API gratuita no significa tener autorización comercial.
+- La preparación técnica y la autorización legal serán estados independientes.
+- Se revisarán los derechos de imágenes, marcas y enlaces antes de incorporar recursos gráficos o funcionalidades que los requieran.
