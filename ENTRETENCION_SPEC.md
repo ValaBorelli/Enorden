@@ -50,21 +50,24 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Si hay menos de 12 títulos disponibles, se mostrarán todos.
 
 ## 6. Tráileres
-- El proveedor de tráileres será independiente e intercambiable respecto del proveedor del catálogo. Proveedor inicial previsto: YouTube.
-- La búsqueda priorizará el idioma y la variante regional configurados en EnOrden.
-- **Preferencia acordada:** si no existe un tráiler oficial verificado en el idioma/variante preferidos, se podrá mostrar un tráiler oficial verificado en otro idioma. El idioma real se mostrará junto al enlace.
-- Orden de selección: variante regional exacta; luego el mismo idioma en otra variante regional; finalmente cualquier otro idioma oficial disponible.
-- Solo se ofrecerán tráileres del título correcto cuya oficialidad y metadatos lingüísticos estén verificados.
-- Una búsqueda textual, el título del video o una coincidencia de palabras no prueban oficialidad ni idioma de audio.
-- La verificación debe basarse en metadatos fiables y una fuente/canal oficial identificable (por ejemplo, distribuidora o estudio). Si no se puede verificar, no se mostrará el resultado.
-- El formato normalizado de cada candidato incluirá como mínimo URL, idioma, indicador de oficialidad y estado de verificación.
-- No se expondrán claves de YouTube/TMDB en el cliente. La consulta real deberá realizarse mediante una integración segura del lado servidor.
-- **Estado actual:** la interfaz y la regla de selección quedan preparadas, pero todavía no existe una búsqueda real ni una fuente de candidatos conectada. El catálogo demo no incluye metadatos de tráiler, por lo que seguirá mostrando el aviso hasta conectar el proveedor.
+- La primera implementación utilizará búsquedas directas en YouTube mediante la URL de resultados; no requiere API ni credenciales.
+- El botón principal de la ficha del título se llamará exactamente **«Buscar trailer»** y abrirá YouTube con una búsqueda que incluya el título, el año cuando esté disponible y el idioma preferido.
+- El usuario será quien revise los resultados y seleccione el video que desea ver. EnOrden no elegirá automáticamente un video ni afirmará que sea oficial, auténtico o verificado.
+- Si no encuentra un resultado adecuado en el idioma preferido, la ficha ofrecerá búsquedas alternativas para el mismo título en otros idiomas. Como la búsqueda directa no permite a EnOrden saber si el usuario encontró un resultado, estas alternativas estarán disponibles para que el usuario las pruebe manualmente.
+- Orden de búsqueda para español: español latino; español de España; inglés.
+- Orden de búsqueda para inglés: inglés primero; después se ofrecerán los idiomas alternativos disponibles.
+- Orden de búsqueda para portugués: portugués primero; después se ofrecerán los idiomas alternativos disponibles.
+- Si en el futuro EnOrden incorpora más idiomas, el idioma configurado globalmente será la primera búsqueda y se podrán ofrecer búsquedas alternativas en otros idiomas soportados.
+- Las búsquedas se construirán dinámicamente a partir del título y año del resultado; no se guardarán enlaces fijos de tráiler en el catálogo.
+- **MEJORA FUTURA:** evaluar la integración de una API de YouTube o de otro proveedor intercambiable para localizar un tráiler específico y entregar candidatos con metadatos fiables de título, idioma y fuente. Esta integración no forma parte de la implementación actual y deberá evaluarse antes de incorporarla.
 
 ## 7. Idioma
-- Interfaz y metadatos localizables seguirán el idioma global de EnOrden.
-- La preferencia de idioma de tráileres se derivará del idioma global, conservando variante regional cuando el proveedor la entregue.
-- La falta de coincidencia exacta de variante regional no impedirá mostrar un tráiler oficial en otro idioma; el idioma real siempre se identificará visiblemente.
+- La preferencia de idioma de tráileres se derivará del idioma global de EnOrden.
+- Para español, la variante inicial será español latino (es-419), seguida de español de España (es-ES) y luego inglés.
+- Para inglés y portugués, se priorizará el idioma configurado.
+- La lista de idiomas alternativos se ampliará cuando EnOrden incorpore nuevas preferencias de idioma.
+- Las etiquetas de búsqueda indicarán claramente el idioma o variante que se está consultando.
+- La búsqueda textual de YouTube no garantiza que los resultados estén en el idioma solicitado; el usuario debe comprobar el video antes de reproducirlo.
 
 ## 8. Seguridad y condiciones
 - Las credenciales de proveedores externos no se expondrán en el código cliente.
@@ -77,7 +80,7 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - **REVISAR / PROPUESTA NO IMPLEMENTADA:** evaluar Cloudflare Workers como intermediario seguro entre EnOrden (alojado en Netlify) y TMDB u otros proveedores. El objetivo sería evitar que las consultas al catálogo consuman créditos de funciones de Netlify y mantener las credenciales fuera del cliente.
 - Antes de elegir esta alternativa, revisar los límites y costos vigentes del plan gratuito de Cloudflare Workers, compararlos con el uso esperado, comprobar el estado del plan/créditos de Netlify y probar seguridad, caché, paginación, errores y aislamiento de fallos. La propuesta no es todavía una decisión definitiva.
 - Integrar TMDB mediante una capa segura de servidor/proxy y revisar sus condiciones.
-- Resolver búsqueda y verificación de tráileres oficiales por idioma/variante.
+- Evaluar e implementar, si se autoriza, una API de YouTube u otro proveedor para localizar tráileres específicos y obtener metadatos fiables.
 - Definir si la disponibilidad de streaming en Chile forma parte de la primera versión pública.
 - Persistir favoritos/preferencias en la cuenta del usuario cuando exista sistema de cuentas.
 - Añadir estados de carga, error, catálogo vacío, límites del proveedor y funcionamiento sin conexión.
