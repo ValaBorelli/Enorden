@@ -80,7 +80,8 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - El texto cambia según el estado: «Añadir a favoritos» cuando no está guardado y «En favoritos» cuando sí lo está.
 - Al pulsarlo agrega o quita el título de favoritos mediante la función y persistencia existentes.
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
-- En la parte inferior de la ventana se conservarán los créditos de los proveedores de datos, separados del contenido de disponibilidad. La atribución del catálogo debe identificar a TMDB e incluir su logotipo y el aviso: “This product uses the TMDb API but is not endorsed or certified by TMDb”. La atribución de disponibilidad debe indicar: «Disponibilidad informada por JustWatch a través de TMDB».
+- En la parte inferior de la ventana se conservarán los créditos de los proveedores de datos, separados del contenido de disponibilidad. La atribución del catálogo debe identificar a TMDB e incluir su logotipo y el aviso: “This product uses the TMDB API but is not endorsed or certified by TMDB”. La atribución de disponibilidad debe indicar: «Disponibilidad informada por JustWatch a través de TMDB».
+- El logotipo de TMDB debe ser uno de los recursos oficiales aprobados, conservar sus colores y proporciones sin modificaciones y ocupar un lugar menos prominente que la identidad de EnOrden. Debe enlazar a https://www.themoviedb.org.
 - Los créditos no deben presentar a JustWatch como fuente de títulos, pósteres o sinopsis, ni sugerir que TMDB o JustWatch patrocinan o respaldan EnOrden.
 
 ## 8. Idioma
@@ -103,6 +104,11 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - No se deben inventar servicios ni disponibilidad.
 - Los datos de cada servicio deberán llegar desde un proveedor de disponibilidad intercambiable e incluir, cuando existan, enlaces de aplicación, web y tienda por plataforma. La interfaz podrá priorizar un enlace universal/de aplicación y utilizar el enlace de tienda como alternativa cuando el proveedor o el entorno permitan determinar que la aplicación no está disponible.
 - Un enlace web normal no garantiza que se abra la aplicación instalada ni permite detectar por sí solo si está instalada. No prometer ese comportamiento hasta implementar y probar enlaces universales/deep links y fallback específicos para Android e iOS.
+- La capa de disponibilidad normalizará el estado de cada consulta usando `streamingAvailabilityStatus` o `streamingAvailability.status`, con los valores `success` y `error`.
+- Una respuesta exitosa debe marcarse explícitamente como `success`, incluso cuando la lista de servicios esté vacía; esa combinación activa el mensaje de que no se encontraron plataformas.
+- Una respuesta fallida debe marcarse como `error`. Si hay datos de una consulta exitosa anterior, se entregarán mediante `lastSuccessfulStreamingProviders` o `streamingAvailability.lastSuccessfulProviders` y se mostrarán esos servicios sin alterar su estado de última consulta exitosa.
+- Una respuesta fallida sin datos anteriores mostrará el mensaje de error. La ausencia de estado explícito no se interpretará como una consulta exitosa sin resultados.
+- Para cada plataforma, el orden de enlaces será: `universalUrl`, `appUrl`, `webUrl`. `storeUrl` solo podrá usarse como alternativa cuando el proveedor o el entorno indique explícitamente que la aplicación no está disponible (por ejemplo, `appAvailable=false` o `appInstalled=false`).
 - La región consultada, las fechas de consulta o actualización y los demás metadatos técnicos del proceso de búsqueda se conservarán únicamente para uso interno. No se mostrarán en la ficha ni al usuario.
 
 ## 10. Pendientes de producción
