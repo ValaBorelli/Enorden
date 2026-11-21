@@ -540,7 +540,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .entertainment-hero:before,.entertainment-hero:after{content:'✦';position:absolute;color:#ffffff25;font-size:75px}
 .entertainment-hero:before{top:-23px;left:12px}.entertainment-hero:after{bottom:-32px;right:15px}
 /* DECISIÓN: la ruleta usa una paleta de casino fija, independiente del tema personal de EnOrden. */
-.entertainment-wheel-stage{position:relative;width:min(300px,calc(100vw - 56px),calc(100% - 12px));aspect-ratio:1;margin:20px auto 18px;border-radius:50%;padding:0;background:radial-gradient(circle at 32% 25%,#6b552f 0,#241d17 43%,#080808 76%);border:2px solid #d8b66e;box-shadow:0 12px 25px #0008,inset 0 2px 8px #fff4c455,inset 0 -9px 18px #000b;perspective:900px;isolation:isolate;flex:0 1 auto;max-width:100%;
+.entertainment-wheel-stage{position:relative;width:min(300px,calc(100vw - 56px),calc(100% - 12px));aspect-ratio:1;margin:20px auto 18px;border-radius:50%;padding:0;background:radial-gradient(circle at 32% 25%,#6b552f 0,#241d17 43%,#080808 76%);border:2px solid #d8b66e;box-shadow:0 12px 25px #0008,inset 0 2px 8px #fff4c455,inset 0 -9px 18px #000b;perspective:900px;isolation:isolate;flex:0 1 auto;max-width:100%;}
 .entertainment-wheel-stage:before{content:'';position:absolute;inset:5px;border-radius:50%;border:5px solid #8d682d;box-shadow:0 0 0 2px #f4dda1,0 0 0 5px #2b2114,inset 0 0 0 2px #f6df9a;pointer-events:none;z-index:4}
 .entertainment-wheel-stage:after{content:'';position:absolute;inset:11px;border-radius:50%;border:1px solid #f5dfa0aa;box-shadow:inset 0 0 12px #000b;pointer-events:none;z-index:3}
 .entertainment-wheel-track{position:absolute;inset:13px;border-radius:50%;border:7px dotted #d4b36d;box-shadow:0 0 0 2px #3b2c18,inset 0 0 0 2px #f5dfa0;opacity:.95}
@@ -2035,7 +2035,7 @@ function toggleEntertainmentYearFields(){
  const wrap=document.getElementById('entertainmentYearFields');if(wrap)wrap.style.opacity=noYear?'.45':'1';
 }
 function openEntertainmentSetup(){entertainmentSetupOpen=true;renderEntertainment()}
-function cancelEntertainmentSetup(){cancelEntertainmentWheelAnimations();if(entertainmentWheelTimer)clearTimeout(entertainmentWheelTimer);entertainmentWheelTimer=null;entertainmentWheelSpinning=false;entertainmentPendingWinner=null;entertainmentSetupOpen=false;entertainmentReady=false;entertainmentFilters=null;entertainmentPool=[];entertainmentCurrent=null;entertainmentShownIds=new Set();entertainmentWheelItems=[];entertainmentWheelRotation=0;entertainmentBallAngle=0;entertainmentBallLanded=false;renderEntertainment()}
+function cancelEntertainmentSetup(){/* DECISIÓN: cancelar solo cierra la ventana; conserva filtros, catálogo, sesión y cualquier giro en curso. */entertainmentSetupOpen=false;renderEntertainment()}
 async function applyEntertainmentSetup(){
  const type=document.querySelector('input[name="entertainmentType"]:checked')?.value||'any';
  const genres=[...document.querySelectorAll('input[name="entertainmentGenre"]:checked')].map(x=>x.value);
