@@ -63,7 +63,10 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - El contenido principal se organiza en dos columnas: póster a la izquierda, con aproximadamente un tercio del ancho útil, y texto a la derecha. El póster conserva sin cambios su fondo, tratamiento, proporción y ajuste de imagen actuales.
 - La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver trailer»; sección «Dónde verla» con los servicios disponibles como chips.
 - Si no existen datos de disponibilidad, la sección «Dónde verla» informa discretamente que todavía no hay datos para Chile, sin mostrar plataformas ficticias.
-- El botón «Favorito» se ubica debajo de «Ver trailer» en la ficha del resultado y conserva siempre ese texto. Utiliza el corazón clásico: cuando el título no está guardado, muestra el símbolo ♡ con interior transparente y contorno negro; cuando sí está guardado, muestra el símbolo ♥ relleno de negro. El relleno se aplica únicamente al corazón: no hay fondo, recuadro ni superficie de botón externa. Al pulsarlo agrega o quita el título de favoritos mediante la función y persistencia existentes.
+- El botón de favoritos se ubica debajo de «Ver trailer» y utiliza exactamente el mismo estilo visual que los demás botones de acciones de la ficha (fondo, borde, esquinas, tipografía y espaciado).
+- El ícono de corazón aparece a la izquierda del texto y es ligeramente más pequeño que en la versión anterior. Cuando el título no está guardado muestra ♡, con interior transparente y contorno negro; cuando está guardado muestra ♥ relleno de negro.
+- El texto cambia según el estado: «Añadir a favoritos» cuando no está guardado y «En favoritos» cuando sí lo está.
+- Al pulsarlo agrega o quita el título de favoritos mediante la función y persistencia existentes.
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
 
 ## 8. Idioma
