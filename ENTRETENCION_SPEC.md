@@ -50,16 +50,21 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 - Si hay menos de 12 títulos disponibles, se mostrarán todos.
 
 ## 6. Tráileres
-- Proveedor inicial: YouTube; será intercambiable independientemente del catálogo.
-- Solo se ofrecerán tráileres oficiales del título correcto y en el idioma/variante configurados en EnOrden (por ejemplo, español latino).
-- Una búsqueda textual no garantiza oficialidad y no se presentará como verificada.
-- Si no se puede verificar canal oficial, título y variante de idioma, se informará que no hay un tráiler oficial disponible.
-- La integración futura requerirá un mecanismo fiable, como canales oficiales de estudios/distribuidoras y metadatos lingüísticos.
+- El proveedor de tráileres será independiente e intercambiable respecto del proveedor del catálogo. Proveedor inicial previsto: YouTube.
+- La búsqueda priorizará el idioma y la variante regional configurados en EnOrden.
+- **Preferencia acordada:** si no existe un tráiler oficial verificado en el idioma/variante preferidos, se podrá mostrar un tráiler oficial verificado en otro idioma. El idioma real se mostrará junto al enlace.
+- Orden de selección: variante regional exacta; luego el mismo idioma en otra variante regional; finalmente cualquier otro idioma oficial disponible.
+- Solo se ofrecerán tráileres del título correcto cuya oficialidad y metadatos lingüísticos estén verificados.
+- Una búsqueda textual, el título del video o una coincidencia de palabras no prueban oficialidad ni idioma de audio.
+- La verificación debe basarse en metadatos fiables y una fuente/canal oficial identificable (por ejemplo, distribuidora o estudio). Si no se puede verificar, no se mostrará el resultado.
+- El formato normalizado de cada candidato incluirá como mínimo URL, idioma, indicador de oficialidad y estado de verificación.
+- No se expondrán claves de YouTube/TMDB en el cliente. La consulta real deberá realizarse mediante una integración segura del lado servidor.
+- **Estado actual:** la interfaz y la regla de selección quedan preparadas, pero todavía no existe una búsqueda real ni una fuente de candidatos conectada. El catálogo demo no incluye metadatos de tráiler, por lo que seguirá mostrando el aviso hasta conectar el proveedor.
 
 ## 7. Idioma
 - Interfaz y metadatos localizables seguirán el idioma global de EnOrden.
-- Se conservará la variante regional cuando esté disponible (por ejemplo, español latinoamericano frente a español de España).
-- Para tráileres, la variante regional es requisito de coincidencia.
+- La preferencia de idioma de tráileres se derivará del idioma global, conservando variante regional cuando el proveedor la entregue.
+- La falta de coincidencia exacta de variante regional no impedirá mostrar un tráiler oficial en otro idioma; el idioma real siempre se identificará visiblemente.
 
 ## 8. Seguridad y condiciones
 - Las credenciales de proveedores externos no se expondrán en el código cliente.
