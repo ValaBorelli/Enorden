@@ -29,6 +29,10 @@ Rama: EnOrden-Desarrollo. Este documento aplica exclusivamente a Entretención.
 
 ## 5. Ruleta
 - Animación real generada por código, adaptable a móvil y escritorio.
+- La ruleta utiliza una estética de casino clásico/europeo: rueda circular con profundidad, aro y detalles dorados, segmentos en negro, rojo oscuro, marfil y dorado, y una bolita blanca claramente visible.
+- La paleta visual de la ruleta es fija e independiente de la personalización de colores del tema global de EnOrden.
+- La rueda y la bolita giran en sentidos opuestos y desaceleran progresivamente; al final, la bolita realiza pequeños rebotes antes de asentarse en el segmento ganador.
+- La animación representa el resultado que ya selecciona la lógica de Entretención; no introduce un segundo sorteo ni modifica el catálogo, los filtros o las reglas de selección.
 - La cantidad de segmentos visibles no limita el tamaño del catálogo.
 - Mostrará hasta 12 títulos elegibles elegidos aleatoriamente.
 - El resultado debe coincidir exactamente con uno de los segmentos visibles.
