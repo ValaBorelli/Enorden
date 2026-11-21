@@ -24,6 +24,8 @@ El listado incluye:
 - Proyectos creados por el usuario.
 - Proyectos creados por otras personas a los que el usuario tiene acceso.
 
+Las secciones de la lista se titulan exactamente «Proyectos anclados» y «Otros proyectos».
+
 Organización individual por usuario:
 - Cada usuario puede ordenar manualmente sus proyectos.
 - Los proyectos nuevos o recién incorporados aparecen al principio de la lista no anclada.
