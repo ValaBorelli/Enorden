@@ -887,6 +887,7 @@ function applyLanguage(){
  root.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>['placeholder','aria-label','title'].forEach(attr=>{const v=el.getAttribute(attr);if(v&&dict[v])el.setAttribute(attr,dict[v])}));
 }
 function render(){
+ if(pruneExpiredCompletedTasks())save();
  applyAppearance();
  if(current==='notificaciones'&&notificationsOpened){notifications=notifications.slice(-3);localStorage.setItem('enorden_notifications',JSON.stringify(notifications))}
  renderNav();
@@ -2403,7 +2404,7 @@ function addEvent(){
  if(old){Object.assign(old,changes);if(old.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(old.taskId));if(linkedTask)linkedTask.scheduledDate=date;}}else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
  editingEventId=null;eventPrefill=null;save();closeModal();render();
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden&&pruneExpiredCompletedTasks())save()});
 window.addEventListener('pagehide',()=>{if(current==='finanzas')startFinanceLockTimer()});
 render();
 </script>
