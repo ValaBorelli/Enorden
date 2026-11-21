@@ -79,7 +79,46 @@ h2{font-size:18px;margin-bottom:13px}
  border-radius:14px;padding:15px;margin-bottom:11px;color:#242820}
 .card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .page-heading{margin-bottom:18px}
-.page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
+.shared-project-section{margin:0 0 22px}.shared-project-section h2{font-size:15px;margin:0 0 8px;color:#42483f}.shared-project-create{margin:0 0 25px}.shared-project-create h2{font-size:17px;margin:0 0 11px}.shared-project-create button{width:100%;min-height:48px;border:1px solid #2459ff;border-radius:12px;background:#1748e8;color:#fff;font-weight:700;box-shadow:0 5px 18px #1748e844}.shared-project-create button:active{background:#1038bd}.shared-project-row{width:100%;display:flex;align-items:center;gap:11px;padding:13px 10px;border:0;border-bottom:1px solid var(--line);background:transparent;color:#242820;text-align:left}.shared-project-icon{font-size:20px;flex:0 0 25px}.shared-project-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.shared-project-info strong{font-size:14px;overflow-wrap:anywhere}.shared-project-info small{font-size:11px;color:var(--muted)}.shared-project-arrow{font-size:23px;color:var(--muted)}.shared-project-empty{padding:10px 2px 15px;font-size:12px;color:var(--muted)}
+.shared-project-row{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.shared-project-action-layer{z-index:10055}
+.shared-project-action-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.shared-project-action-options button{min-height:48px;border-radius:10px;border:1px solid #1755ed;background:#1755ed;color:#fff;font-weight:700}
+.shared-project-action-options button+button{background:#fff;color:#1755ed}
+.shared-project-sort-list{display:flex;flex-direction:column;gap:0;max-height:55vh;overflow:auto;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;touch-action:pan-y}
+.shared-project-sort-row{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:12px 10px;border:0;border-bottom:1px solid #e5e7eb;background:#fff;color:#20242b;text-align:left;font-size:14px;touch-action:none;user-select:none;-webkit-user-select:none}
+.shared-project-sort-row:last-child{border-bottom:0}
+.shared-project-sort-row.dragging{background:#eaf0ff;box-shadow:inset 0 0 0 2px #1755ed;border-radius:8px}
+.shared-project-sort-grip{font-size:18px;color:#8792a3}
+.shared-project-sort-empty{padding:18px 5px;color:#667085;font-size:13px;text-align:center}
+
+.shared-project-modal-layer{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.58)}
+.shared-project-modal{position:relative;width:min(100%,420px);background:#fff;color:#17191d;border:1px solid #dce1ea;border-radius:18px;padding:21px;box-shadow:0 22px 70px #0006}
+.shared-project-modal header{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:24px;background:transparent;padding-right:28px}
+.shared-project-modal h2{font-size:19px;margin:0;font-weight:750;color:#000;background:transparent}
+.shared-project-modal-x{position:absolute;top:-12px;right:-12px;display:flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:2px solid #fff;border-radius:50%;background:#000;color:#fff;font-size:23px;font-weight:400;line-height:1;cursor:pointer;box-shadow:0 2px 7px #0003}
+.shared-project-modal label{display:block;font-size:14px;font-weight:650;margin-bottom:9px}
+.shared-project-modal input{width:100%;box-sizing:border-box;border:1px solid #cbd2df;border-radius:10px;padding:13px 12px;font:inherit;font-size:14px;outline:none}
+.shared-project-modal input:focus{border-color:#2463ff;box-shadow:0 0 0 3px #2463ff22}
+.shared-project-modal footer{display:flex;justify-content:flex-end;gap:9px;margin-top:27px;flex-wrap:wrap}
+.shared-project-modal footer button{border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
+.shared-project-cancel{border:1px solid #cbd2df;background:#fff;color:#303746}
+.shared-project-save{border:1px solid #1755ed;background:#1755ed;color:#fff}
+.shared-project-confirm-layer{z-index:10060;background:rgba(0,0,0,.68)}
+.shared-project-confirm p{font-size:14px;line-height:1.5;color:#4c5564;margin:0}
+.shared-project-confirm footer{justify-content:space-between}
+.shared-project-delete{border:1px solid #b42318!important;background:#b42318!important;color:#fff!important}
+.shared-project-title-row{display:flex;align-items:center;gap:7px;margin:24px 17px 12px;padding:0;color:#f5f7ff}.shared-project-title-row h1{font-size:23px;line-height:1.25;margin:0;overflow-wrap:anywhere;cursor:pointer;border-radius:5px}.shared-project-title-row h1:focus-visible{outline:2px solid #8ba9ff;outline-offset:4px}.shared-project-title-edit{flex:0 0 auto;border:0;background:transparent;color:inherit;padding:2px;font-size:12px;line-height:1;cursor:pointer;border-radius:7px}.shared-project-title-edit:focus-visible{outline:2px solid #8ba9ff;outline-offset:2px}
+.shared-project-title-row{justify-content:space-between;gap:12px}
+.shared-project-title-main{display:flex;align-items:center;gap:7px;min-width:0}
+.shared-project-menu-toggle{flex:0 0 38px;width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:9px;background:transparent;color:#f5f7ff;padding:7px}
+.shared-project-menu-toggle svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.shared-project-menu-panel{width:min(230px,calc(100% - 34px));margin:0 17px 0 auto;padding:9px;background:#101d2d;border:1px solid #26364b;border-radius:12px;box-shadow:0 12px 30px #0005;display:flex;flex-direction:column;gap:2px}
+.shared-project-menu-action{width:100%;min-height:42px;padding:10px 11px;text-align:left;border:0;border-radius:7px;background:transparent;color:#f5f7ff;font-size:14px}
+.shared-project-menu-action:active{background:#ffffff12}
+.shared-project-menu-hide{align-self:center;margin-top:5px;padding:6px 10px;border:0;border-radius:6px;background:transparent;color:#aab6c8;font-size:11px}
+
+.shared-project-create-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.shared-project-create-actions button{width:100%;min-height:48px;border:1px solid #2459ff;border-radius:12px;background:#1748e8;color:#fff;font-weight:700}.shared-project-create-actions button+button{background:#fff;color:#1748e8}.shared-project-link-tools{border-top:1px solid #26364b;margin-top:6px;padding:11px 9px 4px;color:#f5f7ff}.shared-project-link-tools strong{display:block;font-size:12px;margin-bottom:7px}.shared-project-link-value{font-size:10px;color:#aebbd0;overflow-wrap:anywhere}.shared-project-link-buttons{display:flex;gap:7px;margin-top:8px}.shared-project-link-buttons button{flex:1;border:1px solid #52647d;border-radius:7px;padding:7px;background:#1b2b40;color:#fff;font-size:11px}.shared-project-code{display:block;width:100%;margin-top:8px;border:0;background:transparent;color:#aebbd0;font-size:10px;text-align:left;letter-spacing:1px}.shared-project-user-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #e5e7eb}.shared-project-user-name{font-weight:700;font-size:13px}.shared-project-user-row select{max-width:145px;border:1px solid #cbd2df;border-radius:8px;padding:7px;background:#fff;color:#20242b;font-size:11px}.shared-project-modal-notice{text-align:center;padding:10px 0;color:#4c5564;font-size:14px}.page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
 .small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
 .small-btn{background:var(--surface2);color:#30352d;white-space:nowrap}
@@ -171,7 +210,7 @@ h2{font-size:18px;margin-bottom:13px}
 .event-form-actions button{flex:1;min-width:0;white-space:normal;line-height:1.25;padding:12px 8px}
 .event-form-section input,.event-form-section select{min-width:0;max-width:100%}
 
-.bottom-space{height:75px}
+.shared-project-app{background:#080b13;min-height:100vh}.shared-project-mode{background:#080b13}.shared-project-app main{padding:0;background:#080b13;color:#f5f7ff}.shared-project-app .shared-project-workspace{min-height:calc(100vh - 160px);background:radial-gradient(ellipse at 50% 0%,#101d43 0%,#080b13 48%,#05070c 100%);margin:0;padding:0}.shared-project-app .bottom-nav{background:#fffaf1}.shared-project-app .fab{display:none!important}.bottom-space{height:75px}
 .plain-heading{font-size:16px;font-weight:700;margin:23px 0 8px;color:#242820}
 .home-code{font-size:25px;font-weight:800;letter-spacing:2px;color:#39ed63;
  background:#1c3225;border-radius:12px;padding:15px;text-align:center;overflow-wrap:anywhere}
@@ -302,6 +341,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .task-shortcut-card{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:122px;padding:16px 10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text);text-align:center;box-shadow:0 2px 8px #00000008}.task-shortcut-label{font-size:15px;font-weight:700}.task-shortcut-count{font-size:14px;line-height:1;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}.task-unread-dot{position:absolute;top:10px;left:10px;width:9px;height:9px;border-radius:50%;background:#e34b4b;box-shadow:0 0 0 2px var(--surface)}
 .tasks-sidebar-item{width:100%;text-align:left;cursor:pointer}
 .tasks-sidebar-item{justify-content:flex-start}
+.tasks-sidebar-item.shared-sidebar-item{justify-content:center;text-align:center;gap:6px;padding-left:6px;padding-right:6px}
 .tasks-sidebar-item.active{background:var(--green2);color:#fff;border-color:var(--green2)}
 .tasks-layout.is-sidebar-collapsed{grid-template-columns:42px minmax(0,1fr)}
 .tasks-sidebar-toggle{display:flex;align-items:center;justify-content:center;gap:4px;align-self:flex-end;width:auto;min-width:32px;min-height:28px;margin-top:auto;padding:3px 7px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer}
@@ -338,7 +378,7 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .family-nested-list{margin-left:26px;padding-left:11px;border-left:2px solid var(--line);display:grid;gap:7px}
 .family-task-level-two{font-size:13px;color:var(--muted)}
 /* Responsables alineados en una columna común para todos los niveles */
-.family-task-line>.task-assignee{margin-left:auto;flex:0 0 112px;width:112px;min-width:0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.family-task-line>.task-assignee{margin-left:auto;flex:0 0 112px;width:112px;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .family-task-line>span:not(.task-assignee),.family-task-line>strong{flex:1 1 auto;min-width:0}
 @media(max-width:420px){.family-task-line>.task-assignee{flex-basis:88px;width:88px;font-size:10px}}
 
@@ -493,6 +533,72 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
   grid-template-columns:18px minmax(0,1fr) 54px 20px;
  }
 }
+.my-day-section{margin-bottom:18px}.my-day-task-list{display:flex;flex-direction:column;gap:8px}.my-day-task-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;padding:14px 16px;border:1px solid var(--border,#e5e5e5);border-radius:14px;background:var(--card,#fff);color:inherit;cursor:pointer;font:inherit}.my-day-task-row:active{transform:scale(.995)}.my-day-task-title{min-width:0;display:flex;flex-direction:column;gap:4px}.my-day-task-kind{flex:0 0 auto;margin-left:auto;font-size:1.15rem}.my-day-assigned-detail{font-size:.82rem;color:var(--muted,#777)}.my-day-assigned-section{margin-top:14px}
+/* ENTRETENCIÓN — estilos aislados del resto de módulos */
+.entertainment-page{padding-bottom:24px}
+.entertainment-hero{position:relative;overflow:hidden;text-align:center;padding:26px 18px 22px;border-radius:20px;background:linear-gradient(145deg,#203f39,#397267);color:#fff;margin-bottom:17px}
+.entertainment-hero:before,.entertainment-hero:after{content:'✦';position:absolute;color:#ffffff25;font-size:75px}
+.entertainment-hero:before{top:-23px;left:12px}.entertainment-hero:after{bottom:-32px;right:15px}
+/* DECISIÓN: la ruleta usa una paleta de casino fija, independiente del tema personal de EnOrden. */
+.entertainment-wheel-stage{position:relative;width:min(300px,calc(100vw - 56px),calc(100% - 12px));aspect-ratio:1;margin:20px auto 18px;border-radius:50%;padding:0;background:radial-gradient(circle at 32% 25%,#6b552f 0,#241d17 43%,#080808 76%);border:2px solid #d8b66e;box-shadow:0 12px 25px #0008,inset 0 2px 8px #fff4c455,inset 0 -9px 18px #000b;perspective:900px;isolation:isolate;flex:0 1 auto;max-width:100%;}
+.entertainment-wheel-stage:before{content:'';position:absolute;inset:5px;border-radius:50%;border:5px solid #8d682d;box-shadow:0 0 0 2px #f4dda1,0 0 0 5px #2b2114,inset 0 0 0 2px #f6df9a;pointer-events:none;z-index:4}
+.entertainment-wheel-stage:after{content:'';position:absolute;inset:11px;border-radius:50%;border:1px solid #f5dfa0aa;box-shadow:inset 0 0 12px #000b;pointer-events:none;z-index:3}
+.entertainment-wheel-track{position:absolute;inset:13px;border-radius:50%;border:7px dotted #d4b36d;box-shadow:0 0 0 2px #3b2c18,inset 0 0 0 2px #f5dfa0;opacity:.95}
+.entertainment-wheel{position:absolute;inset:22px;border:8px ridge #c39a50;border-radius:50%;overflow:hidden;background:#171717;box-shadow:0 7px 14px #000b,inset 0 0 0 2px #f5dfa0,inset 0 0 22px #000;will-change:transform;transform:rotate(0deg)}
+.entertainment-wheel-label{position:absolute;left:50%;top:50%;width:var(--label-width,52px);max-height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:var(--label-font,8px);line-height:1.1;font-weight:800;letter-spacing:-.2px;color:#f8efd9;text-shadow:0 1px 3px #000,0 0 4px #000;transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-91px) rotate(calc(-1 * var(--angle)));pointer-events:none}
+.entertainment-wheel-label.is-ivory{color:#241c12;text-shadow:0 1px 1px #fff8}
+.entertainment-wheel-hub{position:absolute;left:50%;top:50%;width:60px;height:60px;max-width:calc(100% - 18px);transform:translate(-50%,-50%);display:grid;place-items:center;border:5px double #e7c879;border-radius:50%;background:radial-gradient(circle at 32% 25%,#fff6d8,#b48b43 62%,#493319);color:#17120d;font-family:Georgia,serif;font-size:9px;font-weight:900;letter-spacing:.45px;white-space:nowrap;text-shadow:0 1px #fff8;box-shadow:0 3px 10px #000b,inset 0 1px 5px #fff9;z-index:2;overflow:hidden}
+.entertainment-ball-orbit{position:absolute;inset:0;border-radius:50%;z-index:5;pointer-events:none;will-change:transform;transform:rotate(0deg)}
+.entertainment-ball{position:absolute;left:50%;top:calc(50% - 46%);width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff 0,#fff 35%,#e9e9e9 65%,#9b9b9b 100%);border:1px solid #fff;box-shadow:0 0 5px 2px #fff9,0 2px 5px #000b;will-change:top;z-index:6}
+.entertainment-wheel-stage.is-spinning{filter:drop-shadow(0 0 13px #d7b46c88)}
+@media(max-width:390px){.entertainment-wheel{inset:20px}.entertainment-wheel-label{transform:translate(-50%,-50%) rotate(var(--angle)) translateY(-82px) rotate(calc(-1 * var(--angle)))}.entertainment-ball{width:12px;height:12px}}
+.entertainment-spin{width:100%;max-width:290px;min-height:48px;border:0;border-radius:12px;background:#f2d99f;color:#263d35;font-weight:800}
+.entertainment-spin:disabled{opacity:.6;cursor:not-allowed}
+.entertainment-subtitle{font-size:13px;line-height:1.5;color:#e8eee9;margin:0 auto 13px;max-width:330px}
+.entertainment-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.entertainment-toolbar button{flex:1;min-width:125px}
+.entertainment-result{display:grid;grid-template-columns:112px minmax(0,1fr);gap:14px;align-items:start}
+.entertainment-poster{width:112px;min-height:164px;aspect-ratio:2/3;border-radius:12px;background:linear-gradient(155deg,#d6c5a2,#45665b);display:grid;place-items:center;overflow:hidden;color:#fff;font-size:42px;text-align:center}
+.entertainment-poster img{width:100%;height:100%;object-fit:cover}
+.entertainment-result h2{font-size:19px;line-height:1.2;margin:0 0 5px}
+.entertainment-meta{font-size:11px;color:var(--muted);margin-bottom:9px}
+.entertainment-overview{font-size:12px;line-height:1.5;margin:0 0 10px}
+.entertainment-tags{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}
+.entertainment-tag{font-size:10px;padding:4px 7px;border-radius:20px;background:var(--surface2);color:var(--white)}
+.entertainment-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.entertainment-actions a,.entertainment-actions button{font-size:11px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface2);color:var(--white)}
+.entertainment-modal-layer{position:fixed;inset:0;z-index:10070;background:#0009;display:flex;align-items:center;justify-content:center;padding:15px}
+.entertainment-modal{width:min(520px,100%);max-height:88vh;overflow:auto;background:var(--surface);color:var(--white);border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:0 20px 60px #0005}
+.entertainment-result-modal{width:min(650px,100%);max-height:90vh;padding:20px}
+.entertainment-result-modal .card{padding:0;border:0;background:transparent;box-shadow:none}
+.entertainment-result-modal .entertainment-result{grid-template-columns:125px minmax(0,1fr)}
+.entertainment-result-modal .entertainment-poster{width:125px}
+@media(max-width:520px){.entertainment-result-modal{padding:16px}.entertainment-result-modal .entertainment-result{grid-template-columns:94px minmax(0,1fr);gap:11px}.entertainment-result-modal .entertainment-poster{width:94px;min-height:141px}.entertainment-result-modal .entertainment-result h2{font-size:17px}}
+.entertainment-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.entertainment-modal-head h2{margin:0;font-size:20px}
+.entertainment-modal-close{border:0;background:var(--surface2);color:var(--white);border-radius:50%;width:35px;height:35px;font-size:20px}
+.entertainment-form-section{margin:17px 0}
+.entertainment-form-section>strong{display:block;font-size:13px;margin-bottom:9px}
+.entertainment-type-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.entertainment-type-option{position:relative}
+.entertainment-type-option input{position:absolute;opacity:0}
+.entertainment-type-option span{display:grid;place-items:center;min-height:47px;padding:7px 4px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:12px;text-align:center}
+.entertainment-type-option input:checked+span{border:2px solid var(--green2);background:#dce9df;color:#214b40;font-weight:700}
+.entertainment-genre-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.entertainment-genre{display:flex;align-items:center;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:var(--bg);font-size:12px}
+.entertainment-genre input{accent-color:var(--green2);width:16px;height:16px;margin:0}
+.entertainment-year-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.entertainment-year-row label{font-size:11px;color:var(--muted)}
+.entertainment-year-row input{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--white);padding:10px}
+.entertainment-no-year{display:flex;align-items:center;gap:8px;font-size:12px;margin-top:11px}
+.entertainment-modal-actions{display:flex;justify-content:space-between;gap:9px;margin-top:20px}
+.entertainment-modal-actions button{min-width:110px}
+.entertainment-favorite-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.entertainment-favorite-row strong{font-size:13px}.entertainment-favorite-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.entertainment-favorite-row button{margin-left:auto}
+.entertainment-note{font-size:11px;line-height:1.45;color:var(--muted);margin-top:12px}
+@media(max-width:390px){.entertainment-result{grid-template-columns:94px minmax(0,1fr);gap:10px}.entertainment-poster{width:94px;min-height:141px}.entertainment-type-options{grid-template-columns:1fr}.entertainment-genre-grid{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -549,6 +655,29 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 </div>
 
 <script>
+/*
+ * COMPARTIDO — ESPECIFICACIÓN FUNCIONAL
+ * La definición completa y vigente de este módulo está en COMPARTIDO_SPEC.md.
+ * Compartido es un sistema de PROYECTOS independiente de las tareas normales.
+ * No reutilizar scope='shared' como si fuera el nuevo modelo de proyectos.
+ * Los proyectos se crean desde Compartido, cada uno tiene página propia basada
+ * en una plantilla común, listado/orden/anclaje por usuario y participantes
+ * con acceso individual. El documento especifica vencimiento a 7 días desde
+ * la creación, aviso 1 día antes, eliminación por el creador con confirmación,
+ * enlace único por proyecto, solicitudes individuales (máximo 3 por usuario),
+ * permisos, asignaciones solo después de conceder acceso y transferencia de
+ * administración antes de abandonar un proyecto.
+ *
+ * IMPORTANTE: la primera etapa usa almacenamiento local como prototipo.
+ * Esto NO equivale a colaboración multiusuario sincronizada. Notificaciones
+ * fiables, vencimiento independiente de sesión, invitaciones y permisos reales
+ * requieren backend centralizado antes de producción.
+ *
+ * Mantener Compartido separado de Personal/Familia/Mi día/Asignadas/Todas,
+ * del calendario y de las plantillas normales. Desde Compartido tampoco se
+ * crean tareas normales. Consultar COMPARTIDO_SPEC.md antes de ampliar reglas.
+ */
+
 const modules=[
  {id:'calendario',name:'Calendario',emoji:'📅'},
  {id:'tareas',name:'Tareas',emoji:'✓'},
@@ -556,14 +685,41 @@ const modules=[
  {id:'finanzas',name:'Finanzas',emoji:'💰'},
  {id:'rutinas',name:'Rutinas',emoji:'🔄'},
  {id:'notas',name:'Notas',emoji:'📝'},
+ {id:'entretenimiento',name:'Entretención',emoji:'🎬'},
  {id:'mapa',name:'Mapa',emoji:'📍'},
  {id:'chat',name:'Chat',emoji:'💬'}
 ];
 let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
-if(!Array.isArray(order)||order.length!==modules.length)order=modules.map(m=>m.id);
+if(!Array.isArray(order))order=modules.map(m=>m.id);
+else{
+ order=order.filter((id,index)=>modules.some(m=>m.id===id)&&order.indexOf(id)===index);
+ if(!order.includes('entretenimiento')){const notasIndex=order.indexOf('notas');if(notasIndex>=0)order.splice(notasIndex+1,0,'entretenimiento');else order.push('entretenimiento');}
+ modules.forEach(m=>{if(!order.includes(m.id))order.push(m.id);});
+}
 let current='inicio',calendarView='Mes',selectedDate=new Date();
-let taskView='overview';
+
+let entertainmentSetupOpen=false,entertainmentReady=false,entertainmentFilters=null;
+let entertainmentPool=[],entertainmentCurrent=null,entertainmentShownIds=new Set(),entertainmentFavorites=JSON.parse(localStorage.getItem('enorden_entertainment_favorites')||'[]');
+let entertainmentWheelItems=[],entertainmentWheelRotation=0,entertainmentWheelSpinning=false,entertainmentPendingWinner=null,entertainmentWheelTimer=null,entertainmentResultOpen=false;
+let entertainmentBallAngle=0,entertainmentBallLanded=false,entertainmentWheelAnimation=null,entertainmentBallOrbitAnimation=null,entertainmentBallDropAnimation=null;
+if(!Array.isArray(entertainmentFavorites))entertainmentFavorites=[];
+
+let taskView='today';
 let taskSidebarCollapsed=false;
+let activeSharedProjectId=null;
+let sharedProjectPanelOpen=false;
+let sharedProjectDraft=null;
+let sharedProjectCancelConfirm=false;
+let sharedProjectNameEdit=null;
+let sharedProjectEditCancelConfirm=false;
+let sharedProjectDeleteConfirm=false;
+let sharedProjectUsersOpen=false,sharedProjectJoinOpen=false,sharedProjectJoinNotice='';
+let sharedProjectRoleChangeDraft=null,sharedProjectRoleChangeConfirm=false;
+let sharedProjectActionId=null,sharedProjectActionOpen=false,sharedProjectMoveOpen=false,sharedProjectMoveSection='other',sharedProjectMoveIds=[];
+let sharedProjectHoldTimer=null,sharedProjectSuppressClick=false,sharedProjectDraggingId=null,sharedProjectDragTimer=null;
+
+let expandedTaskDisclosures=new Set();
+let expandedTaskSections=new Set();
 let calendarSearchOpen=false,calendarSearchQuery='';
 let appLanguage=localStorage.getItem('enorden_language')||'es';
 const appearanceThemes={natural:{name:'Natural',bg:'#EDE8DA',header:'#344E40',text:'#292D29',muted:'#777970',cards:['#FFFFFF','#FFFFFF','#FFFFFF']},night:{name:'Nocturno',bg:'#151817',header:'#263D32',text:'#F1F2EF',muted:'#AEB9B1',accent:'#A8D0B1',cards:['#252B28','#252B28','#252B28']},colorful:{name:'Colorido',bg:'#FFF5E8',header:'#7656B8',text:'#493A70',muted:'#806F99',accent:'#F28B78',cards:['#D9EFF9','#FCE0E7','#FFF0B8']},executive:{name:'Ejecutivo',bg:'#EDF0F3',header:'#24364B',text:'#303A46',muted:'#657386',accent:'#A98750',cards:['#FFFFFF','#FFFFFF','#FFFFFF']}};
@@ -620,9 +776,10 @@ function toggleHeaderPanel(id){
  current=id;render();window.scrollTo(0,0);
 }
 function navigate(id){
+ if(id==='tareas'&&current==='tareas'&&activeSharedProjectId!==null){activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0);return}
  if(current==='finanzas'&&id!=='finanzas')startFinanceLockTimer();
  if(id==='finanzas'&&current!=='finanzas'){requestFinanceAccess();return}
- if(id==='tareas'&&current!=='tareas')taskView='overview';
+ if(id==='tareas'&&current!=='tareas')taskView='today';
  current=id;render();window.scrollTo(0,0);
 }
 function renderNav(){
@@ -635,7 +792,9 @@ function renderNav(){
  </button>`).join('');
  nav.classList.toggle('hidden',current==='inicio');
  document.querySelector('.app').classList.toggle('tasks-app',current==='tareas');
- fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current));
+ document.querySelector('.app').classList.toggle('shared-project-app',current==='tareas'&&activeSharedProjectId!==null);
+ document.body.classList.toggle('shared-project-mode',current==='tareas'&&activeSharedProjectId!==null);
+ fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current)||(current==='tareas'&&(taskView==='shared'||activeSharedProjectId!==null)));
  enableReorder(nav);
 }
 const languageText={
@@ -711,6 +870,7 @@ function render(){
  else if(current==='configuracion')renderSettings();
  else if(current==='finanzas')renderFinance();
  else if(current==='chat')renderChat();
+ else if(current==='entretenimiento')renderEntertainment();
  else renderOther(current);
  applyLanguage();
 }
@@ -894,18 +1054,19 @@ function markTaskViewed(id){
  save();
 }
 function taskSidebarHTML(){
- const canCollapse=['today','family','personal','assigned','pending','templates'].includes(taskView);
+ const canCollapse=['today','family','personal','assigned','pending','templates','shared'].includes(taskView);
  return `<aside class="tasks-sidebar${canCollapse&&taskSidebarCollapsed?' is-collapsed':''}" aria-label="Secciones de tareas">
-  <button type="button" class="tasks-sidebar-item ${taskView==='overview'?'active':''}" onclick="showTaskView('overview')">🏠 <span>Inicio</span></button>
+  <button type="button" class="tasks-sidebar-item" style="display:none" aria-hidden="true" tabindex="-1" onclick="showTaskView('overview')">🏠 <span>Inicio 2</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='today'?'active':''}" onclick="showTaskView('today')">☀️ <span>Mi día</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='family'?'active':''}" onclick="showTaskView('family')">🫂 <span>Familia</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='personal'?'active':''}" onclick="showTaskView('personal')">👤 <span>Personal</span></button>
   <button type="button" class="tasks-sidebar-item ${taskView==='templates'?'active':''}" onclick="showTaskView('templates')">📋 <span>Mis Plantillas</span></button>
+  <button type="button" class="tasks-sidebar-item shared-sidebar-item ${taskView==='shared'?'active':''}" onclick="showTaskView('shared')">🔗 <span>Compartido</span></button>
   ${canCollapse?`<button type="button" class="tasks-sidebar-toggle" onclick="toggleTaskSidebar()" aria-label="${taskSidebarCollapsed?'Mostrar panel de navegación':'Ocultar panel de navegación'}" aria-expanded="${!taskSidebarCollapsed}" title="${taskSidebarCollapsed?'Mostrar panel':'Ocultar panel'}">${taskSidebarCollapsed?'›':'‹'}<span>${taskSidebarCollapsed?'':'Ocultar'}</span></button>`:''}
  </aside>`;
 }
 function toggleTaskSidebar(){
- if(!['today','family','personal','assigned','pending'].includes(taskView))return;
+ if(!['today','family','personal','assigned','pending','templates','shared'].includes(taskView))return;
  const disclosures=Array.from(screen.querySelectorAll('.family-task-disclosure,.family-subtask-disclosure'));
  const openStates=disclosures.map(item=>item.open);
  taskSidebarCollapsed=!taskSidebarCollapsed;
@@ -913,9 +1074,189 @@ function toggleTaskSidebar(){
  const updated=screen.querySelectorAll('.family-task-disclosure,.family-subtask-disclosure');
  updated.forEach((item,index)=>{if(index<openStates.length)item.open=openStates[index]});
 }
-function showTaskView(view){taskView=view;render();}
+function showTaskView(view){taskView=view==='overview'?'today':view;render();}
+function generateSharedProjectCode(existing=[]){let code='';do{code='EO-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}while(existing.some(project=>(project.code||'').toUpperCase()===code));return code}
+function getSharedProjectLink(project){return location.origin+location.pathname+'?proyecto='+encodeURIComponent(project.id)}
+function loadSharedProjects(){try{const value=JSON.parse(localStorage.getItem('enorden_shared_projects')||'[]');if(!Array.isArray(value))return [];let changed=false;value.forEach(project=>{if(!project.code){project.code=generateSharedProjectCode(value.filter(other=>other!==project));changed=true}if(!project.id){project.id='project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);changed=true}});if(changed)localStorage.setItem('enorden_shared_projects',JSON.stringify(value));return value}catch{return []}}
+function saveSharedProjects(projects){localStorage.setItem('enorden_shared_projects',JSON.stringify(projects))}
+function createSharedProject(){
+ sharedProjectDraft={id:'project-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),name:'',createdAt:new Date().toISOString(),pinned:false,meta:'Proyecto compartido',code:generateSharedProjectCode(loadSharedProjects()),participants:[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}],requests:[]};
+ sharedProjectCancelConfirm=false;activeSharedProjectId=sharedProjectDraft.id;render();window.scrollTo(0,0);
+}
+function saveNewSharedProject(){
+ const name=(document.getElementById('sharedProjectName')?.value||'').trim();
+ if(!name){document.getElementById('sharedProjectName')?.focus();return}
+ const projects=loadSharedProjects();projects.unshift({...sharedProjectDraft,name});saveSharedProjects(projects);
+ sharedProjectDraft=null;sharedProjectCancelConfirm=false;render();window.scrollTo(0,0);
+}
+function requestCancelSharedProject(){sharedProjectCancelConfirm=true;render()}
+function dismissCancelSharedProject(){sharedProjectCancelConfirm=false;render()}
+function confirmCancelSharedProject(){
+ sharedProjectDraft=null;sharedProjectCancelConfirm=false;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0);
+}
+function editSharedProjectName(){const project=loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));if(!project)return;sharedProjectNameEdit={id:project.id,name:project.name||''};sharedProjectEditCancelConfirm=false;render()}
+function saveSharedProjectName(){const name=(document.getElementById('sharedProjectEditName')?.value||'').trim();if(!name){document.getElementById('sharedProjectEditName')?.focus();return}const projects=loadSharedProjects(),index=projects.findIndex(item=>String(item.id)===String(sharedProjectNameEdit?.id));if(index<0){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render();return}projects[index]={...projects[index],name};saveSharedProjects(projects);sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
+function requestCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=true;render()}
+function dismissCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=false;render()}
+function confirmCancelSharedProjectNameEdit(){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
+function toggleSharedProjectPanel(){sharedProjectPanelOpen=!sharedProjectPanelOpen;renderSharedProjectWorkspace()}
+
+function openSharedProjectUsers(){sharedProjectUsersOpen=true;sharedProjectPanelOpen=false;renderSharedProjectWorkspace()}
+function closeSharedProjectUsers(){sharedProjectUsersOpen=false;sharedProjectRoleChangeDraft=null;sharedProjectRoleChangeConfirm=false;renderSharedProjectWorkspace()}
+function changeSharedProjectRole(i,role){const a=loadSharedProjects(),p=a.find(x=>String(x.id)===String(activeSharedProjectId));if(!p||!p.participants||!p.participants[i]||i===0||p.participants[0]?.role!=='admin')return;if(!['admin','write','read'].includes(role))return;p.participants[i].role=role;saveSharedProjects(a);renderSharedProjectWorkspace()}
+function requestOwnSharedProjectRoleChange(i,role){const a=loadSharedProjects(),p=a.find(x=>String(x.id)===String(activeSharedProjectId));if(!p)return;if(!Array.isArray(p.participants))p.participants=[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}];const person=p.participants[i];if(!person||person.role===role)return;saveSharedProjects(a);sharedProjectRoleChangeDraft={index:i,role};sharedProjectRoleChangeConfirm=true;renderSharedProjectWorkspace()}
+function cancelOwnSharedProjectRoleChange(){sharedProjectRoleChangeDraft=null;sharedProjectRoleChangeConfirm=false;renderSharedProjectWorkspace()}
+function confirmOwnSharedProjectRoleChange(){const a=loadSharedProjects(),p=a.find(x=>String(x.id)===String(activeSharedProjectId)),draft=sharedProjectRoleChangeDraft,person=p?.participants?.[draft?.index];if(!person||!draft)return;const anotherAdmin=p.participants.some((u,i)=>i!==draft.index&&u.role==='admin');if(person.role==='admin'&&draft.role!=='admin'&&!anotherAdmin){alert('Antes de cambiar tu rol, debes nombrar a otra persona como Administrador para que el proyecto no quede sin administración.');return}person.role=draft.role;saveSharedProjects(a);sharedProjectRoleChangeDraft=null;sharedProjectRoleChangeConfirm=false;renderSharedProjectWorkspace()}
+function getSharedProjectLink(p){return location.origin+location.pathname+'?proyecto='+encodeURIComponent(p.id)}
+function copySharedProjectCode(){const p=loadSharedProjects().find(x=>String(x.id)===String(activeSharedProjectId));if(p&&navigator.clipboard)navigator.clipboard.writeText(p.code||'')}
+function copySharedProjectLink(){const p=loadSharedProjects().find(x=>String(x.id)===String(activeSharedProjectId));if(p&&navigator.clipboard)navigator.clipboard.writeText(getSharedProjectLink(p))}
+async function shareSharedProjectLink(){const p=loadSharedProjects().find(x=>String(x.id)===String(activeSharedProjectId));if(!p)return;const url=getSharedProjectLink(p);if(navigator.share){try{await navigator.share({title:p.name||'Proyecto compartido',url})}catch(e){}}else if(navigator.clipboard){navigator.clipboard.writeText(url);alert('Enlace copiado')}}
+function openSharedProjectJoin(){sharedProjectJoinOpen=true;sharedProjectJoinNotice='';renderSharedProjectsPage()}
+function closeSharedProjectJoin(){sharedProjectJoinOpen=false;sharedProjectJoinNotice='';renderSharedProjectsPage()}
+function submitSharedProjectJoin(){const c=(document.getElementById('sharedProjectJoinCode')?.value||'').trim().toUpperCase(),a=loadSharedProjects(),p=a.find(x=>(x.code||'').toUpperCase()===c);if(!p){sharedProjectJoinNotice='invalid';renderSharedProjectsPage();return}p.requests=p.requests||[];const mine=p.requests.filter(r=>r.user==='Tú');if(mine.length>=3||mine.some(r=>r.status==='pending')){sharedProjectJoinNotice='pending';renderSharedProjectsPage();return}p.requests.push({user:'Tú',status:'pending',createdAt:new Date().toISOString()});saveSharedProjects(a);sharedProjectJoinNotice='sent';renderSharedProjectsPage()}
+
+function requestDeleteSharedProject(){sharedProjectDeleteConfirm=true;renderSharedProjectWorkspace()}
+function dismissDeleteSharedProject(){sharedProjectDeleteConfirm=false;renderSharedProjectWorkspace()}
+function confirmDeleteSharedProject(){const id=activeSharedProjectId;if(id===null)return;const projects=loadSharedProjects().filter(item=>String(item.id)!==String(id));saveSharedProjects(projects);sharedProjectDeleteConfirm=false;sharedProjectPanelOpen=false;sharedProjectDraft=null;sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;activeSharedProjectId=null;taskView='shared';render();window.scrollTo(0,0)}
+function renderSharedProjectWorkspace(){
+ const project=sharedProjectDraft&&String(sharedProjectDraft.id)===String(activeSharedProjectId)?sharedProjectDraft:loadSharedProjects().find(item=>String(item.id)===String(activeSharedProjectId));
+ if(!project){activeSharedProjectId=null;renderSharedProjectsPage();return}
+ screen.innerHTML='<div class="shared-project-workspace" aria-label="Página de proyecto"></div>';
+ if(sharedProjectDraft&&String(sharedProjectDraft.id)===String(activeSharedProjectId)){
+  screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectModalTitle"><header><h2 id="sharedProjectModalTitle">Nuevo Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="requestCancelSharedProject()">×</button></header><label for="sharedProjectName">Nombre del proyecto</label><input id="sharedProjectName" type="text" maxlength="80" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProject()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveNewSharedProject()">Guardar</button></footer></section></div>`);
+  if(sharedProjectCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectConfirmTitle"><header><h2 id="sharedProjectConfirmTitle">Cancelar creación</h2></header><p>¿Estás seguro de que quieres cancelar la creación del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProject()">Continuar creando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProject()">Cancelar</button></footer></section></div>`);
+ }else{
+  screen.querySelector('.shared-project-workspace').insertAdjacentHTML('beforeend',`<div class="shared-project-title-row"><div class="shared-project-title-main"><h1 role="button" tabindex="0" onclick="editSharedProjectName()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editSharedProjectName()}" aria-label="Editar nombre del proyecto">${escapeHTML(project.name||'Proyecto')}</h1><button type="button" class="shared-project-title-edit" onclick="editSharedProjectName()" aria-label="Editar nombre del proyecto" title="Editar nombre del proyecto">✏️</button></div><button type="button" class="shared-project-menu-toggle" onclick="toggleSharedProjectPanel()" aria-label="Abrir menú del proyecto" aria-expanded="${sharedProjectPanelOpen?'true':'false'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div>${sharedProjectPanelOpen?`<div class="shared-project-menu-panel" aria-label="Opciones del proyecto"><button type="button" class="shared-project-menu-action">Crear nueva tarea</button><button type="button" class="shared-project-menu-action" onclick="openSharedProjectUsers()">Usuarios</button><button type="button" class="shared-project-menu-action" onclick="requestDeleteSharedProject()">Eliminar proyecto</button><div class="shared-project-link-tools"><strong>Link</strong><div class="shared-project-link-value">${escapeHTML(getSharedProjectLink(project))}</div><div class="shared-project-link-buttons"><button type="button" onclick="copySharedProjectCode()">Copiar</button><button type="button" onclick="shareSharedProjectLink()">Compartir</button></div><button type="button" class="shared-project-code" onclick="copySharedProjectCode()">${escapeHTML(project.code||"Código pendiente")}</button></div></div>`:''}`);
+  if(sharedProjectNameEdit&&String(sharedProjectNameEdit.id)===String(project.id)){
+   screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectEditModalTitle"><header><h2 id="sharedProjectEditModalTitle">Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="requestCancelSharedProjectNameEdit()">×</button></header><label for="sharedProjectEditName">Nombre del proyecto</label><input id="sharedProjectEditName" type="text" maxlength="80" value="${escapeHTML(sharedProjectNameEdit.name)}" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProjectNameEdit()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveSharedProjectName()">Guardar</button></footer></section></div>`);
+   if(sharedProjectEditCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectEditConfirmTitle"><header><h2 id="sharedProjectEditConfirmTitle">Cancelar edición</h2></header><p>¿Estás seguro de que quieres cancelar la edición del nombre del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProjectNameEdit()">No, continuar editando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProjectNameEdit()">Sí, cancelar</button></footer></section></div>`);
+  }
+  if(sharedProjectDeleteConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectDeleteConfirmTitle"><header><h2 id="sharedProjectDeleteConfirmTitle">Eliminar proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="dismissDeleteSharedProject()">×</button></header><p>¿Estás seguro de que quieres eliminar este proyecto? Se eliminará de Proyectos Compartidos y su página dejará de estar disponible.</p><footer><button type="button" class="shared-project-cancel" onclick="dismissDeleteSharedProject()">Cancelar</button><button type="button" class="shared-project-delete" onclick="confirmDeleteSharedProject()">Eliminar</button></footer></section></div>`);if(sharedProjectUsersOpen){const people=project.participants||[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}];screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true"><header><h2>Usuarios del proyecto</h2><button type="button" class="shared-project-modal-x" onclick="closeSharedProjectUsers()">×</button></header>'+people.map((u,i)=>'<div class="shared-project-user-row"><div><div class="shared-project-user-name">'+escapeHTML(u.name)+'</div><small>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[u.role]||'Solo lectura')+'</small></div>'+(i===0?'<select aria-label="Tus permisos" onchange="requestOwnSharedProjectRoleChange('+i+',this.value)"><option value="admin" '+(u.role==='admin'?'selected':'')+'>Administrador</option><option value="write" '+(u.role==='write'?'selected':'')+'>Lectura y escritura</option><option value="read" '+(u.role==='read'?'selected':'')+'>Solo lectura</option></select>':'<select aria-label="Permisos de '+escapeHTML(u.name)+'" onchange="changeSharedProjectRole('+i+',this.value)"><option value="admin" '+(u.role==='admin'?'selected':'')+'>Administrador</option><option value="write" '+(u.role==='write'?'selected':'')+'>Lectura y escritura</option><option value="read" '+(u.role==='read'?'selected':'')+'>Solo lectura</option></select>')+'</div>').join('')+'<footer><button type="button" class="shared-project-save" onclick="closeSharedProjectUsers()">Listo</button></footer></section></div>');if(sharedProjectRoleChangeConfirm&&sharedProjectRoleChangeDraft){const current=people[sharedProjectRoleChangeDraft.index]?.role||'admin',next=sharedProjectRoleChangeDraft.role;screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="dialog" aria-modal="true"><header><h2>Confirmar cambio de permisos</h2></header><p>¿Quieres cambiar tus permisos de <strong>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[current])+'</strong> a <strong>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[next])+'</strong>?</p><footer><button type="button" class="shared-project-cancel" onclick="cancelOwnSharedProjectRoleChange()">Cancelar</button><button type="button" class="shared-project-save" onclick="confirmOwnSharedProjectRoleChange()">Confirmar</button></footer></section></div>')}}
+ }
+}
+
+
+function loadSharedProjectPrefs(){
+ try{const value=JSON.parse(localStorage.getItem('enorden_shared_project_prefs')||'{}');return value&&typeof value==='object'?value:{}}catch{return {}}
+}
+function saveSharedProjectPrefs(prefs){localStorage.setItem('enorden_shared_project_prefs',JSON.stringify(prefs))}
+function orderedSharedProjectIds(projects,section){
+ const pinned=section==='pinned',items=projects.filter(p=>!!p.pinned===pinned),ids=items.map(p=>String(p.id)),prefs=loadSharedProjectPrefs(),key=pinned?'pinnedOrder':'projectOrder';
+ let order=Array.isArray(prefs[key])?prefs[key].map(String).filter(id=>ids.includes(id)):[];
+ const newIds=ids.filter(id=>!order.includes(id));
+ order=[...newIds,...order];
+ if(order.length!==ids.length||!Array.isArray(prefs[key])){prefs[key]=order;saveSharedProjectPrefs(prefs)}
+ return order.map(id=>items.find(p=>String(p.id)===id)).filter(Boolean);
+}
+function openSharedProjectAction(id){sharedProjectActionId=String(id);sharedProjectActionOpen=true;renderSharedProjectsPage()}
+function closeSharedProjectAction(){sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage()}
+function applySharedProjectPin(pin){
+ const projects=loadSharedProjects(),project=projects.find(p=>String(p.id)===String(sharedProjectActionId));if(!project)return;
+ const id=String(project.id),prefs=loadSharedProjectPrefs(),from=project.pinned?'pinnedOrder':'projectOrder',to=pin?'pinnedOrder':'projectOrder';
+ project.pinned=!!pin;prefs[from]=(Array.isArray(prefs[from])?prefs[from].map(String):[]).filter(x=>x!==id);
+ prefs[to]=[id,...(Array.isArray(prefs[to])?prefs[to].map(String).filter(x=>x!==id):[])];
+ saveSharedProjects(projects);saveSharedProjectPrefs(prefs);sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage();
+}
+function openSharedProjectMove(section){
+ const projects=loadSharedProjects();sharedProjectMoveSection=section;
+ sharedProjectMoveIds=orderedSharedProjectIds(projects,section==='pinned'?'pinned':'other').map(p=>String(p.id));
+ sharedProjectActionOpen=false;sharedProjectMoveOpen=true;renderSharedProjectsPage();
+}
+function closeSharedProjectMove(save){
+ if(save){const prefs=loadSharedProjectPrefs(),key=sharedProjectMoveSection==='pinned'?'pinnedOrder':'projectOrder';prefs[key]=[...document.querySelectorAll('#sharedProjectSortList [data-project-id]')].map(el=>el.dataset.projectId);saveSharedProjectPrefs(prefs)}
+ sharedProjectMoveOpen=false;sharedProjectDraggingId=null;sharedProjectDragTimer=null;renderSharedProjectsPage();
+}
+function startSharedProjectSortHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;clearTimeout(sharedProjectDragTimer);const row=event.currentTarget;
+ sharedProjectDragTimer=setTimeout(()=>{sharedProjectDraggingId=String(id);row.classList.add('dragging');try{row.setPointerCapture(event.pointerId)}catch{}},320);
+}
+function moveSharedProjectSort(event){
+ if(!sharedProjectDraggingId)return;event.preventDefault();
+ const moving=document.querySelector('#sharedProjectSortList [data-project-id="'+CSS.escape(sharedProjectDraggingId)+'"]');
+ const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('#sharedProjectSortList [data-project-id]');
+ if(!moving||!target||moving===target)return;const rect=target.getBoundingClientRect(),before=event.clientY<rect.top+rect.height/2;target.parentNode.insertBefore(moving,before?target:target.nextSibling);
+}
+function endSharedProjectSortHold(){clearTimeout(sharedProjectDragTimer);sharedProjectDragTimer=null;if(sharedProjectDraggingId){document.querySelectorAll('.shared-project-sort-row').forEach(row=>row.classList.remove('dragging'));sharedProjectDraggingId=null}}
+function startSharedProjectHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;clearTimeout(sharedProjectHoldTimer);sharedProjectSuppressClick=false;
+ sharedProjectHoldTimer=setTimeout(()=>{sharedProjectSuppressClick=true;openSharedProjectAction(id)},480);
+}
+function endSharedProjectHold(){clearTimeout(sharedProjectHoldTimer);sharedProjectHoldTimer=null}
+function renderSharedProjectsPage(){
+ const projects=loadSharedProjects();
+ const pinnedProjects=orderedSharedProjectIds(projects,'pinned');
+ const otherProjects=orderedSharedProjectIds(projects,'other');
+ const renderProjectRows=list=>list.map(project=>`<button type="button" class="shared-project-row" onpointerdown="startSharedProjectHold(event,'${escapeHTML(String(project.id))}')" onpointerup="endSharedProjectHold()" onpointercancel="endSharedProjectHold()" onpointerleave="endSharedProjectHold()" oncontextmenu="event.preventDefault();openSharedProjectAction('${escapeHTML(String(project.id))}')" onclick="openSharedProject('${escapeHTML(String(project.id))}')"><span class="shared-project-icon">📁</span><span class="shared-project-info"><strong>${escapeHTML(project.name)}</strong><small>${escapeHTML(project.meta||'Proyecto compartido')}</small></span><span class="shared-project-arrow">›</span></button>`).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Proyectos Compartidos</h1><p>Organiza proyectos y trabaja en ellos junto a otras personas.</p></div><div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}<section class="tasks-content family-content" aria-label="Proyectos Compartidos"><div class="shared-project-create"><h2>Crear nuevo proyecto</h2><div class="shared-project-create-actions"><button type="button" onclick="createSharedProject()">＋ Crear proyecto</button><button type="button" onclick="openSharedProjectJoin()">Unirse</button></div></div><div class="shared-project-section"><h2>Proyectos anclados</h2>${renderProjectRows(pinnedProjects)||'<div class="shared-project-empty">Aquí aparecerán los proyectos que ancles.</div>'}</div><div class="shared-project-section"><h2>Proyectos</h2>${renderProjectRows(otherProjects)||'<div class="card empty">Todavía no tienes proyectos compartidos.</div>'}</div></section></div>`;
+ if(sharedProjectJoinOpen){const note=sharedProjectJoinNotice==='sent'?'Tu solicitud para unirte al proyecto ha sido enviada.':sharedProjectJoinNotice==='invalid'?'El código ingresado no es válido.':sharedProjectJoinNotice==='pending'?'Ya tienes una solicitud pendiente o alcanzaste el máximo de tres solicitudes.':'';screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true"><header><h2>Unirse a un proyecto</h2><button type="button" class="shared-project-modal-x" onclick="closeSharedProjectJoin()">×</button></header><label for="sharedProjectJoinCode">Código del proyecto</label><input id="sharedProjectJoinCode" placeholder="Ingresa el código" maxlength="20" oninput="this.value=this.value.toUpperCase()">'+(note?'<div class="shared-project-modal-notice">'+note+'</div>':'')+'<footer><button type="button" class="shared-project-cancel" onclick="closeSharedProjectJoin()">Cancelar</button><button type="button" class="shared-project-save" onclick="submitSharedProjectJoin()">Listo</button></footer></section></div>')}
+ if(sharedProjectActionOpen){
+  const project=projects.find(p=>String(p.id)===String(sharedProjectActionId));
+  if(project){const pinned=!!project.pinned;screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-action-layer" onclick="if(event.target===this)closeSharedProjectAction()"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectActionTitle"><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="closeSharedProjectAction()">×</button><header><h2 id="sharedProjectActionTitle">¿Qué quieres hacer?</h2></header><div class="shared-project-action-options"><button type="button" onclick="${pinned?'applySharedProjectPin(false)':'applySharedProjectPin(true)'}">${pinned?'Desanclar':'Anclar'}</button><button type="button" onclick="openSharedProjectMove('${pinned?'pinned':'other'}')">Mover</button></div></section></div>`)}
+ }
+ if(sharedProjectMoveOpen){
+  const list=sharedProjectMoveIds.map(id=>projects.find(p=>String(p.id)===id)).filter(Boolean);
+  const rows=list.map(p=>`<button type="button" class="shared-project-sort-row" data-project-id="${escapeHTML(String(p.id))}" onpointerdown="startSharedProjectSortHold(event,'${escapeHTML(String(p.id))}')" onpointermove="moveSharedProjectSort(event)" onpointerup="endSharedProjectSortHold(event)" onpointercancel="endSharedProjectSortHold(event)"><span class="shared-project-sort-grip">⠿</span><span>${escapeHTML(p.name)}</span></button>`).join('');
+  screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer" onclick="if(event.target===this)closeSharedProjectMove(false)"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectMoveTitle"><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="closeSharedProjectMove(false)">×</button><header><h2 id="sharedProjectMoveTitle">Mover proyecto</h2></header><p style="font-size:12px;color:#667085;margin:0 0 13px">Mantén presionado un proyecto y arrástralo para cambiar su posición.</p><div class="shared-project-sort-list" id="sharedProjectSortList">${rows||'<div class="shared-project-sort-empty">No hay otros proyectos en esta sección.</div>'}</div><footer><button type="button" class="shared-project-cancel" onclick="closeSharedProjectMove(false)">Cancelar</button><button type="button" class="shared-project-save" onclick="closeSharedProjectMove(true)">Listo</button></footer></section></div>`);
+ }
+}
+
+function openSharedProjectAction(id){
+ sharedProjectActionId=String(id);sharedProjectActionOpen=true;renderSharedProjectsPage();
+}
+function closeSharedProjectAction(){sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage()}
+function applySharedProjectPin(pin){
+ const projects=loadSharedProjects(),project=projects.find(p=>String(p.id)===String(sharedProjectActionId));if(!project)return;
+ const id=String(project.id),prefs=loadSharedProjectPrefs(),from=project.pinned?'pinnedOrder':'projectOrder',to=pin?'pinnedOrder':'projectOrder';
+ project.pinned=!!pin;
+ prefs[from]=(Array.isArray(prefs[from])?prefs[from].map(String):[]).filter(x=>x!==id);
+ prefs[to]=[id,...(Array.isArray(prefs[to])?prefs[to].map(String).filter(x=>x!==id):[])];
+ saveSharedProjects(projects);saveSharedProjectPrefs(prefs);
+ sharedProjectActionOpen=false;sharedProjectActionId=null;renderSharedProjectsPage();
+}
+function openSharedProjectMove(section){
+ const projects=loadSharedProjects();sharedProjectMoveSection=section;
+ sharedProjectMoveIds=orderedSharedProjectIds(projects,section==='pinned'?'pinned':'other').map(p=>String(p.id));
+ sharedProjectActionOpen=false;sharedProjectMoveOpen=true;renderSharedProjectsPage();
+}
+function closeSharedProjectMove(save){
+ if(save){
+  const prefs=loadSharedProjectPrefs(),key=sharedProjectMoveSection==='pinned'?'pinnedOrder':'projectOrder';
+  prefs[key]=[...document.querySelectorAll('#sharedProjectSortList [data-project-id]')].map(el=>el.dataset.projectId);
+  saveSharedProjectPrefs(prefs);
+ }
+ sharedProjectMoveOpen=false;sharedProjectDraggingId=null;sharedProjectDragTimer=null;renderSharedProjectsPage();
+}
+function startSharedProjectSortHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;
+ clearTimeout(sharedProjectDragTimer);const row=event.currentTarget;
+ sharedProjectDragTimer=setTimeout(()=>{sharedProjectDraggingId=String(id);row.classList.add('dragging');try{row.setPointerCapture(event.pointerId)}catch{}},320);
+}
+function moveSharedProjectSort(event){
+ if(!sharedProjectDraggingId)return;
+ event.preventDefault();
+ const moving=document.querySelector('#sharedProjectSortList [data-project-id="'+CSS.escape(sharedProjectDraggingId)+'"]');
+ const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('#sharedProjectSortList [data-project-id]');
+ if(!moving||!target||moving===target)return;
+ const rect=target.getBoundingClientRect(),before=event.clientY<rect.top+rect.height/2;
+ target.parentNode.insertBefore(moving,before?target:target.nextSibling);
+}
+function endSharedProjectSortHold(event){
+ clearTimeout(sharedProjectDragTimer);sharedProjectDragTimer=null;
+ if(sharedProjectDraggingId){document.querySelectorAll('.shared-project-sort-row').forEach(row=>row.classList.remove('dragging'));sharedProjectDraggingId=null;}
+}
+function startSharedProjectHold(event,id){
+ if(event.button!==undefined&&event.button!==0)return;
+ clearTimeout(sharedProjectHoldTimer);sharedProjectSuppressClick=false;
+ sharedProjectHoldTimer=setTimeout(()=>{sharedProjectSuppressClick=true;openSharedProjectAction(id)},480);
+}
+function endSharedProjectHold(){clearTimeout(sharedProjectHoldTimer);sharedProjectHoldTimer=null}
+function openSharedProject(id){if(sharedProjectSuppressClick){sharedProjectSuppressClick=false;return}activeSharedProjectId=id;render();window.scrollTo(0,0)}
+
 function renderTasks(){
+ if(activeSharedProjectId!==null){renderSharedProjectWorkspace();return;}
  if(taskView==='templates'){renderTaskTemplatesPlaceholder();return;}
+ if(taskView==='shared'){renderSharedProjectsPage();return;}
+ if(taskView==='all'){renderScopedTasks('all');return;}
  if(taskView==='family'){renderScopedTasks('family');return;}
  if(taskView==='personal'){renderScopedTasks('personal');return;}
  if(taskView==='today'){renderMyDay();return;}
@@ -933,17 +1274,63 @@ function renderTasks(){
  screen.innerHTML=`<div class="page-heading"><h1>Tareas</h1><p>Todo lo que necesitas hacer en un solo lugar.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned','pending'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content" aria-label="Resumen de tareas">
-   <div class="tasks-shortcuts">${counts.map(item=>{const action=item.label==='Pendientes'?"showTaskView(\'pending\')":item.label==='Familia'?"showTaskView(\'family\')":item.label==='Personales'?"showTaskView(\'personal\')":item.label==='Asignadas'?"showTaskView(\'assigned\')":null;const tag=action?'button':'div';return `<${tag} ${action?`type="button" onclick="${action}"`:''} class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</${tag}>`}).join('')}</div>
+   <div class="tasks-shortcuts">${counts.map(item=>{const action=item.label==='Todas'?"showTaskView(\'all\')":item.label==='Pendientes'?"showTaskView(\'pending\')":item.label==='Familia'?"showTaskView(\'family\')":item.label==='Personales'?"showTaskView(\'personal\')":item.label==='Asignadas'?"showTaskView(\'assigned\')":null;const tag=action?'button':'div';return `<${tag} ${action?`type="button" onclick="${action}"`:''} class="task-shortcut-card${item.unread?' has-unread':''}"><span class="task-shortcut-label">${item.label}</span><strong class="task-shortcut-count">${item.count}</strong>${item.unread?'<span class="task-unread-dot" aria-label="Hay tareas sin revisar"></span>':''}</${tag}>`}).join('')}</div>
   </section>
  </div>`;
 }
+let templatePressTimer=null;
 function renderTaskTemplatesPlaceholder(){
- screen.innerHTML=`<div class="page-heading"><h1>Mis Plantillas</h1><p>Aquí podrás consultar y administrar las plantillas de tus tareas.</p></div>
+ const templates=loadTaskTemplates();
+ const cards=templates.map(t=>{
+  const subtasks=(t.subtasks||[]).map(st=>{
+   const nested=(st.subtasks||[]).map(n=>'<div class="family-task-line family-task-level-two"><span>'+escapeHTML(n.title)+'</span></div>').join('');
+   return '<div class="family-subtask">'+(nested?'<details class="family-subtask-disclosure"><summary class="family-task-line"><span>'+escapeHTML(st.title)+'</span></summary><div class="family-nested-list">'+nested+'</div></details>':'<div class="family-task-line"><span>'+escapeHTML(st.title)+'</span></div>')+'</div>';
+  }).join('');
+  return '<article class="card family-task-card template-task-card" onpointerdown="templateLongPressStart(event,'+Number(t.id)+')" onpointerup="templateLongPressEnd()" onpointerleave="templateLongPressEnd()" onpointercancel="templateLongPressEnd()" oncontextmenu="event.preventDefault()">'+(subtasks?'<details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-main"><div class="family-task-line"><strong>'+escapeHTML(t.title)+'</strong></div></div></summary><div class="family-subtasks">'+subtasks+'</div></details>':'<div class="family-task-main"><div class="family-task-line"><strong>'+escapeHTML(t.title)+'</strong></div></div>')+'</article>';
+ }).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Mis Plantillas</h1><p>Tus tareas guardadas para reutilizarlas cuando quieras.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
-  <section class="tasks-content" aria-label="Mis plantillas de tareas">
-   <div class="empty-state"><div class="empty-state-icon">📋</div><h2>Próximamente</h2><p>Estamos preparando este espacio para que puedas guardar, editar y reutilizar tus plantillas de tareas.</p></div>
+  <section class="tasks-content family-content" aria-label="Mis plantillas de tareas">
+   <div class="family-list-heading"><strong>${templates.length} ${templates.length===1?'plantilla':'plantillas'}</strong><span class="muted">Mantén presionada una plantilla para ver sus opciones</span></div>
+   ${cards||'<div class="card empty">Todavía no tienes plantillas guardadas. Puedes guardar una tarea desde sus opciones o al crearla.</div>'}
   </section>
- </div>`;
+ </div><div class="bottom-space"></div>`;
+}
+function templateLongPressStart(event,id){if(event.target.closest('button,input'))return;clearTimeout(templatePressTimer);templatePressTimer=setTimeout(()=>openTemplateActions(id),550)}
+function templateLongPressEnd(){clearTimeout(templatePressTimer)}
+function openTemplateActions(id){const t=getTaskTemplate(id);if(!t)return;showTaskModal('Opciones de plantilla','<div class="task-action-menu"><button class="secondary-btn" onclick="confirmDeleteTaskTemplate('+Number(t.id)+')">Borrar</button><button class="secondary-btn" onclick="editTaskTemplate('+Number(t.id)+')">Editar</button><button class="secondary-btn" onclick="confirmReuseTaskTemplate('+Number(t.id)+')">Reutilizar</button><button class="primary-btn" onclick="closeModal()">Cancelar</button></div>')}
+function confirmDeleteTaskTemplate(id){const t=getTaskTemplate(id);if(!t)return;showTaskModal('Confirmar eliminación','<p>¿Quieres borrar la plantilla «'+escapeHTML(t.title)+'»? Esta acción no se puede deshacer.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="openTemplateActions('+Number(t.id)+')">Cancelar</button><button class="primary-btn" onclick="deleteTaskTemplate('+Number(t.id)+')">Sí, borrar</button></div>')}
+function loadTaskTemplates(){const list=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]');let changed=false;list.forEach(t=>{if(t.scheduledDate){t.wasScheduled=true;t.scheduledDate=null;changed=true}});if(changed)localStorage.setItem('enorden_task_templates',JSON.stringify(list));return list}
+function getTaskTemplate(id){return loadTaskTemplates().find(t=>Number(t.id)===Number(id))}
+function deleteTaskTemplate(id){const list=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').filter(t=>Number(t.id)!==Number(id));localStorage.setItem('enorden_task_templates',JSON.stringify(list));closeModal();renderTaskTemplatesPlaceholder()}
+let editingTaskTemplateId=null;
+function editTaskTemplate(id){
+ const t=getTaskTemplate(id);if(!t)return;editingTaskTemplateId=Number(id);
+ let markup=taskEditorMarkup(t);
+markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask"[\s\S]*?<\/div><\/div>/,'');
+markup=markup.replace(/<div class="event-form-section task-create-section"><label class="event-choice"><input id="saveTaskTemplate"[\s\S]*?<\/div>/,'');
+ markup=markup.replace('onclick="saveTaskEditor()"','onclick="saveTaskTemplateEditor()"');
+ markup=markup.replace('Guardar cambios','Guardar plantilla');
+ showTaskModal('Editar plantilla',markup);
+}
+function saveTaskTemplateEditor(){
+ const t=getTaskTemplate(editingTaskTemplateId);if(!t)return;
+ const title=document.getElementById('newValue')?.value.trim();if(!title){document.getElementById('newValue')?.focus();return}
+ const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{const prev=t.subtasks?.[index]||{};const title=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();const nested=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev.subtasks?.[j]})).filter(x=>x.title).map(x=>({...x.prev,title:x.title,done:false,assignable:false}));return title?{...prev,title,done:false,assignable:t.scope==='family',subtasks:nested}:null}).filter(Boolean);
+ t.title=title;const selectedScope=document.getElementById('newTaskScope')?.value;t.scope=selectedScope==='family'?'family':'personal';t.assignable=t.scope==='family';t.subtasks=subtasks;t.subtasks.forEach(st=>st.assignable=t.scope==='family');
+ localStorage.setItem('enorden_task_templates',JSON.stringify(JSON.parse(localStorage.getItem('enorden_task_templates')||'[]').map(x=>Number(x.id)===Number(t.id)?t:x)));
+ editingTaskTemplateId=null;closeModal();renderTaskTemplatesPlaceholder();
+}
+function confirmReuseTaskTemplate(id){
+ const t=getTaskTemplate(id);if(!t)return;
+ showTaskModal('Reutilizar plantilla','<p>¿Quieres crear una tarea nueva a partir de «'+escapeHTML(t.title)+'»?</p>'+(t.wasScheduled?' <p><strong>Recuerda:</strong> esta plantilla proviene de una tarea programada. La nueva tarea se creará sin fecha; podrás programarla nuevamente si lo deseas.</p>':'')+'<div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="reuseTaskTemplate('+Number(t.id)+')">Crear tarea</button></div>');
+}
+function reuseTaskTemplate(id){
+ const t=getTaskTemplate(id);if(!t)return;
+ const copy=JSON.parse(JSON.stringify(t));let seed=Date.now();copy.id=seed++;copy.done=false;copy.scheduledDate=null;delete copy.wasScheduled;copy.createdAt=new Date().toISOString();
+ copy.subtasks=(copy.subtasks||[]).map(st=>({...st,id:seed++,done:false,subtasks:(st.subtasks||[]).map(n=>({...n,id:seed++,done:false}))}));
+ tasks.push(copy);save();closeModal();render();
+ if(t.wasScheduled)showTaskModal('Plantilla de tarea programada','<p>Esta plantilla originalmente correspondía a una tarea programada. La nueva tarea se creó <strong>sin programación</strong>. Si lo necesitas, puedes asignarle una nueva fecha desde la edición de la tarea.</p><div class="event-detail-actions"><button class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
 function taskTodayKey(){
  const today=new Date();
@@ -959,13 +1346,15 @@ function taskHasPendingSubtasks(task){
  return (Array.isArray(task?.subtasks)?task.subtasks:[]).some(st=>!st.done||(Array.isArray(st.subtasks)?st.subtasks:[]).some(n=>!n.done));
 }
 function renderScopedTasks(scope){
+ const isAll=scope==='all';
+ const isShared=scope==='shared';
  const isFamily=scope==='family';
  const isAssigned=scope==='assigned';
  const isPending=scope==='pending';
- const scopedTasks=tasks.filter(t=>isPending?(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t));
+ const scopedTasks=isAll?tasks.filter(t=>t.scope!=='shared'):tasks.filter(t=>isShared?t.scope==='shared':isPending?t.scope!=='shared'&&(!t.done||taskHasPendingSubtasks(t))&&!taskIsScheduledPast(t)&&(taskIsPublic(t)?(taskHasAssignmentsForCurrentUser(t)||taskIsScheduledForFuture(t)||(!!t.scheduledDate&&String(t.scheduledDate)===taskTodayKey()&&!taskHasAnyAssignments(t))):true):isAssigned?taskHasAssignmentsForCurrentUser(t):isFamily?taskIsPublic(t):!taskIsPublic(t)&&t.scope!=='shared');
  const pending=scopedTasks.filter(t=>!t.done||taskHasPendingSubtasks(t)).length;
- const title=isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
- const description=isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
+ const title=isShared?'Tareas Compartido':isAll?'Todas las tareas':isPending?'Tareas Pendientes':isAssigned?'Tareas Asignadas':isFamily?'Tareas de Familia':'Mis tareas Personales';
+ const description=isShared?'Tus tareas privadas de la categoría Compartido.':isAll?'Todas las tareas disponibles, incluidas las pendientes, programadas y terminadas.':isPending?'Tus tareas personales pendientes y las tareas familiares pendientes asignadas a ti.':isAssigned?'Las tareas y subtareas que están asignadas a ti.':isFamily?'Las tareas compartidas del hogar, en un solo lugar.':'Tus tareas personales, en un solo lugar.';
  const assigneeLabel=value=>value?'<span class="task-assignee">· '+escapeHTML(value)+'</span>':'';
  const renderTaskCards=list=>list.map(t=>{
   const rootAssigned=(isAssigned||isPending)&&taskIsAssignedToCurrentUser(t);
@@ -978,15 +1367,45 @@ function renderScopedTasks(scope){
    const nested=isPending?nestedAll.filter(n=>!n.done):nestedAll;
    const subtaskDone=!!st.done&&!nestedAll.some(n=>!n.done);
    const responsible=st.assignedTo||t.assignedTo||'';
-   const nestedHTML=nested.map(n=>`<div class="family-task-line family-task-level-two" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})"><input type="checkbox" ${n.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span></div>`).join('');
+   const nestedHTML=nested.map(n=>`<div class="family-task-line family-task-level-two" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(n.id)},'nested',${Number(st.id)})"><input type="checkbox" ${n.done?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},${Number(n.id)})"><span class="${n.done?'done':''}">${escapeHTML(n.title)}</span>${assigneeLabel(n.assignedTo||st.assignedTo||t.assignedTo)}</div>`).join('');
    return `<div class="family-subtask" onpointerdown="taskLongPressStart(event,${Number(t.id)},${Number(st.id)})" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()" draggable="true" ondragstart="taskDragStart(event,${Number(t.id)},${Number(st.id)},'sub',null)" ondragover="event.preventDefault()" ondrop="taskDrop(event,${Number(t.id)},${Number(st.id)},'sub',null)">
-    ${nested.length?`<details class="family-subtask-disclosure"><summary class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</summary><div class="family-nested-list">${nestedHTML}</div></details>`:`<div class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</div>`}
+    ${nested.length?`<details class="family-subtask-disclosure" ontoggle="rememberTaskDisclosure('sub:${Number(t.id)}:${Number(st.id)}',this.open)" ${expandedTaskDisclosures.has('sub:'+t.id+':'+st.id)?'open':''}><summary class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</summary><div class="family-nested-list">${nestedHTML}</div></details>`:`<div class="family-task-line"><input type="checkbox" ${subtaskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTaskLevel(${Number(t.id)},${Number(st.id)},null)"><span class="${subtaskDone?'done':''}">${escapeHTML(st.title)}</span>${assigneeLabel(responsible)}</div>`}
    </div>`;
   }).join('');
   const mainCheckbox=(isAssigned||isPending)&&!rootAssigned?'':`<input type="checkbox" ${taskDone?'checked':''} onclick="event.stopPropagation()" onchange="toggleTask(${Number(t.id)})">`;
   const mainLine=`<div class="family-task-main"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></div>`;
-  return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure"><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
+  return (isPending?allSubtasks.length>0:subtasks.length>0)?`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()"><details class="family-task-disclosure" ontoggle="rememberTaskDisclosure('task:${Number(t.id)}',this.open)" ${expandedTaskDisclosures.has('task:'+t.id)?'open':''}><summary class="family-task-summary"><div class="family-task-line">${mainCheckbox}<strong class="${taskDone?'done':''}">${escapeHTML(t.title)}</strong>${assigneeLabel(t.assignedTo)}</div></summary><div class="family-subtasks">${subHTML||'<div class="muted">No tienes subtareas pendientes en esta tarea.</div>'}</div></details></article>`:`<article class="card family-task-card" onpointerdown="taskLongPressStart(event,${Number(t.id)},null)" onpointerup="taskLongPressEnd()" onpointerleave="taskLongPressEnd()" onpointercancel="taskLongPressEnd()" oncontextmenu="event.preventDefault()">${mainLine}</article>`;
  }).join('');
+ if(isShared){const cards=renderTaskCards(scopedTasks);screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div><div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}<section class="tasks-content family-content" aria-label="Tareas Compartido"><div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>${cards||'<div class="card empty">Todavía no hay tareas compartidas.</div>'}</section></div>`;return;}
+ if(isAll){
+  const completedTasks=scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t));
+  const activeTasks=scopedTasks.filter(t=>!completedTasks.includes(t));
+  const personalTasks=activeTasks.filter(t=>!taskIsPublic(t)&&!taskIsScheduledForFuture(t));
+  const familyTasks=activeTasks.filter(t=>taskIsPublic(t)&&!taskIsScheduledForFuture(t));
+  const scheduledPersonal=activeTasks.filter(t=>!taskIsPublic(t)&&taskIsScheduledForFuture(t));
+  const scheduledFamily=activeTasks.filter(t=>taskIsPublic(t)&&taskIsScheduledForFuture(t));
+  const personalHTML=renderTaskCards(personalTasks);
+  const familyHTML=renderTaskCards(familyTasks);
+  const scheduledPersonalHTML=renderTaskCards(scheduledPersonal);
+  const scheduledFamilyHTML=renderTaskCards(scheduledFamily);
+  const completedHTML=renderTaskCards(completedTasks);
+  screen.innerHTML=`<div class="page-heading"><h1>${title}</h1><p>${description}</p></div>
+ <div class="tasks-layout${taskSidebarCollapsed?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
+  <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
+   <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
+   <section class="task-group-section"><h2 class="task-group-title">Tareas Personales</h2>${personalHTML||'<div class="card empty">Todavía no hay tareas personales.</div>'}</section>
+   <section class="task-group-section"><h2 class="task-group-title">Tareas Familia</h2>${familyHTML||'<div class="card empty">Todavía no hay tareas familiares.</div>'}</section>
+   <details class="task-scheduled-section" ontoggle="rememberTaskSection('all:scheduled',this.open)" ${expandedTaskSections.has('all:scheduled')?'open':''}><summary><span class="task-scheduled-heading">Tareas Programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledPersonal.length+scheduledFamily.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary>
+    <div class="task-scheduled-content">
+     <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Personales</h3>${scheduledPersonalHTML||'<div class="card empty">No hay tareas personales programadas.</div>'}</section>
+     <section class="task-group-section"><h3 class="task-group-title">Tareas Programadas Familia</h3>${scheduledFamilyHTML||'<div class="card empty">No hay tareas familiares programadas.</div>'}</section>
+    </div>
+   </details>
+   <details class="task-scheduled-section" ontoggle="rememberTaskSection('all:completed',this.open)" ${expandedTaskSections.has('all:completed')?'open':''}><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedHTML||'<div class="card empty">Todavía no hay tareas terminadas.</div>'}</div></details>
+  </section>
+ </div><div class="bottom-space"></div>`;
+  return;
+ }
  const splitScheduled=isFamily||scope==='personal'||isPending;
  const completedTasks=splitScheduled&&!isPending?scopedTasks.filter(t=>!!t.done||taskIsScheduledPast(t)):[];
  const normalTasks=splitScheduled?scopedTasks.filter(t=>(!t.done||(isPending&&taskHasPendingSubtasks(t)))&&!taskIsScheduledForFuture(t)&&!taskIsScheduledPast(t)):scopedTasks;
@@ -998,7 +1417,7 @@ function renderScopedTasks(scope){
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Tareas ${title.toLowerCase()}">
    <div class="family-list-heading"><strong>${scopedTasks.length} ${scopedTasks.length===1?'tarea':'tareas'}</strong><span class="muted">${pending} pendientes</span></div>
-   ${splitScheduled?`<section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section><details class="task-scheduled-section"><summary><span class="task-scheduled-heading">Tareas programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>${!isPending?`<details class="task-scheduled-section"><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedCards||'<div class="card empty">Todavía no hay tareas terminadas en esta sección.</div>'}</div></details>`:''}`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
+   ${splitScheduled?`<section class="task-group-section"><h2 class="task-group-title">Tareas</h2>${normalCards||'<div class="card empty">Todavía no hay tareas normales en esta sección.</div>'}</section><details class="task-scheduled-section" ontoggle="rememberTaskSection('${taskView}:scheduled',this.open)" ${expandedTaskSections.has(taskView+':scheduled')?'open':''}><summary><span class="task-scheduled-heading">Tareas programadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${scheduledTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${scheduledCards||'<div class="card empty">Todavía no hay tareas programadas en esta sección.</div>'}</div></details>${!isPending?`<details class="task-scheduled-section" ontoggle="rememberTaskSection('${taskView}:completed',this.open)" ${expandedTaskSections.has(taskView+':completed')?'open':''}><summary><span class="task-scheduled-heading">Terminadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${completedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content">${completedCards||'<div class="card empty">Todavía no hay tareas terminadas en esta sección.</div>'}</div></details>`:''}`:normalCards||'<div class="card empty">Todavía no hay tareas en esta sección. Puedes crear una con el botón +.</div>'}
   </section>
  </div><div class="bottom-space"></div>`;
 }
@@ -1019,10 +1438,26 @@ function taskDrop(event,taskId,targetId,level,parentId){
 }
 function renderFamilyTasks(){renderScopedTasks('family');}
 function renderMyDay(){
- screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Aquí encontrarás el resumen de las tareas que tienes asignadas y tus tareas personales para cada día.</p></div>
+ const todayKey=taskTodayKey();
+ const isPendingToday=t=>(!t.done||taskHasPendingSubtasks(t))&&(!t.scheduledDate||String(t.scheduledDate)===todayKey);
+ const pendingTasks=tasks.filter(t=>t.scope!=='shared'&&isPendingToday(t));
+ const assignedTasks=tasks.filter(t=>t.scope!=='shared'&&isPendingToday(t)&&taskHasAssignmentsForCurrentUser(t));
+ const pendingRows=pendingTasks.map(t=>{
+  const family=taskIsPublic(t);
+  return '<button type="button" class="my-day-task-row" onclick="showTaskView(\''+(family?'family':'personal')+'\')"><span class="my-day-task-title">'+escapeHTML(t.title)+'</span><span class="my-day-task-kind" aria-label="'+(family?'Familia':'Personal')+'">'+(family?'🫂':'👤')+'</span></button>';
+ }).join('');
+ const assignedRows=assignedTasks.map(t=>{
+  const rootAssigned=taskIsAssignedToCurrentUser(t);
+  const assignedSubs=rootAssigned?(t.subtasks||[]):(t.subtasks||[]).filter(st=>taskSubtaskIsAssignedToCurrentUser(st));
+  const assignedNested=(t.subtasks||[]).flatMap(st=>(rootAssigned?(st.subtasks||[]):(st.subtasks||[]).filter(n=>taskSubtaskIsAssignedToCurrentUser(n))).map(n=>({title:n.title,parent:st.title})));
+  const details=[...assignedSubs.map(st=>st.title),...assignedNested.map(n=>n.title)];
+  return '<button type="button" class="my-day-task-row my-day-assigned-row" onclick="showTaskView(\'assigned\')"><span class="my-day-task-title">'+escapeHTML(t.title)+(details.length?'<small class="my-day-assigned-detail">'+details.map(x=>escapeHTML(x)).join(' · ')+'</small>':'')+'</span><span class="my-day-task-kind" aria-label="Familia">🫂</span></button>';
+ }).join('');
+ screen.innerHTML=`<div class="page-heading"><h1>Tareas de Mi Día</h1><p>Un resumen de tus tareas pendientes y las tareas asignadas a ti.</p></div>
  <div class="tasks-layout${taskSidebarCollapsed&&['today','family','personal','assigned'].includes(taskView)?' is-sidebar-collapsed':''}">${taskSidebarHTML()}
   <section class="tasks-content family-content" aria-label="Resumen de Mi día">
-   <div class="card empty">La vista diaria y su organización se diseñarán en la siguiente etapa.</div>
+   <section class="my-day-section"><h2 class="task-group-title">Tareas pendientes</h2><div class="my-day-task-list">${pendingRows||'<div class="card empty">No tienes tareas pendientes.</div>'}</div></section>
+   <details class="task-scheduled-section my-day-assigned-section" ontoggle="rememberTaskSection('today:assigned',this.open)" ${expandedTaskSections.has('today:assigned')?'open':''}><summary><span class="task-scheduled-heading">Asignadas</span><span class="task-scheduled-meta"><span class="muted task-scheduled-count">(${assignedTasks.length})</span><span class="task-scheduled-arrow" aria-hidden="true">⌄</span></span></summary><div class="task-scheduled-content"><div class="my-day-task-list">${assignedRows||'<div class="card empty">No tienes tareas asignadas.</div>'}</div></div></details>
   </section>
  </div>`;
 }
@@ -1035,11 +1470,36 @@ function syncTaskCompletion(task){
  });
  if(subs.length)task.done=subs.every(st=>!!st.done);
 }
+function rememberTaskDisclosure(key,isOpen){
+ if(isOpen)expandedTaskDisclosures.add(key);else expandedTaskDisclosures.delete(key);
+}
+function rememberTaskSection(key,isOpen){
+ if(isOpen)expandedTaskSections.add(key);else expandedTaskSections.delete(key);
+}
+function expandTaskDisclosure(taskId,subtaskId=null){
+ expandedTaskDisclosures.add('task:'+taskId);
+ if(subtaskId!==null)expandedTaskDisclosures.add('sub:'+taskId+':'+subtaskId);
+}
+function setTaskTreeDone(task,done){
+ if(!task)return;
+ task.done=done;
+ (task.subtasks||[]).forEach(st=>{
+  st.done=done;
+  (st.subtasks||[]).forEach(n=>{n.done=done});
+ });
+}
 function toggleTaskLevel(taskId,subtaskId,nestedId){
  const task=tasks.find(t=>Number(t.id)===taskId);if(!task)return;
  const sub=(task.subtasks||[]).find(s=>Number(s.id)===subtaskId);if(!sub)return;
- if(nestedId===null)sub.done=!sub.done;
- else{const nested=(sub.subtasks||[]).find(n=>Number(n.id)===nestedId);if(nested)nested.done=!nested.done}
+ if(nestedId===null){
+  const next=!sub.done;sub.done=next;
+  (sub.subtasks||[]).forEach(n=>{n.done=next});
+  expandTaskDisclosure(taskId,subtaskId);
+ }else{
+  const nested=(sub.subtasks||[]).find(n=>Number(n.id)===nestedId);if(!nested)return;
+  nested.done=!nested.done;
+  expandTaskDisclosure(taskId,subtaskId);
+ }
  syncTaskCompletion(task);save();render();
 }
 function moveTaskSubtask(taskId,fromId,toId,level,parentId){
@@ -1071,18 +1531,18 @@ function addNestedTaskSubtask(parentRow){
  const remove=document.createElement('button');remove.type='button';remove.className='small-btn';remove.textContent='×';remove.setAttribute('aria-label','Eliminar subtarea nivel 2');remove.onclick=()=>row.remove();
  row.append(input,remove);list.appendChild(row);input.focus();
 }
-function openTaskActions(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('¿Qué quieres hacer?','<div class="task-action-menu"><button class="secondary-btn" onclick="confirmDeleteTask('+t.id+')">Borrar</button><button class="secondary-btn" onclick="openTaskEditor('+t.id+')">Editar</button><button class="secondary-btn" onclick="duplicateTask('+t.id+')">Duplicar</button>'+(taskIsPublic(t)?'<button class="secondary-btn" onclick="openTaskAssignment('+t.id+',null)">Asignar</button>':'')+'<button class="primary-btn" onclick="closeModal()">Cancelar</button></div>')}
+function openTaskActions(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('¿Qué quieres hacer?','<div class="task-action-menu"><button class="secondary-btn" onclick="confirmDeleteTask('+t.id+')">Borrar</button><button class="secondary-btn" onclick="openTaskEditor('+t.id+')">Editar</button><button class="secondary-btn" onclick="duplicateTask('+t.id+')">Duplicar</button><button class="secondary-btn" onclick="saveTaskAsTemplateFromTask('+t.id+')">Guardar plantilla</button>'+(taskIsPublic(t)?'<button class="secondary-btn" onclick="openTaskAssignment('+t.id+',null)">Asignar</button>':'')+'<button class="primary-btn" onclick="closeModal()">Cancelar</button></div>')}
 function confirmDeleteTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('Confirmar eliminación','<p>¿Quieres borrar «'+escapeHTML(t.title)+'» y todas sus subtareas?</p><div class="event-detail-actions"><button class="secondary-btn" onclick="openTaskActions('+t.id+')">Cancelar</button><button class="primary-btn" onclick="deleteTask('+t.id+')">Sí, borrar</button></div>')}
 function duplicateTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;const copy=JSON.parse(JSON.stringify(t));let seed=Date.now();copy.id=seed++;copy.subtasks=(copy.subtasks||[]).map(st=>({...st,id:seed++,subtasks:(st.subtasks||[]).map(n=>({...n,id:seed++}))}));copy.title=t.title+' (copia)';copy.done=false;copy.createdAt=new Date().toISOString();tasks.push(copy);save();closeModal();render()}
 function currentHouseholdMember(){return localStorage.getItem('enorden_profile_name')||'Vale'}
-function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task)return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="" '+(!assigned?'selected':'')+'>Sin asignar</option><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>')}
-function saveTaskAssignment(){if(!taskAssignmentTarget)return;const task=tasks.find(x=>Number(x.id)===Number(taskAssignmentTarget.taskId));if(!task)return;const value=document.getElementById('taskAssignee')?.value??'';if(taskAssignmentTarget.subtaskId==null){if(value)task.assignedTo=value;else delete task.assignedTo}else{const sub=(task.subtasks||[]).find(x=>Number(x.id)===Number(taskAssignmentTarget.subtaskId));if(sub){if(value)sub.assignedTo=value;else delete sub.assignedTo}}taskAssignmentTarget=null;save();closeModal();render()}
-function taskLongPressStart(event,taskId,subtaskId){if(event.target.closest('input,button,select'))return;if(subtaskId==null&&event.target.closest('.family-subtask'))return;clearTimeout(taskPressTimer);taskPressTimer=setTimeout(()=>{taskPressTriggered=true;if(subtaskId==null)openTaskActions(taskId);else openTaskAssignment(taskId,subtaskId)},550)}
+function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task||!taskIsPublic(task))return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="" '+(!assigned?'selected':'')+'>Sin asignar</option><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>')}
+function saveTaskAssignment(){if(!taskAssignmentTarget)return;const task=tasks.find(x=>Number(x.id)===Number(taskAssignmentTarget.taskId));if(!task||!taskIsPublic(task)){taskAssignmentTarget=null;closeModal();return;}const value=document.getElementById('taskAssignee')?.value??'';if(taskAssignmentTarget.subtaskId==null){if(value)task.assignedTo=value;else delete task.assignedTo}else{const sub=(task.subtasks||[]).find(x=>Number(x.id)===Number(taskAssignmentTarget.subtaskId));if(sub){if(value)sub.assignedTo=value;else delete sub.assignedTo}}taskAssignmentTarget=null;save();closeModal();render()}
+function taskLongPressStart(event,taskId,subtaskId){if(event.target.closest('input,button,select'))return;if(subtaskId==null&&event.target.closest('.family-subtask'))return;clearTimeout(taskPressTimer);taskPressTimer=setTimeout(()=>{taskPressTriggered=true;const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task)return;if(subtaskId==null)openTaskActions(taskId);else if(taskIsPublic(task))openTaskAssignment(taskId,subtaskId)},550)}
 function taskLongPressEnd(){clearTimeout(taskPressTimer)}
 function taskHTML(t){
  return `<div class="task-row"><input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${t.id})"><span class="task-name ${t.done?'done':''}">${escapeHTML(t.title)}</span><button class="small-btn" onclick="deleteTask(${t.id})">×</button></div>`;
 }
-function toggleTask(id){const t=tasks.find(x=>x.id===id);if(t)t.done=!t.done;save();render()}
+function toggleTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(t){setTaskTreeDone(t,!t.done);expandTaskDisclosure(t.id)}save();render()}
 function deleteTask(id){const task=tasks.find(x=>Number(x.id)===Number(id));if(task)events=events.filter(ev=>String(ev.taskId)!==String(task.id));tasks=tasks.filter(x=>Number(x.id)!==Number(id));save();closeModal();render()}
 function renderLists(){
  const sections=['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras','Listo'];
@@ -1474,6 +1934,183 @@ function deleteHome(){
  if(householdRole!=='admin'||householdMemberCount!==1){alert('Solo el administrador cuando es el único integrante puede eliminar el hogar.');return}
  if(confirm('¿Eliminar el hogar? Esta acción no se puede deshacer. En esta versión de prueba no se borrarán datos reales.'))alert('La eliminación del hogar se habilitará cuando exista el sistema de cuentas.');
 }
+
+/* ENTRETENCIÓN — capa de proveedores desacoplada del motor del módulo.
+   El proveedor de demostración permite probar la experiencia sin credenciales.
+   Para producción se conectará un proveedor autorizado mediante este mismo contrato. */
+const entertainmentGenres=['Acción','Aventura','Animación','Ciencia ficción','Comedia','Crimen','Documental','Drama','Fantasía','Misterio','Romance','Suspenso','Terror','Familia','Historia','Musical'];
+const entertainmentDemoCatalog=[
+ {id:'demo-film-1',title:'Interestelar',type:'movie',year:2014,genres:['Ciencia ficción','Aventura','Drama'],overview:'Un grupo de exploradores emprende una misión que podría asegurar el futuro de la humanidad.',runtime:169},
+ {id:'demo-film-2',title:'Jurassic Park',type:'movie',year:1993,genres:['Aventura','Ciencia ficción','Suspenso'],overview:'Un parque temático con dinosaurios vivos se convierte en una lucha por sobrevivir.',runtime:127},
+ {id:'demo-film-3',title:'Shrek',type:'movie',year:2001,genres:['Animación','Comedia','Fantasía','Familia'],overview:'Un ogro emprende una aventura inesperada para recuperar la tranquilidad de su pantano.',runtime:90},
+ {id:'demo-film-4',title:'El viaje de Chihiro',type:'movie',year:2001,genres:['Animación','Fantasía','Aventura'],overview:'Una niña entra en un mundo mágico y debe encontrar la forma de regresar a casa.',runtime:125},
+ {id:'demo-film-5',title:'Knives Out',type:'movie',year:2019,genres:['Misterio','Comedia','Crimen','Drama'],overview:'Un detective investiga la muerte de un escritor dentro de una familia llena de secretos.',runtime:130},
+ {id:'demo-film-6',title:'Mad Max: Fury Road',type:'movie',year:2015,genres:['Acción','Aventura','Ciencia ficción'],overview:'Una huida a través del desierto se transforma en una persecución de alto riesgo.',runtime:120},
+ {id:'demo-film-7',title:'Orgullo y prejuicio',type:'movie',year:2005,genres:['Romance','Drama'],overview:'Una joven de carácter independiente enfrenta las expectativas sociales y sus propios sentimientos.',runtime:129},
+ {id:'demo-film-8',title:'Get Out',type:'movie',year:2017,genres:['Terror','Misterio','Suspenso'],overview:'Una visita familiar aparentemente normal revela una situación cada vez más inquietante.',runtime:104},
+ {id:'demo-film-9',title:'Coco',type:'movie',year:2017,genres:['Animación','Familia','Aventura','Musical'],overview:'Un niño apasionado por la música descubre la historia de su familia en una aventura extraordinaria.',runtime:105},
+ {id:'demo-film-10',title:'The Grand Budapest Hotel',type:'movie',year:2014,genres:['Comedia','Aventura','Drama'],overview:'Un conserje y su joven aprendiz quedan envueltos en una aventura alrededor de una valiosa obra de arte.',runtime:99},
+ {id:'demo-film-11',title:'Dune',type:'movie',year:2021,genres:['Ciencia ficción','Aventura','Drama'],overview:'El heredero de una familia noble llega a un planeta desértico clave para el destino del universo.',runtime:155},
+ {id:'demo-film-12',title:'Scream',type:'movie',year:1996,genres:['Terror','Misterio','Suspenso'],overview:'Un grupo de jóvenes recibe llamadas amenazantes de alguien que conoce sus secretos.',runtime:111},
+ {id:'demo-series-1',title:'Dark',type:'tv',year:2017,genres:['Ciencia ficción','Misterio','Drama','Suspenso'],overview:'La desaparición de un niño revela conexiones entre varias familias y distintas épocas.',seasons:3},
+ {id:'demo-series-2',title:'The Office',type:'tv',year:2005,genres:['Comedia'],overview:'La vida cotidiana de los trabajadores de una oficina queda registrada en formato de falso documental.',seasons:9},
+ {id:'demo-series-3',title:'The Last of Us',type:'tv',year:2023,genres:['Drama','Aventura','Acción'],overview:'Dos sobrevivientes atraviesan un mundo devastado y construyen un vínculo inesperado.',seasons:2},
+ {id:'demo-series-4',title:'Stranger Things',type:'tv',year:2016,genres:['Ciencia ficción','Terror','Drama','Aventura'],overview:'Un grupo de amigos descubre fenómenos inexplicables en su pequeño pueblo.',seasons:5},
+ {id:'demo-series-5',title:'Brooklyn Nine-Nine',type:'tv',year:2013,genres:['Comedia','Crimen'],overview:'Un equipo de detectives resuelve casos mientras lidia con el caos de su comisaría.',seasons:8},
+ {id:'demo-series-6',title:'The Crown',type:'tv',year:2016,genres:['Drama','Historia'],overview:'Un drama sobre la vida pública y privada de la familia real británica.',seasons:6},
+ {id:'demo-series-7',title:'The Bear',type:'tv',year:2022,genres:['Drama','Comedia'],overview:'Un chef vuelve a Chicago para hacerse cargo del restaurante familiar.',seasons:4},
+ {id:'demo-series-8',title:'Wednesday',type:'tv',year:2022,genres:['Misterio','Comedia','Fantasía'],overview:'Una estudiante investiga sucesos extraños en una academia llena de personajes peculiares.',seasons:2}
+];
+/*
+ * REVISAR / PROPUESTA DE ARQUITECTURA (NO IMPLEMENTADA):
+ * Evaluar Cloudflare Workers como intermediario seguro entre EnOrden (alojado
+ * en Netlify) y proveedores externos como TMDB. La propuesta busca mantener
+ * las consultas al catálogo fuera de Netlify para no consumir sus créditos
+ * de funciones de servidor, y guardar las credenciales del proveedor como
+ * secretos del servicio intermediario, nunca en el código cliente.
+ *
+ * Antes de decidir o implementar:
+ * - Revisar los límites, cuotas, condiciones y posibles costos vigentes del
+ *   plan gratuito de Cloudflare Workers.
+ * - Comparar esos límites con el uso esperado y probar paginación, caché,
+ *   tiempos de espera, errores y protección ante exceso de solicitudes.
+ * - Confirmar el estado y las condiciones actuales del plan/créditos de Netlify.
+ * - Mantener la integración detrás de la interfaz intercambiable de proveedores.
+ * - Asegurar que una caída o límite del intermediario/TMDB afecte solo a
+ *   Entretención y no al resto de EnOrden.
+ *
+ * Esta es solo una alternativa pendiente de evaluación; no constituye una
+ * decisión técnica definitiva ni autoriza cambios en otros módulos.
+ */
+const entertainmentProviders={
+ demo:{
+  id:'demo',name:'Catálogo de demostración',
+  async discover(filters){
+   return entertainmentDemoCatalog.filter(item=>{
+    if(filters.type!=='any'&&item.type!==filters.type)return false;
+    if(!filters.noYear&&(item.year<filters.yearFrom||item.year>filters.yearTo))return false;
+    if(filters.genres.length&&!item.genres.some(g=>filters.genres.includes(g)))return false;
+    return true;
+   }).map(item=>({...item,source:'demo',posterUrl:null,trailerUrl:null,streamingProviders:[]}));
+  }
+ }
+};
+const entertainmentProviderSettings={activeProvider:'demo'};
+function getEntertainmentProvider(){return entertainmentProviders[entertainmentProviderSettings.activeProvider]||entertainmentProviders.demo}
+function entertainmentSafeLink(url){return /^https?:\/\//i.test(String(url||''))?String(url):''}
+
+function entertainmentWheelMarkup(){
+ // DECISIÓN: los tonos de casino son fijos y no heredan variables del tema global.
+ const palette=['#171717','#761b28','#e8ddc6','#a47a32','#24201b','#8d1c2d','#f2e8d4','#76551f','#111111','#6f1725','#d9c9a9','#98702b'];
+ const items=entertainmentWheelItems.length?entertainmentWheelItems:Array.from({length:8},()=>({title:'¿?'}));
+ const slice=360/items.length;
+ const stops=items.map((item,i)=>{const start=i*slice,end=(i+1)*slice,divider=Math.max(start,end-.85);return palette[i%palette.length]+' '+start+'deg '+divider+'deg,#d7b66e '+divider+'deg '+end+'deg'}).join(',');
+ const labelWidth=items.length>=11?39:items.length>=9?44:items.length>=7?49:54;
+ const labelFont=items.length>=11?6.8:items.length>=9?7.2:7.8;
+ const maxLabelLength=items.length>=11?8:items.length>=9?10:items.length>=7?12:14;
+ const labels=items.map((item,i)=>{const ivory=['#e8ddc6','#f2e8d4','#d9c9a9'].includes(palette[i%palette.length]),title=String(item.title||'¿?'),shortTitle=title.length>maxLabelLength?title.slice(0,maxLabelLength-1)+'…':title;return '<span class="entertainment-wheel-label'+(ivory?' is-ivory':'')+'" title="'+escapeHTML(title)+'" style="--angle:'+((i+.5)*slice)+'deg;--label-width:'+labelWidth+'px;--label-font:'+labelFont+'px">'+escapeHTML(shortTitle)+'</span>'}).join('');
+ const ballTop=entertainmentBallLanded?'calc(50% - 36%)':'calc(50% - 46%)';
+ return '<div class="entertainment-wheel-track" aria-hidden="true"></div><div class="entertainment-wheel" id="entertainmentWheel" style="background:conic-gradient(from -90deg,'+stops+');transform:rotate('+entertainmentWheelRotation+'deg)" role="img" aria-label="Ruleta de casino con '+items.length+' títulos">'+labels+'<div class="entertainment-wheel-hub">ENORDEN</div></div><div class="entertainment-ball-orbit" id="entertainmentBallOrbit" style="transform:rotate('+entertainmentBallAngle+'deg)"><span class="entertainment-ball" id="entertainmentBall" style="top:'+ballTop+'" role="img" aria-label="Bola blanca de la ruleta"></span></div>';
+}
+function entertainmentTrailerLink(item){if(item.trailerOfficial!==true||item.trailerVerified!==true||!item.trailerLanguage||!item.requestedLanguage||item.trailerLanguage!==item.requestedLanguage)return '';return entertainmentSafeLink(item.trailerUrl)}
+function closeEntertainmentResult(){entertainmentResultOpen=false;renderEntertainment()}
+function renderEntertainmentResultModal(resultMarkup){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+'</div></div>'}
+function renderEntertainment(){
+ const provider=getEntertainmentProvider();
+ const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id)).length;
+ const result=entertainmentCurrent;
+ const poster=result?.posterUrl&&entertainmentSafeLink(result.posterUrl)?'<img src="'+escapeHTML(result.posterUrl)+'" alt="Póster de '+escapeHTML(result.title)+'">':'<span>🎬</span>';
+ const typeLabel=item=>item.type==='movie'?'Película':'Serie';
+ const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions'+(entertainmentTrailerLink(result)?' has-trailer':'')+'">'+(entertainmentTrailerLink(result)?'<a href="'+escapeHTML(entertainmentTrailerLink(result))+'" target="_blank" rel="noopener noreferrer">Ver tráiler oficial</a>':'<span class="entertainment-note">No hay un tráiler oficial verificado en el idioma configurado.</span>')+'<button onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')">'+(entertainmentFavorites.some(f=>((typeof f==='string'?f:f.id)===result.id))?'♥ En favoritos':'♡ Guardar favorito')+'</button></div></div></div>'+(result.streamingProviders?.length?'<p class="entertainment-note">Disponible en: '+escapeHTML(result.streamingProviders.join(', '))+'</p>':'<p class="entertainment-note">La disponibilidad en plataformas de Chile se incorporará al conectar una fuente que entregue esos datos.</p>')+'</div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
+ const favoriteItems=entertainmentFavorites.map(entry=>typeof entry==='string'?(entertainmentPool.find(x=>x.id===entry)||entertainmentDemoCatalog.find(x=>x.id===entry)):entry).filter(Boolean);
+ screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
+}
+function renderEntertainmentSetupModal(){
+ const selected=entertainmentFilters||{type:'any',genres:[],yearFrom:1980,yearTo:new Date().getFullYear(),noYear:true};
+ return '<div class="entertainment-modal-layer" onclick="if(event.target===this)cancelEntertainmentSetup()"><div class="entertainment-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentSetupTitle"><div class="entertainment-modal-head"><h2 id="entertainmentSetupTitle">Entretención</h2><button class="entertainment-modal-close" onclick="cancelEntertainmentSetup()" aria-label="Cerrar">×</button></div><div class="entertainment-form-section"><strong>¿Qué quieres ver?</strong><div class="entertainment-type-options"><label class="entertainment-type-option"><input type="radio" name="entertainmentType" value="movie" '+(selected.type==='movie'?'checked':'')+'><span>🎬 Película</span></label><label class="entertainment-type-option"><input type="radio" name="entertainmentType" value="tv" '+(selected.type==='tv'?'checked':'')+'><span>📺 Serie</span></label><label class="entertainment-type-option"><input type="radio" name="entertainmentType" value="any" '+(selected.type==='any'?'checked':'')+'><span>Me da igual</span></label></div></div><div class="entertainment-form-section"><strong>¿Qué géneros te interesan hoy?</strong><div class="entertainment-genre-grid">'+entertainmentGenres.map(g=>'<label class="entertainment-genre"><input type="checkbox" name="entertainmentGenre" value="'+escapeHTML(g)+'" '+(selected.genres.includes(g)?'checked':'')+'> '+escapeHTML(g)+'</label>').join('')+'</div><p class="entertainment-note">Si eliges varios géneros, aparecerán títulos que coincidan con cualquiera de ellos o con una combinación.</p></div><div class="entertainment-form-section"><strong>¿De qué época?</strong><label class="entertainment-no-year"><input id="entertainmentNoYear" type="checkbox" '+(selected.noYear?'checked':'')+' onchange="toggleEntertainmentYearFields()"> No me importa el año</label><div class="entertainment-year-row" id="entertainmentYearFields" '+(selected.noYear?'style="opacity:.45"':'')+'><label>Desde<input id="entertainmentYearFrom" type="number" min="1888" max="'+new Date().getFullYear()+'" value="'+selected.yearFrom+'" '+(selected.noYear?'disabled':'')+'></label><label>Hasta<input id="entertainmentYearTo" type="number" min="1888" max="'+new Date().getFullYear()+'" value="'+selected.yearTo+'" '+(selected.noYear?'disabled':'')+'></label></div></div><div class="entertainment-modal-actions"><button class="secondary-btn" onclick="cancelEntertainmentSetup()">Cancelar</button><button class="primary-btn" onclick="applyEntertainmentSetup()">Listo</button></div></div></div>';
+}
+function toggleEntertainmentYearFields(){
+ const noYear=document.getElementById('entertainmentNoYear')?.checked;
+ ['entertainmentYearFrom','entertainmentYearTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=!!noYear});
+ const wrap=document.getElementById('entertainmentYearFields');if(wrap)wrap.style.opacity=noYear?'.45':'1';
+}
+function openEntertainmentSetup(){entertainmentSetupOpen=true;renderEntertainment()}
+function cancelEntertainmentSetup(){/* DECISIÓN: cancelar solo cierra la ventana; conserva filtros, catálogo, sesión y cualquier giro en curso. */entertainmentSetupOpen=false;renderEntertainment()}
+async function applyEntertainmentSetup(){
+ const type=document.querySelector('input[name="entertainmentType"]:checked')?.value||'any';
+ const genres=[...document.querySelectorAll('input[name="entertainmentGenre"]:checked')].map(x=>x.value);
+ const noYear=document.getElementById('entertainmentNoYear').checked;
+ const yearFrom=noYear?1888:Number(document.getElementById('entertainmentYearFrom').value);
+ const yearTo=noYear?new Date().getFullYear():Number(document.getElementById('entertainmentYearTo').value);
+ if(!noYear&&(!Number.isInteger(yearFrom)||!Number.isInteger(yearTo)||yearFrom<1888||yearTo>new Date().getFullYear()||yearFrom>yearTo)){alert('Revisa el rango de años.');return}
+ entertainmentFilters={type,genres,yearFrom,yearTo,noYear};
+ cancelEntertainmentWheelAnimations();if(entertainmentWheelTimer)clearTimeout(entertainmentWheelTimer);entertainmentWheelTimer=null;
+ entertainmentSetupOpen=false;entertainmentCurrent=null;entertainmentResultOpen=false;entertainmentShownIds=new Set();entertainmentWheelItems=[];entertainmentWheelRotation=0;entertainmentBallAngle=0;entertainmentBallLanded=false;entertainmentWheelSpinning=false;entertainmentPendingWinner=null;
+ try{
+  const provider=getEntertainmentProvider();
+  entertainmentPool=await provider.discover(entertainmentFilters);
+  entertainmentReady=true;
+  renderEntertainment();
+  if(!entertainmentPool.length)alert('No encontramos títulos que coincidan con esos filtros. Puedes cambiar tus preferencias e intentarlo nuevamente.');
+ }catch(error){entertainmentReady=false;alert('No fue posible cargar el catálogo. Inténtalo nuevamente.');renderEntertainment()}
+}
+function cancelEntertainmentWheelAnimations(){
+ [entertainmentWheelAnimation,entertainmentBallOrbitAnimation,entertainmentBallDropAnimation].forEach(animation=>{if(animation)animation.cancel()});
+ entertainmentWheelAnimation=null;entertainmentBallOrbitAnimation=null;entertainmentBallDropAnimation=null;
+}
+function spinEntertainment(){
+ if(entertainmentWheelSpinning)return;
+ const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id));
+ if(!remaining.length){alert('Ya viste todos los títulos disponibles para esta búsqueda. Puedes iniciar una nueva sesión o cambiar tus preferencias.');renderEntertainment();return}
+ const shuffled=[...remaining];
+ for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+ entertainmentWheelItems=shuffled.slice(0,Math.min(12,shuffled.length));
+ const winnerIndex=Math.floor(Math.random()*entertainmentWheelItems.length);
+ entertainmentPendingWinner=entertainmentWheelItems[winnerIndex];
+ const slice=360/entertainmentWheelItems.length,center=(winnerIndex+.5)*slice,currentRotation=entertainmentWheelRotation;
+ const finalBallAngle=Math.random()*360,currentWheelAngle=((currentRotation%360)+360)%360;
+ const wheelDelta=(finalBallAngle-((currentWheelAngle+center)%360)+360)%360,target=currentRotation+360*4+wheelDelta;
+ const ballStart=((entertainmentBallAngle%360)+360)%360,ballDelta=(ballStart-finalBallAngle+360)%360,ballTarget=ballStart-360*5-ballDelta;
+ entertainmentWheelSpinning=true;entertainmentBallLanded=false;renderEntertainment();
+ const wheel=document.getElementById('entertainmentWheel'),orbit=document.getElementById('entertainmentBallOrbit'),ball=document.getElementById('entertainmentBall');
+ if(!wheel||!orbit||!ball){entertainmentWheelSpinning=false;return}
+ const duration=8200,easing='cubic-bezier(.28,.12,.24,1)';
+ wheel.style.transform='rotate('+currentRotation+'deg)';orbit.style.transform='rotate('+ballStart+'deg)';ball.style.top='calc(50% - 46%)';
+ if(typeof wheel.animate==='function'&&typeof orbit.animate==='function'&&typeof ball.animate==='function'){
+  entertainmentWheelAnimation=wheel.animate([{transform:'rotate('+currentRotation+'deg)'},{transform:'rotate('+target+'deg)'}],{duration,easing,fill:'forwards'});
+  entertainmentBallOrbitAnimation=orbit.animate([{transform:'rotate('+ballStart+'deg)'},{transform:'rotate('+ballTarget+'deg)'}],{duration,easing:'cubic-bezier(.32,.12,.25,1)',fill:'forwards'});
+  entertainmentBallDropAnimation=ball.animate([
+   {top:'calc(50% - 46%)',offset:0},{top:'calc(50% - 46%)',offset:.78},
+   {top:'calc(50% - 38%)',offset:.86},{top:'calc(50% - 42%)',offset:.90},
+   {top:'calc(50% - 36%)',offset:.94},{top:'calc(50% - 39%)',offset:.97},
+   {top:'calc(50% - 36%)',offset:1}
+  ],{duration,easing:'linear',fill:'forwards'});
+ }else{
+  wheel.style.transition='transform '+duration+'ms '+easing;orbit.style.transition='transform '+duration+'ms cubic-bezier(.08,.7,.16,1)';
+  ball.style.transition='top 1750ms ease-in-out 6450ms';
+  requestAnimationFrame(()=>{wheel.style.transform='rotate('+target+'deg)';orbit.style.transform='rotate('+ballTarget+'deg)';ball.style.top='calc(50% - 36%)'});
+ }
+ if(entertainmentWheelTimer)clearTimeout(entertainmentWheelTimer);
+ entertainmentWheelTimer=setTimeout(()=>{
+  entertainmentWheelRotation=target;entertainmentBallAngle=finalBallAngle;entertainmentBallLanded=true;
+  if(entertainmentPendingWinner){entertainmentCurrent=entertainmentPendingWinner;entertainmentResultOpen=true;entertainmentShownIds.add(entertainmentPendingWinner.id)}
+  entertainmentPendingWinner=null;entertainmentWheelSpinning=false;entertainmentWheelTimer=null;
+  entertainmentWheelAnimation=null;entertainmentBallOrbitAnimation=null;entertainmentBallDropAnimation=null;renderEntertainment();
+ },duration+120);
+}
+function resetEntertainmentSession(){
+ cancelEntertainmentWheelAnimations();if(entertainmentWheelTimer)clearTimeout(entertainmentWheelTimer);
+ entertainmentWheelTimer=null;entertainmentWheelSpinning=false;entertainmentPendingWinner=null;
+ entertainmentShownIds=new Set();entertainmentCurrent=null;entertainmentResultOpen=false;entertainmentWheelItems=[];entertainmentWheelRotation=0;entertainmentBallAngle=0;entertainmentBallLanded=false;renderEntertainment();
+}
+function toggleEntertainmentFavorite(id){
+ const exists=entertainmentFavorites.some(f=>(typeof f==='string'?f:f.id)===id);
+ if(exists)entertainmentFavorites=entertainmentFavorites.filter(f=>(typeof f==='string'?f:f.id)!==id);
+ else{const item=entertainmentPool.find(x=>x.id===id)||entertainmentDemoCatalog.find(x=>x.id===id);if(item)entertainmentFavorites.push({id:item.id,provider:item.source||entertainmentProviderSettings.activeProvider,providerId:item.providerId||item.id,title:item.title,type:item.type,year:item.year});}
+ localStorage.setItem('enorden_entertainment_favorites',JSON.stringify(entertainmentFavorites));
+ renderEntertainment();
+}
+
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
@@ -1481,7 +2118,7 @@ function renderOther(id){
 function taskEditorMarkup(task){
  const subtasks=task?.subtasks||[];
  taskScheduleDate=task?.scheduledDate||'';
- return '<div class="event-form-section task-create-section"><label for="newTaskScope">¿Dónde se verá?</label><select id="newTaskScope"><option value="personal" '+((task?.scope||'personal')==='personal'?'selected':'')+'>Tareas Personales</option><option value="family" '+(task?.scope==='family'?'selected':'')+'>Tareas Familia</option></select></div><div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask" type="checkbox" '+(task?.scheduledDate?'checked':'')+' onchange="toggleTaskSchedule()"> Programar esta tarea</label><div id="taskScheduleOptions" '+(task?.scheduledDate?'':'class="hidden"')+'><p class="muted">¿Para cuándo quieres programar esta tarea?</p><input id="taskScheduleDate" type="date" value="'+escapeHTML(task?.scheduledDate||'')+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none" onchange="taskScheduleDate=this.value;updateTaskScheduleLabel()"><button type="button" class="secondary-btn" onclick="openTaskScheduleCalendar()">'+(task?.scheduledDate?'Cambiar fecha':'Elegir fecha')+'</button><span id="taskScheduleDateLabel" class="muted">'+(task?.scheduledDate?new Date(task.scheduledDate+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Ninguna fecha seleccionada')+'</span></div></div><div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" value="'+escapeHTML(task?.title||'')+'" placeholder="¿Qué necesitas hacer?"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list">'+subtasks.map(st=>'<div class="task-subtask-item"><div class="task-subtask-input-row"><input type="text" maxlength="120" value="'+escapeHTML(st.title)+'"><button type="button" class="secondary-btn task-add-nested" onclick="addNestedTaskSubtask(this.closest(\'.task-subtask-item\'))">+ Subtarea N2</button><button type="button" class="small-btn" onclick="this.closest(\'.task-subtask-item\').remove()">×</button></div><div class="task-nested-subtasks">'+(st.subtasks||[]).map(n=>'<div class="task-subtask-input-row task-subtask-level-two"><input type="text" maxlength="120" value="'+escapeHTML(n.title)+'"><button type="button" class="small-btn" onclick="this.parentElement.remove()">×</button></div>').join('')+'</div></div>').join('')+'</div></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="secondary-btn" onclick="saveTaskAsTemplate()">Guardar Plantilla</button><button type="button" class="primary-btn" onclick="saveTaskEditor()">'+(task?'Guardar cambios':'Guardar')+'</button></div>';
+ return '<div class="event-form-section task-create-section"><label for="newTaskScope">¿Dónde se verá?</label><select id="newTaskScope"><option value="personal" '+((task?.scope||'personal')==='personal'?'selected':'')+'>Tareas Personales</option><option value="family" '+(task?.scope==='family'?'selected':'')+'>Tareas Familia</option></select></div><div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask" type="checkbox" '+(task?.scheduledDate?'checked':'')+' onchange="toggleTaskSchedule()"> Programar esta tarea</label><div id="taskScheduleOptions" '+(task?.scheduledDate?'':'class="hidden"')+'><p class="muted">¿Para cuándo quieres programar esta tarea?</p><input id="taskScheduleDate" type="date" value="'+escapeHTML(task?.scheduledDate||'')+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none" onchange="taskScheduleDate=this.value;updateTaskScheduleLabel()"><button type="button" class="secondary-btn" onclick="openTaskScheduleCalendar()">'+(task?.scheduledDate?'Cambiar fecha':'Elegir fecha')+'</button><span id="taskScheduleDateLabel" class="muted">'+(task?.scheduledDate?new Date(task.scheduledDate+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Ninguna fecha seleccionada')+'</span></div></div><div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" value="'+escapeHTML(task?.title||'')+'" placeholder="¿Qué necesitas hacer?"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list">'+subtasks.map(st=>'<div class="task-subtask-item"><div class="task-subtask-input-row"><input type="text" maxlength="120" value="'+escapeHTML(st.title)+'"><button type="button" class="secondary-btn task-add-nested" onclick="addNestedTaskSubtask(this.closest(\'.task-subtask-item\'))">+ Subtarea N2</button><button type="button" class="small-btn" onclick="this.closest(\'.task-subtask-item\').remove()">×</button></div><div class="task-nested-subtasks">'+(st.subtasks||[]).map(n=>'<div class="task-subtask-input-row task-subtask-level-two"><input type="text" maxlength="120" value="'+escapeHTML(n.title)+'"><button type="button" class="small-btn" onclick="this.parentElement.remove()">×</button></div>').join('')+'</div></div>').join('')+'</div></div><div class="event-form-section task-create-section"><label class="event-choice"><input id="saveTaskTemplate" type="checkbox"> Guardar también como plantilla</label></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveTaskEditor()">'+(task?'Guardar cambios':'Guardar')+'</button></div>';
 }
 function showTaskModal(title,body){document.getElementById('modalTitle').textContent=title;const sub=document.getElementById('modalSubtitle');sub.textContent='';sub.classList.add('hidden');document.getElementById('modalBody').innerHTML=body;document.getElementById('backdrop').classList.add('show')}
 function openTaskEditor(id){const task=id==null?null:tasks.find(t=>Number(t.id)===Number(id));if(id!=null&&!task)return;taskEditorId=task?task.id:null;showTaskModal(task?'Editar tarea':'Nueva tarea',taskEditorMarkup(task))}
@@ -1497,37 +2134,31 @@ function toggleTaskSchedule(){const enabled=document.getElementById('scheduleTas
 function openTaskScheduleCalendar(){const input=document.getElementById('taskScheduleDate');if(!input)return;try{input.showPicker()}catch(e){input.click()}}
 function updateTaskScheduleLabel(){const input=document.getElementById('taskScheduleDate');taskScheduleDate=input?.value||'';const label=document.getElementById('taskScheduleDateLabel');if(label)label.textContent=taskScheduleDate?new Date(taskScheduleDate+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Ninguna fecha seleccionada';}
 function showTaskScheduleWarning(){const existing=document.getElementById('taskScheduleWarning');if(existing)existing.remove();const overlay=document.createElement('div');overlay.id='taskScheduleWarning';overlay.className='task-validation-backdrop';overlay.innerHTML='<section class="task-validation-modal" role="alertdialog" aria-modal="true" aria-labelledby="taskScheduleWarningTitle"><h3 id="taskScheduleWarningTitle">Falta elegir una fecha</h3><p>Para programar esta tarea, primero debes seleccionar la fecha en que quieres realizarla.</p><div class="task-validation-actions"><button type="button" class="primary-btn" onclick="document.getElementById(\'taskScheduleWarning\')?.remove()">Entendido</button></div></section>';document.body.appendChild(overlay);overlay.querySelector('button')?.focus();}
-function saveTaskAsTemplate(){
- const input=document.getElementById('newValue');if(!input)return;
- const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea antes de guardarla como plantilla.');return}
- const old=taskEditorId==null?null:tasks.find(t=>Number(t.id)===Number(taskEditorId));
- const now=Date.now();
- const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{
-  const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();if(!name)return null;
-  const prev=old?.subtasks?.[index],id=now+index+1;
-  const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev?.subtasks?.[j]})).filter(x=>x.title).map((x,j)=>({id:now+1000+index*100+j,title:x.title,done:false,assignable:false,inheritsAssignmentFrom:id}));
-  return {id,title:name,done:false,assignable:true,subtasks:children,...(prev?.assignedTo?{assignedTo:prev.assignedTo}:{})};
- }).filter(Boolean);
- const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';
- subtasks.forEach(x=>x.assignable=scope==='family');
- const scheduleEnabled=!!document.getElementById('scheduleTask')?.checked;
- const date=scheduleEnabled?(document.getElementById('taskScheduleDate')?.value||''):'';
- if(scheduleEnabled&&!date){showTaskScheduleWarning();return}
- const template={id:now,title,scope,assignable:scope==='family',subtasks,scheduledDate:date||null,createdAt:new Date().toISOString()};
+function storeTaskTemplate(task){
+ if(!task)return null;
+ const wasScheduled=!!task.scheduledDate;
+ const template={id:Date.now()+Math.floor(Math.random()*1000),title:task.title,scope:task.scope||'personal',assignable:task.scope==='family',subtasks:JSON.parse(JSON.stringify(task.subtasks||[])).map(st=>({...st,done:false,subtasks:(st.subtasks||[]).map(n=>({...n,done:false}))})),scheduledDate:null,wasScheduled,createdAt:new Date().toISOString()};
+ template.subtasks.forEach(st=>{st.assignable=template.scope==='family';(st.subtasks||[]).forEach(n=>{n.assignable=false})});
  const templates=JSON.parse(localStorage.getItem('enorden_task_templates')||'[]');
  templates.push(template);localStorage.setItem('enorden_task_templates',JSON.stringify(templates));
- showTaskModal('Plantilla guardada','<p>«'+escapeHTML(title)+'» se guardó en Mis plantillas de tareas.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ return template;
+}
+function saveTaskAsTemplateFromTask(id){
+ const task=tasks.find(t=>Number(t.id)===Number(id));if(!task)return;
+ const template=storeTaskTemplate(task);
+ showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
 function saveTaskEditor(){
  const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea.');return}
  const now=Date.now(),old=taskEditorId==null?null:tasks.find(t=>Number(t.id)===Number(taskEditorId));
  const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();if(!name)return null;const prev=old?.subtasks?.[index],id=prev?.id??now+index+1;const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev?.subtasks?.[j]})).filter(x=>x.title).map((x,j)=>({id:x.prev?.id??now+1000+index*100+j,title:x.title,done:x.prev?.done??false,assignable:false,inheritsAssignmentFrom:id}));return {id,title:name,done:prev?.done??false,assignable:true,subtasks:children,...(prev?.assignedTo?{assignedTo:prev.assignedTo}:{})}}).filter(Boolean);
- const scope=document.getElementById('newTaskScope')?.value==='family'?'family':'personal';subtasks.forEach(x=>x.assignable=scope==='family');
+ const selectedScope=document.getElementById('newTaskScope')?.value;const scope=selectedScope==='family'?'family':'personal';subtasks.forEach(x=>x.assignable=scope==='family');
  const scheduleEnabled=!!document.getElementById('scheduleTask')?.checked;const date=scheduleEnabled?(document.getElementById('taskScheduleDate')?.value||''):'';if(scheduleEnabled&&!date){showTaskScheduleWarning();return;}
  let savedTask;if(old){old.title=title;old.scope=scope;old.assignable=scope==='family';old.subtasks=subtasks;old.scheduledDate=date||null;syncTaskCompletion(old);savedTask=old}else{savedTask={id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString(),scheduledDate:date||null};tasks.push(savedTask)}
- syncTaskCalendarEvent(savedTask);save();taskEditorId=null;taskScheduleDate='';closeModal();render();
+ if(scope==='shared'){const clearAssignments=item=>{if(!item)return;delete item.assignedTo;delete item.assignedToUserId;(item.subtasks||[]).forEach(clearAssignments)};clearAssignments(savedTask)}
+ syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate)showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
 }
-function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;if(!ev.color)ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
+function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate||task.scope==='shared'){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;if(!ev.color)ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
 function addTask(){saveTaskEditor()}
 function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
 function eventDetailMarkup(ev){
