@@ -2023,7 +2023,7 @@ function entertainmentRequestedTrailerLanguage(){
  return ({es:'es-419',en:'en',pt:'pt'})[appLanguage]||appLanguage||'es-419';
 }
 function entertainmentTrailerLanguageLabel(language){
- const labels={es:'español','es-419':'español latino','es-CL':'español latino','es-ES':'español de España',en:'inglés',pt:'portugués',fr:'francés',de:'alemán',it:'italiano',ja:'japonés',ko:'coreano',zh:'chino'};
+ const labels={es:'español','es-419':'español latino','es-CL':'español latino','es-es':'español de España',en:'inglés',pt:'portugués',fr:'francés',de:'alemán',it:'italiano',ja:'japonés',ko:'coreano',zh:'chino'};
  return labels[String(language||'').toLowerCase()]||String(language||'otro idioma');
 }
 function entertainmentTrailerSearchOptions(item){
