@@ -133,3 +133,68 @@
 - Tener una API gratuita no significa tener autorización comercial.
 - La preparación técnica y la autorización legal serán estados independientes.
 - Se revisarán los derechos de imágenes, marcas y enlaces antes de incorporar recursos gráficos o funcionalidades que los requieran.
+
+## 14. Sistema general de ventanas
+
+Estas reglas definen los tipos de ventanas estándar de EnOrden. Se aplican transversalmente a todos los módulos y prevalecen sobre cualquier implementación particular, salvo que Vale autorice expresamente una excepción. Cuando se solicite crear una «ventana de confirmación», «ventana de guardado» o «ventana de precaución», se utilizará la estructura y el comportamiento definidos aquí como configuración predeterminada. Cada caso podrá incorporar contenido o acciones específicas sin alterar las reglas comunes.
+
+### 14.1. Comportamiento general
+
+- Ninguna ventana o modal se cerrará ni ejecutará acciones por un clic o toque fuera de sus límites. La interacción fuera de la ventana no tendrá ningún efecto.
+- La X de cierre estará dentro de un círculo, ubicada en la esquina superior derecha y sobresaliendo ligeramente del borde de la ventana.
+- La X siempre tendrá el mismo efecto que el botón «Cancelar», excepto en las ventanas de confirmación, donde tendrá el mismo efecto que «Entendido».
+- Los títulos estarán centrados.
+- Los botones deberán conservar márgenes suficientes, separación entre sí y espacio vertical y horizontal. No podrán solaparse con otros elementos ni quedar pegados a los bordes.
+- El texto de cada botón deberá permanecer correctamente alineado y completamente dentro de sus límites, sin desbordarse ni solaparse.
+- La distribución de los botones deberá adaptarse al espacio disponible, manteniendo legibilidad y márgenes adecuados.
+
+### 14.2. Ventana de confirmación
+
+**Estructura visual**
+- Título centrado.
+- X circular en la esquina superior derecha, sobresaliendo ligeramente del borde.
+- Un único botón al final de la ventana, centrado horizontalmente y con espacio suficiente alrededor.
+- El texto del botón será siempre exactamente: **«Entendido»**.
+
+**Comportamiento**
+- Clic o toque fuera de la ventana: no produce ningún efecto.
+- X: cierra la ventana, igual que «Entendido».
+- «Entendido»: cierra la ventana.
+
+### 14.3. Ventana de guardado
+
+**Estructura visual**
+- Título centrado.
+- X circular en la esquina superior derecha, sobresaliendo ligeramente del borde.
+- Dos botones al final de la ventana: **«Cancelar»** y **«Guardar»**.
+- Los botones se ubicarán uno a cada lado, con una separación pequeña pero visible y márgenes suficientes en ambos extremos.
+
+**Comportamiento**
+- Clic o toque fuera de la ventana: no produce ningún efecto.
+- «Guardar»: ejecuta la acción de guardado definida para el caso concreto. El destino, la validación y el resultado del guardado se especificarán según la funcionalidad correspondiente.
+- «Cancelar» o la X: no guardan los datos y abren una ventana de precaución. Los datos introducidos se conservan temporalmente mientras el usuario decide si continúa editando o sale sin guardar.
+
+### 14.4. Ventana de precaución, alerta o cuidado
+
+Esta ventana se utiliza para confirmar que el usuario desea abandonar una edición y descartar los datos introducidos.
+
+**Estructura visual**
+- Título centrado y texto exacto: **«¿Quieres salir sin guardar?»**
+- Debajo del título se mostrará el siguiente texto en tamaño pequeño y color gris: **«Si sales sin guardar de esta ventana perderás los datos ingresados»**.
+- X circular en la esquina superior derecha, sobresaliendo ligeramente del borde.
+- Dos botones al final, distribuidos como en la ventana de guardado: con separación visible entre ellos y márgenes suficientes a ambos lados.
+- Primer botón: **«Salir sin guardar»**, con fondo rojo.
+- Segundo botón: **«Cancelar»**.
+- Los textos de ambos botones deberán estar alineados y permanecer dentro de sus límites.
+
+**Comportamiento**
+- Clic o toque fuera de la ventana: no produce ningún efecto.
+- «Cancelar» o la X: cierra únicamente la ventana de precaución y regresa a la ventana de edición anterior, conservando los datos introducidos para que el usuario pueda continuar.
+- «Salir sin guardar»: descarta los datos introducidos en la ventana de edición correspondiente y cierra las ventanas que formen parte de ese flujo de edición, incluida la ventana de precaución. No debe guardar esos datos ni afectar información ajena a esa edición.
+
+### 14.5. Aplicación y excepciones
+
+- Estos tres tipos constituyen las estructuras estándar iniciales de ventanas de EnOrden.
+- Las ventanas podrán incorporar campos, textos, contenido y acciones particulares según cada funcionalidad, pero deberán conservar la estructura, las reglas de cierre y la protección contra interacciones accidentales aquí definidas.
+- Si una funcionalidad necesita un comportamiento distinto, la excepción deberá ser solicitada y autorizada expresamente por Vale antes de implementarse. No se cambiará silenciosamente el comportamiento general.
+
