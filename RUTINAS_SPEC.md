@@ -209,3 +209,15 @@ Los siguientes puntos todavía requieren una decisión o definición adicional. 
 - Cuando se apaga manualmente una rutina con períodos futuros programados, se pregunta al usuario si desea apagar solamente el período actual o también todos los períodos siguientes.
 - Si elige apagar todos los períodos siguientes, se cancelan sus futuras activaciones y se eliminan automáticamente sus eventos del calendario.
 - Si elige apagar solamente el período actual, se conserva la programación y los eventos de los períodos futuros.
+
+### 13.6. Repetición por días y semanas del mes
+
+**Regla acordada para la versión actual.**
+- Si «Repetir» está desmarcado, la rutina se ejecuta una sola vez durante el período comprendido entre la fecha de inicio y la fecha de término seleccionadas.
+- Si «Repetir» está marcado, la rutina se activa únicamente en los días de la semana y las semanas del mes que el usuario seleccione, tomando como referencia el mes de la fecha de inicio.
+- La repetición de esta versión se limita al mes de la fecha de inicio. No se extiende automáticamente a los meses siguientes.
+- La programación por año queda fuera de esta versión.
+
+**Pendiente para una versión futura.**
+- Evaluar si es posible incorporar una opción de programación anual que permita organizar las repeticiones por año, además de la configuración mensual actual.
+
