@@ -2135,14 +2135,11 @@ function entertainmentReviewSearchUrl(item){
 }
 function entertainmentOpenTikTokSearch(encodedQuery){
  const query=decodeURIComponent(encodedQuery||'');
- const appUrl='intent://m.tiktok.com/#Intent;scheme=https;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent('https://www.tiktok.com/')+';end';
  const webUrl='https://www.tiktok.com/search?q='+encodeURIComponent(query);
  if(typeof navigator!=='undefined'&&/Android/i.test(navigator.userAgent)){
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-   navigator.clipboard.writeText(query).then(()=>{window.location.href=appUrl;}).catch(()=>{window.location.href=appUrl;});
-  }else{
-   window.location.href=appUrl;
-  }
+  /* Ruta experimental observada para abrir el buscador interno de TikTok Android con keyword. */
+  const appUrl='intent://search/?keyword='+encodeURIComponent(query)+'#Intent;scheme=snssdk1233;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent(webUrl)+';end';
+  window.location.href=appUrl;
   return false;
  }
  window.open(webUrl,'_blank','noopener');
