@@ -2562,7 +2562,7 @@ function openRoutineTaskEditor(routineId,taskId){
  setModalWindowBase('save',()=>{routineTaskParentId=null;routineTaskEditorId=null});
 }
 function confirmDeleteRoutineTask(){const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),task=r?.tasks.find(x=>String(x.id)===String(routineTaskEditorId));if(!r||!task)return;showWindowCaution({title:'¿Eliminar tarea?',message:'Esta tarea se eliminará de la rutina y no se podrá recuperar.',subject:task.name,cancelLabel:'Cancelar',confirmLabel:'Eliminar tarea',onConfirm:()=>deleteRoutineTask(r.id,task.id)});}
-function deleteRoutineTask(routineId,taskId){const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;r.tasks=r.tasks.filter(t=>String(t.id)!==String(taskId));if(r.active&&r.execution){r.execution.taskOffsets=routineTaskOffsets(r);scheduleRoutineTaskAlarms(r)}saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines()}
+function deleteRoutineTask(routineId,taskId){const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;r.tasks=r.tasks.filter(t=>String(t.id)!==String(taskId));saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines()}
 function saveRoutineTaskEditor(){
  const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),name=document.getElementById('routineTaskName')?.value.trim(),duration=Number(document.getElementById('routineTaskDuration')?.value);
  if(!r)return;if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la tarea.');return}
