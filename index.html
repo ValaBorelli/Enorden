@@ -648,6 +648,37 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .film-success-overlay .close-row .modal-close-button{position:absolute;top:0;right:0;width:36px;height:36px;min-width:36px;flex:0 0 36px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--white)}
 .film-success-overlay .film-schedule-success .event-detail-actions{display:flex;justify-content:center;align-items:center}
 .film-success-overlay .film-schedule-success .event-detail-actions button{flex:0 0 auto;min-width:112px}
+
+/* Sistema base de ventanas: categorías save y confirmation */
+.modal-backdrop.window-save .modal,.modal-backdrop.window-confirmation .modal{position:relative}
+.modal-backdrop.window-save .modal .close-row,.modal-backdrop.window-confirmation .modal .close-row{display:block;position:relative;padding:0 44px;margin-bottom:18px;text-align:center}
+.modal-backdrop.window-save .modal .modal-heading,.modal-backdrop.window-confirmation .modal .modal-heading{width:100%;text-align:center}
+.modal-backdrop.window-save .modal .close-row h2,.modal-backdrop.window-confirmation .modal .close-row h2{text-align:center}
+.modal-backdrop.window-save .modal .event-form-subtitle,.modal-backdrop.window-confirmation .modal .event-form-subtitle{text-align:center}
+.modal-backdrop.window-save .modal .modal-close-button,.modal-backdrop.window-confirmation .modal .modal-close-button{position:absolute;top:-13px;right:-13px;width:38px;height:38px;min-width:38px;flex:0 0 38px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--text);z-index:2}
+.modal-backdrop.window-save .event-form-actions,.modal-backdrop.window-save .appearance-actions,.modal-backdrop.window-save .profile-actions,.modal-backdrop.window-save .task-create-actions,.modal-backdrop.window-save .event-detail-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px}
+.modal-backdrop.window-save .event-form-actions button,.modal-backdrop.window-save .appearance-actions button,.modal-backdrop.window-save .profile-actions button,.modal-backdrop.window-save .task-create-actions button,.modal-backdrop.window-save .event-detail-actions button{flex:1;min-width:0;white-space:normal;line-height:1.25}
+.modal-backdrop.window-confirmation .event-detail-actions{display:flex;justify-content:center;align-items:center}
+.modal-backdrop.window-confirmation .event-detail-actions button{flex:0 1 auto;min-width:112px}
+.window-caution-layer{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:#0008}
+.window-caution-card,.window-notice-card{position:relative;width:min(440px,100%);max-height:85vh;overflow:auto;padding:24px 22px 20px;border-radius:20px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0005}
+.window-caution-card h2,.window-notice-card h2{margin:0 38px 10px;text-align:center;font-size:19px;line-height:1.3;overflow-wrap:anywhere}
+.window-caution-card p,.window-notice-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;text-align:center}
+.window-caution-subject{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);font-weight:700;text-align:center;overflow-wrap:anywhere}
+.window-caution-actions{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+.window-caution-actions button{flex:1;min-width:0;min-height:44px;padding:10px 8px;white-space:normal;line-height:1.25}
+.window-caution-actions .danger-btn{background:#c93636!important;color:#fff!important;border-color:#b52b2b!important}
+.window-caution-close,.window-notice-close{position:absolute;top:-12px;right:-12px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);color:var(--text);font-size:22px;display:grid;place-items:center;z-index:2;box-shadow:0 3px 12px #0003}
+.window-notice-layer{position:fixed;inset:0;z-index:10110;display:flex;align-items:center;justify-content:center;padding:16px;background:#0008}
+.window-notice-card{width:min(420px,100%)}
+.window-notice-actions{display:flex;justify-content:center;margin-top:20px}
+.window-notice-actions button{min-width:112px;min-height:42px}
+#anniversaryNotice .modal{position:relative}
+#anniversaryNotice .close-row{display:block;position:relative;padding:0 44px;margin-bottom:18px;text-align:center}
+#anniversaryNotice .modal-heading{width:100%;text-align:center}
+#anniversaryNotice .close-row h2{text-align:center}
+#anniversaryNotice .modal-close-button{position:absolute;top:-13px;right:-13px;width:38px;height:38px;min-width:38px;flex:0 0 38px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--text)}
+
 </style>
 </head>
 <body>
@@ -677,7 +708,7 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 <div class="modal-backdrop" id="backdrop">
  <div class="modal">
   <div class="close-row"><div class="modal-heading"><h2 id="modalTitle">Agregar</h2><p id="modalSubtitle" class="event-form-subtitle hidden"></p></div>
-   <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="closeModal()">✕</button>
+   <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="requestModalClose()">✕</button>
   </div>
   <div id="modalBody"></div>
  </div>
@@ -804,9 +835,49 @@ const fab=document.getElementById('fab');
 const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const weekdays=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 function closeModal(){
- document.getElementById('backdrop').classList.remove('show','film-success-overlay');
+ closeWindowCaution(false);
+ const backdrop=document.getElementById('backdrop');backdrop.classList.remove('show','film-success-overlay','window-save','window-confirmation');
+ activeModalWindowType='';activeModalCancelAction=null;
  const subtitle=document.getElementById('modalSubtitle');if(subtitle){subtitle.textContent='';subtitle.classList.add('hidden')}
 }
+
+let activeModalWindowType='',activeModalCancelAction=null,activeWindowCaution=null,windowCautionSequence=0;
+function setModalWindowBase(type,onCancel=null){
+ const backdrop=document.getElementById('backdrop');if(!backdrop)return;
+ backdrop.classList.remove('window-save','window-confirmation');
+ activeModalWindowType=type||'';activeModalCancelAction=typeof onCancel==='function'?onCancel:null;
+ if(type==='save'||type==='confirmation')backdrop.classList.add('window-'+type);
+}
+function closeWindowCaution(runCancel=true){
+ const state=activeWindowCaution;if(!state)return;
+ document.getElementById(state.id)?.remove();activeWindowCaution=null;
+ if(runCancel&&typeof state.onCancel==='function')state.onCancel();
+}
+function showWindowCaution(options={}){
+ if(activeWindowCaution)closeWindowCaution(false);
+ const id='windowCaution'+(++windowCautionSequence),title=escapeHTML(options.title||'¿Quieres salir sin guardar?'),message=escapeHTML(options.message||'Si sales sin guardar de esta ventana perderás los datos ingresados'),subject=options.subject?'<div class="window-caution-subject">'+escapeHTML(options.subject)+'</div>':'',cancel=escapeHTML(options.cancelLabel||'Cancelar'),confirm=escapeHTML(options.confirmLabel||'Salir sin guardar'),danger=options.danger!==false;
+ const layer=document.createElement('div');layer.id=id;layer.className='window-caution-layer';
+ layer.innerHTML='<section class="window-caution-card" role="alertdialog" aria-modal="true" aria-labelledby="'+id+'Title"><button type="button" class="window-caution-close" aria-label="Cerrar" onclick="closeWindowCaution(true)">×</button><h2 id="'+id+'Title">'+title+'</h2><p>'+message+'</p>'+subject+'<div class="window-caution-actions"><button type="button" class="secondary-btn" onclick="closeWindowCaution(true)">'+cancel+'</button><button type="button" class="'+(danger?'danger-btn':'primary-btn')+'" onclick="confirmWindowCaution()">'+confirm+'</button></div></section>';
+ const parent=options.parent||document.getElementById('backdrop')||document.body;parent.appendChild(layer);
+ activeWindowCaution={id,onCancel:options.onCancel,onConfirm:options.onConfirm};layer.querySelector('button')?.focus();
+}
+function confirmWindowCaution(){
+ const state=activeWindowCaution;if(!state)return;closeWindowCaution(false);
+ if(typeof state.onConfirm==='function')state.onConfirm();
+}
+function requestModalCancel(){
+ if(activeModalWindowType!=='save'){closeModal();return}
+ const cancelAction=activeModalCancelAction;
+ showWindowCaution({title:'¿Quieres salir sin guardar?',message:'Si sales sin guardar de esta ventana perderás los datos ingresados',cancelLabel:'Cancelar',confirmLabel:'Salir sin guardar',danger:true,onConfirm:()=>{closeModal();if(cancelAction)cancelAction()}});
+}
+function requestModalClose(){if(activeModalWindowType==='save'){requestModalCancel();return}closeModal()}
+function showWindowNotice(title,message){
+ const id='windowNotice'+(++windowCautionSequence),layer=document.createElement('div');layer.id=id;layer.className='window-notice-layer';
+ layer.innerHTML='<section class="window-notice-card" role="dialog" aria-modal="true" aria-labelledby="'+id+'Title"><button type="button" class="window-notice-close" aria-label="Cerrar" onclick="closeWindowNotice(\''+id+'\')">×</button><h2 id="'+id+'Title">'+escapeHTML(title||'Aviso')+'</h2><p>'+escapeHTML(message||'')+'</p><div class="window-notice-actions"><button type="button" class="primary-btn" onclick="closeWindowNotice(\''+id+'\')">Entendido</button></div></section>';
+ document.body.appendChild(layer);layer.querySelector('button')?.focus();
+}
+function closeWindowNotice(id){document.getElementById(id)?.remove()}
+
 function pruneExpiredCompletedTasks(){
  const now=Date.now(),retention=7*24*60*60*1000;let changed=false;
  tasks=tasks.filter(task=>{
