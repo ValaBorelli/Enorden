@@ -2513,7 +2513,7 @@ function renderRoutines(){
 }
 function routineCardHTML(r){
  const expanded=String(routineExpandedId)===String(r.id),tasks=r.tasks||[];
- const schedule=r.scheduleEnabled?(r.startDate&&r.endDate?'Del '+routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'})+' al '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'}):'Programación incompleta'):'Activación manual';
+ const schedule=r.scheduleEnabled?(r.repeatMonthly?'Repetición mensual · '+(r.startDate?routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{month:'long',year:'numeric'}):'Mes sin definir'):r.startDate&&r.endDate?'Del '+routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'})+' al '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'}):'Programación incompleta'):'Activación manual';
  return `<article class="routine-card ${r.active?'is-active':''}" data-routine-id="${escapeHTML(r.id)}" onpointerdown="startRoutineHold(event,'${escapeHTML(r.id)}')" onpointerup="endRoutineHold()" onpointercancel="endRoutineHold()" onpointerleave="endRoutineHold()">
  <div class="routine-card-head">
   <div class="routine-folder">📁</div>
@@ -2931,17 +2931,24 @@ function processRoutineCalendarNotifications(){
  const now=new Date(),today=keyDate(now);let changed=false;
  routines.forEach(r=>{
   if(!r.scheduleEnabled)return;
-  const dates=routinePeriodDates(r),start=routineDateFromKey(r.startDate),noticeSent=r.noticeSent||{};
-  const cycles=new Map();
-  dates.forEach(date=>{const d=routineDateFromKey(date),week=Math.floor((d-start)/604800000),cycle=Math.floor(week/Math.max(1,Number(r.repeatWeeks)||1));if(!cycles.has(cycle))cycles.set(cycle,date)});
-  cycles.forEach((firstDate,cycle)=>{
+  const dates=routinePeriodDates(r),noticeSent=r.noticeSent||{};
+  if(r.repeatMonthly){
+   const firstDate=dates[0];if(!firstDate)return;
    const first=routineDateFromKey(firstDate),noticeDate=new Date(first);noticeDate.setDate(noticeDate.getDate()-1);
-   const key=String(cycle)+'|'+firstDate;
+   const key='month|'+r.startDate;
    if(keyDate(noticeDate)===today&&!noticeSent[key]){
-    notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina estará activa desde '+routineDateFromKey(firstDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+' hasta '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
+    notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina se activará según los días y semanas del mes que seleccionaste, durante '+routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{month:'long',year:'numeric'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
     notifications=notifications.slice(-50);noticeSent[key]=true;changed=true;
    }
-  });
+  }else{
+   const firstDate=dates[0];if(firstDate){
+    const first=routineDateFromKey(firstDate),noticeDate=new Date(first);noticeDate.setDate(noticeDate.getDate()-1),key='period|'+firstDate;
+    if(keyDate(noticeDate)===today&&!noticeSent[key]){
+     notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina estará activa desde '+routineDateFromKey(firstDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+' hasta '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
+     notifications=notifications.slice(-50);noticeSent[key]=true;changed=true;
+    }
+   }
+  }
   r.noticeSent=noticeSent;
  });
  if(changed){localStorage.setItem('enorden_notifications',JSON.stringify(notifications));saveRoutines()}
