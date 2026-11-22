@@ -34,7 +34,9 @@ Las reglas de este documento describen el comportamiento esperado; no implican q
 - Las tareas tienen un orden definido dentro de su rutina.
 - Al tocar una tarea, se abre su ventana de edición, equivalente a la ventana de creación.
 - Desde esa ventana se puede modificar el nombre y la duración de la tarea.
-- Al mantener presionada una tarea, el usuario puede cambiar su posición dentro de la rutina.
+- Para iniciar el reordenamiento, el usuario debe mantener presionada una tarea durante al menos 5 segundos.
+- Al soltar la tarea después de moverla, el sistema solicita confirmación antes de guardar el nuevo orden.
+- Si el usuario cancela la confirmación, se restaura el orden anterior.
 - El cambio de orden permite reorganizar la secuencia en la que se ejecutarán las tareas.
 
 ## 4. Funcionamiento y secuencia de las tareas
@@ -86,46 +88,27 @@ Las reglas de este documento describen el comportamiento esperado; no implican q
 
 ## 8. Programación repetitiva y turnos rotativos
 
-- El usuario puede configurar una rutina para que se active automáticamente con una frecuencia determinada.
-- La frecuencia podrá establecerse, como mínimo, en:
-  - Cada semana.
-  - Cada dos semanas.
-  - Cada tres semanas.
-- La programación repetitiva permite establecer cuándo comienza el ciclo y durante cuánto tiempo debe mantenerse activa la rutina en cada repetición.
-- Esto permitirá configurar rutinas para turnos laborales rotativos.
-- Ejemplo de programación de turnos:
-
-  | Semana | Rutina | Hora de activación |
-  | --- | --- | --- |
-  | Semana 1 | Turno 7:00 AM | 05:00 AM |
-  | Semana 2 | Turno 10:00 AM | 08:00 AM |
-  | Semana 3 | Turno 4:00 PM | 02:00 PM |
-  | Semana 4 | Turno 7:00 AM | 05:00 AM |
-
-- Cada rutina puede tener su propia frecuencia y período de activación.
-- El sistema debe permitir que las programaciones repetitivas continúen funcionando según el ciclo establecido, sin que el usuario tenga que volver a configurarlas cada semana.
+- La programación repetitiva de esta versión se configura mediante una casilla «Repetir».
+- Si «Repetir» está desmarcado, la rutina se ejecuta una sola vez durante el período comprendido entre la fecha de inicio y la fecha de término.
+- Si «Repetir» está marcado, el usuario selecciona los días de la semana y las semanas del mes en que debe activarse la rutina.
+- Las semanas se numeran según las filas del calendario del mes, comenzando el domingo. Por ello, un mes puede tener entre cuatro y seis semanas; por ejemplo, noviembre de 2026 ocupa seis filas semanales.
+- En el modo repetitivo, solo se considera la fecha de inicio para determinar el mes de referencia. La fecha de término no limita ni modifica las repeticiones.
+- Las repeticiones se generan únicamente dentro del mes correspondiente a la fecha de inicio. No se extienden a los meses siguientes.
+- Cada fecha seleccionada genera un evento de calendario y una activación automática a la hora configurada.
+- La programación anual queda fuera de esta versión.
 - La programación de turnos rotativos mediante ciclos de distintas rutinas todavía requiere una definición específica. Consultar la sección de pendientes antes de implementar esa modalidad.
 
 ## 9. Integración automática con el calendario
 
-- Cuando una rutina tiene un período de funcionamiento programado, el sistema crea automáticamente sus eventos en el calendario.
-- La creación de estos eventos es obligatoria y automática. No se le pregunta al usuario si desea agregarlos.
-- Se crea un evento por cada día en que la rutina esté programada para funcionar.
+- Cuando una rutina tiene activación automática programada, el sistema crea sus eventos en el calendario.
+- En una rutina sin repetición, se crea un evento por cada día comprendido entre la fecha de inicio y la fecha de término.
+- En una rutina con repetición, se crea un evento por cada fecha que coincida con los días y semanas del mes seleccionados, dentro del mes de la fecha de inicio. La fecha de término no se considera para este modo.
 - Los eventos tienen la identificación «Evento Rutina».
-- Ejemplo: si una rutina está programada de lunes a viernes, se crean cinco eventos, uno para cada día.
-- Aunque existan varios eventos consecutivos, el calendario envía solamente una notificación previa al comienzo del período.
-- La notificación se envía el día anterior al inicio del período programado.
-- La notificación indica:
-  - Que la rutina comenzará al día siguiente.
-  - El nombre de la rutina.
-  - El período durante el cual estará activa, indicando desde qué día hasta qué día.
-- Ejemplo: si la rutina comienza el lunes y termina el viernes, el domingo el usuario recibe una sola notificación indicando que el lunes comienza esa rutina y que estará activa de lunes a viernes.
-- Si la rutina tiene una programación repetitiva, cada nuevo período de activación tiene una sola notificación previa, enviada el día anterior a su comienzo.
+- El calendario envía una notificación previa al primer día programado: el día anterior al comienzo de la programación. La notificación informa el nombre de la rutina y el período o mes al que corresponde.
 - Los eventos del calendario no generan alarmas para las tareas.
 - Las alarmas de inicio y transición entre tareas son responsabilidad exclusiva del módulo Rutinas.
-- Si una rutina se activa y se apaga exclusivamente de forma manual, no se crean eventos en el calendario.
-- En consecuencia, las rutinas de activación exclusivamente manual no generan notificaciones previas del calendario.
-- Si el usuario cancela todos los períodos futuros de una rutina, los eventos correspondientes a esos períodos se eliminan automáticamente del calendario.
+- Si una rutina se activa y se apaga exclusivamente de forma manual, no se crean eventos en el calendario ni notificaciones previas.
+- Si el usuario cancela todos los períodos futuros de una rutina, los eventos correspondientes se eliminan automáticamente del calendario.
 
 ## 10. Detección de rutinas simultáneas
 
@@ -212,12 +195,12 @@ Los siguientes puntos todavía requieren una decisión o definición adicional. 
 
 ### 13.6. Repetición por días y semanas del mes
 
-**Regla acordada para la versión actual.**
+**Resuelto para la versión actual.**
 - Si «Repetir» está desmarcado, la rutina se ejecuta una sola vez durante el período comprendido entre la fecha de inicio y la fecha de término seleccionadas.
-- Si «Repetir» está marcado, la rutina se activa únicamente en los días de la semana y las semanas del mes que el usuario seleccione, tomando como referencia el mes de la fecha de inicio.
-- La repetición de esta versión se limita al mes de la fecha de inicio. No se extiende automáticamente a los meses siguientes.
-- La programación por año queda fuera de esta versión.
+- Si «Repetir» está marcado, se ejecuta únicamente en los días y semanas del mes que el usuario seleccione.
+- En el modo repetitivo, solo se considera la fecha de inicio para determinar el mes de referencia. La fecha de término se ignora por completo.
+- Las semanas corresponden a las filas del calendario mensual, comenzando el domingo.
+- La repetición queda limitada al mes de la fecha de inicio; no se extiende automáticamente a meses posteriores.
 
 **Pendiente para una versión futura.**
 - Evaluar si es posible incorporar una opción de programación anual que permita organizar las repeticiones por año, además de la configuración mensual actual.
-
