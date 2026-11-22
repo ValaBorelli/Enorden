@@ -680,6 +680,41 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 #anniversaryNotice .close-row h2{text-align:center}
 #anniversaryNotice .modal-close-button{position:absolute;top:-13px;right:-13px;width:38px;height:38px;min-width:38px;flex:0 0 38px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--text)}
 
+
+/* RUTINAS */
+.routines-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 0}
+.routines-list{display:grid;gap:12px}
+.routine-card{padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow,0 3px 12px rgba(0,0,0,.04))}
+.routine-card.is-active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.routine-card-head{display:flex;align-items:center;gap:12px}
+.routine-folder{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--surface2);font-size:22px;flex:none}
+.routine-card-main{flex:1;min-width:0}
+.routine-card-main strong{display:block;overflow-wrap:anywhere}
+.routine-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.routine-card-actions{display:flex;align-items:center;gap:7px}
+.routine-toggle{width:42px;height:25px;border:0;border-radius:20px;background:var(--line);position:relative;cursor:pointer;flex:none}
+.routine-toggle:after{content:"";position:absolute;width:19px;height:19px;top:3px;left:3px;border-radius:50%;background:white;transition:transform .18s}
+.routine-toggle[aria-pressed="true"]{background:var(--accent)}
+.routine-toggle[aria-pressed="true"]:after{transform:translateX(17px)}
+.routine-tasks{margin:14px 0 0 54px;border-top:1px solid var(--line);padding-top:10px}
+.routine-task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);touch-action:pan-y}
+.routine-task-row:last-child{border-bottom:0}
+.routine-task-grip{color:var(--muted);font-size:18px;cursor:grab;touch-action:none}
+.routine-task-info{flex:1;min-width:0}
+.routine-task-info strong{display:block;overflow-wrap:anywhere}
+.routine-task-info small{color:var(--muted)}
+.routine-empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+.routine-schedule-box{padding:13px;border:1px solid var(--line);border-radius:14px;background:var(--surface2);margin:12px 0}
+.routine-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.routine-form-grid label,.routine-field{display:grid;gap:6px;font-size:13px;font-weight:600}
+.routine-form-grid input,.routine-field input,.routine-field select{width:100%;min-width:0}
+.routine-weekdays{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.routine-weekdays label{display:flex;align-items:center;gap:4px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;font-size:12px}
+.routine-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.routine-running-banner{padding:12px 14px;border-radius:14px;background:var(--surface2);margin:12px 0}
+.routine-dragging{opacity:.45;border:1px dashed var(--accent)}
+@media(max-width:520px){.routine-card{padding:13px}.routine-tasks{margin-left:8px}.routine-form-grid{grid-template-columns:1fr}.routine-card-actions{gap:4px}}
+
 </style>
 </head>
 <body>
@@ -811,6 +846,8 @@ let headerPanelReturn='inicio';
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.taskId!=null?{...ev,type:'event_task'}:ev.type==='special'?{...ev,type:'normal'}:ev);
+let routines=(()=>{try{const value=JSON.parse(localStorage.getItem('enorden_routines')||'[]');return Array.isArray(value)?value:[]}catch{return []}})();
+let routineExpandedId=null,routineEditorId=null,routineTaskEditorId=null,routineTaskParentId=null,routineHoldTimer=null,routineDragId=null,routineExecutionTimers=[];
 let editingEventId=null;
 let eventPrefill=null;
 let eventCreationTime=null;
@@ -1009,6 +1046,7 @@ function render(){
  else if(current==='finanzas')renderFinance();
  else if(current==='chat')renderChat();
  else if(current==='entretenimiento')renderEntertainment();
+ else if(current==='rutinas')renderRoutines();
  else renderOther(current);
  applyLanguage();
 }
@@ -1110,8 +1148,8 @@ function enableReorder(container){
 function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
- const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film'};
- const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
+ const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film',routine:'Evento Rutina'};
+ const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 ',routine:'🔄 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
  const selectedKey=keyDate(d),today=new Date();today.setHours(0,0,0,0);const todayKey=keyDate(today);
  let content='';
  if(calendarView==='Año'){
@@ -2419,6 +2457,176 @@ function closeEntertainmentSchedule(){entertainmentScheduleOpen=false;entertainm
 function saveFilmSchedule(){const item=entertainmentScheduleItem||entertainmentCurrent,date=document.getElementById('filmScheduleDate')?.value||entertainmentScheduleDraft.date,allDay=!!document.getElementById('filmScheduleAllDay')?.checked;if(!item||!date){showWindowNotice('Falta elegir una fecha','Selecciona una fecha para programar tu Film.');return}const time=allDay?null:(document.getElementById('eventTime')?.value||entertainmentScheduleDraft.time||'20:00'),id=Date.now()+Math.floor(Math.random()*1000);events.push({id,seriesId:'series-'+id,title:'Ver '+item.title,type:'film',date,time,allDay,scope:'personal',priority:'high',color:'#C3B091',repeat:'none',weekdays:[],alerts:allDay?[]:[{amount:15,unit:'minutes'}],links:[{type:'entertainment',id:item.id,label:item.title}],filmId:item.id,createdAt:new Date().toISOString(),notificationSentFor:''});save();closeEntertainmentSchedule();render();const savedDate=new Date(date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});showTaskModal('Tu Film se programó con éxito!', '<div class="film-schedule-success"><p><strong>Fecha:</strong> '+escapeHTML(savedDate)+'</p><p><strong>Hora:</strong> '+(allDay?'Todo el día':escapeHTML(time))+'</p>'+(allDay?'':'<p class="film-schedule-success-reminder">Te llegará una notificación 15 minutos antes de la hora seleccionada</p>')+'<p class="film-schedule-success-hint">Puedes modificar tu evento Film en el calendario</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div></div>');document.getElementById('backdrop').classList.add('film-success-overlay');setModalWindowBase('confirmation')}
 function processFilmEventNotifications(){const now=new Date();let changed=false;events.filter(ev=>ev.type==='film').forEach(ev=>{const key=ev.date+'|'+(ev.allDay?'all-day':(ev.time||'20:00'));if(ev.notificationSentFor===key)return;const start=new Date(ev.date+'T'+(ev.allDay?'00:00':(ev.time||'20:00'))+':00'),trigger=ev.allDay?start:new Date(start.getTime()-15*60*1000),end=ev.allDay?new Date(start.getTime()+86400000):start;if(now>=trigger&&now<=end){notifications.push({id:'film-'+ev.id+'-'+key,emoji:'🎬',title:ev.allDay?'Hoy: '+ev.title:'En 15 minutos: '+ev.title,description:ev.allDay?'Hoy tienes programado este Film en tu calendario.':'Tu Film está programado para las '+(ev.time||'20:00')+'.',module:'Entretención',when:'Ahora',createdAt:now.toISOString()});notifications=notifications.slice(-50);localStorage.setItem('enorden_notifications',JSON.stringify(notifications));ev.notificationSentFor=key;changed=true}});if(changed)localStorage.setItem('enorden_events',JSON.stringify(events))}
 
+
+/* RUTINAS — reglas funcionales en RUTINAS_SPEC.md */
+function saveRoutines(){localStorage.setItem('enorden_routines',JSON.stringify(routines));localStorage.setItem('enorden_events',JSON.stringify(events))}
+function routineDateKey(date){return keyDate(date)}
+function routineWeekdayIndex(date){return (date.getDay()+6)%7}
+function routineDateFromKey(key){return new Date(key+'T12:00:00')}
+function routinePeriodDates(routine){
+ if(!routine.startDate||!routine.endDate)return [];
+ const start=routineDateFromKey(routine.startDate),end=routineDateFromKey(routine.endDate);
+ if(!Number.isFinite(start.getTime())||!Number.isFinite(end.getTime())||end<start)return [];
+ const result=[],days=Array.isArray(routine.weekdays)&&routine.weekdays.length?routine.weekdays:[0,1,2,3,4,5,6],interval=Math.max(1,Number(routine.repeatWeeks)||1);
+ for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+  const week=Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate())-new Date(start.getFullYear(),start.getMonth(),start.getDate()))/(7*86400000));
+  if(week%interval===0&&days.includes(routineWeekdayIndex(d)))result.push(routineDateKey(d));
+ }
+ return result;
+}
+function syncRoutineCalendar(routine){
+ events=events.filter(ev=>String(ev.routineId)!==String(routine.id));
+ if(routine.scheduleEnabled&&routine.startDate&&routine.endDate){
+  routinePeriodDates(routine).forEach(date=>{
+   const id='routine-event-'+routine.id+'-'+date;
+   events.push({id,seriesId:'routine-series-'+routine.id,routineId:routine.id,type:'routine',title:routine.name,date,time:null,allDay:true,scope:'personal',priority:'normal',alerts:[],repeat:'none',weekdays:[],routineGenerated:true});
+  });
+ }
+ saveRoutines();
+}
+function renderRoutines(){
+ const active=routines.filter(r=>r.active).length;
+ screen.innerHTML=`
+ <div class="page-heading"><h1>Rutinas</h1><p>Organiza tus actividades y administra el tiempo de cada una.</p></div>
+ <div class="routines-toolbar"><div><strong>${routines.length} rutina(s)</strong><div class="routine-meta">${active} activa(s) ahora</div></div><button type="button" class="primary-btn" onclick="openRoutineEditor(null)">+ Nueva rutina</button></div>
+ ${routines.length?`<div class="routines-list">${routines.map(r=>routineCardHTML(r)).join('')}</div>`:'<div class="routine-empty"><div style="font-size:34px;margin-bottom:8px">📁</div><strong>Aún no tienes rutinas</strong><p>Crea una rutina y agrega las tareas que quieres organizar.</p><button class="primary-btn" onclick="openRoutineEditor(null)">Crear primera rutina</button></div>'}
+ <p class="settings-note" style="margin-top:16px">Las rutinas y sus tareas se guardan en este dispositivo. Las alarmas con la aplicación cerrada requieren una integración nativa que todavía no está habilitada.</p>
+ <div class="bottom-space"></div>`;
+}
+function routineCardHTML(r){
+ const expanded=String(routineExpandedId)===String(r.id),tasks=r.tasks||[];
+ const schedule=r.scheduleEnabled?(r.startDate&&r.endDate?'Del '+routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'})+' al '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'}):'Programación incompleta'):'Activación manual';
+ return `<article class="routine-card ${r.active?'is-active':''}" data-routine-id="${escapeHTML(r.id)}" onpointerdown="startRoutineHold(event,'${escapeHTML(r.id)}')" onpointerup="endRoutineHold()" onpointercancel="endRoutineHold()" onpointerleave="endRoutineHold()">
+ <div class="routine-card-head">
+  <div class="routine-folder">📁</div>
+  <button type="button" class="routine-card-main" style="border:0;background:none;text-align:left;color:inherit;padding:0" onclick="toggleRoutineExpanded('${escapeHTML(r.id)}')"><strong>${escapeHTML(r.name)}</strong><span class="routine-meta">${tasks.length} tarea(s) · ${escapeHTML(schedule)}${r.activationTime?' · '+escapeHTML(r.activationTime):''}</span></button>
+  <div class="routine-card-actions">
+   <button type="button" class="small-btn" aria-label="Configurar rutina" title="Configurar" onclick="openRoutineEditor('${escapeHTML(r.id)}')">⚙</button>
+   <button type="button" class="routine-toggle" aria-label="${r.active?'Apagar':'Encender'} rutina" aria-pressed="${r.active?'true':'false'}" onclick="toggleRoutineActive('${escapeHTML(r.id)}')" title="${r.active?'Apagar':'Encender'}"></button>
+  </div>
+ </div>
+ ${expanded?`<div class="routine-tasks">${tasks.length?tasks.map((t,i)=>routineTaskHTML(r,t,i)).join(''):'<div class="routine-empty">Esta rutina todavía no tiene tareas.</div>'}
+ <div class="routine-actions"><button type="button" class="secondary-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}',null)">+ Agregar tarea</button><button type="button" class="secondary-btn" onclick="startRoutine('${escapeHTML(r.id)}')">▶ Iniciar ahora</button></div>
+ </div>`:''}
+ </article>`;
+}
+function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()" onpointerleave="endRoutineTaskHold()">
+ <span class="routine-task-grip" title="Mantén presionado para reordenar">⠿</span><div class="routine-task-info"><strong>${index+1}. ${escapeHTML(t.name)}</strong><small>${Number(t.duration)||0} minutos</small></div>
+ <button type="button" class="small-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}','${escapeHTML(t.id)}')" aria-label="Editar tarea">✎</button>
+ </div>`}
+function toggleRoutineExpanded(id){routineExpandedId=String(routineExpandedId)===String(id)?null:id;renderRoutines()}
+function startRoutineHold(event,id){if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);routineHoldTimer=setTimeout(()=>openRoutineEditor(id),550)}
+function endRoutineHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null}
+function openRoutineEditor(id){
+ const r=id==null?null:routines.find(x=>String(x.id)===String(id));if(id!=null&&!r)return;
+ routineEditorId=r?.id??null;
+ const days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],weekdays=r?.weekdays||[0,1,2,3,4];
+ showTaskModal(r?'Configurar rutina':'Nueva rutina',`
+ <div class="event-form-section"><label for="routineName">Nombre de la rutina</label><input id="routineName" maxlength="100" value="${escapeHTML(r?.name||'')}" placeholder="Ej. Prepararme para el trabajo"></div>
+ <div class="event-form-section"><label class="event-choice"><input id="routineScheduleEnabled" type="checkbox" ${r?.scheduleEnabled?'checked':''} onchange="toggleRoutineScheduleFields()"> Programar activación automática</label></div>
+ <div id="routineScheduleFields" class="routine-schedule-box ${r?.scheduleEnabled?'':'hidden'}">
+  <div class="routine-form-grid">
+   <label>Fecha de inicio<input id="routineStartDate" type="date" value="${escapeHTML(r?.startDate||'')}"></label>
+   <label>Fecha de término<input id="routineEndDate" type="date" value="${escapeHTML(r?.endDate||'')}"></label>
+   <label>Hora de activación<input id="routineActivationTime" type="time" value="${escapeHTML(r?.activationTime||'07:00')}"></label>
+   <label>Repetir cada<select id="routineRepeatWeeks"><option value="1" ${(r?.repeatWeeks||1)===1?'selected':''}>Cada semana</option><option value="2" ${r?.repeatWeeks===2?'selected':''}>Cada 2 semanas</option><option value="3" ${r?.repeatWeeks===3?'selected':''}>Cada 3 semanas</option></select></label>
+  </div>
+  <div class="routine-field" style="margin-top:12px">Días de activación<div class="routine-weekdays">${days.map((d,i)=>'<label><input type="checkbox" name="routineWeekday" value="'+i+'" '+(weekdays.includes(i)?'checked':'')+'> '+d+'</label>').join('')}</div></div>
+  <p class="settings-note">Los eventos del calendario se generarán automáticamente para los días programados.</p>
+ </div>
+ <div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineEditor()">Guardar</button></div>`);
+ setModalWindowBase('save',()=>{routineEditorId=null});
+}
+function toggleRoutineScheduleFields(){document.getElementById('routineScheduleFields')?.classList.toggle('hidden',!document.getElementById('routineScheduleEnabled')?.checked)}
+function saveRoutineEditor(){
+ const name=document.getElementById('routineName')?.value.trim(),enabled=!!document.getElementById('routineScheduleEnabled')?.checked;
+ if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la rutina.');return}
+ const start=document.getElementById('routineStartDate')?.value||'',end=document.getElementById('routineEndDate')?.value||'',time=document.getElementById('routineActivationTime')?.value||'07:00',days=[...document.querySelectorAll('input[name="routineWeekday"]:checked')].map(x=>Number(x.value)),repeat=Number(document.getElementById('routineRepeatWeeks')?.value||1);
+ if(enabled&&(!start||!end||end<start)){showWindowNotice('Revisa las fechas','Selecciona una fecha de inicio y una fecha de término válida.');return}
+ if(enabled&&!days.length){showWindowNotice('Selecciona los días','Elige al menos un día de activación.');return}
+ let r=routineEditorId==null?null:routines.find(x=>String(x.id)===String(routineEditorId));
+ if(!r){r={id:'routine-'+Date.now(),name,tasks:[],active:false,createdAt:new Date().toISOString()};routines.push(r)}
+ Object.assign(r,{name,scheduleEnabled:enabled,startDate:enabled?start:null,endDate:enabled?end:null,activationTime:enabled?time:null,weekdays:enabled?days:[],repeatWeeks:enabled?repeat:1});
+ syncRoutineCalendar(r);routineEditorId=null;closeModal();renderRoutines();
+}
+function openRoutineTaskEditor(routineId,taskId){
+ const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;
+ const task=taskId==null?null:(r.tasks||[]).find(t=>String(t.id)===String(taskId));if(taskId!=null&&!task)return;
+ routineTaskParentId=r.id;routineTaskEditorId=task?.id??null;
+ showTaskModal(task?'Editar tarea':'Nueva tarea',`
+ <div class="event-form-section"><label for="routineTaskName">Nombre de la tarea</label><input id="routineTaskName" maxlength="120" value="${escapeHTML(task?.name||'')}" placeholder="Ej. Preparar desayuno"></div>
+ <div class="event-form-section"><label for="routineTaskDuration">Duración (minutos)</label><input id="routineTaskDuration" type="number" min="1" max="1440" step="1" value="${Number(task?.duration)||30}"></div>
+ <div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineTaskEditor()">Guardar</button></div>`);
+ setModalWindowBase('save',()=>{routineTaskParentId=null;routineTaskEditorId=null});
+}
+function saveRoutineTaskEditor(){
+ const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),name=document.getElementById('routineTaskName')?.value.trim(),duration=Number(document.getElementById('routineTaskDuration')?.value);
+ if(!r)return;if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la tarea.');return}
+ if(!Number.isInteger(duration)||duration<1||duration>1440){showWindowNotice('Duración inválida','La duración debe ser un número entre 1 y 1440 minutos.');return}
+ let task=r.tasks.find(t=>String(t.id)===String(routineTaskEditorId));
+ if(!task){task={id:'rtask-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),createdAt:new Date().toISOString()};r.tasks.push(task)}
+ Object.assign(task,{name,duration});saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines();
+}
+function startRoutineTaskHold(event,routineId,taskId){
+ if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);
+ routineHoldTimer=setTimeout(()=>{routineDragId=taskId;document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]')?.classList.add('routine-dragging')},420);
+}
+function endRoutineTaskHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null;if(routineDragId){document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null}}
+function toggleRoutineActive(id){
+ const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ if(r.active){stopRoutine(id);return}
+ startRoutine(id);
+}
+function clearRoutineTimers(){routineExecutionTimers.forEach(id=>clearTimeout(id));routineExecutionTimers=[]}
+function startRoutine(id){
+ const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ if(!r.tasks?.length){showWindowNotice('Rutina sin tareas','Agrega al menos una tarea antes de iniciar la rutina.');return}
+ const conflicts=routines.filter(other=>other.active&&String(other.id)!==String(r.id)&&routineHasSameAlarmStart(r,other));
+ if(conflicts.length){showWindowNotice('Conflicto de horarios','Esta rutina coincide con otra rutina activa. Revisa sus horarios antes de activarla.');return}
+ r.active=true;r.execution={startedAt:Date.now(),taskOffsets:r.tasks.map((t,i)=>r.tasks.slice(0,i).reduce((sum,x)=>sum+Number(x.duration||0),0)*60000),snoozes:{},startedTasks:[]};
+ scheduleRoutineTaskAlarms(r);saveRoutines();routineExpandedId=r.id;renderRoutines();
+}
+function routineHasSameAlarmStart(a,b){return !!a.scheduleEnabled&&!!b.scheduleEnabled&&a.activationTime===b.activationTime&&a.startDate===b.startDate}
+function scheduleRoutineTaskAlarms(r){
+ clearRoutineTimers();const run=r.execution;if(!run)return;
+ r.tasks.forEach((task,index)=>{
+  const offset=run.taskOffsets[index]||0,delay=Math.max(0,run.startedAt+offset-(Date.now()));
+  const timer=setTimeout(()=>triggerRoutineTaskAlarm(r.id,task.id),Math.min(delay,2147480000));routineExecutionTimers.push(timer);
+ });
+}
+function triggerRoutineTaskAlarm(routineId,taskId){
+ const r=routines.find(x=>String(x.id)===String(routineId)),task=r?.tasks.find(x=>String(x.id)===String(taskId));if(!r?.active||!task)return;
+ const run=r.execution;if(!run)return;
+ const count=run.snoozes[taskId]||0;
+ if(count>0&&run.snoozedUntil?.[taskId]&&Date.now()<run.snoozedUntil[taskId])return;
+ if('Notification'in window&&Notification.permission==='granted')new Notification('Rutina: '+r.name,{body:'Comienza: '+task.name});
+ showRoutineAlarm(r,task);
+}
+function showRoutineAlarm(r,task){
+ const id='routineAlarm-'+Date.now(),layer=document.createElement('div');layer.id=id;layer.className='window-notice-layer';
+ const used=r.execution?.snoozes?.[task.id]||0;
+ layer.innerHTML='<section class="window-notice-card" role="dialog" aria-modal="true"><h2>Es hora de comenzar</h2><p><strong>'+escapeHTML(task.name)+'</strong><br>'+escapeHTML(r.name)+' · '+task.duration+' minutos</p><div class="routine-actions"><button class="secondary-btn" '+(used>=3?'disabled':'')+' onclick="snoozeRoutineTask(\''+escapeHTML(r.id)+'\',\''+escapeHTML(task.id)+'\',5,\''+id+'\')">Posponer 5 min</button><button class="secondary-btn" '+(used>=3?'disabled':'')+' onclick="snoozeRoutineTask(\''+escapeHTML(r.id)+'\',\''+escapeHTML(task.id)+'\',10,\''+id+'\')">Posponer 10 min</button><button class="primary-btn" onclick="closeWindowNotice(\''+id+'\')">Entendido</button></div><p class="settings-note">Posposiciones disponibles: '+(3-used)+'</p></section>';
+ document.body.appendChild(layer);
+}
+function snoozeRoutineTask(routineId,taskId,minutes,layerId){
+ const r=routines.find(x=>String(x.id)===String(routineId));if(!r?.active||!r.execution)return;
+ const used=r.execution.snoozes[taskId]||0;if(used>=3)return;
+ r.execution.snoozes[taskId]=used+1;r.execution.snoozedUntil=r.execution.snoozedUntil||{};r.execution.snoozedUntil[taskId]=Date.now()+minutes*60000;
+ const timer=setTimeout(()=>triggerRoutineTaskAlarm(routineId,taskId),minutes*60000);routineExecutionTimers.push(timer);
+ closeWindowNotice(layerId);saveRoutines();
+}
+function stopRoutine(id){
+ const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ const future=r.scheduleEnabled&&r.endDate&&r.endDate>=routineDateKey(new Date());
+ if(future){showWindowCaution({title:'Apagar rutina',message:'¿Quieres apagar solamente la ejecución actual o también todos los períodos siguientes?',cancelLabel:'Cancelar',confirmLabel:'Solo este período',danger:false,onConfirm:()=>finishRoutineStop(r,false),secondaryLabel:'Todos los períodos siguientes',onSecondary:()=>finishRoutineStop(r,true)});return}
+ finishRoutineStop(r,false);
+}
+function finishRoutineStop(r,cancelFuture){
+ r.active=false;r.execution=null;clearRoutineTimers();
+ if(cancelFuture){r.scheduleEnabled=false;r.startDate=null;r.endDate=null;r.weekdays=[];events=events.filter(ev=>String(ev.routineId)!==String(r.id))}
+ saveRoutines();renderRoutines();
+}
+
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
  screen.innerHTML=`<div class="page-heading"><h1>${m?m.name:id}</h1><p>Tu espacio dentro de Enorden.</p></div><div class="card empty"><div style="font-size:35px">${m?m.emoji:'📌'}</div><p>Este módulo se desarrollará en su siguiente etapa.</p></div>`;
@@ -2477,6 +2685,7 @@ function eventDetailMarkup(ev){
 }
 function openEventDetails(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ if(ev.type==='routine'){const r=routines.find(x=>String(x.id)===String(ev.routineId));showTaskModal('Evento Rutina','<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted">'+new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</p><p>Este evento fue generado automáticamente por la programación de la rutina.</p>'+(r?'<p>Horario de activación: '+escapeHTML(r.activationTime||'')+'</p>':'')+'</div><div class="appearance-actions"><button class="primary-btn" onclick="closeModal()">Cerrar</button></div>');return;}
  editingEventId=null;eventPrefill=null;
  document.getElementById('modalTitle').textContent='Evento';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Vista previa y acciones';sub.classList.remove('hidden');
