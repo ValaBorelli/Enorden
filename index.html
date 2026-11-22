@@ -2515,7 +2515,7 @@ function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-r
  </div>`}
 function openRoutineTaskFromRow(event,routineId,taskId){if(routineTaskSuppressClick){routineTaskSuppressClick=false;return}if(event.target.closest('button'))return;openRoutineTaskEditor(routineId,taskId)}
 function toggleRoutineExpanded(id){if(routineSuppressClick){routineSuppressClick=false;return}routineExpandedId=String(routineExpandedId)===String(id)?null:id;renderRoutines()}
-function startRoutineHold(event,id){if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);routineHoldTimer=setTimeout(()=>{routineSuppressClick=true;openRoutineEditor(id)},550)}
+function startRoutineHold(event,id){if(event.target.closest('button,.routine-task-row'))return;clearTimeout(routineHoldTimer);routineHoldTimer=setTimeout(()=>{routineSuppressClick=true;openRoutineEditor(id)},550)}
 function endRoutineHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null}
 function openRoutineEditor(id){
  const r=id==null?null:routines.find(x=>String(x.id)===String(id));if(id!=null&&!r)return;
