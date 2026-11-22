@@ -2133,9 +2133,10 @@ function entertainmentReviewSearchUrl(item){
  if(!item)return 'https://www.tiktok.com/search';
  const query=[item.title,item.year,'reseña','crítica','opinión'].filter(Boolean).join(' ');
  const webUrl='https://www.tiktok.com/search?q='+encodeURIComponent(query);
- /* Android: fuerza el paquete de TikTok y conserva una búsqueda web como respaldo. */
+ /* TikTok Android verifica App Links en m.tiktok.com; dirigir el Intent a ese host
+    evita depender del host www, que puede resolverse directamente en el navegador. */
  if(typeof navigator!=='undefined'&&/Android/i.test(navigator.userAgent)){
-  return 'intent://www.tiktok.com/search?q='+encodeURIComponent(query)+'#Intent;scheme=https;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent(webUrl)+';end';
+  return 'intent://m.tiktok.com/search?q='+encodeURIComponent(query)+'#Intent;scheme=https;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent(webUrl)+';end';
  }
  return webUrl;
 }
