@@ -847,7 +847,7 @@ let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.taskId!=null?{...ev,type:'event_task'}:ev.type==='special'?{...ev,type:'normal'}:ev);
 let routines=(()=>{try{const value=JSON.parse(localStorage.getItem('enorden_routines')||'[]');return Array.isArray(value)?value:[]}catch{return []}})();
-let routineExpandedId=null,routineEditorId=null,routineTaskEditorId=null,routineTaskParentId=null,routineHoldTimer=null,routineDragId=null,routineExecutionTimers=[];
+let routineExpandedId=null,routineSuppressClick=false,routineEditorId=null,routineTaskEditorId=null,routineTaskParentId=null,routineHoldTimer=null,routineDragId=null,routineExecutionTimers=[];
 let editingEventId=null;
 let eventPrefill=null;
 let eventCreationTime=null;
@@ -2514,8 +2514,8 @@ function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-r
  <span class="routine-task-grip" title="Mantén presionado para reordenar">⠿</span><div class="routine-task-info"><strong>${index+1}. ${escapeHTML(t.name)}</strong><small>${Number(t.duration)||0} minutos</small></div>
  <button type="button" class="small-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}','${escapeHTML(t.id)}')" aria-label="Editar tarea">✎</button>
  </div>`}
-function toggleRoutineExpanded(id){routineExpandedId=String(routineExpandedId)===String(id)?null:id;renderRoutines()}
-function startRoutineHold(event,id){if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);routineHoldTimer=setTimeout(()=>openRoutineEditor(id),550)}
+function toggleRoutineExpanded(id){if(routineSuppressClick){routineSuppressClick=false;return}routineExpandedId=String(routineExpandedId)===String(id)?null:id;renderRoutines()}
+function startRoutineHold(event,id){if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);routineHoldTimer=setTimeout(()=>{routineSuppressClick=true;openRoutineEditor(id)},550)}
 function endRoutineHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null}
 function openRoutineEditor(id){
  const r=id==null?null:routines.find(x=>String(x.id)===String(id));if(id!=null&&!r)return;
@@ -2632,9 +2632,10 @@ function stopRoutine(id){
  layer.innerHTML='<section class="window-notice-card" role="alertdialog" aria-modal="true"><h2>Apagar rutina</h2><p>¿Quieres apagar solamente la ejecución del período actual o también todos los períodos siguientes?</p><div class="routine-actions"><button class="secondary-btn" onclick="closeWindowNotice(\'routineStopChoice\')">Cancelar</button><button class="primary-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',false)">Solo este período</button><button class="danger-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',true)">Todos los períodos siguientes</button></div></section>';
  document.body.appendChild(layer);
 }
-function finishRoutineStop(r,cancelFuture){
+function finishRoutineStop(routineId,cancelFuture){
+ const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;
  r.active=false;r.execution=null;clearRoutineTimers(r.id);
- if(cancelFuture){r.scheduleEnabled=false;r.startDate=null;r.endDate=null;r.weekdays=[];events=events.filter(ev=>String(ev.routineId)!==String(r.id))}
+ if(cancelFuture){r.scheduleEnabled=false;r.startDate=null;r.endDate=null;r.weekdays=[];r.repeatWeeks=1;events=events.filter(ev=>String(ev.routineId)!==String(r.id))}
  saveRoutines();renderRoutines();
 }
 
@@ -2846,6 +2847,34 @@ function addEvent(forceDuplicate=false){
  else{showTaskModal('Evento actualizado con éxito','<p>«'+escapeHTML(name)+'» se actualizó correctamente en el calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
 processFilmEventNotifications();setInterval(processFilmEventNotifications,60000);
+
+function processRoutineCalendarNotifications(){
+ const now=new Date(),today=keyDate(now);let changed=false;
+ routines.forEach(r=>{
+  if(!r.scheduleEnabled)return;
+  const dates=routinePeriodDates(r),start=routineDateFromKey(r.startDate),noticeSent=r.noticeSent||{};
+  const cycles=new Map();
+  dates.forEach(date=>{const d=routineDateFromKey(date),week=Math.floor((d-start)/604800000),cycle=Math.floor(week/Math.max(1,Number(r.repeatWeeks)||1));if(!cycles.has(cycle))cycles.set(cycle,date)});
+  cycles.forEach((firstDate,cycle)=>{
+   const first=routineDateFromKey(firstDate),noticeDate=new Date(first);noticeDate.setDate(noticeDate.getDate()-1);
+   const key=String(cycle)+'|'+firstDate;
+   if(keyDate(noticeDate)===today&&!noticeSent[key]){
+    notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina estará activa desde '+routineDateFromKey(firstDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+' hasta '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
+    notifications=notifications.slice(-50);noticeSent[key]=true;changed=true;
+   }
+  });
+  r.noticeSent=noticeSent;
+ });
+ if(changed){localStorage.setItem('enorden_notifications',JSON.stringify(notifications));saveRoutines()}
+}
+function processRoutineAutoStarts(){
+ const now=new Date(),today=keyDate(now),clock=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+ routines.forEach(r=>{
+  if(!r.scheduleEnabled||r.active||r.lastAutoStartKey===today||!routinePeriodDates(r).includes(today)||clock!==r.activationTime)return;
+  r.lastAutoStartKey=today;startRoutine(r.id);
+ });
+}
+processRoutineCalendarNotifications();processRoutineAutoStarts();setInterval(()=>{processRoutineCalendarNotifications();processRoutineAutoStarts()},30000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden){if(pruneExpiredCompletedTasks())save();processFilmEventNotifications()}});
 window.addEventListener('pagehide',()=>{if(current==='finanzas')startFinanceLockTimer()});
 render();
