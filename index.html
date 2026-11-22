@@ -2650,7 +2650,7 @@ function snoozeRoutineTask(routineId,taskId,minutes,layerId){
 function stopRoutine(id){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
  const future=r.scheduleEnabled&&r.endDate&&r.endDate>=routineDateKey(new Date());
- if(!future){finishRoutineStop(r,false);return}
+ if(!future){finishRoutineStop(r.id,false);return}
  const layer=document.createElement('div');layer.className='window-notice-layer';layer.id='routineStopChoice';
  layer.innerHTML='<section class="window-notice-card" role="alertdialog" aria-modal="true"><h2>Apagar rutina</h2><p>¿Quieres apagar solamente la ejecución del período actual o también todos los períodos siguientes?</p><div class="routine-actions"><button class="secondary-btn" onclick="closeWindowNotice(\'routineStopChoice\')">Cancelar</button><button class="primary-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',false)">Solo este período</button><button class="danger-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',true)">Todos los períodos siguientes</button></div></section>';
  document.body.appendChild(layer);
