@@ -2623,6 +2623,7 @@ function addEvent(forceDuplicate=false){
  const isNewEvent=!old;
  editingEventId=null;eventPrefill=null;save();closeModal();render();
  if(isNewEvent){showTaskModal('Evento creado con éxito','<p>«'+escapeHTML(name)+'» se agregó correctamente al calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
+ else{showTaskModal('Evento actualizado con éxito','<p>«'+escapeHTML(name)+'» se actualizó correctamente en el calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
 processFilmEventNotifications();setInterval(processFilmEventNotifications,60000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden){if(pruneExpiredCompletedTasks())save();processFilmEventNotifications()}});
