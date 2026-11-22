@@ -951,8 +951,8 @@ function openLanguageModal(){
  document.getElementById('modalTitle').textContent='Idioma de Enorden';
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='Selecciona el idioma de tu aplicación.';subtitle.classList.remove('hidden');
  document.getElementById('modalBody').innerHTML='<div class="language-options" role="radiogroup" aria-label="Idiomas disponibles">'+Object.keys(appLanguages).map(languageChoiceHTML).join('')+'</div>'+
- '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppLanguage()">Guardar</button></div>';
- document.getElementById('backdrop').classList.add('show');
+ '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppLanguage()">Guardar</button></div>';
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{selectedAppLanguage=appLanguage});
 }
 function selectAppLanguage(value){if(!appLanguages[value])return;selectedAppLanguage=value;document.querySelectorAll('.language-choice').forEach(card=>card.setAttribute('aria-checked',String(card.getAttribute('aria-label')==='Seleccionar idioma '+appLanguages[value].name)))}
 function saveAppLanguage(){if(!appLanguages[selectedAppLanguage])return;appLanguage=selectedAppLanguage;localStorage.setItem('enorden_language',appLanguage);closeModal();render()}
@@ -974,8 +974,8 @@ function openAppearanceModal(){
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='Selecciona el estilo visual que prefieras. Puedes cambiarlo cuando quieras.';subtitle.classList.remove('hidden');
  document.getElementById('modalBody').innerHTML='<div class="appearance-grid" role="radiogroup" aria-label="Temas de apariencia">'+Object.keys(appearanceThemes).map(appearanceCardHTML).join('')+'</div>'+
  '<p class="appearance-storage-note">En esta versión de prueba, tu elección se guarda en este dispositivo. La personalización sincronizada por cuenta estará disponible cuando Enorden incorpore el sistema de usuarios.</p>'+
- '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppearanceTheme()">Guardar</button></div>';
- document.getElementById('backdrop').classList.add('show');
+ '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppearanceTheme()">Guardar</button></div>';
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{selectedAppearanceTheme=appTheme});
 }
 function selectAppearanceTheme(key){
  if(!appearanceThemes[key])return;selectedAppearanceTheme=key;
@@ -1856,13 +1856,13 @@ function openProfileImage(){
  </div>
  <p class="settings-note">También puedes elegir un avatar de muestra.</p>
  <div class="avatar-choices">${['🙂','😀','😎','🐱','🌿','⭐'].map(a=>`<button class="avatar-choice ${a===currentAvatar&&!savedImage?'selected':''}" onclick="selectProfileAvatar('${a}',this)">${a}</button>`).join('')}</div>
- <div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileImage()">Listo</button></div>`;
+ <div class="profile-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="saveProfileImage()">Listo</button></div>`;
  const preview=document.getElementById('profilePreview');
  preview.dataset.avatar=savedImage?'':currentAvatar;
  profilePointers=new Map();profileGesture=null;
  if(savedImage)loadProfileCropImage(savedImage);
  else{const ctx=preview.getContext('2d');ctx.clearRect(0,0,180,180);ctx.font='76px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(currentAvatar,90,92);}
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{profileCropState=null;profilePointers=new Map();profileGesture=null});
 }
 function loadProfileCropImage(source){
  const img=new Image();
@@ -1962,8 +1962,8 @@ function saveProfileImage(){
 function openProfileName(){
  const name=localStorage.getItem('enorden_profile_name')||'Vale';
  document.getElementById('modalTitle').textContent='Nombre de Usuario';
- document.getElementById('modalBody').innerHTML=`<label for="profileNameInput">Elige tu nombre de usuario</label><input id="profileNameInput" type="text" maxlength="30" value="${escapeHTML(name)}" placeholder="Nombre y números"><div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileName()">Guardar</button></div>`;
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('modalBody').innerHTML=`<label for="profileNameInput">Elige tu nombre de usuario</label><input id="profileNameInput" type="text" maxlength="30" value="${escapeHTML(name)}" placeholder="Nombre y números"><div class="profile-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="saveProfileName()">Guardar</button></div>`;
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save');
 }
 function saveProfileName(){
  const name=document.getElementById('profileNameInput').value.trim();
@@ -2071,9 +2071,9 @@ function showFinancePinSetup(continueToFinance){
   <p>Elige un PIN de exactamente 4 números.</p>
   <label for="financePinNew">Nuevo PIN</label><input id="financePinNew" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4 dígitos">
   <label for="financePinConfirm">Confirmar PIN</label><input id="financePinConfirm" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Repite el PIN">
-  <button class="primary-btn" onclick="saveFinancePin()">Guardar PIN</button>
+  <div class="appearance-actions"><button type="button" class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button type="button" class="primary-btn" onclick="saveFinancePin()">Guardar PIN</button></div>
   <p class="settings-note">En esta versión de prueba el PIN solo demuestra el flujo. No uses una clave real ni lo consideres protección de información sensible.</p>`;
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save');
 }
 async function hashFinancePin(value){
  const bytes=new TextEncoder().encode(value);
