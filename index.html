@@ -660,7 +660,7 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .modal-backdrop.window-save .event-form-actions button,.modal-backdrop.window-save .appearance-actions button,.modal-backdrop.window-save .profile-actions button,.modal-backdrop.window-save .task-create-actions button,.modal-backdrop.window-save .event-detail-actions button{flex:1;min-width:0;white-space:normal;line-height:1.25}
 .modal-backdrop.window-confirmation .event-detail-actions{display:flex;justify-content:center;align-items:center}
 .modal-backdrop.window-confirmation .event-detail-actions button{flex:0 1 auto;min-width:112px}
-.window-caution-layer{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:16px;background:#0008}
+.window-caution-layer{position:fixed;inset:0;z-index:10100;display:flex;align-items:center;justify-content:center;padding:16px;background:#0008}
 .window-caution-card,.window-notice-card{position:relative;width:min(440px,100%);max-height:85vh;overflow:auto;padding:24px 22px 20px;border-radius:20px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0005}
 .window-caution-card h2,.window-notice-card h2{margin:0 38px 10px;text-align:center;font-size:19px;line-height:1.3;overflow-wrap:anywhere}
 .window-caution-card p,.window-notice-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;text-align:center}
@@ -858,7 +858,7 @@ function showWindowCaution(options={}){
  const id='windowCaution'+(++windowCautionSequence),title=escapeHTML(options.title||'¿Quieres salir sin guardar?'),message=escapeHTML(options.message||'Si sales sin guardar de esta ventana perderás los datos ingresados'),subject=options.subject?'<div class="window-caution-subject">'+escapeHTML(options.subject)+'</div>':'',cancel=escapeHTML(options.cancelLabel||'Cancelar'),confirm=escapeHTML(options.confirmLabel||'Salir sin guardar'),danger=options.danger!==false;
  const layer=document.createElement('div');layer.id=id;layer.className='window-caution-layer';
  layer.innerHTML='<section class="window-caution-card" role="alertdialog" aria-modal="true" aria-labelledby="'+id+'Title"><button type="button" class="window-caution-close" aria-label="Cerrar" onclick="closeWindowCaution(true)">×</button><h2 id="'+id+'Title">'+title+'</h2><p>'+message+'</p>'+subject+'<div class="window-caution-actions"><button type="button" class="secondary-btn" onclick="closeWindowCaution(true)">'+cancel+'</button><button type="button" class="'+(danger?'danger-btn':'primary-btn')+'" onclick="confirmWindowCaution()">'+confirm+'</button></div></section>';
- const parent=options.parent||document.getElementById('backdrop')||document.body;parent.appendChild(layer);
+ const backdrop=document.getElementById('backdrop');const parent=options.parent||(backdrop?.classList.contains('show')?backdrop:document.body);parent.appendChild(layer);
  activeWindowCaution={id,onCancel:options.onCancel,onConfirm:options.onConfirm};layer.querySelector('button')?.focus();
 }
 function confirmWindowCaution(){
@@ -1665,7 +1665,7 @@ function toggleTaskLevel(taskId,subtaskId,nestedId){
  }
  syncTaskCompletion(task);save();render();
 }
-function moveTaskSubtask(taskId,fromId,toId,level,parentId){
+function moveTaskSubtask(taskId,fromId,toId,level,parentId,confirmed=false){
  const task=tasks.find(t=>Number(t.id)===Number(taskId));if(!task)return;
  const list=level==='nested'?(task.subtasks||[]).find(s=>Number(s.id)===Number(parentId))?.subtasks:task.subtasks;
  if(!Array.isArray(list))return;
