@@ -144,6 +144,7 @@ Se conservará internamente la referencia de la última actualización exitosa d
 - Al pulsar «Guardar», la ventana de programación se cerrará y se mostrará una confirmación titulada «Tu Film se programó con éxito!», con la fecha elegida y la hora elegida o «Todo el día».
 - Si se eligió una hora, la confirmación indicará: «Te llegará una notificación 15 minutos antes de la hora seleccionada». Este mensaje no aparecerá para eventos de todo el día.
 - La confirmación incluirá, en texto más pequeño y gris claro: «Puedes modificar tu evento Film en el calendario», y un botón «Entendido».
+- La ventana de confirmación debe mostrarse por encima de cualquier otra ventana o modal que permanezca abierto, sin alterar el orden de capas de los demás modales.
 - La programación no modificará el favorito ni el catálogo de Entretención.
 
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
