@@ -1958,7 +1958,7 @@ function saveProfileImage(){
    localStorage.setItem('enorden_profile_image',cropped);localStorage.setItem('enorden_profile_avatar','');
   }else{localStorage.removeItem('enorden_profile_image');localStorage.setItem('enorden_profile_avatar',avatar);}
  }catch(error){showWindowNotice('No se pudo guardar la imagen','Prueba con otra foto o elige un avatar.');return}
- profileCropState=null;profilePointers=new Map();profileGesture=null;closeModal();renderSettings();
+ profileCropState=null;profilePointers=new Map();profileGesture=null;closeModal();renderSettings();showTaskModal('Imagen de perfil actualizada','<p>Tu imagen de perfil se guardó correctamente.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');
 }
 function openProfileName(){
  const name=localStorage.getItem('enorden_profile_name')||'Vale';
@@ -1992,13 +1992,13 @@ function verifyAlternateEmail(){
  const email=document.getElementById('alternateEmail').value.trim();
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Ingresa un correo con formato válido.');return}
  const code=String(Math.floor(100000+Math.random()*900000));alert('Demostración: tu código sería '+code+'. En la versión completa llegará a tu correo.');
- if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_alternate_email',email);localStorage.setItem('enorden_alternate_verified','true');document.getElementById('alternateStatus').textContent='Correo alternativo verificado y guardado.';}else alert('El código no coincide. No se guardó el correo.');
+ if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_alternate_email',email);localStorage.setItem('enorden_alternate_verified','true');closeModal();renderSettings();showTaskModal('Correo alternativo guardado','<p>Tu correo electrónico secundario se guardó y verificó correctamente.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');}else alert('El código no coincide. No se guardó el correo.');
 }
 function verifyWhatsapp(){
  const number=document.getElementById('whatsappNumber').value.trim();
  if(!/^\+?[0-9 ()-]{8,20}$/.test(number)){alert('Ingresa un número válido con código de país.');return}
  const code=String(Math.floor(100000+Math.random()*900000));alert('Demostración: tu código sería '+code+'. En la versión completa llegará por WhatsApp.');
- if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_whatsapp',number);localStorage.setItem('enorden_whatsapp_verified','true');document.getElementById('whatsappStatus').textContent='WhatsApp verificado y guardado.';}else alert('El código no coincide. No se guardó el número.');
+ if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_whatsapp',number);localStorage.setItem('enorden_whatsapp_verified','true');closeModal();renderSettings();showTaskModal('Número de WhatsApp guardado','<p>Tu número de teléfono se guardó y verificó correctamente.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');}else alert('El código no coincide. No se guardó el número.');
 }
 
 function renderFinance(){
