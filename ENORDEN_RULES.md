@@ -133,3 +133,92 @@
 - Tener una API gratuita no significa tener autorización comercial.
 - La preparación técnica y la autorización legal serán estados independientes.
 - Se revisarán los derechos de imágenes, marcas y enlaces antes de incorporar recursos gráficos o funcionalidades que los requieran.
+
+## 14. Sistema general de ventanas
+
+### 14.1. Principio base y alcance
+
+- Las categorías de ventanas definidas en esta sección serán la **base de diseño y comportamiento para la creación de todas las ventanas de EnOrden**, tanto las existentes que se adapten como las nuevas que se desarrollen en el futuro.
+- Estas categorías no son plantillas rígidas ni limitan las características de cada ventana. Cada ventana conservará y podrá incorporar los campos, controles, textos, contenidos, opciones, botones, configuraciones y acciones que requiera su función particular.
+- La ventana particular deberá partir de la estructura base de la categoría que le corresponda y combinarla con sus necesidades específicas. Por tanto, cumplir la base no significa reducir ni reemplazar su funcionalidad propia.
+- Las categorías base son: **ventana de guardado**, **ventana de confirmación**, **ventana de precaución** y **aviso informativo**.
+- Antes de crear o modificar una ventana, identificar su categoría y aplicar sus reglas base. Si una ventana requiere una excepción a esas reglas, debe quedar expresamente definida y autorizada por Vale antes de implementarse.
+- Estas reglas se aplican transversalmente a todos los módulos, excepto las ventanas y diálogos de **Tareas → Compartidos**, que quedan excluidos de cualquier aplicación o modificación derivada de este sistema general, salvo autorización expresa posterior de Vale.
+- Ninguna ventana debe cerrarse ni ejecutar acciones por un clic o toque fuera de sus límites. La interacción fuera de la ventana no tendrá ningún efecto.
+
+### 14.2. Elementos comunes de diseño
+
+- Los títulos estarán centrados.
+- La X de cierre estará dentro de un círculo, ubicada en la esquina superior derecha y sobresaliendo ligeramente del borde de la ventana.
+- La X tendrá el mismo efecto que la acción secundaria de la categoría correspondiente: en ventanas de guardado y precaución actuará como «Cancelar»; en ventanas de confirmación y avisos informativos tendrá el mismo efecto que su acción de cierre o aceptación definida para ese aviso.
+- Los botones deberán conservar márgenes suficientes, separación entre sí y espacio vertical y horizontal. No podrán solaparse con otros elementos ni quedar pegados a los bordes.
+- El texto de cada botón deberá permanecer correctamente alineado y completamente dentro de sus límites, sin desbordarse ni solaparse.
+- La distribución de los botones y del contenido deberá adaptarse al espacio disponible, manteniendo legibilidad y márgenes adecuados.
+
+### 14.3. Ventana de confirmación
+
+**Estructura base**
+- Título centrado.
+- X circular en la esquina superior derecha, sobresaliendo ligeramente del borde.
+- Un botón principal al final de la ventana, centrado horizontalmente y con espacio suficiente alrededor.
+- El texto predeterminado del botón será «Entendido», pero podrá cambiarse por el texto que requiera la función particular.
+
+**Comportamiento base**
+- Clic o toque fuera de la ventana: no produce ningún efecto.
+- X: ejecuta el mismo efecto que el botón principal de confirmación.
+- Botón principal: ejecuta la acción de confirmación o cierre definida para el caso concreto.
+
+**Configuración particular**
+- La ventana podrá tener un título, contenido, textos y acción de confirmación propios. También podrá mostrar información, fechas, datos o resultados adicionales, siempre conservando la estructura base de esta categoría.
+
+### 14.4. Ventana de guardado
+
+**Estructura base**
+- Título centrado.
+- X circular en la esquina superior derecha, sobresaliendo ligeramente del borde.
+- Dos botones al final de la ventana: una acción secundaria a un lado y la acción principal de guardado al otro, con una separación pequeña pero visible y márgenes suficientes en ambos extremos.
+- Los textos predeterminados serán «Cancelar» y «Guardar», pero podrán adaptarse a la función particular (por ejemplo, «Guardar cambios»).
+
+**Comportamiento base**
+- Clic o toque fuera de la ventana: no produce ningún efecto.
+- Acción principal: ejecuta el guardado definido para el caso concreto. El destino, la validación y el resultado se especificarán según la funcionalidad correspondiente.
+- Acción secundaria o X: no guarda los datos y abre la ventana de precaución correspondiente. Los datos introducidos se conservan temporalmente mientras el usuario decide si continúa editando o sale sin guardar.
+
+**Configuración particular**
+- La ventana conservará todos los campos, controles, opciones, botones adicionales, previsualizaciones y configuraciones que requiera su función. La estructura base no reemplaza ni simplifica el formulario particular.
+- Los textos de las acciones podrán ser específicos, siempre que se mantenga clara la diferencia entre guardar y cancelar.
+
+### 14.5. Ventana de precaución
+
+**Estructura base**
+- Título centrado. El título predeterminado será «¿Quieres salir sin guardar?», pero podrá personalizarse según la acción que se esté confirmando.
+- Texto explicativo debajo del título, en tamaño pequeño y color gris. El texto predeterminado será «Si sales sin guardar de esta ventana perderás los datos ingresados», pero podrá adaptarse al contexto.
+- X circular en la esquina superior derecha, sobresaliendo ligeramente del borde.
+- Dos botones al final, distribuidos como en la ventana de guardado: con separación visible entre ellos y márgenes suficientes a ambos lados.
+- La acción destructiva o que implique descartar, eliminar o abandonar tendrá fondo rojo.
+- Los textos predeterminados serán «Salir sin guardar» y «Cancelar», pero podrán personalizarse según el caso.
+
+**Comportamiento base**
+- Clic o toque fuera de la ventana: no produce ningún efecto.
+- Acción secundaria o X: cierra únicamente la ventana de precaución y regresa a la ventana anterior, conservando los datos y el estado temporal para que el usuario pueda continuar.
+- Acción destructiva: ejecuta únicamente la acción confirmada para ese caso. Si se trata de abandonar una edición, descarta los datos introducidos y cierra las ventanas involucradas en ese flujo, sin guardar ni afectar información ajena a esa edición. Si se trata de eliminar un elemento existente, elimina exclusivamente el elemento identificado y confirmado.
+
+**Configuración particular**
+- El título, texto explicativo, botones y acción destructiva se definirán para cada situación. Por ejemplo, una eliminación puede usar un título como «¿Quieres eliminar este evento?» y mostrar claramente qué elemento se eliminará.
+- La ventana debe identificar con claridad qué acción se realizará y sobre qué elemento, cuando corresponda.
+
+### 14.6. Aviso informativo
+
+- El aviso informativo es una categoría independiente; no es una variante de la ventana de confirmación, guardado o precaución.
+- Mantendrá como elementos comunes el título centrado cuando corresponda, la X circular en la esquina superior derecha sobresaliendo ligeramente del borde y la protección contra cierres por clic o toque fuera.
+- Su contenido, distribución, textos, botones y acciones se configurarán según la información que deba comunicar. No se le impondrá la estructura de dos botones de una ventana de guardado o precaución.
+- La X cerrará el aviso. Cualquier botón adicional ejecutará la acción informativa o complementaria definida para ese caso.
+
+### 14.7. Aplicación, revisión y excepciones
+
+- Estas cuatro categorías son la base para todas las ventanas existentes y futuras de EnOrden. La adaptación debe respetar la función particular de cada ventana y no eliminar opciones o comportamientos ya definidos.
+- Las ventanas existentes se adaptarán según la clasificación y el alcance acordados con Vale. No se considerará autorizada una modificación solo porque una ventana aparezca en un inventario técnico: deben respetarse las inclusiones, exclusiones y pendientes definidos.
+- Las ventanas de **Tareas → Compartidos** quedan expresamente fuera del sistema general de ventanas y no deben modificarse por cambios globales en estilos, componentes o comportamientos.
+- Los selectores y controles auxiliares (por ejemplo, ruedas para elegir hora o cantidades) no se convertirán automáticamente en ventanas de guardado, confirmación o precaución; conservarán su naturaleza de selector, salvo que Vale defina otra cosa.
+- Revisar los usos de los diálogos nativos del navegador (`alert()`, `confirm()` y `prompt()`). Cuando correspondan a confirmaciones, advertencias, validaciones o avisos propios de EnOrden, reemplazarlos por ventanas de la aplicación de la categoría adecuada, preservando el flujo y la función original. Antes de reemplazarlos, inspeccionar cada uso para no alterar el comportamiento ni intervenir flujos fuera del alcance autorizado.
+- Toda ventana nueva deberá clasificarse antes de implementarse y partir de la estructura base correspondiente, manteniendo sus características particulares.

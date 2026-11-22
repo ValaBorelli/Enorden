@@ -92,7 +92,7 @@ Se conservará internamente la referencia de la última actualización exitosa d
 - Mostrará hasta 12 títulos elegibles elegidos aleatoriamente.
 - El resultado debe coincidir exactamente con uno de los segmentos visibles.
 - El resultado ganador se mostrará en una ventana superpuesta sobre la ruleta, no como una ficha fija debajo de ella.
-- La ventana conservará las acciones de la ficha actual (tráiler, favoritos e información de disponibilidad) para poder revisarlas y ajustarlas posteriormente.
+- La ventana conservará las acciones de la ficha actual (reseñas, favoritos e información de disponibilidad) para poder revisarlas y ajustarlas posteriormente.
 - La ventana tendrá un botón X en la esquina superior derecha para cerrarla y volver a ver la ruleta.
 - La configuración de la ruleta se abrirá en una ventana modal; sus controles (tipo, géneros y rango de años) deben permanecer dentro de ella.
 - Abrir o cancelar la configuración no debe borrar los filtros aplicados, el catálogo cargado, los favoritos, el resultado ni el progreso de la sesión. Los cambios solo se aplican al pulsar «Listo»; «Cancelar», la X o tocar fuera de la ventana solo la cierran.
@@ -101,25 +101,52 @@ Se conservará internamente la referencia de la última actualización exitosa d
 - «Nueva sesión» reiniciará los ganadores de la sesión, sin borrar favoritos ni preferencias.
 - Si hay menos de 12 títulos disponibles, se mostrarán todos.
 
-## 6. Tráileres
-- La primera implementación utilizará una búsqueda directa en YouTube mediante la URL de resultados; no requiere API ni credenciales.
-- El botón de la ficha del resultado se llamará exactamente **«Ver trailer»** y abrirá una única búsqueda que incluya el título, el año cuando esté disponible y el idioma preferido configurado en EnOrden.
-- La búsqueda priorizará español latino para español; inglés para inglés; portugués para portugués. Para otros idiomas futuros, se utilizará primero el idioma configurado.
-- No se mostrarán al usuario botones ni enlaces de búsquedas alternativas. La selección del video seguirá siendo responsabilidad del usuario; EnOrden no elegirá automáticamente un video ni afirmará que sea oficial, auténtico o verificado.
-- Las búsquedas se construirán dinámicamente a partir del título y año del resultado; no se guardarán enlaces fijos de tráiler en el catálogo.
-- **MEJORA FUTURA:** evaluar una API de YouTube u otro proveedor intercambiable para localizar un tráiler específico y entregar candidatos con metadatos fiables de título, idioma y fuente. Esta integración no forma parte de la implementación actual.
+## 6. Reseñas
+
+- La ficha de películas y series tendrá un botón llamado exactamente **«Ver reseñas»**.
+- En Android, el botón intentará abrir directamente la búsqueda interna de TikTok con el título, año cuando exista y términos relacionados con reseña, crítica y opinión.
+- En otros entornos se abrirá la búsqueda web de TikTok.
+- La búsqueda se construye dinámicamente; EnOrden no incorpora, reproduce, almacena ni selecciona videos de TikTok.
+- La selección y reproducción del contenido queda a cargo del usuario.
+- El acceso a TikTok no debe insinuar patrocinio, asociación o respaldo de TikTok hacia EnOrden.
+- No se utilizarán logotipos ni recursos de marca de TikTok.
+- La implementación actual utiliza un enlace profundo de Android probado en el dispositivo de Vale. Su comportamiento deberá volver a comprobarse en otros dispositivos y versiones de TikTok.
+- **PENDIENTE FUTURO:** evaluar alternativas solo si la búsqueda deja de funcionar; no incorporar API ni extracción automatizada de contenido sin una revisión específica de permisos y condiciones.
 
 ## 7. Ficha del resultado
 
 - El resultado ganador aparece en una ventana modal superpuesta a la ruleta. La X superior derecha la cierra y devuelve la vista a la ruleta.
 - El encabezado de la ventana dice exactamente «Tu resultado».
 - El contenido principal se organiza en dos columnas: póster a la izquierda, con aproximadamente un tercio del ancho útil, y texto a la derecha. El póster conserva sin cambios su fondo, tratamiento, proporción y ajuste de imagen actuales.
-- La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver trailer»; sección «Dónde verla» con los servicios disponibles como chips.
+- La columna de texto muestra, en este orden: título alineado con la parte superior del póster; metadatos pequeños y gris claro (tipo, año y temporadas o duración cuando exista); descripción; géneros; botón único «Ver reseñas»; sección «Dónde verla» con los servicios disponibles como chips.
 - La sección «Dónde verla» permanecerá en la ficha. Cuando una consulta exitosa no encuentre plataformas, no se mostrarán opciones de plataformas ni un mensaje que indique que no se encontraron. Si la consulta falla, el contenido dependerá de las reglas de la sección 9.
 - El botón de favoritos se ubica debajo de «Ver trailer» y utiliza exactamente el mismo estilo visual que los demás botones de acciones de la ficha (fondo, borde, esquinas, tipografía y espaciado).
 - El ícono de corazón aparece a la izquierda del texto y es ligeramente más pequeño que en la versión anterior. Cuando el título no está guardado muestra ♡, con interior transparente y contorno negro; cuando está guardado muestra ♥ relleno de negro.
 - El texto cambia según el estado: «Añadir a favoritos» cuando no está guardado y «En favoritos» cuando sí lo está.
 - Al pulsarlo agrega o quita el título de favoritos mediante la función y persistencia existentes.
+
+### 7.1. Fichas abiertas desde Favoritos
+
+- Cada película o serie de «Mis favoritos» será seleccionable.
+- Al seleccionar un favorito se abrirá la misma ventana modal de resultados que utiliza la ruleta, conservando su presentación, metadatos, reseñas, disponibilidad, favoritos y créditos según procedencia.
+- La ficha abierta desde Favoritos tendrá además el botón **«Programar»**. Esta acción no aparecerá en la ficha que se abre desde la ruleta.
+- Al pulsar «Programar» se abrirá una ventana independiente con el texto «¿Para cuándo quieres programar tu Film?».
+- La ventana incluirá un botón de calendario para elegir fecha, un botón «Hora» que utilizará el mismo selector de hora en formato rueda del Calendario y una casilla «Todo el día».
+- Si se marca «Todo el día», se ocultará la selección de hora y no se configurará una alerta horaria.
+- «Guardar» creará un evento de Calendario llamado «Ver [título]», de tipo interno `film`, mostrado en el Calendario como **«Evento Film»**.
+- El evento se creará con prioridad alta, color caqui (`#C3B091`), calendario personal y sin repetición.
+- Si se indica una hora, se guardará una alerta de 15 minutos antes y una notificación en el centro de notificaciones de EnOrden.
+- Si se marca «Todo el día», no se guardará hora ni alerta; se generará una notificación de EnOrden indicando que ese Film está programado para ese día.
+- El evento podrá editarse desde el Calendario en todos sus campos habituales, excepto el tipo, que permanecerá bloqueado como «Evento Film».
+- «Cancelar» y la X de la esquina superior derecha solicitarán confirmación antes de abandonar la programación. La X se ubicará parcialmente fuera del borde superior derecho de la ventana.
+- Tocar fuera de la ventana no la cerrará ni tendrá efecto.
+- La confirmación de cancelación debe conservar la fecha, hora y opción «Todo el día» seleccionadas si el usuario decide seguir programando.
+- Al pulsar «Guardar», la ventana de programación se cerrará y se mostrará una confirmación titulada «Tu Film se programó con éxito!», con la fecha elegida y la hora elegida o «Todo el día».
+- Si se eligió una hora, la confirmación indicará: «Te llegará una notificación 15 minutos antes de la hora seleccionada». Este mensaje no aparecerá para eventos de todo el día.
+- La confirmación incluirá, en texto más pequeño y gris claro: «Puedes modificar tu evento Film en el calendario», y un botón «Entendido».
+- La ventana de confirmación debe mostrarse por encima de cualquier otra ventana o modal que permanezca abierto, sin alterar el orden de capas de los demás modales.
+- La programación no modificará el favorito ni el catálogo de Entretención.
+
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
 - En la parte inferior de la ventana se conservarán los créditos de los proveedores de datos, separados del contenido de disponibilidad.
 - La atribución del catálogo identificará a TMDB e incluirá su logotipo oficial y el aviso: “This product uses the TMDB API but is not endorsed or certified by TMDB”.
@@ -207,6 +234,7 @@ Para cada plataforma, el orden de enlaces será: `universalUrl`, `appUrl`, `webU
 - Una vez realizadas las pruebas y revisado el trabajo restante del módulo, decidir si la disponibilidad de streaming se incluye en el lanzamiento inicial o se reserva para una actualización posterior.
 - Persistir favoritos/preferencias en la cuenta del usuario cuando exista sistema de cuentas.
 - Añadir estados de carga, error, catálogo vacío, límites del proveedor y funcionamiento sin conexión.
+- **PENDIENTE:** incorporar infraestructura de notificaciones en segundo plano si se requiere entregar alertas cuando EnOrden esté cerrado. La implementación actual procesa los avisos de Film mientras la aplicación está abierta o cuando vuelve a primer plano.
 
 
 ### Pendientes derivados de las reglas de arquitectura

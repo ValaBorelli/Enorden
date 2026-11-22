@@ -120,7 +120,7 @@ h2{font-size:18px;margin-bottom:13px}
 
 .shared-project-create-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.shared-project-create-actions button{width:100%;min-height:48px;border:1px solid #2459ff!important;border-radius:12px;background:#1748e8!important;color:#fff!important;font-weight:700}.shared-project-create-actions button:active{background:#1038bd!important}.shared-project-create-actions button+button{background:#fff!important;color:#1748e8!important}.shared-project-create-actions button+button:active{background:#eaf0ff!important}.shared-project-link-tools{border-top:1px solid #26364b;margin-top:6px;padding:11px 9px 4px;color:#f5f7ff}.shared-project-link-tools strong{display:block;font-size:12px;margin-bottom:7px}.shared-project-link-value{font-size:10px;color:#aebbd0;overflow-wrap:anywhere}.shared-project-link-buttons{display:flex;gap:7px;margin-top:8px}.shared-project-link-buttons button{flex:1;border:1px solid #52647d;border-radius:7px;padding:7px;background:#1b2b40;color:#fff;font-size:11px}.shared-project-code{display:block;width:100%;margin-top:8px;border:0;background:transparent;color:#aebbd0;font-size:10px;text-align:left;letter-spacing:1px}.shared-project-user-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #e5e7eb}.shared-project-user-name{font-weight:700;font-size:13px}.shared-project-user-row select{max-width:145px;border:1px solid #cbd2df;border-radius:8px;padding:7px;background:#fff;color:#20242b;font-size:11px}.shared-project-modal-notice{text-align:center;padding:10px 0;color:#4c5564;font-size:14px}.page-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
 .toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
-.small-btn,.primary-btn,.secondary-btn{border:0;border-radius:9px;padding:10px 13px}
+.small-btn,.primary-btn,.secondary-btn,.danger-btn{border:0;border-radius:9px;padding:10px 13px}
 .small-btn{background:var(--surface2);color:#30352d;white-space:nowrap}
 .small-btn.active,.primary-btn{background:var(--green2);color:white}
 .secondary-btn{background:var(--surface2);color:#30352d}
@@ -183,7 +183,8 @@ h2{font-size:18px;margin-bottom:13px}
 .modal-backdrop.show{display:flex}.anniversary-notice-backdrop{z-index:40}
 .task-validation-backdrop{position:fixed;inset:0;z-index:50;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px}.task-validation-modal{background:#fffaf1;color:#242820;width:min(420px,100%);padding:22px;border-radius:20px;box-shadow:0 12px 40px #0003}.task-validation-modal h3{margin:0 0 9px;font-size:18px}.task-validation-modal p{margin:0;color:#62675e;font-size:14px;line-height:1.5}.task-validation-actions{display:flex;justify-content:flex-end;margin-top:18px}.task-validation-actions button{min-width:112px}
 .modal{background:#fffaf1;color:#242820;width:min(650px,100%);padding:22px;
- border-radius:20px;max-height:85vh;overflow:auto}
+ border-radius:20px;max-height:calc(100dvh - 32px);overflow:visible;display:flex;flex-direction:column}
+ #modalBody{min-height:0;flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain}
 .modal input,.modal select{width:100%;background:#fff;color:#242820;
  border:1px solid #d1c8b8;border-radius:9px;padding:12px;margin:6px 0 13px}
 .modal label{font-size:12px;color:#60645c}
@@ -613,6 +614,17 @@ body[data-theme="colorful"] .summary-card:nth-child(3),body[data-theme="colorful
 .entertainment-favorite-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .entertainment-favorite-row strong{font-size:13px}.entertainment-favorite-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
 .entertainment-favorite-row button{margin-left:auto}
+.entertainment-favorite-open{display:flex;align-items:center;gap:10px;flex:1;min-width:0;text-align:left;border:0;background:transparent;color:var(--white);padding:0}
+.entertainment-favorite-open>span:last-child{min-width:0}.entertainment-favorite-open strong{display:block;overflow-wrap:anywhere}
+.entertainment-schedule-launch{width:100%;margin-top:13px;min-height:44px}
+.film-schedule-layer{z-index:10080}.film-schedule-shell{position:relative;width:min(440px,100%)}
+.film-schedule-modal{width:100%;max-height:88vh;padding:23px}.film-schedule-modal h2{text-align:center;margin:0;font-size:20px}
+.film-schedule-question{text-align:center;font-size:13px;color:var(--muted);margin:9px 0 20px}
+.film-schedule-close{position:absolute;z-index:2;top:-13px;right:-13px;width:38px;height:38px;border:2px solid var(--surface);box-shadow:0 3px 12px #0003;font-size:22px}
+.film-schedule-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.film-schedule-native-date{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.film-schedule-date-button,.film-schedule-time-button{width:100%;min-height:48px;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:12px;font-size:13px}
+.film-schedule-time-button strong{font-size:14px}.film-schedule-all-day{margin:16px 0 4px;width:max-content;max-width:100%}.film-schedule-actions{margin-top:21px}
+.time-picker-backdrop.film-schedule-time-picker{z-index:10090}
 .entertainment-note{font-size:11px;line-height:1.45;color:var(--muted);margin-top:12px}
 @media(max-width:390px){.entertainment-result{grid-template-columns:94px minmax(0,1fr);gap:10px}.entertainment-poster{width:94px;min-height:141px}.entertainment-type-options{grid-template-columns:1fr}.entertainment-genre-grid{grid-template-columns:1fr 1fr}}
 
@@ -630,6 +642,44 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .entertainment-credit-tmdb span{min-width:0;flex:1 1 220px}
 .entertainment-credit-streaming{font-size:10px}
 @media(max-width:390px){.entertainment-credit-tmdb{align-items:flex-start;flex-direction:column;gap:6px}}
+.film-schedule-success p{margin:0 0 12px;line-height:1.45}.film-schedule-success-reminder{margin-top:18px!important;font-size:14px;color:var(--text)}.film-schedule-success-hint{margin-top:8px!important;font-size:11px;color:#a3a3a3;line-height:1.4}.film-schedule-success .event-detail-actions{margin-top:22px}.modal-backdrop.film-success-overlay{z-index:10090!important}
+.film-success-overlay .close-row{display:block;position:relative;padding:0 44px;margin-bottom:18px}
+.film-success-overlay .close-row .modal-heading{width:100%;text-align:center}
+.film-success-overlay .close-row h2{text-align:center}
+.film-success-overlay .close-row .modal-close-button{position:absolute;top:0;right:0;width:36px;height:36px;min-width:36px;flex:0 0 36px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--white)}
+.film-success-overlay .film-schedule-success .event-detail-actions{display:flex;justify-content:center;align-items:center}
+.film-success-overlay .film-schedule-success .event-detail-actions button{flex:0 0 auto;min-width:112px}
+
+/* Sistema base de ventanas: categorías save y confirmation */
+.modal-backdrop.window-save .modal,.modal-backdrop.window-confirmation .modal{position:relative}
+.modal-backdrop.window-save .modal .close-row,.modal-backdrop.window-confirmation .modal .close-row{display:block;position:relative;padding:0 44px;margin-bottom:18px;text-align:center}
+.modal-backdrop.window-save .modal .modal-heading,.modal-backdrop.window-confirmation .modal .modal-heading{width:100%;text-align:center}
+.modal-backdrop.window-save .modal .close-row h2,.modal-backdrop.window-confirmation .modal .close-row h2{text-align:center}
+.modal-backdrop.window-save .modal .event-form-subtitle,.modal-backdrop.window-confirmation .modal .event-form-subtitle{text-align:center}
+.modal-backdrop.window-save .modal .modal-close-button,.modal-backdrop.window-confirmation .modal .modal-close-button{position:absolute;top:-13px;right:-13px;width:38px;height:38px;min-width:38px;flex:0 0 38px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--text);z-index:2}
+.modal-backdrop.window-save .event-form-actions,.modal-backdrop.window-save .appearance-actions,.modal-backdrop.window-save .profile-actions,.modal-backdrop.window-save .task-create-actions,.modal-backdrop.window-save .event-detail-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px}
+.modal-backdrop.window-save .event-form-actions button,.modal-backdrop.window-save .appearance-actions button,.modal-backdrop.window-save .profile-actions button,.modal-backdrop.window-save .task-create-actions button,.modal-backdrop.window-save .event-detail-actions button{flex:1;min-width:0;white-space:normal;line-height:1.25}
+.modal-backdrop.window-confirmation .event-detail-actions{display:flex;justify-content:center;align-items:center}
+.modal-backdrop.window-confirmation .event-detail-actions button{flex:0 1 auto;min-width:112px}
+.window-caution-layer{position:fixed;inset:0;z-index:10100;display:flex;align-items:center;justify-content:center;padding:16px;background:#0008}
+.window-caution-card,.window-notice-card{position:relative;width:min(440px,100%);max-height:85vh;overflow:visible;padding:24px 22px 20px;border-radius:20px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0005}
+.window-caution-card h2,.window-notice-card h2{margin:0 38px 10px;text-align:center;font-size:19px;line-height:1.3;overflow-wrap:anywhere}
+.window-caution-card p,.window-notice-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;text-align:center}
+.window-caution-subject{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--surface2);font-weight:700;text-align:center;overflow-wrap:anywhere}
+.window-caution-actions{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+.window-caution-actions button{flex:1;min-width:0;min-height:44px;padding:10px 8px;white-space:normal;line-height:1.25}
+.window-caution-actions .danger-btn{background:#c93636!important;color:#fff!important;border-color:#b52b2b!important;border-radius:9px!important}
+.window-caution-close,.window-notice-close{position:absolute;top:-12px;right:-12px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--surface2);color:var(--text);font-size:22px;display:grid;place-items:center;z-index:2;box-shadow:0 3px 12px #0003}
+.window-notice-layer{position:fixed;inset:0;z-index:10110;display:flex;align-items:center;justify-content:center;padding:16px;background:#0008}
+.window-notice-card{width:min(420px,100%)}
+.window-notice-actions{display:flex;justify-content:center;margin-top:20px}
+.window-notice-actions button{min-width:112px;min-height:42px}
+#anniversaryNotice .modal{position:relative}
+#anniversaryNotice .close-row{display:block;position:relative;padding:0 44px;margin-bottom:18px;text-align:center}
+#anniversaryNotice .modal-heading{width:100%;text-align:center}
+#anniversaryNotice .close-row h2{text-align:center}
+#anniversaryNotice .modal-close-button{position:absolute;top:-13px;right:-13px;width:38px;height:38px;min-width:38px;flex:0 0 38px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--text)}
+
 </style>
 </head>
 <body>
@@ -659,7 +709,7 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 <div class="modal-backdrop" id="backdrop">
  <div class="modal">
   <div class="close-row"><div class="modal-heading"><h2 id="modalTitle">Agregar</h2><p id="modalSubtitle" class="event-form-subtitle hidden"></p></div>
-   <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="closeModal()">✕</button>
+   <button class="small-btn modal-close-button" aria-label="Cerrar" title="Cerrar" onclick="requestModalClose()">✕</button>
   </div>
   <div id="modalBody"></div>
  </div>
@@ -733,6 +783,7 @@ let entertainmentSetupOpen=false,entertainmentReady=false,entertainmentFilters=n
 let entertainmentPool=[],entertainmentCurrent=null,entertainmentShownIds=new Set(),entertainmentFavorites=JSON.parse(localStorage.getItem('enorden_entertainment_favorites')||'[]');
 let entertainmentWheelItems=[],entertainmentWheelRotation=0,entertainmentWheelSpinning=false,entertainmentPendingWinner=null,entertainmentWheelTimer=null,entertainmentResultOpen=false;
 let entertainmentBallAngle=0,entertainmentBallLanded=false,entertainmentWheelAnimation=null,entertainmentBallOrbitAnimation=null,entertainmentBallDropAnimation=null;
+let entertainmentResultOrigin='roulette',entertainmentScheduleOpen=false,entertainmentScheduleItem=null,entertainmentScheduleCancelConfirm=false,entertainmentScheduleDraft={date:'',time:'20:00',allDay:false};
 if(!Array.isArray(entertainmentFavorites))entertainmentFavorites=[];
 
 let taskView='today';
@@ -785,9 +836,49 @@ const fab=document.getElementById('fab');
 const months=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const weekdays=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 function closeModal(){
- document.getElementById('backdrop').classList.remove('show');
+ closeWindowCaution(false);
+ const backdrop=document.getElementById('backdrop');backdrop.classList.remove('show','film-success-overlay','window-save','window-confirmation');
+ activeModalWindowType='';activeModalCancelAction=null;
  const subtitle=document.getElementById('modalSubtitle');if(subtitle){subtitle.textContent='';subtitle.classList.add('hidden')}
 }
+
+let activeModalWindowType='',activeModalCancelAction=null,activeWindowCaution=null,windowCautionSequence=0;
+function setModalWindowBase(type,onCancel=null){
+ const backdrop=document.getElementById('backdrop');if(!backdrop)return;
+ backdrop.classList.remove('window-save','window-confirmation');
+ activeModalWindowType=type||'';activeModalCancelAction=typeof onCancel==='function'?onCancel:null;
+ if(type==='save'||type==='confirmation')backdrop.classList.add('window-'+type);
+}
+function closeWindowCaution(runCancel=true){
+ const state=activeWindowCaution;if(!state)return;
+ document.getElementById(state.id)?.remove();activeWindowCaution=null;
+ if(runCancel&&typeof state.onCancel==='function')state.onCancel();
+}
+function showWindowCaution(options={}){
+ if(activeWindowCaution)closeWindowCaution(false);
+ const id='windowCaution'+(++windowCautionSequence),title=escapeHTML(options.title||'¿Quieres salir sin guardar?'),message=escapeHTML(options.message||'Si sales sin guardar de esta ventana perderás los datos ingresados'),subject=options.subject?'<div class="window-caution-subject">'+escapeHTML(options.subject)+'</div>':'',cancel=escapeHTML(options.cancelLabel||'Cancelar'),confirm=escapeHTML(options.confirmLabel||'Salir sin guardar'),danger=options.danger!==false;
+ const layer=document.createElement('div');layer.id=id;layer.className='window-caution-layer';
+ layer.innerHTML='<section class="window-caution-card" role="alertdialog" aria-modal="true" aria-labelledby="'+id+'Title"><button type="button" class="window-caution-close" aria-label="Cerrar" onclick="closeWindowCaution(true)">×</button><h2 id="'+id+'Title">'+title+'</h2><p>'+message+'</p>'+subject+'<div class="window-caution-actions"><button type="button" class="secondary-btn" onclick="closeWindowCaution(true)">'+cancel+'</button><button type="button" class="'+(danger?'danger-btn':'primary-btn')+'" onclick="confirmWindowCaution()">'+confirm+'</button></div></section>';
+ const backdrop=document.getElementById('backdrop');const parent=options.parent||(backdrop?.classList.contains('show')?backdrop:document.body);parent.appendChild(layer);
+ activeWindowCaution={id,onCancel:options.onCancel,onConfirm:options.onConfirm};layer.querySelector('button')?.focus();
+}
+function confirmWindowCaution(){
+ const state=activeWindowCaution;if(!state)return;closeWindowCaution(false);
+ if(typeof state.onConfirm==='function')state.onConfirm();
+}
+function requestModalCancel(){
+ if(activeModalWindowType!=='save'){closeModal();return}
+ const cancelAction=activeModalCancelAction;
+ showWindowCaution({title:'¿Quieres salir sin guardar?',message:'Si sales sin guardar de esta ventana perderás los datos ingresados',cancelLabel:'Cancelar',confirmLabel:'Salir sin guardar',danger:true,onConfirm:()=>{closeModal();if(cancelAction)cancelAction()}});
+}
+function requestModalClose(){if(activeModalWindowType==='save'){requestModalCancel();return}closeModal()}
+function showWindowNotice(title,message){
+ const id='windowNotice'+(++windowCautionSequence),layer=document.createElement('div');layer.id=id;layer.className='window-notice-layer';
+ layer.innerHTML='<section class="window-notice-card" role="dialog" aria-modal="true" aria-labelledby="'+id+'Title"><button type="button" class="window-notice-close" aria-label="Cerrar" onclick="closeWindowNotice(\''+id+'\')">×</button><h2 id="'+id+'Title">'+escapeHTML(title||'Aviso')+'</h2><p>'+escapeHTML(message||'')+'</p><div class="window-notice-actions"><button type="button" class="primary-btn" onclick="closeWindowNotice(\''+id+'\')">Entendido</button></div></section>';
+ document.body.appendChild(layer);layer.querySelector('button')?.focus();
+}
+function closeWindowNotice(id){document.getElementById(id)?.remove()}
+
 function pruneExpiredCompletedTasks(){
  const now=Date.now(),retention=7*24*60*60*1000;let changed=false;
  tasks=tasks.filter(task=>{
@@ -861,8 +952,8 @@ function openLanguageModal(){
  document.getElementById('modalTitle').textContent='Idioma de Enorden';
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='Selecciona el idioma de tu aplicación.';subtitle.classList.remove('hidden');
  document.getElementById('modalBody').innerHTML='<div class="language-options" role="radiogroup" aria-label="Idiomas disponibles">'+Object.keys(appLanguages).map(languageChoiceHTML).join('')+'</div>'+
- '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppLanguage()">Guardar</button></div>';
- document.getElementById('backdrop').classList.add('show');
+ '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppLanguage()">Guardar</button></div>';
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{selectedAppLanguage=appLanguage});
 }
 function selectAppLanguage(value){if(!appLanguages[value])return;selectedAppLanguage=value;document.querySelectorAll('.language-choice').forEach(card=>card.setAttribute('aria-checked',String(card.getAttribute('aria-label')==='Seleccionar idioma '+appLanguages[value].name)))}
 function saveAppLanguage(){if(!appLanguages[selectedAppLanguage])return;appLanguage=selectedAppLanguage;localStorage.setItem('enorden_language',appLanguage);closeModal();render()}
@@ -884,8 +975,8 @@ function openAppearanceModal(){
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='Selecciona el estilo visual que prefieras. Puedes cambiarlo cuando quieras.';subtitle.classList.remove('hidden');
  document.getElementById('modalBody').innerHTML='<div class="appearance-grid" role="radiogroup" aria-label="Temas de apariencia">'+Object.keys(appearanceThemes).map(appearanceCardHTML).join('')+'</div>'+
  '<p class="appearance-storage-note">En esta versión de prueba, tu elección se guarda en este dispositivo. La personalización sincronizada por cuenta estará disponible cuando Enorden incorpore el sistema de usuarios.</p>'+
- '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppearanceTheme()">Guardar</button></div>';
- document.getElementById('backdrop').classList.add('show');
+ '<div class="appearance-actions"><button type="button" class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button type="button" class="primary-btn" onclick="saveAppearanceTheme()">Guardar</button></div>';
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{selectedAppearanceTheme=appTheme});
 }
 function selectAppearanceTheme(key){
  if(!appearanceThemes[key])return;selectedAppearanceTheme=key;
@@ -977,11 +1068,11 @@ function renderHome(){
  if(q.includes('tarea'))navigate('tareas');
  else if(q.includes('evento')||q.includes('calendario'))navigate('calendario');
  else if(q.includes('compra')||q.includes('lista'))navigate('listas');
- else alert('La búsqueda inteligente se incorporará en una siguiente etapa. Por ahora puedes buscar tareas, eventos o compras.');
+ else showWindowNotice('Búsqueda inteligente','La búsqueda inteligente se incorporará en una siguiente etapa. Por ahora puedes buscar tareas, eventos o compras.');
 }
 function voiceSearch(){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){alert('La búsqueda por voz no está disponible en este navegador. Puedes escribir tu búsqueda.');return}
+ if(!SR){showWindowNotice('Búsqueda por voz no disponible','Puedes escribir tu búsqueda.');return}
  const rec=new SR();rec.lang='es-CL';rec.onresult=e=>{
  document.getElementById('homeSearch').value=e.results[0][0].transcript;doSearch()};
  rec.start();
@@ -1019,8 +1110,8 @@ function enableReorder(container){
 function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
- const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario'};
- const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
+ const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film'};
+ const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
  const selectedKey=keyDate(d),today=new Date();today.setHours(0,0,0,0);const todayKey=keyDate(today);
  let content='';
  if(calendarView==='Año'){
@@ -1062,11 +1153,11 @@ function renderCalendarSearchResults(){
  if(!q)return '<div class="muted calendar-search-hint">Escribe el nombre, la fecha o el tipo de evento que buscas.</div>';
  const found=events.filter(ev=>{
   const dateText=ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'';
-  const typeText={normal:'evento normal',event_task:'evento tarea tareas',birthday:'cumpleaños',anniversary:'aniversario'}[ev.type]||'';
+  const typeText={normal:'evento normal',event_task:'evento tarea tareas',birthday:'cumpleaños',anniversary:'aniversario',film:'evento film film'}[ev.type]||'';
   return [ev.title,dateText,ev.date,typeText,ev.time||''].some(v=>String(v).toLocaleLowerCase('es-CL').includes(q));
  }).sort((a,b)=>a.date.localeCompare(b.date));
  if(!found.length)return '<div class="muted calendar-search-hint">No se encontraron eventos.</div>';
- return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="openEventDetails('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
+ return '<div class="calendar-search-count">'+found.length+' resultado(s)</div>'+found.map(ev=>'<button type="button" class="calendar-search-result" onclick="openEventDetails('+Number(ev.id)+')"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',film:'🎬 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><span>'+escapeHTML(ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Sin fecha')+(ev.allDay?' · Todo el día':ev.time?' · '+escapeHTML(ev.time):'')+'</span></button>').join('');
 }
 function keyDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function changeDate(n){
@@ -1575,14 +1666,14 @@ function toggleTaskLevel(taskId,subtaskId,nestedId){
  }
  syncTaskCompletion(task);save();render();
 }
-function moveTaskSubtask(taskId,fromId,toId,level,parentId){
+function moveTaskSubtask(taskId,fromId,toId,level,parentId,confirmed=false){
  const task=tasks.find(t=>Number(t.id)===Number(taskId));if(!task)return;
  const list=level==='nested'?(task.subtasks||[]).find(s=>Number(s.id)===Number(parentId))?.subtasks:task.subtasks;
  if(!Array.isArray(list))return;
  const from=list.findIndex(x=>Number(x.id)===Number(fromId)),to=list.findIndex(x=>Number(x.id)===Number(toId));
  if(from<0||to<0||from===to)return;
  const item=list[from],target=list[to];
- if(!confirm('¿Confirmas mover «'+item.title+'» '+(from<to?'después de ':'antes de ')+'«'+target.title+'»?'))return;
+ if(!confirmed){showWindowCaution({title:'¿Confirmas mover esta subtarea?',message:'Se cambiará su posición dentro de la lista.',subject:item.title,cancelLabel:'Cancelar',confirmLabel:'Mover',danger:false,onConfirm:()=>moveTaskSubtask(taskId,fromId,toId,level,parentId,true)});return;}
  list.splice(from,1);list.splice(list.indexOf(target)+(from<to?1:0),0,item);
  save();render();
 }
@@ -1608,7 +1699,7 @@ function openTaskActions(id){const t=tasks.find(x=>Number(x.id)===Number(id));if
 function confirmDeleteTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;showTaskModal('Confirmar eliminación','<p>¿Quieres borrar «'+escapeHTML(t.title)+'» y todas sus subtareas?</p><div class="event-detail-actions"><button class="secondary-btn" onclick="openTaskActions('+t.id+')">Cancelar</button><button class="primary-btn" onclick="deleteTask('+t.id+')">Sí, borrar</button></div>')}
 function duplicateTask(id){const t=tasks.find(x=>Number(x.id)===Number(id));if(!t)return;const copy=JSON.parse(JSON.stringify(t));let seed=Date.now();copy.id=seed++;copy.subtasks=(copy.subtasks||[]).map(st=>({...st,id:seed++,subtasks:(st.subtasks||[]).map(n=>({...n,id:seed++}))}));copy.title=t.title+' (copia)';copy.done=false;copy.createdAt=new Date().toISOString();tasks.push(copy);save();closeModal();render()}
 function currentHouseholdMember(){return localStorage.getItem('enorden_profile_name')||'Vale'}
-function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task||!taskIsPublic(task))return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="" '+(!assigned?'selected':'')+'>Sin asignar</option><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>')}
+function openTaskAssignment(taskId,subtaskId){const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task||!taskIsPublic(task))return;const target=subtaskId==null?task:(task.subtasks||[]).find(x=>Number(x.id)===Number(subtaskId));if(!target)return;taskAssignmentTarget={taskId,subtaskId};const member=currentHouseholdMember(),assigned=target.assignedTo||task.assignedTo||'';showTaskModal('Asignar tarea','<p class="task-assignment-question">¿A quién le quieres asignar esta tarea?</p><label for="taskAssignee">Integrante del hogar</label><select id="taskAssignee"><option value="" '+(!assigned?'selected':'')+'>Sin asignar</option><option value="'+escapeHTML(member)+'" '+(assigned===member?'selected':'')+'>'+escapeHTML(member)+' (tú)</option></select><p class="settings-note">La lista de integrantes se completará cuando esté disponible la gestión de miembros del hogar.</p><div class="event-detail-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="saveTaskAssignment()">Guardar</button></div>');setModalWindowBase('save',()=>{taskAssignmentTarget=null})}
 function saveTaskAssignment(){if(!taskAssignmentTarget)return;const task=tasks.find(x=>Number(x.id)===Number(taskAssignmentTarget.taskId));if(!task||!taskIsPublic(task)){taskAssignmentTarget=null;closeModal();return;}const value=document.getElementById('taskAssignee')?.value??'';if(taskAssignmentTarget.subtaskId==null){if(value)task.assignedTo=value;else delete task.assignedTo}else{const sub=(task.subtasks||[]).find(x=>Number(x.id)===Number(taskAssignmentTarget.subtaskId));if(sub){if(value)sub.assignedTo=value;else delete sub.assignedTo}}taskAssignmentTarget=null;save();closeModal();render()}
 function taskLongPressStart(event,taskId,subtaskId){if(event.target.closest('input,button,select'))return;if(subtaskId==null&&event.target.closest('.family-subtask'))return;clearTimeout(taskPressTimer);taskPressTimer=setTimeout(()=>{taskPressTriggered=true;const task=tasks.find(x=>Number(x.id)===Number(taskId));if(!task)return;if(subtaskId==null)openTaskActions(taskId);else if(taskIsPublic(task))openTaskAssignment(taskId,subtaskId)},550)}
 function taskLongPressEnd(){clearTimeout(taskPressTimer)}
@@ -1766,13 +1857,13 @@ function openProfileImage(){
  </div>
  <p class="settings-note">También puedes elegir un avatar de muestra.</p>
  <div class="avatar-choices">${['🙂','😀','😎','🐱','🌿','⭐'].map(a=>`<button class="avatar-choice ${a===currentAvatar&&!savedImage?'selected':''}" onclick="selectProfileAvatar('${a}',this)">${a}</button>`).join('')}</div>
- <div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileImage()">Listo</button></div>`;
+ <div class="profile-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="saveProfileImage()">Listo</button></div>`;
  const preview=document.getElementById('profilePreview');
  preview.dataset.avatar=savedImage?'':currentAvatar;
  profilePointers=new Map();profileGesture=null;
  if(savedImage)loadProfileCropImage(savedImage);
  else{const ctx=preview.getContext('2d');ctx.clearRect(0,0,180,180);ctx.font='76px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(currentAvatar,90,92);}
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{profileCropState=null;profilePointers=new Map();profileGesture=null});
 }
 function loadProfileCropImage(source){
  const img=new Image();
@@ -1781,7 +1872,7 @@ function loadProfileCropImage(source){
   const controls=document.getElementById('profileCropControls');if(controls)controls.style.display='block';
   drawProfileCrop(document.getElementById('profilePreview'),180);
  };
- img.onerror=()=>alert('No se pudo abrir esta imagen. Prueba con otro archivo.');
+ img.onerror=()=>showWindowNotice('No se pudo abrir la imagen','Prueba con otro archivo.');
  img.src=source;
 }
 function drawProfileCrop(canvas,size){
@@ -1843,11 +1934,11 @@ function rotateProfileCrop(degrees){
 }
 function previewProfileImage(event){
  const file=event.target.files&&event.target.files[0];if(!file)return;
- if(!file.type.startsWith('image/')){alert('Elige un archivo de imagen.');return}
- if(file.size>15*1024*1024){alert('La imagen es demasiado grande. Elige una de menos de 15 MB.');event.target.value='';return}
+ if(!file.type.startsWith('image/')){showWindowNotice('Archivo no compatible','Elige un archivo de imagen.');return}
+ if(file.size>15*1024*1024){showWindowNotice('Imagen demasiado grande','Elige una imagen de menos de 15 MB.');event.target.value='';return}
  const reader=new FileReader();
  reader.onload=()=>{const p=document.getElementById('profilePreview');p.dataset.avatar='';profilePointers=new Map();profileGesture=null;loadProfileCropImage(reader.result);document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));};
- reader.onerror=()=>alert('No se pudo leer el archivo. Inténtalo nuevamente.');
+ reader.onerror=()=>showWindowNotice('No se pudo leer el archivo','Inténtalo nuevamente.');
  reader.readAsDataURL(file);
 }
 function selectProfileAvatar(value,button){
@@ -1866,19 +1957,19 @@ function saveProfileImage(){
    const cropped=output.toDataURL('image/jpeg',0.88);
    localStorage.setItem('enorden_profile_image',cropped);localStorage.setItem('enorden_profile_avatar','');
   }else{localStorage.removeItem('enorden_profile_image');localStorage.setItem('enorden_profile_avatar',avatar);}
- }catch(error){alert('No se pudo guardar la imagen. Prueba con otra foto o elige un avatar.');return}
- profileCropState=null;profilePointers=new Map();profileGesture=null;closeModal();renderSettings();
+ }catch(error){showWindowNotice('No se pudo guardar la imagen','Prueba con otra foto o elige un avatar.');return}
+ profileCropState=null;profilePointers=new Map();profileGesture=null;closeModal();renderSettings();showTaskModal('Imagen de perfil actualizada','<p>Tu imagen de perfil se guardó correctamente.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');
 }
 function openProfileName(){
  const name=localStorage.getItem('enorden_profile_name')||'Vale';
  document.getElementById('modalTitle').textContent='Nombre de Usuario';
- document.getElementById('modalBody').innerHTML=`<label for="profileNameInput">Elige tu nombre de usuario</label><input id="profileNameInput" type="text" maxlength="30" value="${escapeHTML(name)}" placeholder="Nombre y números"><div class="profile-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="saveProfileName()">Guardar</button></div>`;
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('modalBody').innerHTML=`<label for="profileNameInput">Elige tu nombre de usuario</label><input id="profileNameInput" type="text" maxlength="30" value="${escapeHTML(name)}" placeholder="Nombre y números"><div class="profile-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="saveProfileName()">Guardar</button></div>`;
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save');
 }
 function saveProfileName(){
  const name=document.getElementById('profileNameInput').value.trim();
- if(!name){alert('Escribe un nombre de usuario.');return}
- if(!/^[\p{L}\p{N} ._-]+$/u.test(name)){alert('Puedes usar letras, números, espacios, puntos, guiones y guion bajo.');return}
+ if(!name){showWindowNotice('Falta el nombre de usuario','Escribe un nombre de usuario.');return}
+ if(!/^[\p{L}\p{N} ._-]+$/u.test(name)){showWindowNotice('Nombre de usuario no válido','Puedes usar letras, números, espacios, puntos, guiones y guion bajo.');return}
  const old=localStorage.getItem('enorden_profile_name')||'Vale';
  if(name!==old){const history=JSON.parse(localStorage.getItem('enorden_profile_name_history')||'[]');history.push({from:old,to:name,at:new Date().toISOString()});localStorage.setItem('enorden_profile_name_history',JSON.stringify(history));localStorage.setItem('enorden_profile_name',name);}
  closeModal();renderSettings();
@@ -1901,13 +1992,13 @@ function verifyAlternateEmail(){
  const email=document.getElementById('alternateEmail').value.trim();
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert('Ingresa un correo con formato válido.');return}
  const code=String(Math.floor(100000+Math.random()*900000));alert('Demostración: tu código sería '+code+'. En la versión completa llegará a tu correo.');
- if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_alternate_email',email);localStorage.setItem('enorden_alternate_verified','true');document.getElementById('alternateStatus').textContent='Correo alternativo verificado y guardado.';}else alert('El código no coincide. No se guardó el correo.');
+ if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_alternate_email',email);localStorage.setItem('enorden_alternate_verified','true');closeModal();renderSettings();showTaskModal('Correo alternativo guardado','<p>Tu correo electrónico secundario se guardó y verificó correctamente.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');}else alert('El código no coincide. No se guardó el correo.');
 }
 function verifyWhatsapp(){
  const number=document.getElementById('whatsappNumber').value.trim();
  if(!/^\+?[0-9 ()-]{8,20}$/.test(number)){alert('Ingresa un número válido con código de país.');return}
  const code=String(Math.floor(100000+Math.random()*900000));alert('Demostración: tu código sería '+code+'. En la versión completa llegará por WhatsApp.');
- if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_whatsapp',number);localStorage.setItem('enorden_whatsapp_verified','true');document.getElementById('whatsappStatus').textContent='WhatsApp verificado y guardado.';}else alert('El código no coincide. No se guardó el número.');
+ if(prompt('Ingresa el código de demostración:')===code){localStorage.setItem('enorden_whatsapp',number);localStorage.setItem('enorden_whatsapp_verified','true');closeModal();renderSettings();showTaskModal('Número de WhatsApp guardado','<p>Tu número de teléfono se guardó y verificó correctamente.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');}else alert('El código no coincide. No se guardó el número.');
 }
 
 function renderFinance(){
@@ -1981,9 +2072,9 @@ function showFinancePinSetup(continueToFinance){
   <p>Elige un PIN de exactamente 4 números.</p>
   <label for="financePinNew">Nuevo PIN</label><input id="financePinNew" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4 dígitos">
   <label for="financePinConfirm">Confirmar PIN</label><input id="financePinConfirm" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="Repite el PIN">
-  <button class="primary-btn" onclick="saveFinancePin()">Guardar PIN</button>
+  <div class="appearance-actions"><button type="button" class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button type="button" class="primary-btn" onclick="saveFinancePin()">Guardar PIN</button></div>
   <p class="settings-note">En esta versión de prueba el PIN solo demuestra el flujo. No uses una clave real ni lo consideres protección de información sensible.</p>`;
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');setModalWindowBase('save');
 }
 async function hashFinancePin(value){
  const bytes=new TextEncoder().encode(value);
@@ -1993,8 +2084,8 @@ async function hashFinancePin(value){
 async function saveFinancePin(){
  const pin=document.getElementById('financePinNew').value;
  const confirm=document.getElementById('financePinConfirm').value;
- if(!/^\d{4}$/.test(pin)){alert('El PIN debe tener exactamente 4 números.');return}
- if(pin!==confirm){alert('Los PIN no coinciden.');return}
+ if(!/^\d{4}$/.test(pin)){showWindowNotice('PIN no válido','El PIN debe tener exactamente 4 números.');return}
+ if(pin!==confirm){showWindowNotice('Los PIN no coinciden','Vuelve a escribir el mismo PIN en ambos campos.');return}
  financePinHash=await hashFinancePin(pin);localStorage.setItem('enorden_finance_pin_hash',financePinHash);
  closeModal();
  if(financeSetupContext==='finance')enterFinance();else renderSettings();
@@ -2129,6 +2220,22 @@ function entertainmentTrailerSearchOptions(item){
  const query=[item.title,item.year,searchTerms[language]||('trailer '+entertainmentTrailerLanguageLabel(language))].filter(Boolean).join(' ');
  return [{language,label:entertainmentTrailerLanguageLabel(language),url:'https://www.youtube.com/results?search_query='+encodeURIComponent(query),preferred:true}];
 }
+function entertainmentReviewSearchUrl(item){
+ if(!item)return '';
+ return [item.title,item.year,'reseña','crítica','opinión'].filter(Boolean).join(' ');
+}
+function entertainmentOpenTikTokSearch(encodedQuery){
+ const query=decodeURIComponent(encodedQuery||'');
+ const webUrl='https://www.tiktok.com/search?q='+encodeURIComponent(query);
+ if(typeof navigator!=='undefined'&&/Android/i.test(navigator.userAgent)){
+  /* Ruta experimental observada para abrir el buscador interno de TikTok Android con keyword. */
+  const appUrl='intent://search/?keyword='+encodeURIComponent(query)+'#Intent;scheme=snssdk1233;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent(webUrl)+';end';
+  window.location.href=appUrl;
+  return false;
+ }
+ window.open(webUrl,'_blank','noopener');
+ return false;
+}
 function entertainmentStreamingModality(service){
  if(!service||typeof service!=='object')return '';
  const value=String(service.modality||service.monetizationType||service.monetization_type||'').toLowerCase().replace(/[ -]/g,'_');
@@ -2197,19 +2304,18 @@ function renderEntertainmentCredits(item){
   (hasJustWatch?'<div class="entertainment-credit-streaming">Disponibilidad informada por JustWatch a través de TMDB</div>':'')+
   '</footer>';
 }
-function closeEntertainmentResult(){entertainmentResultOpen=false;renderEntertainment()}
-function renderEntertainmentResultModal(resultMarkup,result){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+renderEntertainmentCredits(result)+'</div></div>'}
+function closeEntertainmentResult(){entertainmentResultOpen=false;entertainmentScheduleOpen=false;entertainmentScheduleCancelConfirm=false;renderEntertainment()}
+function renderEntertainmentResultModal(resultMarkup,result){return '<div class="entertainment-modal-layer entertainment-result-modal-layer"><div class="entertainment-modal entertainment-result-modal" role="dialog" aria-modal="true" aria-labelledby="entertainmentResultTitle"><div class="entertainment-modal-head"><h2 id="entertainmentResultTitle">Tu resultado</h2><button class="entertainment-modal-close" onclick="closeEntertainmentResult()" aria-label="Cerrar ficha">×</button></div>'+resultMarkup+(entertainmentResultOrigin==='favorite'?'<button type="button" class="primary-btn entertainment-schedule-launch" onclick="openEntertainmentSchedule()">Programar</button>':'')+renderEntertainmentCredits(result)+'</div></div>'+(entertainmentScheduleOpen?renderEntertainmentScheduleModal():'')}
 function renderEntertainment(){
  const provider=getEntertainmentProvider();
  const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id)).length;
  const result=entertainmentCurrent;
- const trailerSearchOptions=result?entertainmentTrailerSearchOptions(result):[];
  const poster=result?.posterUrl&&entertainmentSafeLink(result.posterUrl)?'<img src="'+escapeHTML(result.posterUrl)+'" alt="Póster de '+escapeHTML(result.title)+'">':'<span>🎬</span>';
  const typeLabel=item=>item.type==='movie'?'Película':'Serie';
  const isFavorite=result&&entertainmentFavorites.some(f=>((typeof f==='string'?f:f.id)===result.id));
-  const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions">'+(trailerSearchOptions.length?'<a href="'+escapeHTML(trailerSearchOptions[0].url)+'" target="_blank" rel="noopener noreferrer">Ver trailer</a>':'<span class="entertainment-note">No se pudo preparar la búsqueda del tráiler.</span>')+'<button type="button" class="entertainment-favorite-button'+(isFavorite?' is-favorite':'')+'" aria-pressed="'+(isFavorite?'true':'false')+'" aria-label="'+(isFavorite?'Quitar de favoritos':'Agregar a favoritos')+'" onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')"><span class="entertainment-favorite-icon" aria-hidden="true">'+(isFavorite?'♥':'♡')+'</span><span>'+(isFavorite?'En favoritos':'Añadir a favoritos')+'</span></button></div>'+entertainmentStreamingMarkup(result)+'</div></div></div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
-  const favoriteItems=entertainmentFavorites.map(entry=>typeof entry==='string'?(entertainmentPool.find(x=>x.id===entry)||entertainmentDemoCatalog.find(x=>x.id===entry)):entry).filter(Boolean);
- screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup,result):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
+  const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions">'+'<a href="#" onclick="return entertainmentOpenTikTokSearch(\''+encodeURIComponent(entertainmentReviewSearchUrl(result))+'\')">Ver reseñas</a>'+'<button type="button" class="entertainment-favorite-button'+(isFavorite?' is-favorite':'')+'" aria-pressed="'+(isFavorite?'true':'false')+'" aria-label="'+(isFavorite?'Quitar de favoritos':'Agregar a favoritos')+'" onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')"><span class="entertainment-favorite-icon" aria-hidden="true">'+(isFavorite?'♥':'♡')+'</span><span>'+(isFavorite?'En favoritos':'Añadir a favoritos')+'</span></button></div>'+entertainmentStreamingMarkup(result)+'</div></div></div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
+  const favoriteItems=entertainmentFavorites.map(entry=>typeof entry==='string'?(entertainmentPool.find(x=>x.id===entry)||entertainmentDemoCatalog.find(x=>x.id===entry)||{id:entry,title:entry,type:'movie'}):entry).filter(Boolean);
+ screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup,result):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map((item,index)=>'<div class="entertainment-favorite-row"><button type="button" class="entertainment-favorite-open" onclick="openEntertainmentFavorite('+index+')"><span>🎞️</span><span><strong>'+escapeHTML(item.title||'Título guardado')+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></span></button><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
 }
 function renderEntertainmentSetupModal(){
  const selected=entertainmentFilters||{type:'any',genres:[],yearFrom:1980,yearTo:new Date().getFullYear(),noYear:true};
@@ -2245,6 +2351,7 @@ function cancelEntertainmentWheelAnimations(){
  entertainmentWheelAnimation=null;entertainmentBallOrbitAnimation=null;entertainmentBallDropAnimation=null;
 }
 function spinEntertainment(){
+ entertainmentResultOrigin='roulette';
  if(entertainmentWheelSpinning)return;
  const remaining=entertainmentPool.filter(item=>!entertainmentShownIds.has(item.id));
  if(!remaining.length){alert('Ya viste todos los títulos disponibles para esta búsqueda. Puedes iniciar una nueva sesión o cambiar tus preferencias.');renderEntertainment();return}
@@ -2292,10 +2399,25 @@ function resetEntertainmentSession(){
 function toggleEntertainmentFavorite(id){
  const exists=entertainmentFavorites.some(f=>(typeof f==='string'?f:f.id)===id);
  if(exists)entertainmentFavorites=entertainmentFavorites.filter(f=>(typeof f==='string'?f:f.id)!==id);
- else{const item=entertainmentPool.find(x=>x.id===id)||entertainmentDemoCatalog.find(x=>x.id===id);if(item)entertainmentFavorites.push({id:item.id,provider:item.source||entertainmentProviderSettings.activeProvider,providerId:item.providerId||item.id,title:item.title,type:item.type,year:item.year});}
- localStorage.setItem('enorden_entertainment_favorites',JSON.stringify(entertainmentFavorites));
- renderEntertainment();
+ else{const item=entertainmentPool.find(x=>x.id===id)||entertainmentDemoCatalog.find(x=>x.id===id)||entertainmentCurrent;if(item)entertainmentFavorites.push({id:item.id,provider:item.source||entertainmentProviderSettings.activeProvider,providerId:item.providerId||item.id,title:item.title,type:item.type,year:item.year,posterUrl:item.posterUrl||'',overview:item.overview||'',genres:item.genres||[],runtime:item.runtime||null,seasons:item.seasons||null,source:item.source||'',catalogSource:item.catalogSource||'',streamingAvailability:item.streamingAvailability||null});}
+ localStorage.setItem('enorden_entertainment_favorites',JSON.stringify(entertainmentFavorites));renderEntertainment();
 }
+function openEntertainmentFavorite(index){const saved=entertainmentFavorites[index];if(!saved)return;const id=typeof saved==='string'?saved:saved.id;const live=entertainmentPool.find(x=>String(x.id)===String(id))||entertainmentDemoCatalog.find(x=>String(x.id)===String(id));entertainmentCurrent={...(live||{}),...(typeof saved==='string'?{id:saved}:saved),id};entertainmentResultOrigin='favorite';entertainmentResultOpen=true;entertainmentScheduleOpen=false;renderEntertainment()}
+function openEntertainmentSchedule(){if(!entertainmentCurrent)return;entertainmentScheduleItem=entertainmentCurrent;const now=new Date(),time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');entertainmentScheduleDraft={date:'',time,allDay:false};entertainmentScheduleOpen=true;entertainmentScheduleCancelConfirm=false;renderEntertainment()}
+function renderEntertainmentScheduleModal(){
+ const item=entertainmentScheduleItem||entertainmentCurrent;if(!item)return '';
+ if(entertainmentScheduleCancelConfirm)return '<div class="entertainment-modal-layer film-schedule-layer"><div class="film-schedule-shell"><button type="button" class="entertainment-modal-close film-schedule-close" onclick="continueFilmSchedule()" aria-label="Cerrar">×</button><div class="entertainment-modal film-schedule-modal" role="alertdialog" aria-modal="true" aria-labelledby="filmScheduleCancelTitle"><h2 id="filmScheduleCancelTitle">¿Cancelar programación?</h2><p>Si sales ahora, se perderán los cambios de esta programación.</p><div class="entertainment-modal-actions"><button type="button" class="secondary-btn" onclick="continueFilmSchedule()">Seguir programando</button><button type="button" class="danger-btn" onclick="closeEntertainmentSchedule()">Sí, cancelar</button></div></div></div></div>';
+ return '<div class="entertainment-modal-layer film-schedule-layer"><div class="film-schedule-shell"><button type="button" class="entertainment-modal-close film-schedule-close" onclick="requestCloseEntertainmentSchedule()" aria-label="Cerrar">×</button><div class="entertainment-modal film-schedule-modal" role="dialog" aria-modal="true" aria-labelledby="filmScheduleTitle"><h2 id="filmScheduleTitle">Programar</h2><p class="film-schedule-question">¿Para cuándo quieres programar tu Film?</p><div class="film-schedule-controls"><input id="filmScheduleDate" type="date" value="'+escapeHTML(entertainmentScheduleDraft.date)+'" onchange="entertainmentScheduleDraft.date=this.value;updateFilmScheduleDateLabel()" class="film-schedule-native-date"><button type="button" class="secondary-btn film-schedule-date-button" onclick="openFilmScheduleCalendar()"><span aria-hidden="true">▦</span><span id="filmScheduleDateLabel">'+(entertainmentScheduleDraft.date?new Date(entertainmentScheduleDraft.date+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Calendario · Elegir fecha')+'</span></button><div id="filmScheduleTimeWrap"'+(entertainmentScheduleDraft.allDay?' class="hidden"':'')+'><input id="eventTime" type="hidden" value="'+escapeHTML(entertainmentScheduleDraft.time)+'"><button type="button" class="secondary-btn film-schedule-time-button" onclick="openFilmScheduleTimePicker()"><span>Hora</span><strong id="eventTimeText">'+escapeHTML(entertainmentScheduleDraft.time)+'</strong></button></div></div><label class="event-choice film-schedule-all-day"><input id="filmScheduleAllDay" type="checkbox" '+(entertainmentScheduleDraft.allDay?'checked':'')+' onchange="toggleFilmScheduleAllDay()"> Todo el día</label><div class="entertainment-modal-actions film-schedule-actions"><button type="button" class="secondary-btn" onclick="requestCloseEntertainmentSchedule()">Cancelar</button><button type="button" class="primary-btn" onclick="saveFilmSchedule()">Guardar</button></div></div></div></div>';
+}
+function openFilmScheduleCalendar(){const input=document.getElementById('filmScheduleDate');if(!input)return;try{input.showPicker()}catch(e){input.click()}}
+function updateFilmScheduleDateLabel(){const input=document.getElementById('filmScheduleDate'),label=document.getElementById('filmScheduleDateLabel');if(label)label.textContent=input?.value?new Date(input.value+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Calendario · Elegir fecha'}
+function openFilmScheduleTimePicker(){document.getElementById('timePickerBackdrop')?.classList.add('film-schedule-time-picker');openTimePicker()}
+function toggleFilmScheduleAllDay(){const allDay=!!document.getElementById('filmScheduleAllDay')?.checked;entertainmentScheduleDraft.allDay=allDay;document.getElementById('filmScheduleTimeWrap')?.classList.toggle('hidden',allDay)}
+function requestCloseEntertainmentSchedule(){entertainmentScheduleCancelConfirm=true;renderEntertainment()}
+function continueFilmSchedule(){entertainmentScheduleCancelConfirm=false;renderEntertainment()}
+function closeEntertainmentSchedule(){entertainmentScheduleOpen=false;entertainmentScheduleCancelConfirm=false;entertainmentScheduleItem=null;entertainmentScheduleDraft={date:'',time:'20:00',allDay:false};renderEntertainment()}
+function saveFilmSchedule(){const item=entertainmentScheduleItem||entertainmentCurrent,date=document.getElementById('filmScheduleDate')?.value||entertainmentScheduleDraft.date,allDay=!!document.getElementById('filmScheduleAllDay')?.checked;if(!item||!date){showWindowNotice('Falta elegir una fecha','Selecciona una fecha para programar tu Film.');return}const time=allDay?null:(document.getElementById('eventTime')?.value||entertainmentScheduleDraft.time||'20:00'),id=Date.now()+Math.floor(Math.random()*1000);events.push({id,seriesId:'series-'+id,title:'Ver '+item.title,type:'film',date,time,allDay,scope:'personal',priority:'high',color:'#C3B091',repeat:'none',weekdays:[],alerts:allDay?[]:[{amount:15,unit:'minutes'}],links:[{type:'entertainment',id:item.id,label:item.title}],filmId:item.id,createdAt:new Date().toISOString(),notificationSentFor:''});save();closeEntertainmentSchedule();render();const savedDate=new Date(date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});showTaskModal('Tu Film se programó con éxito!', '<div class="film-schedule-success"><p><strong>Fecha:</strong> '+escapeHTML(savedDate)+'</p><p><strong>Hora:</strong> '+(allDay?'Todo el día':escapeHTML(time))+'</p>'+(allDay?'':'<p class="film-schedule-success-reminder">Te llegará una notificación 15 minutos antes de la hora seleccionada</p>')+'<p class="film-schedule-success-hint">Puedes modificar tu evento Film en el calendario</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div></div>');document.getElementById('backdrop').classList.add('film-success-overlay');setModalWindowBase('confirmation')}
+function processFilmEventNotifications(){const now=new Date();let changed=false;events.filter(ev=>ev.type==='film').forEach(ev=>{const key=ev.date+'|'+(ev.allDay?'all-day':(ev.time||'20:00'));if(ev.notificationSentFor===key)return;const start=new Date(ev.date+'T'+(ev.allDay?'00:00':(ev.time||'20:00'))+':00'),trigger=ev.allDay?start:new Date(start.getTime()-15*60*1000),end=ev.allDay?new Date(start.getTime()+86400000):start;if(now>=trigger&&now<=end){notifications.push({id:'film-'+ev.id+'-'+key,emoji:'🎬',title:ev.allDay?'Hoy: '+ev.title:'En 15 minutos: '+ev.title,description:ev.allDay?'Hoy tienes programado este Film en tu calendario.':'Tu Film está programado para las '+(ev.time||'20:00')+'.',module:'Entretención',when:'Ahora',createdAt:now.toISOString()});notifications=notifications.slice(-50);localStorage.setItem('enorden_notifications',JSON.stringify(notifications));ev.notificationSentFor=key;changed=true}});if(changed)localStorage.setItem('enorden_events',JSON.stringify(events))}
 
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
@@ -2307,14 +2429,14 @@ function taskEditorMarkup(task){
  return '<div class="event-form-section task-create-section"><label for="newTaskScope">¿Dónde se verá?</label><select id="newTaskScope"><option value="personal" '+((task?.scope||'personal')==='personal'?'selected':'')+'>Tareas Personales</option><option value="family" '+(task?.scope==='family'?'selected':'')+'>Tareas Familia</option></select></div><div class="event-form-section task-create-section"><label class="event-choice"><input id="scheduleTask" type="checkbox" '+(task?.scheduledDate?'checked':'')+' onchange="toggleTaskSchedule()"> Programar esta tarea</label><div id="taskScheduleOptions" '+(task?.scheduledDate?'':'class="hidden"')+'><p class="muted">¿Para cuándo quieres programar esta tarea?</p><input id="taskScheduleDate" type="date" value="'+escapeHTML(task?.scheduledDate||'')+'" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none" onchange="taskScheduleDate=this.value;updateTaskScheduleLabel()"><button type="button" class="secondary-btn" onclick="openTaskScheduleCalendar()">'+(task?.scheduledDate?'Cambiar fecha':'Elegir fecha')+'</button><span id="taskScheduleDateLabel" class="muted">'+(task?.scheduledDate?new Date(task.scheduledDate+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Ninguna fecha seleccionada')+'</span></div></div><div class="event-form-section task-create-section"><label for="newValue">Nombre de la tarea</label><input id="newValue" type="text" maxlength="120" value="'+escapeHTML(task?.title||'')+'" placeholder="¿Qué necesitas hacer?"></div><div class="event-form-section task-create-section"><div class="task-subtasks-heading"><label>Subtareas</label><button type="button" class="secondary-btn task-add-subtask" onclick="addTaskSubtask()">+ Agregar subtarea</button></div><div id="newTaskSubtasks" class="task-subtasks-list">'+subtasks.map(st=>'<div class="task-subtask-item"><div class="task-subtask-input-row"><input type="text" maxlength="120" value="'+escapeHTML(st.title)+'"><button type="button" class="secondary-btn task-add-nested" onclick="addNestedTaskSubtask(this.closest(\'.task-subtask-item\'))">+ Subtarea N2</button><button type="button" class="small-btn" onclick="this.closest(\'.task-subtask-item\').remove()">×</button></div><div class="task-nested-subtasks">'+(st.subtasks||[]).map(n=>'<div class="task-subtask-input-row task-subtask-level-two"><input type="text" maxlength="120" value="'+escapeHTML(n.title)+'"><button type="button" class="small-btn" onclick="this.parentElement.remove()">×</button></div>').join('')+'</div></div>').join('')+'</div></div><div class="event-form-section task-create-section"><label class="event-choice"><input id="saveTaskTemplate" type="checkbox"> Guardar también como plantilla</label></div><div class="appearance-actions task-create-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveTaskEditor()">'+(task?'Guardar cambios':'Guardar')+'</button></div>';
 }
 function showTaskModal(title,body){document.getElementById('modalTitle').textContent=title;const sub=document.getElementById('modalSubtitle');sub.textContent='';sub.classList.add('hidden');document.getElementById('modalBody').innerHTML=body;document.getElementById('backdrop').classList.add('show')}
-function openTaskEditor(id){const task=id==null?null:tasks.find(t=>Number(t.id)===Number(id));if(id!=null&&!task)return;taskEditorId=task?task.id:null;showTaskModal(task?'Editar tarea':'Nueva tarea',taskEditorMarkup(task))}
+function openTaskEditor(id){const task=id==null?null:tasks.find(t=>Number(t.id)===Number(id));if(id!=null&&!task)return;taskEditorId=task?task.id:null;showTaskModal(task?'Editar tarea':'Nueva tarea',taskEditorMarkup(task));setModalWindowBase('save',()=>{taskEditorId=null;taskScheduleDate=''})}
 function openAdd(){
  editingEventId=null;eventPrefill=null;eventCreationTime=new Date();
  const subtitle=document.getElementById('modalSubtitle');subtitle.textContent='';subtitle.classList.add('hidden');
  if(current==='tareas'){openTaskEditor(null);return}
  if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
  else{document.getElementById('modalTitle').textContent='Nuevo evento';document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';document.getElementById('eventType').value='normal';showEventFields()}
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');requestAnimationFrame(()=>{const body=document.getElementById('modalBody');if(body)body.scrollTop=0});if(current!=='listas')setModalWindowBase('save',()=>{editingEventId=null;eventPrefill=null});
 }
 function toggleTaskSchedule(){const enabled=document.getElementById('scheduleTask')?.checked;document.getElementById('taskScheduleOptions')?.classList.toggle('hidden',!enabled);if(!enabled)taskScheduleDate='';}
 function openTaskScheduleCalendar(){const input=document.getElementById('taskScheduleDate');if(!input)return;try{input.showPicker()}catch(e){input.click()}}
@@ -2332,25 +2454,25 @@ function storeTaskTemplate(task){
 function saveTaskAsTemplateFromTask(id){
  const task=tasks.find(t=>Number(t.id)===Number(id));if(!task)return;
  const template=storeTaskTemplate(task);
- showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');
 }
 function saveTaskEditor(){
- const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea.');return}
+ const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();showWindowNotice('Falta el nombre de la tarea','Escribe el nombre de la tarea.');return}
  const now=Date.now(),old=taskEditorId==null?null:tasks.find(t=>Number(t.id)===Number(taskEditorId));
  const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();if(!name)return null;const prev=old?.subtasks?.[index],id=prev?.id??now+index+1;const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev?.subtasks?.[j]})).filter(x=>x.title).map((x,j)=>({id:x.prev?.id??now+1000+index*100+j,title:x.title,done:x.prev?.done??false,assignable:false,inheritsAssignmentFrom:id}));return {id,title:name,done:prev?.done??false,assignable:true,subtasks:children,...(prev?.assignedTo?{assignedTo:prev.assignedTo}:{})}}).filter(Boolean);
  const selectedScope=document.getElementById('newTaskScope')?.value;const scope=selectedScope==='family'?'family':'personal';subtasks.forEach(x=>x.assignable=scope==='family');
  const scheduleEnabled=!!document.getElementById('scheduleTask')?.checked;const date=scheduleEnabled?(document.getElementById('taskScheduleDate')?.value||''):'';if(scheduleEnabled&&!date){showTaskScheduleWarning();return;}
  let savedTask;if(old){old.title=title;old.scope=scope;old.assignable=scope==='family';old.subtasks=subtasks;old.scheduledDate=date||null;syncTaskCompletion(old);savedTask=old}else{savedTask={id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString(),scheduledDate:date||null};tasks.push(savedTask)}
  if(scope==='shared'){const clearAssignments=item=>{if(!item)return;delete item.assignedTo;delete item.assignedToUserId;(item.subtasks||[]).forEach(clearAssignments)};clearAssignments(savedTask)}
- syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate)showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate){showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
 function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate||task.scope==='shared'){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
 function addTask(){saveTaskEditor()}
 function eventRepeatLabel(ev){const names=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];if(ev.repeat==='yearly')return 'Anualmente';if(ev.repeat==='monthly')return 'Cada mes';if(ev.repeat==='daily')return 'Diariamente';if(ev.repeat==='custom')return 'Semanalmente: '+(ev.weekdays||[]).map(i=>names[i]).join(', ');return 'No se repite'}
 function eventDetailMarkup(ev){
- const type={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario'}[ev.type]||'Evento';
+ const type={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film'}[ev.type]||'Evento';
  const date=ev.date?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Sin fecha';
- const rows=[['Tipo',type],['Fecha',date],['Hora',ev.allDay?'Todo el día':(ev.time||'Sin hora')],['Repetición',eventRepeatLabel(ev)],['Alertas',ev.alerts?.length?ev.alerts.map(a=>a.amount+' '+({minutes:'minutos',hours:'horas',days:'días'}[a.unit]||a.unit)+' antes').join(', '):'Sin alertas'],['Calendario',ev.scope==='family'?'Compartido':'Personal'],['Vínculos',(ev.links||[]).length?ev.links.map(l=>({task:'Tareas',note:'Notas',expense:'Finanzas'}[l.type]||l.type)).join(', '):'Ninguno'],['Prioridad',ev.priority==='high'?'Alta':'Normal']];
+ const rows=[['Tipo',type],['Fecha',date],['Hora',ev.allDay?'Todo el día':(ev.time||'Sin hora')],['Repetición',eventRepeatLabel(ev)],['Alertas',ev.alerts?.length?ev.alerts.map(a=>a.amount+' '+({minutes:'minutos',hours:'horas',days:'días'}[a.unit]||a.unit)+' antes').join(', '):'Sin alertas'],['Calendario',ev.scope==='family'?'Compartido':'Personal'],['Vínculos',(ev.links||[]).length?ev.links.map(l=>({task:'Tareas',note:'Notas',expense:'Finanzas',entertainment:'Entretención'}[l.type]||l.type)+(l.label?' · '+l.label:'')).join(', '):'Ninguno'],['Prioridad',ev.priority==='high'?'Alta':'Normal']];
  return '<div class="event-detail-card" style="border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><div class="event-detail-title">'+escapeHTML(ev.title)+'</div><div class="event-detail-list">'+rows.map(r=>'<div class="event-detail-row"><span class="event-detail-label">'+r[0]+'</span><span class="event-detail-value">'+escapeHTML(r[1])+'</span></div>').join('')+'</div></div>';
 }
 function openEventDetails(id){
@@ -2363,10 +2485,7 @@ function openEventDetails(id){
 }
 function confirmDeleteEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
- document.getElementById('modalTitle').textContent='Eliminar evento';
- const sub=document.getElementById('modalSubtitle');sub.textContent='Confirma esta acción antes de continuar.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">¿Quieres eliminar este evento? Esta acción no se puede deshacer.</p></div><div class="event-detail-actions"><button type="button" class="secondary-btn" onclick="openEventDetails('+ev.id+')">Cancelar</button><button type="button" class="primary-btn" onclick="deleteEvent('+ev.id+')">Sí, eliminar</button></div>';
- document.getElementById('backdrop').classList.add('show');
+ showWindowCaution({title:'¿Quieres eliminar este evento?',message:'Esta acción no se puede deshacer.',subject:ev.title,cancelLabel:'Cancelar',confirmLabel:'Sí, eliminar',danger:true,onConfirm:()=>deleteEvent(id)});
 }
 function deleteEvent(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
@@ -2377,8 +2496,8 @@ function duplicateEvent(id){
  eventPrefill=JSON.parse(JSON.stringify(ev));editingEventId=null;
  document.getElementById('modalTitle').textContent='Duplicar evento';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Se creará un evento nuevo con los datos precargados. Puedes modificarlos libremente.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="event_task">Evento Tarea</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';
- document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
+ document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="event_task">Evento Tarea</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="film">Evento Film</option></select></div><div id="eventFields"></div>';
+ document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{editingEventId=null;eventPrefill=null;openEventDetails(id)});
 }
 function openEventMore(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
@@ -2389,9 +2508,7 @@ function openEventMore(id){
 }
 function confirmDeleteEventCountdown(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
- document.getElementById('modalTitle').textContent='Eliminar cuenta regresiva';
- const sub=document.getElementById('modalSubtitle');sub.textContent='Confirma si deseas quitarla de Inicio.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML='<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted" style="margin:8px 0 0">¿Quieres eliminar la cuenta regresiva de Inicio? El evento seguirá en tu calendario.</p></div><div class="event-detail-actions"><button class="secondary-btn" onclick="openEventMore('+ev.id+')">Cancelar</button><button class="primary-btn" onclick="deleteEventCountdown('+ev.id+')">Sí, eliminar</button></div>';
+ showWindowCaution({title:'¿Quieres eliminar esta cuenta regresiva?',message:'La cuenta regresiva se quitará de Inicio. El evento seguirá en tu calendario.',subject:ev.title,cancelLabel:'Cancelar',confirmLabel:'Sí, eliminar',danger:true,onConfirm:()=>deleteEventCountdown(id)});
 }
 function deleteEventCountdown(id){
  eventCountdowns=eventCountdowns.filter(x=>String(x.eventId)!==String(id));
@@ -2400,7 +2517,7 @@ function deleteEventCountdown(id){
 }
 function createEventCountdown(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
- if(!ev.date||new Date(ev.date+'T23:59:59')<new Date()){alert('La fecha del evento ya pasó. Edita el evento y elige una fecha futura para crear su cuenta regresiva.');return}
+ if(!ev.date||new Date(ev.date+'T23:59:59')<new Date()){showWindowNotice('No se puede crear la cuenta regresiva','La fecha del evento ya pasó. Edita el evento y elige una fecha futura para crear su cuenta regresiva.');return}
  if(!eventCountdowns.some(x=>String(x.eventId)===String(id)))eventCountdowns.push({eventId:ev.id,title:ev.title,date:ev.date});
  localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));closeModal();render();
 }
@@ -2414,8 +2531,8 @@ function openEditEvent(id){
  editingEventId=ev.id;
  const sub=document.getElementById('modalSubtitle');document.getElementById('modalTitle').textContent='Editar evento';
  sub.textContent='Modifica los detalles del evento. El tipo no se puede cambiar.';sub.classList.remove('hidden');
- document.getElementById('modalBody').innerHTML=(ev.type==='event_task'?'<div class="event-form-section"><label>Tipo de evento</label><input type="hidden" id="eventType" value="event_task"><div class="muted">Evento Tarea · Creado automáticamente desde el módulo Tareas</div></div>':'<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div>')+'<div id="eventFields"></div>';
- if(ev.type!=='event_task')document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
+ document.getElementById('modalBody').innerHTML=(ev.type==='event_task'?'<div class="event-form-section"><label>Tipo de evento</label><input type="hidden" id="eventType" value="event_task"><div class="muted">Evento Tarea · Creado automáticamente desde el módulo Tareas</div></div>':'<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="film">Evento Film</option></select></div>')+'<div id="eventFields"></div>';
+ if(ev.type!=='event_task')document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{editingEventId=null;openEventDetails(id)});
 }
 function selectEventType(type){document.getElementById('eventType').value=type;showEventFields();if(type==='anniversary'&&editingEventId===null)document.getElementById('anniversaryNotice').classList.add('show')}
 function closeAnniversaryNotice(){document.getElementById('anniversaryNotice').classList.remove('show')}
@@ -2433,7 +2550,7 @@ function showEventFields(){
  '<div class="event-form-section"><label>Repetición</label><select id="eventRepeat" onchange="toggleCustomDays();updateEventPreview()"><option value="none">No se repite</option><option value="yearly">Anualmente</option><option value="monthly">Mensualmente</option><option value="daily">Diariamente</option><option value="custom">Personalizado</option></select><div id="eventCustomDays" class="hidden"><span class="field-label">Repetir estos días</span><div class="event-days">'+['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map((x,i)=>'<label><input type="checkbox" name="eventWeekday" value="'+i+'" onchange="updateEventPreview()"> '+x+'</label>').join('')+'</div></div></div>'+
  '<div class="event-form-section"><label>Alerta</label><select id="eventAlertState" onchange="toggleEventAlerts()"><option value="off">Desactivar</option><option value="on">Activar</option></select><div id="eventAlertsWrap" class="hidden"><div id="eventAlertRows"></div><button type="button" class="small-btn" onclick="addEventAlert()">+ Agregar otra alerta</button></div></div>'+
  '<div class="event-preview"><div class="field-label event-preview-heading">Vista previa</div><div id="eventPreview" class="event-preview-content"><div class="event-preview-title">Nombre del evento</div><div class="event-preview-row">Fecha por seleccionar</div></div></div>'+
- '<div class="event-form-actions"><button class="secondary-btn" onclick="closeModal()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
+ '<div class="event-form-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
  if(!ev){document.getElementById('eventTime').value=currentTime;document.getElementById('eventTimeText').textContent=currentTime;}
  if(type==='birthday'||type==='anniversary'){document.getElementById('eventRepeat').value='yearly';document.getElementById('eventAllDay').checked=true;document.getElementById('eventAllDay').disabled=true;document.getElementById('eventRepeat').disabled=true}
  if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8';toggleEventColor()}
@@ -2479,33 +2596,37 @@ function closeTimePicker(apply){
  if(apply){
   const value=String(timePickerDraft.hour).padStart(2,'0')+':'+String(timePickerDraft.minute).padStart(2,'0');
   const input=document.getElementById('eventTime'),label=document.getElementById('eventTimeText');
-  if(input)input.value=value;if(label)label.textContent=value;updateEventPreview();
+  if(input)input.value=value;if(label)label.textContent=value;if(entertainmentScheduleOpen)entertainmentScheduleDraft.time=value;updateEventPreview();
  }
- backdrop.classList.remove('show');
+ backdrop.classList.remove('show');backdrop.classList.remove('film-schedule-time-picker');
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
 function toggleEventColor(){document.getElementById('eventColorWrap').classList.toggle('hidden',document.getElementById('eventPriority').value!=='high');updateEventPreview()}
 function toggleCustomDays(){document.getElementById('eventCustomDays').classList.toggle('hidden',document.getElementById('eventRepeat').value!=='custom')}
 function toggleEventAlerts(){const on=document.getElementById('eventAlertState').value==='on';document.getElementById('eventAlertsWrap').classList.toggle('hidden',!on);if(on&&!document.getElementById('eventAlertRows').children.length)addEventAlert();updateEventPreview()}
 let alertNumberPickerRow=null,alertNumberPickerValue=15;function alertNumberMax(unit){return unit==='minutes'?60:unit==='hours'?24:30}function addEventAlert(){const r=document.createElement('div');r.className='event-alert-row';r.innerHTML='<input type="hidden" value="15"><button type="button" class="event-alert-number" onclick="openAlertNumberPicker(this.parentElement)" aria-label="Seleccionar cantidad">15</button><select onchange="changeEventAlertUnit(this)"><option value="minutes">Minutos</option><option value="hours">Horas</option><option value="days">Días</option></select><button type="button" class="small-btn" onclick="this.parentElement.remove();updateEventPreview()">×</button>';document.getElementById('eventAlertRows').appendChild(r);updateEventPreview()}function openAlertNumberPicker(row){alertNumberPickerRow=row;const unit=row.querySelector('select').value,max=alertNumberMax(unit);alertNumberPickerValue=Math.max(1,Math.min(max,Number(row.querySelector('input').value)||15));const wheel=document.getElementById('alertNumberWheel');wheel.innerHTML=Array.from({length:max},(_,i)=>{const n=i+1;return '<button type="button" class="time-wheel-option'+(n===alertNumberPickerValue?' selected':'')+'" style="display:block;width:100%;height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:17px;scroll-snap-align:center" onclick="chooseAlertNumber('+n+')">'+n+'</button>'}).join('');wheel.scrollTop=(alertNumberPickerValue-1)*42;document.getElementById('alertNumberPickerBackdrop').classList.add('show')}function chooseAlertNumber(n){const max=alertNumberMax(alertNumberPickerRow?.querySelector('select').value||'minutes');alertNumberPickerValue=Math.max(1,Math.min(max,n));const w=document.getElementById('alertNumberWheel');w.scrollTo({top:(alertNumberPickerValue-1)*42,behavior:'smooth'});updateAlertNumberWheel()}function handleAlertNumberWheelScroll(){const w=document.getElementById('alertNumberWheel'),max=alertNumberMax(alertNumberPickerRow?.querySelector('select').value||'minutes');alertNumberPickerValue=Math.max(1,Math.min(max,Math.round(w.scrollTop/42)+1));updateAlertNumberWheel()}function updateAlertNumberWheel(){document.querySelectorAll('#alertNumberWheel .time-wheel-option').forEach((b,i)=>b.classList.toggle('selected',i+1===alertNumberPickerValue))}function closeAlertNumberPicker(apply){const back=document.getElementById('alertNumberPickerBackdrop');if(!back)return;if(apply&&alertNumberPickerRow){const unit=alertNumberPickerRow.querySelector('select').value,max=alertNumberMax(unit),amount=Math.max(1,Math.min(max,alertNumberPickerValue)),duplicate=[...document.querySelectorAll('#eventAlertRows .event-alert-row')].some(r=>r!==alertNumberPickerRow&&Number(r.querySelector('input').value)===amount&&r.querySelector('select').value===unit);if(!duplicate){alertNumberPickerRow.querySelector('input').value=amount;alertNumberPickerRow.querySelector('button.event-alert-number').textContent=amount;updateEventPreview()}}back.classList.remove('show');alertNumberPickerRow=null}function changeEventAlertUnit(select){const row=select.parentElement,old=row.dataset.previousUnit||'minutes',max=alertNumberMax(select.value),amount=Math.max(1,Math.min(max,Number(row.querySelector('input').value)||1)),duplicate=[...document.querySelectorAll('#eventAlertRows .event-alert-row')].some(r=>r!==row&&Number(r.querySelector('input').value)===amount&&r.querySelector('select').value===select.value);if(duplicate){select.value=old}else{row.querySelector('input').value=amount;row.querySelector('button.event-alert-number').textContent=amount;row.dataset.previousUnit=select.value}updateEventPreview()}
-function eventPreviewLinkedModules(){const source=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;return (source?.links||[]).map(link=>{const type=link.type==='task'?'Tareas':link.type==='note'?'Notas':link.type==='expense'?'Finanzas':null;if(!type)return '';let detail='';if(link.type==='task'){const task=tasks.find(t=>String(t.id)===String(link.id));detail=task?.title||link.label||''}else detail=link.label||link.name||link.id||'';return type+(detail?' · '+detail:'')}).filter(Boolean)}
+function eventPreviewLinkedModules(){const source=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):eventPrefill;return (source?.links||[]).map(link=>{const type=link.type==='task'?'Tareas':link.type==='note'?'Notas':link.type==='expense'?'Finanzas':link.type==='entertainment'?'Entretención':null;if(!type)return '';let detail='';if(link.type==='task'){const task=tasks.find(t=>String(t.id)===String(link.id));detail=task?.title||link.label||''}else detail=link.label||link.name||link.id||'';return type+(detail?' · '+detail:'')}).filter(Boolean)}
 function updateEventPreview(){const p=document.getElementById('eventPreview');if(!p)return;const n=document.getElementById('eventName').value.trim()||'Nombre del evento',d=document.getElementById('eventDate').value,all=document.getElementById('eventAllDay').checked,t=document.getElementById('eventTime').value,high=document.getElementById('eventPriority').value==='high',c=document.getElementById('eventColor').value,repeat=document.getElementById('eventRepeat')?.value||'none',days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'][Number(x.value)]),scope=document.querySelector('input[name="eventScope"]:checked')?.value||'personal',alerts=collectEventAlerts(),links=eventPreviewLinkedModules();const dt=d?new Date(d+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'Fecha por seleccionar';const repeatText={yearly:'Se repite anualmente',monthly:'Se repite cada mes',daily:'Se repite diariamente'}[repeat]||(repeat==='custom'&&days.length?'Se repite cada semana: '+days.join(', '):'');const alertText=alerts.map(a=>a.amount+' '+({minutes:'minuto(s)',hours:'hora(s)',days:'día(s)'}[a.unit]||a.unit)+' antes').join(', ');const rows=['<div class="event-preview-title">'+escapeHTML(n)+'</div>','<div class="event-preview-row">'+escapeHTML(dt)+'</div>','<div class="event-preview-row">'+escapeHTML(all?'Todo el día':(t||'Hora por seleccionar'))+'</div>',repeatText?'<div class="event-preview-row">↻ '+escapeHTML(repeatText)+'</div>':'',alerts.length?'<div class="event-preview-row">🔔 '+escapeHTML(alertText)+'</div>':'<div class="event-preview-row">Sin alertas</div>','<div class="event-preview-row">'+(scope==='family'?'Calendario compartido':'Calendario propio')+'</div>',links.length?'<div class="event-preview-row">Vinculado con: '+escapeHTML(links.join(', '))+'</div>':'','<div class="event-preview-row">'+(high?'Alta prioridad':'Prioridad normal')+'</div>'].filter(Boolean);p.innerHTML=rows.join('');p.style.borderLeft=high?'5px solid '+c:'1px solid var(--line)'}
 function collectEventAlerts(){if(document.getElementById('eventAlertState').value!=='on')return [];const seen=new Set();return [...document.querySelectorAll('#eventAlertRows .event-alert-row')].map(r=>({amount:Number(r.querySelector('input').value)||0,unit:r.querySelector('select').value})).filter(a=>{const key=a.amount+'|'+a.unit;if(a.amount<=0||seen.has(key))return false;seen.add(key);return true})}
 function normalizedEventName(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim()}
 function similarEventName(a,b){const x=normalizedEventName(a),y=normalizedEventName(b);if(!x||!y)return false;if(x===y)return true;const ax=new Set(x.split(' ').filter(w=>w.length>2)),by=new Set(y.split(' ').filter(w=>w.length>2));if(!ax.size||!by.size)return false;const shared=[...ax].filter(w=>by.has(w)).length;return shared/Math.min(ax.size,by.size)>=0.6}
 function eventOccursOn(ev,date){const base=new Date((ev.date||'')+'T12:00:00'),target=new Date(date.getFullYear(),date.getMonth(),date.getDate());if(!ev.date||isNaN(base.getTime())||target<new Date(base.getFullYear(),base.getMonth(),base.getDate()))return false;const diff=Math.round((target-new Date(base.getFullYear(),base.getMonth(),base.getDate()))/86400000);if(!ev.repeat||ev.repeat==='none')return diff===0;if(ev.repeat==='daily')return true;if(ev.repeat==='monthly')return target.getDate()===base.getDate();if(ev.repeat==='yearly')return target.getMonth()===base.getMonth()&&target.getDate()===base.getDate();if(ev.repeat==='custom')return Array.isArray(ev.weekdays)&&ev.weekdays.includes((target.getDay()+6)%7);return diff===0}
-function addEvent(){
+function addEvent(forceDuplicate=false){
  const name=document.getElementById('eventName')?.value.trim(),date=document.getElementById('eventDate')?.value;
  const old=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null,type=document.getElementById('eventType')?.value;
- if(!type||!['normal','birthday','anniversary','event_task'].includes(type)||(type==='event_task'&&old?.taskId==null)){alert('Selecciona un tipo de evento válido.');return}if(!name){alert('Escribe el nombre del evento.');return}if(!date){alert('Selecciona una fecha.');return}
- const repeat=document.getElementById('eventRepeat').value,days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>Number(x.value));if(repeat==='custom'&&!days.length){alert('Selecciona al menos un día de la semana.');return}
+ if(!type||!['normal','birthday','anniversary','event_task','film'].includes(type)||(type==='event_task'&&old?.taskId==null)){showWindowNotice('Tipo de evento inválido','Selecciona un tipo de evento válido.');return}if(!name){showWindowNotice('Falta el nombre del evento','Escribe el nombre del evento.');return}if(!date){showWindowNotice('Falta seleccionar una fecha','Selecciona una fecha para el evento.');return}
+ const repeat=document.getElementById('eventRepeat').value,days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>Number(x.value));if(repeat==='custom'&&!days.length){showWindowNotice('Falta seleccionar días','Selecciona al menos un día de la semana para la repetición personalizada.');return}
  const allDay=document.getElementById('eventAllDay').checked,scope=document.querySelector('input[name="eventScope"]:checked')?.value||'personal',priority=document.getElementById('eventPriority').value,alerts=collectEventAlerts(),links=(old?.links||eventPrefill?.links||[]).map(link=>({...link}));
- const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!confirm('Ya existe un evento similar en esa fecha ('+dup.title+'). ¿Quieres '+(old?'guardar los cambios':'crearlo')+' de todas formas?'))return;
+ const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!forceDuplicate){showWindowCaution({title:'¿Crear un evento similar?',message:'Ya existe un evento similar en esa fecha.',subject:dup.title,cancelLabel:'Volver',confirmLabel:old?'Guardar de todas formas':'Crear de todas formas',danger:false,onConfirm:()=>addEvent(true)});return}
  const changes={title:name,type,date,time:allDay?null:document.getElementById('eventTime').value,allDay,scope,priority,color:priority==='high'?document.getElementById('eventColor').value:null,repeat,weekdays:repeat==='custom'?days:[],alerts,links};
- if(old){Object.assign(old,changes);if(old.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(old.taskId));if(linkedTask)linkedTask.scheduledDate=date;}}else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
+ if(old){const previousFilmReminder=old.type==='film'?(old.date+'|'+(old.allDay?'all-day':(old.time||'20:00'))):null;Object.assign(old,changes);if(old.type==='film'&&previousFilmReminder!==(old.date+'|'+(old.allDay?'all-day':(old.time||'20:00'))))old.notificationSentFor='';if(old.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(old.taskId));if(linkedTask)linkedTask.scheduledDate=date;}}else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
+ const isNewEvent=!old;
  editingEventId=null;eventPrefill=null;save();closeModal();render();
+ if(isNewEvent){showTaskModal('Evento creado con éxito','<p>«'+escapeHTML(name)+'» se agregó correctamente al calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
+ else{showTaskModal('Evento actualizado con éxito','<p>«'+escapeHTML(name)+'» se actualizó correctamente en el calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden&&pruneExpiredCompletedTasks())save()});
+processFilmEventNotifications();setInterval(processFilmEventNotifications,60000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden){if(pruneExpiredCompletedTasks())save();processFilmEventNotifications()}});
 window.addEventListener('pagehide',()=>{if(current==='finanzas')startFinanceLockTimer()});
 render();
 </script>
