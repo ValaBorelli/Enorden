@@ -697,7 +697,7 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .routine-toggle[aria-pressed="true"]{background:var(--accent)}
 .routine-toggle[aria-pressed="true"]:after{transform:translateX(17px)}
 .routine-tasks{margin:14px 0 0 54px;border-top:1px solid var(--line);padding-top:10px}
-.routine-task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);touch-action:pan-y}
+.routine-task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);touch-action:none;cursor:pointer}
 .routine-task-row:last-child{border-bottom:0}
 .routine-task-grip{color:var(--muted);font-size:18px;cursor:grab;touch-action:none}
 .routine-task-info{flex:1;min-width:0}
@@ -847,7 +847,7 @@ let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.taskId!=null?{...ev,type:'event_task'}:ev.type==='special'?{...ev,type:'normal'}:ev);
 let routines=(()=>{try{const value=JSON.parse(localStorage.getItem('enorden_routines')||'[]');return Array.isArray(value)?value:[]}catch{return []}})();
-let routineExpandedId=null,routineSuppressClick=false,routineEditorId=null,routineTaskEditorId=null,routineTaskParentId=null,routineHoldTimer=null,routineDragId=null,routineExecutionTimers=[];
+let routineExpandedId=null,routineSuppressClick=false,routineTaskSuppressClick=false,routineEditorId=null,routineTaskEditorId=null,routineTaskParentId=null,routineHoldTimer=null,routineDragId=null,routineExecutionTimers=[];
 let editingEventId=null;
 let eventPrefill=null;
 let eventCreationTime=null;
@@ -2510,10 +2510,10 @@ function routineCardHTML(r){
  </div>`:''}
  </article>`;
 }
-function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointermove="moveRoutineTaskHold(event)" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()">
+function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onclick="openRoutineTaskFromRow(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointermove="moveRoutineTaskHold(event)" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()">
  <span class="routine-task-grip" title="Mantén presionado para reordenar">⠿</span><div class="routine-task-info"><strong>${index+1}. ${escapeHTML(t.name)}</strong><small>${Number(t.duration)||0} minutos</small></div>
- <button type="button" class="small-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}','${escapeHTML(t.id)}')" aria-label="Editar tarea">✎</button>
  </div>`}
+function openRoutineTaskFromRow(event,routineId,taskId){if(routineTaskSuppressClick){routineTaskSuppressClick=false;return}if(event.target.closest('button'))return;openRoutineTaskEditor(routineId,taskId)}
 function toggleRoutineExpanded(id){if(routineSuppressClick){routineSuppressClick=false;return}routineExpandedId=String(routineExpandedId)===String(id)?null:id;renderRoutines()}
 function startRoutineHold(event,id){if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);routineHoldTimer=setTimeout(()=>{routineSuppressClick=true;openRoutineEditor(id)},550)}
 function endRoutineHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null}
@@ -2534,9 +2534,11 @@ function openRoutineEditor(id){
   <div class="routine-field" style="margin-top:12px">Días de activación<div class="routine-weekdays">${days.map((d,i)=>'<label><input type="checkbox" name="routineWeekday" value="'+i+'" '+(weekdays.includes(i)?'checked':'')+'> '+d+'</label>').join('')}</div></div>
   <p class="settings-note">Los eventos del calendario se generarán automáticamente para los días programados.</p>
  </div>
- <div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineEditor()">Guardar</button></div>`);
+ <div class="appearance-actions">${r?'<button type="button" class="danger-btn" onclick="confirmDeleteRoutine()">Eliminar</button>':''}<button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineEditor()">Guardar</button></div>`);
  setModalWindowBase('save',()=>{routineEditorId=null});
 }
+function confirmDeleteRoutine(){const r=routines.find(x=>String(x.id)===String(routineEditorId));if(!r)return;showWindowCaution({title:'¿Eliminar rutina?',message:'Esta acción eliminará la rutina y todas sus tareas. También se quitarán los eventos que se generaron automáticamente en el calendario.',subject:r.name,cancelLabel:'Cancelar',confirmLabel:'Eliminar rutina',onConfirm:()=>deleteRoutine(r.id)});}
+function deleteRoutine(id){const r=routines.find(x=>String(x.id)===String(id));if(!r)return;r.active=false;r.execution=null;clearRoutineTimers(r.id);events=events.filter(ev=>String(ev.routineId)!==String(r.id));routines=routines.filter(x=>String(x.id)!==String(r.id));routineEditorId=null;routineExpandedId=null;saveRoutines();closeModal();renderRoutines()}
 function toggleRoutineScheduleFields(){document.getElementById('routineScheduleFields')?.classList.toggle('hidden',!document.getElementById('routineScheduleEnabled')?.checked)}
 function saveRoutineEditor(){
  const name=document.getElementById('routineName')?.value.trim(),enabled=!!document.getElementById('routineScheduleEnabled')?.checked;
@@ -2556,9 +2558,11 @@ function openRoutineTaskEditor(routineId,taskId){
  showTaskModal(task?'Editar tarea':'Nueva tarea',`
  <div class="event-form-section"><label for="routineTaskName">Nombre de la tarea</label><input id="routineTaskName" maxlength="120" value="${escapeHTML(task?.name||'')}" placeholder="Ej. Preparar desayuno"></div>
  <div class="event-form-section"><label for="routineTaskDuration">Duración (minutos)</label><input id="routineTaskDuration" type="number" min="1" max="1440" step="1" value="${Number(task?.duration)||30}"></div>
- <div class="appearance-actions"><button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineTaskEditor()">Guardar</button></div>`);
+ <div class="appearance-actions">${task?'<button type="button" class="danger-btn" onclick="confirmDeleteRoutineTask()">Eliminar</button>':''}<button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineTaskEditor()">Guardar</button></div>`);
  setModalWindowBase('save',()=>{routineTaskParentId=null;routineTaskEditorId=null});
 }
+function confirmDeleteRoutineTask(){const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),task=r?.tasks.find(x=>String(x.id)===String(routineTaskEditorId));if(!r||!task)return;showWindowCaution({title:'¿Eliminar tarea?',message:'Esta tarea se eliminará de la rutina y no se podrá recuperar.',subject:task.name,cancelLabel:'Cancelar',confirmLabel:'Eliminar tarea',onConfirm:()=>deleteRoutineTask(r.id,task.id)});}
+function deleteRoutineTask(routineId,taskId){const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;r.tasks=r.tasks.filter(t=>String(t.id)!==String(taskId));if(r.active&&r.execution){r.execution.taskOffsets=routineTaskOffsets(r);scheduleRoutineTaskAlarms(r)}saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines()}
 function saveRoutineTaskEditor(){
  const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),name=document.getElementById('routineTaskName')?.value.trim(),duration=Number(document.getElementById('routineTaskDuration')?.value);
  if(!r)return;if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la tarea.');return}
@@ -2578,7 +2582,7 @@ function moveRoutineTaskHold(event){
  if(!source||!target||source===target||target.closest('.routine-card')?.dataset.routineId!==String(routineDragId.routineId))return;
  const rect=target.getBoundingClientRect();target.parentNode.insertBefore(source,event.clientY<rect.top+rect.height/2?target:target.nextSibling);
 }
-function endRoutineTaskHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null;if(routineDragId){const r=routines.find(x=>String(x.id)===String(routineDragId.routineId));if(r){const ids=[...document.querySelectorAll('.routine-tasks [data-routine-task-id]')].map(x=>x.dataset.routineTaskId);r.tasks.sort((a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id)));saveRoutines()}document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null;renderRoutines()}}
+function endRoutineTaskHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null;if(routineDragId){const r=routines.find(x=>String(x.id)===String(routineDragId.routineId));if(r){const ids=[...document.querySelectorAll('.routine-tasks [data-routine-task-id]')].map(x=>x.dataset.routineTaskId);r.tasks.sort((a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id)));saveRoutines()}document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null;routineTaskSuppressClick=true;setTimeout(()=>{routineTaskSuppressClick=false;renderRoutines()},0)}}
 function toggleRoutineActive(id){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
  if(r.active){stopRoutine(id);return}
