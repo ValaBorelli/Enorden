@@ -2942,7 +2942,7 @@ function processRoutineCalendarNotifications(){
    }
   }else{
    const firstDate=dates[0];if(firstDate){
-    const first=routineDateFromKey(firstDate),noticeDate=new Date(first);noticeDate.setDate(noticeDate.getDate()-1),key='period|'+firstDate;
+    const first=routineDateFromKey(firstDate),noticeDate=new Date(first),key='period|'+firstDate;noticeDate.setDate(noticeDate.getDate()-1);
     if(keyDate(noticeDate)===today&&!noticeSent[key]){
      notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina estará activa desde '+routineDateFromKey(firstDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+' hasta '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
      notifications=notifications.slice(-50);noticeSent[key]=true;changed=true;
