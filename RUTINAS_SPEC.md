@@ -91,7 +91,7 @@ Las reglas de este documento describen el comportamiento esperado; no implican q
 - La programación repetitiva de esta versión se configura mediante una casilla «Repetir».
 - Si «Repetir» está desmarcado, la rutina se ejecuta una sola vez durante el período comprendido entre la fecha de inicio y la fecha de término.
 - Si «Repetir» está marcado, el usuario selecciona los días de la semana y las semanas del mes en que debe activarse la rutina.
-- Las semanas se numeran según las filas del calendario del mes, comenzando el lunes. Por ello, un mes puede tener entre cuatro y seis semanas; por ejemplo, noviembre de 2026 ocupa seis filas semanales. Por ello, un mes puede tener entre cuatro y seis semanas; por ejemplo, noviembre de 2026 ocupa seis filas semanales.
+- Las semanas se numeran según las filas del calendario del mes, comenzando el lunes. Por ello, un mes puede tener entre cuatro y seis semanas; por ejemplo, noviembre de 2026 ocupa seis filas semanales.
 - En el modo repetitivo, solo se considera la fecha de inicio para determinar el mes de referencia. La fecha de término no limita ni modifica las repeticiones.
 - Las repeticiones se generan únicamente dentro del mes correspondiente a la fecha de inicio. No se extienden a los meses siguientes.
 - Cada fecha seleccionada genera un evento de calendario y una activación automática a la hora configurada.
