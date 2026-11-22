@@ -1934,10 +1934,10 @@ function rotateProfileCrop(degrees){
 function previewProfileImage(event){
  const file=event.target.files&&event.target.files[0];if(!file)return;
  if(!file.type.startsWith('image/')){showWindowNotice('Archivo no compatible','Elige un archivo de imagen.');return}
- if(file.size>15*1024*1024){alert('La imagen es demasiado grande. Elige una de menos de 15 MB.');event.target.value='';return}
+ if(file.size>15*1024*1024){showWindowNotice('Imagen demasiado grande','Elige una imagen de menos de 15 MB.');event.target.value='';return}
  const reader=new FileReader();
  reader.onload=()=>{const p=document.getElementById('profilePreview');p.dataset.avatar='';profilePointers=new Map();profileGesture=null;loadProfileCropImage(reader.result);document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));};
- reader.onerror=()=>alert('No se pudo leer el archivo. Inténtalo nuevamente.');
+ reader.onerror=()=>showWindowNotice('No se pudo leer el archivo','Inténtalo nuevamente.');
  reader.readAsDataURL(file);
 }
 function selectProfileAvatar(value,button){
@@ -2083,7 +2083,7 @@ async function hashFinancePin(value){
 async function saveFinancePin(){
  const pin=document.getElementById('financePinNew').value;
  const confirm=document.getElementById('financePinConfirm').value;
- if(!/^\d{4}$/.test(pin)){alert('El PIN debe tener exactamente 4 números.');return}
+ if(!/^\d{4}$/.test(pin)){showWindowNotice('PIN no válido','El PIN debe tener exactamente 4 números.');return}
  if(pin!==confirm){alert('Los PIN no coinciden.');return}
  financePinHash=await hashFinancePin(pin);localStorage.setItem('enorden_finance_pin_hash',financePinHash);
  closeModal();
@@ -2613,10 +2613,10 @@ function eventOccursOn(ev,date){const base=new Date((ev.date||'')+'T12:00:00'),t
 function addEvent(forceDuplicate=false){
  const name=document.getElementById('eventName')?.value.trim(),date=document.getElementById('eventDate')?.value;
  const old=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null,type=document.getElementById('eventType')?.value;
- if(!type||!['normal','birthday','anniversary','event_task','film'].includes(type)||(type==='event_task'&&old?.taskId==null)){alert('Selecciona un tipo de evento válido.');return}if(!name){alert('Escribe el nombre del evento.');return}if(!date){alert('Selecciona una fecha.');return}
- const repeat=document.getElementById('eventRepeat').value,days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>Number(x.value));if(repeat==='custom'&&!days.length){alert('Selecciona al menos un día de la semana.');return}
+ if(!type||!['normal','birthday','anniversary','event_task','film'].includes(type)||(type==='event_task'&&old?.taskId==null)){showWindowNotice('Tipo de evento inválido','Selecciona un tipo de evento válido.');return}if(!name){showWindowNotice('Falta el nombre del evento','Escribe el nombre del evento.');return}if(!date){showWindowNotice('Falta seleccionar una fecha','Selecciona una fecha para el evento.');return}
+ const repeat=document.getElementById('eventRepeat').value,days=[...document.querySelectorAll('input[name="eventWeekday"]:checked')].map(x=>Number(x.value));if(repeat==='custom'&&!days.length){showWindowNotice('Falta seleccionar días','Selecciona al menos un día de la semana para la repetición personalizada.');return}
  const allDay=document.getElementById('eventAllDay').checked,scope=document.querySelector('input[name="eventScope"]:checked')?.value||'personal',priority=document.getElementById('eventPriority').value,alerts=collectEventAlerts(),links=(old?.links||eventPrefill?.links||[]).map(link=>({...link}));
- const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!confirm('Ya existe un evento similar en esa fecha ('+dup.title+'). ¿Quieres '+(old?'guardar los cambios':'crearlo')+' de todas formas?'))return;
+ const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!forceDuplicate){showWindowCaution({title:'¿Crear un evento similar?',message:'Ya existe un evento similar en esa fecha.',subject:dup.title,cancelLabel:'Volver',confirmLabel:old?'Guardar de todas formas':'Crear de todas formas',danger:false,onConfirm:()=>addEvent(true)});return}
  const changes={title:name,type,date,time:allDay?null:document.getElementById('eventTime').value,allDay,scope,priority,color:priority==='high'?document.getElementById('eventColor').value:null,repeat,weekdays:repeat==='custom'?days:[],alerts,links};
  if(old){const previousFilmReminder=old.type==='film'?(old.date+'|'+(old.allDay?'all-day':(old.time||'20:00'))):null;Object.assign(old,changes);if(old.type==='film'&&previousFilmReminder!==(old.date+'|'+(old.allDay?'all-day':(old.time||'20:00'))))old.notificationSentFor='';if(old.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(old.taskId));if(linkedTask)linkedTask.scheduledDate=date;}}else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
  editingEventId=null;eventPrefill=null;save();closeModal();render();
