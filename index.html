@@ -2510,7 +2510,7 @@ function routineCardHTML(r){
  </div>`:''}
  </article>`;
 }
-function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointermove="moveRoutineTaskHold(event)" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()" onpointerleave="endRoutineTaskHold()">
+function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointermove="moveRoutineTaskHold(event)" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()">
  <span class="routine-task-grip" title="Mantén presionado para reordenar">⠿</span><div class="routine-task-info"><strong>${index+1}. ${escapeHTML(t.name)}</strong><small>${Number(t.duration)||0} minutos</small></div>
  <button type="button" class="small-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}','${escapeHTML(t.id)}')" aria-label="Editar tarea">✎</button>
  </div>`}
@@ -2569,7 +2569,7 @@ function saveRoutineTaskEditor(){
 }
 function startRoutineTaskHold(event,routineId,taskId){
  if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);
- routineHoldTimer=setTimeout(()=>{routineDragId={routineId,taskId};document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]')?.classList.add('routine-dragging')},420);
+ routineHoldTimer=setTimeout(()=>{routineDragId={routineId,taskId};const row=document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]');row?.classList.add('routine-dragging');try{row?.setPointerCapture(event.pointerId)}catch{}},420);
 }
 function moveRoutineTaskHold(event){
  if(!routineDragId)return;event.preventDefault();
@@ -2585,16 +2585,39 @@ function toggleRoutineActive(id){
  startRoutine(id);
 }
 function clearRoutineTimers(routineId){const key=String(routineId);(routineExecutionTimers[key]||[]).forEach(id=>clearTimeout(id));delete routineExecutionTimers[key]}
-function startRoutine(id){
+function routineTaskOffsets(r){return r.tasks.map((t,i)=>r.tasks.slice(0,i).reduce((sum,x)=>sum+Number(x.duration||0),0)*60000)}
+function routinePendingAlarmTimes(r){
+ if(!r.active||!r.execution)return [];
+ const now=Date.now(),offsets=r.execution.taskOffsets||routineTaskOffsets(r);
+ return r.tasks.map((task,i)=>{const original=r.execution.startedAt+(offsets[i]||0),snoozed=r.execution.snoozedUntil?.[task.id]||0;return Math.max(original,snoozed)}).filter(time=>time>=now);
+}
+function routineAlarmTimesFromStart(r,startAt){const offsets=routineTaskOffsets(r);return offsets.map(offset=>startAt+offset)}
+function startRoutine(id,plannedStartAt=null){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
  if('Notification'in window&&Notification.permission==='default')Notification.requestPermission().catch(()=>{});
  if(!r.tasks?.length){showWindowNotice('Rutina sin tareas','Agrega al menos una tarea antes de iniciar la rutina.');return}
- const conflicts=routines.filter(other=>other.active&&String(other.id)!==String(r.id)&&routineHasSameAlarmStart(r,other));
- if(conflicts.length){showWindowNotice('Conflicto de horarios','Esta rutina coincide con otra rutina activa. Revisa sus horarios antes de activarla.');return}
- r.active=true;r.execution={startedAt:Date.now(),taskOffsets:r.tasks.map((t,i)=>r.tasks.slice(0,i).reduce((sum,x)=>sum+Number(x.duration||0),0)*60000),snoozes:{},startedTasks:[]};
+ const startAt=Number.isFinite(plannedStartAt)?plannedStartAt:Date.now(),candidateTimes=routineAlarmTimesFromStart(r,startAt);
+ const conflicts=routines.filter(other=>other.active&&String(other.id)!==String(r.id)&&routinePendingAlarmTimes(other).some(time=>candidateTimes.includes(time)));
+ if(conflicts.length){showRoutineConflictChoice(r,conflicts,startAt);return}
+ activateRoutineExecution(r,startAt);
+}
+function activateRoutineExecution(r,startAt){
+ r.active=true;r.execution={startedAt:startAt,taskOffsets:routineTaskOffsets(r),snoozes:{},startedTasks:[]};
  scheduleRoutineTaskAlarms(r);saveRoutines();routineExpandedId=r.id;renderRoutines();
 }
-function routineHasSameAlarmStart(a,b){return !!a.scheduleEnabled&&!!b.scheduleEnabled&&a.activationTime===b.activationTime&&a.startDate===b.startDate}
+function showRoutineConflictChoice(candidate,conflicts,startAt){
+ const involved=[candidate,...conflicts],layer=document.createElement('div');layer.className='window-notice-layer';layer.id='routineConflictChoice';
+ layer.innerHTML='<section class="window-notice-card" role="alertdialog" aria-modal="true"><h2>Conflicto de horarios</h2><p>Hay tareas de estas rutinas programadas para sonar exactamente a la misma hora. Selecciona cuál deseas mantener activa; las demás se apagarán.</p><div class="routine-conflict-options">'+involved.map(r=>'<label style="display:flex;gap:9px;align-items:center;padding:9px 0"><input type="radio" name="routineConflictKeep" value="'+escapeHTML(r.id)+'"> <span>'+escapeHTML(r.name)+'</span></label>').join('')+'</div><p class="settings-note">Te recomendamos modificar los horarios o las programaciones para evitar nuevos conflictos.</p><div class="routine-actions"><button class="secondary-btn" onclick="closeWindowNotice(\'routineConflictChoice\')">Cancelar</button><button class="primary-btn" onclick="resolveRoutineConflict(\''+escapeHTML(candidate.id)+'\','+Number(startAt)+')">Confirmar selección</button></div></section>';
+ document.body.appendChild(layer);
+}
+function resolveRoutineConflict(candidateId,startAt){
+ const keep=document.querySelector('input[name="routineConflictKeep"]:checked')?.value;
+ if(!keep){showWindowNotice('Selecciona una rutina','Debes elegir cuál de las rutinas permanecerá activa.');return}
+ const candidate=routines.find(r=>String(r.id)===String(candidateId));closeWindowNotice('routineConflictChoice');
+ routines.filter(r=>r.active&&String(r.id)!==String(keep)).forEach(r=>{r.active=false;r.execution=null;clearRoutineTimers(r.id)});
+ if(String(keep)===String(candidateId)&&candidate)activateRoutineExecution(candidate,startAt);
+ else{if(candidate){candidate.active=false;candidate.execution=null;clearRoutineTimers(candidate.id)}saveRoutines();renderRoutines()}
+}
 function scheduleRoutineTaskAlarms(r){
  clearRoutineTimers(r.id);const run=r.execution;if(!run)return;
  routineExecutionTimers[String(r.id)]=[];
@@ -2871,7 +2894,7 @@ function processRoutineAutoStarts(){
  const now=new Date(),today=keyDate(now),clock=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
  routines.forEach(r=>{
   if(!r.scheduleEnabled||r.active||r.lastAutoStartKey===today||!routinePeriodDates(r).includes(today)||clock!==r.activationTime)return;
-  r.lastAutoStartKey=today;startRoutine(r.id);
+  r.lastAutoStartKey=today;startRoutine(r.id,new Date(today+'T'+r.activationTime+':00').getTime());
  });
 }
 processRoutineCalendarNotifications();processRoutineAutoStarts();setInterval(()=>{processRoutineCalendarNotifications();processRoutineAutoStarts()},30000);
