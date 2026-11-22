@@ -1871,7 +1871,7 @@ function loadProfileCropImage(source){
   const controls=document.getElementById('profileCropControls');if(controls)controls.style.display='block';
   drawProfileCrop(document.getElementById('profilePreview'),180);
  };
- img.onerror=()=>alert('No se pudo abrir esta imagen. Prueba con otro archivo.');
+ img.onerror=()=>showWindowNotice('No se pudo abrir la imagen','Prueba con otro archivo.');
  img.src=source;
 }
 function drawProfileCrop(canvas,size){
@@ -1933,7 +1933,7 @@ function rotateProfileCrop(degrees){
 }
 function previewProfileImage(event){
  const file=event.target.files&&event.target.files[0];if(!file)return;
- if(!file.type.startsWith('image/')){alert('Elige un archivo de imagen.');return}
+ if(!file.type.startsWith('image/')){showWindowNotice('Archivo no compatible','Elige un archivo de imagen.');return}
  if(file.size>15*1024*1024){alert('La imagen es demasiado grande. Elige una de menos de 15 MB.');event.target.value='';return}
  const reader=new FileReader();
  reader.onload=()=>{const p=document.getElementById('profilePreview');p.dataset.avatar='';profilePointers=new Map();profileGesture=null;loadProfileCropImage(reader.result);document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.remove('selected'));};
@@ -1956,7 +1956,7 @@ function saveProfileImage(){
    const cropped=output.toDataURL('image/jpeg',0.88);
    localStorage.setItem('enorden_profile_image',cropped);localStorage.setItem('enorden_profile_avatar','');
   }else{localStorage.removeItem('enorden_profile_image');localStorage.setItem('enorden_profile_avatar',avatar);}
- }catch(error){alert('No se pudo guardar la imagen. Prueba con otra foto o elige un avatar.');return}
+ }catch(error){showWindowNotice('No se pudo guardar la imagen','Prueba con otra foto o elige un avatar.');return}
  profileCropState=null;profilePointers=new Map();profileGesture=null;closeModal();renderSettings();
 }
 function openProfileName(){
@@ -1967,8 +1967,8 @@ function openProfileName(){
 }
 function saveProfileName(){
  const name=document.getElementById('profileNameInput').value.trim();
- if(!name){alert('Escribe un nombre de usuario.');return}
- if(!/^[\p{L}\p{N} ._-]+$/u.test(name)){alert('Puedes usar letras, números, espacios, puntos, guiones y guion bajo.');return}
+ if(!name){showWindowNotice('Falta el nombre de usuario','Escribe un nombre de usuario.');return}
+ if(!/^[\p{L}\p{N} ._-]+$/u.test(name)){showWindowNotice('Nombre de usuario no válido','Puedes usar letras, números, espacios, puntos, guiones y guion bajo.');return}
  const old=localStorage.getItem('enorden_profile_name')||'Vale';
  if(name!==old){const history=JSON.parse(localStorage.getItem('enorden_profile_name_history')||'[]');history.push({from:old,to:name,at:new Date().toISOString()});localStorage.setItem('enorden_profile_name_history',JSON.stringify(history));localStorage.setItem('enorden_profile_name',name);}
  closeModal();renderSettings();
@@ -2435,7 +2435,7 @@ function openAdd(){
  if(current==='tareas'){openTaskEditor(null);return}
  if(current==='listas'){document.getElementById('modalTitle').textContent='Agregar producto';document.getElementById('modalBody').innerHTML='<label>Producto</label><input id="newValue" placeholder="Nombre del producto"><label>Sección</label><select id="newSection">'+['Despensa','Congelados','Frutas','Verduras','Limpieza','Cocina','Baño','Personales','Extras'].map(x=>'<option>'+x+'</option>').join('')+'</select><button class="primary-btn" onclick="addProduct()">Agregar producto</button>'}
  else{document.getElementById('modalTitle').textContent='Nuevo evento';document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="selectEventType(this.value)"><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option></select></div><div id="eventFields"></div>';document.getElementById('eventType').value='normal';showEventFields()}
- document.getElementById('backdrop').classList.add('show');
+ document.getElementById('backdrop').classList.add('show');if(current!=='listas')setModalWindowBase('save',()=>{editingEventId=null;eventPrefill=null});
 }
 function toggleTaskSchedule(){const enabled=document.getElementById('scheduleTask')?.checked;document.getElementById('taskScheduleOptions')?.classList.toggle('hidden',!enabled);if(!enabled)taskScheduleDate='';}
 function openTaskScheduleCalendar(){const input=document.getElementById('taskScheduleDate');if(!input)return;try{input.showPicker()}catch(e){input.click()}}
@@ -2456,7 +2456,7 @@ function saveTaskAsTemplateFromTask(id){
  showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');
 }
 function saveTaskEditor(){
- const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea.');return}
+ const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();showWindowNotice('Falta el nombre de la tarea','Escribe el nombre de la tarea.');return}
  const now=Date.now(),old=taskEditorId==null?null:tasks.find(t=>Number(t.id)===Number(taskEditorId));
  const subtasks=[...document.querySelectorAll('#newTaskSubtasks .task-subtask-item')].map((row,index)=>{const name=row.querySelector(':scope > .task-subtask-input-row input')?.value.trim();if(!name)return null;const prev=old?.subtasks?.[index],id=prev?.id??now+index+1;const children=[...row.querySelectorAll('.task-nested-subtasks input')].map((x,j)=>({title:x.value.trim(),prev:prev?.subtasks?.[j]})).filter(x=>x.title).map((x,j)=>({id:x.prev?.id??now+1000+index*100+j,title:x.title,done:x.prev?.done??false,assignable:false,inheritsAssignmentFrom:id}));return {id,title:name,done:prev?.done??false,assignable:true,subtasks:children,...(prev?.assignedTo?{assignedTo:prev.assignedTo}:{})}}).filter(Boolean);
  const selectedScope=document.getElementById('newTaskScope')?.value;const scope=selectedScope==='family'?'family':'personal';subtasks.forEach(x=>x.assignable=scope==='family');
@@ -2496,7 +2496,7 @@ function duplicateEvent(id){
  document.getElementById('modalTitle').textContent='Duplicar evento';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Se creará un evento nuevo con los datos precargados. Puedes modificarlos libremente.';sub.classList.remove('hidden');
  document.getElementById('modalBody').innerHTML='<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" onchange="showEventFields()"><option value="">Selecciona un tipo de evento</option><option value="normal">Evento normal</option><option value="event_task">Evento Tarea</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="film">Evento Film</option></select></div><div id="eventFields"></div>';
- document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
+ document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{editingEventId=null;eventPrefill=null;openEventDetails(id)});
 }
 function openEventMore(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
@@ -2516,7 +2516,7 @@ function deleteEventCountdown(id){
 }
 function createEventCountdown(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
- if(!ev.date||new Date(ev.date+'T23:59:59')<new Date()){alert('La fecha del evento ya pasó. Edita el evento y elige una fecha futura para crear su cuenta regresiva.');return}
+ if(!ev.date||new Date(ev.date+'T23:59:59')<new Date()){showWindowNotice('No se puede crear la cuenta regresiva','La fecha del evento ya pasó. Edita el evento y elige una fecha futura para crear su cuenta regresiva.');return}
  if(!eventCountdowns.some(x=>String(x.eventId)===String(id)))eventCountdowns.push({eventId:ev.id,title:ev.title,date:ev.date});
  localStorage.setItem('enorden_event_countdowns',JSON.stringify(eventCountdowns));closeModal();render();
 }
@@ -2531,7 +2531,7 @@ function openEditEvent(id){
  const sub=document.getElementById('modalSubtitle');document.getElementById('modalTitle').textContent='Editar evento';
  sub.textContent='Modifica los detalles del evento. El tipo no se puede cambiar.';sub.classList.remove('hidden');
  document.getElementById('modalBody').innerHTML=(ev.type==='event_task'?'<div class="event-form-section"><label>Tipo de evento</label><input type="hidden" id="eventType" value="event_task"><div class="muted">Evento Tarea · Creado automáticamente desde el módulo Tareas</div></div>':'<div class="event-form-section"><label>Tipo de evento</label><select id="eventType" disabled><option value="normal">Evento normal</option><option value="birthday">Cumpleaños</option><option value="anniversary">Aniversario</option><option value="film">Evento Film</option></select></div>')+'<div id="eventFields"></div>';
- if(ev.type!=='event_task')document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');
+ if(ev.type!=='event_task')document.getElementById('eventType').value=ev.type;showEventFields();document.getElementById('backdrop').classList.add('show');setModalWindowBase('save',()=>{editingEventId=null;openEventDetails(id)});
 }
 function selectEventType(type){document.getElementById('eventType').value=type;showEventFields();if(type==='anniversary'&&editingEventId===null)document.getElementById('anniversaryNotice').classList.add('show')}
 function closeAnniversaryNotice(){document.getElementById('anniversaryNotice').classList.remove('show')}
@@ -2610,7 +2610,7 @@ function collectEventAlerts(){if(document.getElementById('eventAlertState').valu
 function normalizedEventName(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim()}
 function similarEventName(a,b){const x=normalizedEventName(a),y=normalizedEventName(b);if(!x||!y)return false;if(x===y)return true;const ax=new Set(x.split(' ').filter(w=>w.length>2)),by=new Set(y.split(' ').filter(w=>w.length>2));if(!ax.size||!by.size)return false;const shared=[...ax].filter(w=>by.has(w)).length;return shared/Math.min(ax.size,by.size)>=0.6}
 function eventOccursOn(ev,date){const base=new Date((ev.date||'')+'T12:00:00'),target=new Date(date.getFullYear(),date.getMonth(),date.getDate());if(!ev.date||isNaN(base.getTime())||target<new Date(base.getFullYear(),base.getMonth(),base.getDate()))return false;const diff=Math.round((target-new Date(base.getFullYear(),base.getMonth(),base.getDate()))/86400000);if(!ev.repeat||ev.repeat==='none')return diff===0;if(ev.repeat==='daily')return true;if(ev.repeat==='monthly')return target.getDate()===base.getDate();if(ev.repeat==='yearly')return target.getMonth()===base.getMonth()&&target.getDate()===base.getDate();if(ev.repeat==='custom')return Array.isArray(ev.weekdays)&&ev.weekdays.includes((target.getDay()+6)%7);return diff===0}
-function addEvent(){
+function addEvent(forceDuplicate=false){
  const name=document.getElementById('eventName')?.value.trim(),date=document.getElementById('eventDate')?.value;
  const old=editingEventId!==null?events.find(e=>String(e.id)===String(editingEventId)):null,type=document.getElementById('eventType')?.value;
  if(!type||!['normal','birthday','anniversary','event_task','film'].includes(type)||(type==='event_task'&&old?.taskId==null)){alert('Selecciona un tipo de evento válido.');return}if(!name){alert('Escribe el nombre del evento.');return}if(!date){alert('Selecciona una fecha.');return}
