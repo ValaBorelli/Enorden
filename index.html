@@ -2449,10 +2449,10 @@ function storeTaskTemplate(task){
  templates.push(template);localStorage.setItem('enorden_task_templates',JSON.stringify(templates));
  return template;
 }
-function saveTaskAsTemplateFromTask(id){setModalWindowBase('confirmation')}
+function saveTaskAsTemplateFromTask(id){
  const task=tasks.find(t=>Number(t.id)===Number(id));if(!task)return;
  const template=storeTaskTemplate(task);
- showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ showTaskModal('Plantilla guardada', '<p>«'+escapeHTML(template.title)+'» se guardó en Mis plantillas de tareas.'+(template.wasScheduled?' La fecha de programación no se guardó; deberás programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation');
 }
 function saveTaskEditor(){
  const input=document.getElementById('newValue');if(!input)return;const title=input.value.trim();if(!title){input.focus();alert('Escribe el nombre de la tarea.');return}
@@ -2462,7 +2462,7 @@ function saveTaskEditor(){
  const scheduleEnabled=!!document.getElementById('scheduleTask')?.checked;const date=scheduleEnabled?(document.getElementById('taskScheduleDate')?.value||''):'';if(scheduleEnabled&&!date){showTaskScheduleWarning();return;}
  let savedTask;if(old){old.title=title;old.scope=scope;old.assignable=scope==='family';old.subtasks=subtasks;old.scheduledDate=date||null;syncTaskCompletion(old);savedTask=old}else{savedTask={id:now,title,done:false,scope,assignable:scope==='family',subtasks,createdAt:new Date().toISOString(),scheduledDate:date||null};tasks.push(savedTask)}
  if(scope==='shared'){const clearAssignments=item=>{if(!item)return;delete item.assignedTo;delete item.assignedToUserId;(item.subtasks||[]).forEach(clearAssignments)};clearAssignments(savedTask)}
- syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate)showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');
+ syncTaskCalendarEvent(savedTask);const saveAsTemplate=!!document.getElementById('saveTaskTemplate')?.checked;const savedTemplate=saveAsTemplate?storeTaskTemplate(savedTask):null;save();taskEditorId=null;taskScheduleDate='';closeModal();render();if(savedTemplate){showTaskModal('Tarea y plantilla guardadas','<p>«'+escapeHTML(savedTemplate.title)+'» se guardó como tarea y también en Mis plantillas de tareas.'+(savedTemplate.wasScheduled?' La plantilla se guardó sin fecha de programación; tendrás que programarla nuevamente al reutilizarla.':'')+'</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
 function syncTaskCalendarEvent(task){let ev=events.find(x=>String(x.taskId)===String(task.id));if(!task.scheduledDate||task.scope==='shared'){if(ev)events=events.filter(x=>x!==ev);task.calendarEventId=null;return;}if(ev){ev.title=task.title;ev.date=task.scheduledDate;ev.scope=task.scope;ev.type='event_task';ev.priority='high';ev.taskId=task.id;ev.color='#f28c28';}else{const id=Date.now()+Math.floor(Math.random()*1000);ev={id,seriesId:'series-'+id,title:task.title,type:'event_task',date:task.scheduledDate,time:null,allDay:true,scope:task.scope,priority:'high',color:'#f28c28',repeat:'none',weekdays:[],alerts:[],links:[{type:'task',id:task.id}],taskId:task.id,createdAt:new Date().toISOString()};events.push(ev);task.calendarEventId=id;}}
 function addTask(){saveTaskEditor()}
