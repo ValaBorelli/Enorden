@@ -8,8 +8,11 @@
 ## 1. Flujo de trabajo y control de versiones
 
 - Todo desarrollo, prueba y corrección se realizará primero en la rama `EnOrden-Desarrollo`, que funciona como espacio de pruebas.
-- No se realizarán cambios directamente en `main`, ni se fusionarán ramas hacia `main`, ni se publicarán cambios definitivos sin una solicitud explícita de Vale.
-- Una autorización para modificar `main` debe ser expresa y referirse a esa acción. No se interpretará el silencio, una aprobación de otra tarea ni una solicitud de desarrollo como autorización para tocar `main`.
+- El flujo de trabajo se mantendrá entre los espacios de prueba y la rama de publicación: se desarrollará y validará en `EnOrden-Desarrollo`, sin trabajar directamente sobre `main`.
+- Cada vez que Vale autorice y se publique una versión en `main`, la rama `EnOrden-Desarrollo` deberá retomarse desde esa misma versión publicada. Así, el trabajo de prueba continuará sobre el estado más reciente de `main` y se evitarán historiales divergentes, commits huérfanos o cambios exclusivos cuyo origen no esté claro.
+- La actualización de `EnOrden-Desarrollo` desde `main` después de una publicación forma parte del cierre de esa publicación. Debe comprobarse que ambas ramas vuelvan a compartir el mismo punto de partida antes de continuar desarrollando.
+- `main` es la rama de publicación y permanecerá protegida frente a cambios de desarrollo. No se realizarán cambios directamente en `main`, ni se fusionarán ramas hacia `main`, ni se publicarán cambios definitivos sin una solicitud explícita de Vale.
+- Una autorización para modificar o publicar en `main` debe ser expresa y referirse a esa acción. No se interpretará el silencio, una aprobación de otra tarea ni una solicitud de desarrollo como autorización para tocar `main`.
 - Antes de escribir cambios, comprobar la rama y revisar el estado relevante del repositorio.
 - Mantener los cambios acotados a lo solicitado. No modificar módulos, navegación, cabecera, estilos o infraestructura compartida que no formen parte del alcance autorizado.
 - Los Deploy Previews se utilizarán para revisar visualmente los cambios cuando estén disponibles. Nunca afirmar que un despliegue se actualizó o que una prueba pasó sin haberlo verificado.
