@@ -1149,7 +1149,7 @@ function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
  const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film',routine:'Evento Rutina'};
- const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 ',routine:'🔄 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
+ const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails(\''+escapeHTML(String(ev.id))+'\')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 ',routine:'🔄 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
  const selectedKey=keyDate(d),today=new Date();today.setHours(0,0,0,0);const todayKey=keyDate(today);
  let content='';
  if(calendarView==='Año'){
@@ -2510,7 +2510,7 @@ function routineCardHTML(r){
  </div>`:''}
  </article>`;
 }
-function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()" onpointerleave="endRoutineTaskHold()">
+function routineTaskHTML(r,t,index){return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointermove="moveRoutineTaskHold(event)" onpointerup="endRoutineTaskHold()" onpointercancel="endRoutineTaskHold()" onpointerleave="endRoutineTaskHold()">
  <span class="routine-task-grip" title="Mantén presionado para reordenar">⠿</span><div class="routine-task-info"><strong>${index+1}. ${escapeHTML(t.name)}</strong><small>${Number(t.duration)||0} minutos</small></div>
  <button type="button" class="small-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}','${escapeHTML(t.id)}')" aria-label="Editar tarea">✎</button>
  </div>`}
@@ -2569,17 +2569,25 @@ function saveRoutineTaskEditor(){
 }
 function startRoutineTaskHold(event,routineId,taskId){
  if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);
- routineHoldTimer=setTimeout(()=>{routineDragId=taskId;document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]')?.classList.add('routine-dragging')},420);
+ routineHoldTimer=setTimeout(()=>{routineDragId={routineId,taskId};document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]')?.classList.add('routine-dragging')},420);
 }
-function endRoutineTaskHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null;if(routineDragId){document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null}}
+function moveRoutineTaskHold(event){
+ if(!routineDragId)return;event.preventDefault();
+ const source=document.querySelector('[data-routine-task-id="'+CSS.escape(routineDragId.taskId)+'"]');
+ const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('.routine-task-row');
+ if(!source||!target||source===target||target.closest('.routine-card')?.dataset.routineId!==String(routineDragId.routineId))return;
+ const rect=target.getBoundingClientRect();target.parentNode.insertBefore(source,event.clientY<rect.top+rect.height/2?target:target.nextSibling);
+}
+function endRoutineTaskHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null;if(routineDragId){const r=routines.find(x=>String(x.id)===String(routineDragId.routineId));if(r){const ids=[...document.querySelectorAll('.routine-tasks [data-routine-task-id]')].map(x=>x.dataset.routineTaskId);r.tasks.sort((a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id)));saveRoutines()}document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null;renderRoutines()}}
 function toggleRoutineActive(id){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
  if(r.active){stopRoutine(id);return}
  startRoutine(id);
 }
-function clearRoutineTimers(){routineExecutionTimers.forEach(id=>clearTimeout(id));routineExecutionTimers=[]}
+function clearRoutineTimers(routineId){const key=String(routineId);(routineExecutionTimers[key]||[]).forEach(id=>clearTimeout(id));delete routineExecutionTimers[key]}
 function startRoutine(id){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ if('Notification'in window&&Notification.permission==='default')Notification.requestPermission().catch(()=>{});
  if(!r.tasks?.length){showWindowNotice('Rutina sin tareas','Agrega al menos una tarea antes de iniciar la rutina.');return}
  const conflicts=routines.filter(other=>other.active&&String(other.id)!==String(r.id)&&routineHasSameAlarmStart(r,other));
  if(conflicts.length){showWindowNotice('Conflicto de horarios','Esta rutina coincide con otra rutina activa. Revisa sus horarios antes de activarla.');return}
@@ -2588,10 +2596,11 @@ function startRoutine(id){
 }
 function routineHasSameAlarmStart(a,b){return !!a.scheduleEnabled&&!!b.scheduleEnabled&&a.activationTime===b.activationTime&&a.startDate===b.startDate}
 function scheduleRoutineTaskAlarms(r){
- clearRoutineTimers();const run=r.execution;if(!run)return;
+ clearRoutineTimers(r.id);const run=r.execution;if(!run)return;
+ routineExecutionTimers[String(r.id)]=[];
  r.tasks.forEach((task,index)=>{
   const offset=run.taskOffsets[index]||0,delay=Math.max(0,run.startedAt+offset-(Date.now()));
-  const timer=setTimeout(()=>triggerRoutineTaskAlarm(r.id,task.id),Math.min(delay,2147480000));routineExecutionTimers.push(timer);
+  const timer=setTimeout(()=>triggerRoutineTaskAlarm(r.id,task.id),Math.min(delay,2147480000));routineExecutionTimers[String(r.id)].push(timer);
  });
 }
 function triggerRoutineTaskAlarm(routineId,taskId){
@@ -2612,17 +2621,19 @@ function snoozeRoutineTask(routineId,taskId,minutes,layerId){
  const r=routines.find(x=>String(x.id)===String(routineId));if(!r?.active||!r.execution)return;
  const used=r.execution.snoozes[taskId]||0;if(used>=3)return;
  r.execution.snoozes[taskId]=used+1;r.execution.snoozedUntil=r.execution.snoozedUntil||{};r.execution.snoozedUntil[taskId]=Date.now()+minutes*60000;
- const timer=setTimeout(()=>triggerRoutineTaskAlarm(routineId,taskId),minutes*60000);routineExecutionTimers.push(timer);
+ const timer=setTimeout(()=>triggerRoutineTaskAlarm(routineId,taskId),minutes*60000);(routineExecutionTimers[String(routineId)]||(routineExecutionTimers[String(routineId)]=[])).push(timer);
  closeWindowNotice(layerId);saveRoutines();
 }
 function stopRoutine(id){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
  const future=r.scheduleEnabled&&r.endDate&&r.endDate>=routineDateKey(new Date());
- if(future){showWindowCaution({title:'Apagar rutina',message:'¿Quieres apagar solamente la ejecución actual o también todos los períodos siguientes?',cancelLabel:'Cancelar',confirmLabel:'Solo este período',danger:false,onConfirm:()=>finishRoutineStop(r,false),secondaryLabel:'Todos los períodos siguientes',onSecondary:()=>finishRoutineStop(r,true)});return}
- finishRoutineStop(r,false);
+ if(!future){finishRoutineStop(r,false);return}
+ const layer=document.createElement('div');layer.className='window-notice-layer';layer.id='routineStopChoice';
+ layer.innerHTML='<section class="window-notice-card" role="alertdialog" aria-modal="true"><h2>Apagar rutina</h2><p>¿Quieres apagar solamente la ejecución del período actual o también todos los períodos siguientes?</p><div class="routine-actions"><button class="secondary-btn" onclick="closeWindowNotice(\'routineStopChoice\')">Cancelar</button><button class="primary-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',false)">Solo este período</button><button class="danger-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',true)">Todos los períodos siguientes</button></div></section>';
+ document.body.appendChild(layer);
 }
 function finishRoutineStop(r,cancelFuture){
- r.active=false;r.execution=null;clearRoutineTimers();
+ r.active=false;r.execution=null;clearRoutineTimers(r.id);
  if(cancelFuture){r.scheduleEnabled=false;r.startDate=null;r.endDate=null;r.weekdays=[];events=events.filter(ev=>String(ev.routineId)!==String(r.id))}
  saveRoutines();renderRoutines();
 }
