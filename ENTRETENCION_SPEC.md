@@ -141,6 +141,9 @@ Se conservará internamente la referencia de la última actualización exitosa d
 - «Cancelar» y la X de la esquina superior derecha solicitarán confirmación antes de abandonar la programación. La X se ubicará parcialmente fuera del borde superior derecho de la ventana.
 - Tocar fuera de la ventana no la cerrará ni tendrá efecto.
 - La confirmación de cancelación debe conservar la fecha, hora y opción «Todo el día» seleccionadas si el usuario decide seguir programando.
+- Al pulsar «Guardar», la ventana de programación se cerrará y se mostrará una confirmación titulada «Tu Film se programó con éxito!», con la fecha elegida y la hora elegida o «Todo el día».
+- Si se eligió una hora, la confirmación indicará: «Te llegará una notificación 15 minutos antes de la hora seleccionada». Este mensaje no aparecerá para eventos de todo el día.
+- La confirmación incluirá, en texto más pequeño y gris claro: «Puedes modificar tu evento Film en el calendario», y un botón «Entendido».
 - La programación no modificará el favorito ni el catálogo de Entretención.
 
 - La ficha debe adaptarse a móvil manteniendo el orden visual, la legibilidad y el póster a la izquierda siempre que el ancho lo permita.
