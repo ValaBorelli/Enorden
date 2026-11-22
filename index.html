@@ -2620,7 +2620,9 @@ function addEvent(forceDuplicate=false){
  const dup=events.find(e=>String(e.id)!==String(editingEventId)&&e.date===date&&similarEventName(e.title,name));if(dup&&!forceDuplicate){showWindowCaution({title:'¿Crear un evento similar?',message:'Ya existe un evento similar en esa fecha.',subject:dup.title,cancelLabel:'Volver',confirmLabel:old?'Guardar de todas formas':'Crear de todas formas',danger:false,onConfirm:()=>addEvent(true)});return}
  const changes={title:name,type,date,time:allDay?null:document.getElementById('eventTime').value,allDay,scope,priority,color:priority==='high'?document.getElementById('eventColor').value:null,repeat,weekdays:repeat==='custom'?days:[],alerts,links};
  if(old){const previousFilmReminder=old.type==='film'?(old.date+'|'+(old.allDay?'all-day':(old.time||'20:00'))):null;Object.assign(old,changes);if(old.type==='film'&&previousFilmReminder!==(old.date+'|'+(old.allDay?'all-day':(old.time||'20:00'))))old.notificationSentFor='';if(old.taskId!=null){const linkedTask=tasks.find(t=>String(t.id)===String(old.taskId));if(linkedTask)linkedTask.scheduledDate=date;}}else{const id=Date.now();events.push({id,seriesId:'series-'+id,...changes,createdAt:new Date().toISOString()})}
+ const isNewEvent=!old;
  editingEventId=null;eventPrefill=null;save();closeModal();render();
+ if(isNewEvent){showTaskModal('Evento creado con éxito','<p>«'+escapeHTML(name)+'» se agregó correctamente al calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
 processFilmEventNotifications();setInterval(processFilmEventNotifications,60000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden){if(pruneExpiredCompletedTasks())save();processFilmEventNotifications()}});
