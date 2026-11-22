@@ -2130,15 +2130,23 @@ function entertainmentTrailerSearchOptions(item){
  return [{language,label:entertainmentTrailerLanguageLabel(language),url:'https://www.youtube.com/results?search_query='+encodeURIComponent(query),preferred:true}];
 }
 function entertainmentReviewSearchUrl(item){
- if(!item)return 'https://www.tiktok.com/search';
- const query=[item.title,item.year,'reseña','crítica','opinión'].filter(Boolean).join(' ');
+ if(!item)return '';
+ return [item.title,item.year,'reseña','crítica','opinión'].filter(Boolean).join(' ');
+}
+function entertainmentOpenTikTokSearch(encodedQuery){
+ const query=decodeURIComponent(encodedQuery||'');
+ const appUrl='intent://m.tiktok.com/#Intent;scheme=https;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent('https://www.tiktok.com/')+';end';
  const webUrl='https://www.tiktok.com/search?q='+encodeURIComponent(query);
- /* TikTok Android verifica App Links en m.tiktok.com; dirigir el Intent a ese host
-    evita depender del host www, que puede resolverse directamente en el navegador. */
  if(typeof navigator!=='undefined'&&/Android/i.test(navigator.userAgent)){
-  return 'intent://m.tiktok.com/search?q='+encodeURIComponent(query)+'#Intent;scheme=https;package=com.zhiliaoapp.musically;S.browser_fallback_url='+encodeURIComponent(webUrl)+';end';
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+   navigator.clipboard.writeText(query).then(()=>{window.location.href=appUrl;}).catch(()=>{window.location.href=appUrl;});
+  }else{
+   window.location.href=appUrl;
+  }
+  return false;
  }
- return webUrl;
+ window.open(webUrl,'_blank','noopener');
+ return false;
 }
 function entertainmentStreamingModality(service){
  if(!service||typeof service!=='object')return '';
@@ -2217,7 +2225,7 @@ function renderEntertainment(){
  const poster=result?.posterUrl&&entertainmentSafeLink(result.posterUrl)?'<img src="'+escapeHTML(result.posterUrl)+'" alt="Póster de '+escapeHTML(result.title)+'">':'<span>🎬</span>';
  const typeLabel=item=>item.type==='movie'?'Película':'Serie';
  const isFavorite=result&&entertainmentFavorites.some(f=>((typeof f==='string'?f:f.id)===result.id));
-  const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions">'+'<a href="'+escapeHTML(entertainmentReviewSearchUrl(result))+'">Ver reseñas</a>'+'<button type="button" class="entertainment-favorite-button'+(isFavorite?' is-favorite':'')+'" aria-pressed="'+(isFavorite?'true':'false')+'" aria-label="'+(isFavorite?'Quitar de favoritos':'Agregar a favoritos')+'" onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')"><span class="entertainment-favorite-icon" aria-hidden="true">'+(isFavorite?'♥':'♡')+'</span><span>'+(isFavorite?'En favoritos':'Añadir a favoritos')+'</span></button></div>'+entertainmentStreamingMarkup(result)+'</div></div></div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
+  const resultMarkup=result?'<div class="card"><div class="entertainment-result"><div class="entertainment-poster">'+poster+'</div><div><h2>'+escapeHTML(result.title)+'</h2><div class="entertainment-meta">'+typeLabel(result)+' · '+escapeHTML(String(result.year||'Año desconocido'))+(result.runtime?' · '+result.runtime+' min':result.seasons?' · '+result.seasons+' temporadas':'')+'</div><p class="entertainment-overview">'+escapeHTML(result.overview||'Sinopsis no disponible.')+'</p><div class="entertainment-tags">'+(result.genres||[]).map(g=>'<span class="entertainment-tag">'+escapeHTML(g)+'</span>').join('')+'</div><div class="entertainment-actions">'+'<a href="#" onclick="return entertainmentOpenTikTokSearch(\''+encodeURIComponent(entertainmentReviewSearchUrl(result))+'\')">Ver reseñas</a>'+'<button type="button" class="entertainment-favorite-button'+(isFavorite?' is-favorite':'')+'" aria-pressed="'+(isFavorite?'true':'false')+'" aria-label="'+(isFavorite?'Quitar de favoritos':'Agregar a favoritos')+'" onclick="toggleEntertainmentFavorite(\''+escapeHTML(result.id)+'\')"><span class="entertainment-favorite-icon" aria-hidden="true">'+(isFavorite?'♥':'♡')+'</span><span>'+(isFavorite?'En favoritos':'Añadir a favoritos')+'</span></button></div>'+entertainmentStreamingMarkup(result)+'</div></div></div>':'<div class="card empty">Todavía no has elegido un título. Configura tus preferencias y gira la ruleta.</div>';
   const favoriteItems=entertainmentFavorites.map(entry=>typeof entry==='string'?(entertainmentPool.find(x=>x.id===entry)||entertainmentDemoCatalog.find(x=>x.id===entry)):entry).filter(Boolean);
  screen.innerHTML='<div class="entertainment-page"><div class="page-heading"><h1>Entretención 🎬</h1><p>Encuentra algo para ver sin pasar media hora eligiendo.</p></div><section class="entertainment-hero"><div style="font-size:12px;letter-spacing:1.5px;font-weight:700">TU PRÓXIMA HISTORIA</div><div class="entertainment-wheel-stage'+(entertainmentWheelSpinning?' is-spinning':'')+'">'+entertainmentWheelMarkup()+'</div><p class="entertainment-subtitle">'+(entertainmentReady?'Preferencias listas. ¡Que la ruleta decida!':'Primero cuéntanos qué te gustaría ver hoy y prepararemos tu ruleta.')+'</p><button class="entertainment-spin" '+(entertainmentReady&&remaining===0?'disabled':'')+' onclick="'+(entertainmentReady?'spinEntertainment()':'openEntertainmentSetup()')+'" '+(entertainmentWheelSpinning?'disabled':'')+'>'+(entertainmentWheelSpinning?'Girando…':entertainmentReady?(remaining?(entertainmentCurrent?'Otra oportunidad':'Girar la ruleta'):'No quedan títulos'):'Configurar ruleta')+'</button><div class="entertainment-note" style="color:#e8eee9">'+(entertainmentReady?remaining+' títulos disponibles · '+entertainmentShownIds.size+' ya mostrados':'La ruleta se activará después de configurar tus preferencias.')+'</div></section><div class="entertainment-toolbar"><button class="secondary-btn" onclick="openEntertainmentSetup()">⚙️ Cambiar preferencias</button><button class="secondary-btn" onclick="resetEntertainmentSession()">↻ Nueva sesión</button></div>'+(result&&entertainmentResultOpen?renderEntertainmentResultModal(resultMarkup,result):'')+(favoriteItems.length?'<div class="section"><div class="section-title">Mis favoritos ♥</div>'+favoriteItems.map(item=>'<div class="entertainment-favorite-row"><span>🎞️</span><div><strong>'+escapeHTML(item.title)+'</strong><small>'+typeLabel(item)+' · '+escapeHTML(String(item.year||''))+'</small></div><button class="small-btn" onclick="toggleEntertainmentFavorite(\''+escapeHTML(item.id)+'\')">Quitar</button></div>').join('')+'</div>':'<div class="section"><div class="section-title">Mis favoritos ♥</div><div class="card empty">Guarda aquí las películas y series que quieras ver más adelante.</div></div>')+'<p class="entertainment-note">Versión de pruebas: se utiliza un catálogo de demostración limitado. La conexión con una base de datos externa, los pósteres y la disponibilidad de streaming se incorporarán mediante proveedores intercambiables antes de publicar el módulo.</p></div>'+(entertainmentSetupOpen?renderEntertainmentSetupModal():'');
 }
