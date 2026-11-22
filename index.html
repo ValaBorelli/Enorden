@@ -713,6 +713,11 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .routine-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .routine-running-banner{padding:12px 14px;border-radius:14px;background:var(--surface2);margin:12px 0}
 .routine-dragging{opacity:.45;border:1px dashed var(--accent)}
+.routine-date-pair{grid-template-columns:1fr 1fr}
+.routine-preview{margin-top:14px;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.routine-preview p{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+.routine-weekdays label{user-select:none}
+@media(max-width:520px){.routine-date-pair{grid-template-columns:1fr 1fr}.routine-date-pair label{min-width:0}.routine-date-pair input{font-size:12px}}
 @media(max-width:520px){.routine-card{padding:13px}.routine-tasks{margin-left:8px}.routine-form-grid{grid-template-columns:1fr}.routine-card-actions{gap:4px}}
 
 </style>
@@ -2463,15 +2468,28 @@ function saveRoutines(){localStorage.setItem('enorden_routines',JSON.stringify(r
 function routineDateKey(date){return keyDate(date)}
 function routineWeekdayIndex(date){return (date.getDay()+6)%7}
 function routineDateFromKey(key){return new Date(key+'T12:00:00')}
+function routineMonthWeekIndex(date){
+ const firstDay=new Date(date.getFullYear(),date.getMonth(),1).getDay();
+ return Math.floor((date.getDate()-1+firstDay)/7)+1;
+}
 function routinePeriodDates(routine){
- if(!routine.startDate||!routine.endDate)return [];
- const start=routineDateFromKey(routine.startDate),end=routineDateFromKey(routine.endDate);
- if(!Number.isFinite(start.getTime())||!Number.isFinite(end.getTime())||end<start)return [];
- const result=[],days=Array.isArray(routine.weekdays)&&routine.weekdays.length?routine.weekdays:[0,1,2,3,4,5,6],interval=Math.max(1,Number(routine.repeatWeeks)||1);
- for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
-  const week=Math.floor((new Date(d.getFullYear(),d.getMonth(),d.getDate())-new Date(start.getFullYear(),start.getMonth(),start.getDate()))/(7*86400000));
-  if(week%interval===0&&days.includes(routineWeekdayIndex(d)))result.push(routineDateKey(d));
+ if(!routine.startDate)return [];
+ const start=routineDateFromKey(routine.startDate);
+ if(!Number.isFinite(start.getTime()))return [];
+ const result=[],days=Array.isArray(routine.weekdays)?routine.weekdays:[],weeks=Array.isArray(routine.monthWeeks)?routine.monthWeeks:[];
+ if(routine.repeatMonthly){
+  if(!days.length||!weeks.length)return [];
+  const year=start.getFullYear(),month=start.getMonth(),total=new Date(year,month+1,0).getDate();
+  for(let day=1;day<=total;day++){
+   const date=new Date(year,month,day,12);
+   if(days.includes(routineWeekdayIndex(date))&&weeks.includes(routineMonthWeekIndex(date)))result.push(routineDateKey(date));
+  }
+  return result;
  }
+ if(!routine.endDate)return [];
+ const end=routineDateFromKey(routine.endDate);
+ if(!Number.isFinite(end.getTime())||end<start)return [];
+ for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1))result.push(routineDateKey(d));
  return result;
 }
 function syncRoutineCalendar(routine){
@@ -2520,22 +2538,47 @@ function endRoutineHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null}
 function openRoutineEditor(id){
  const r=id==null?null:routines.find(x=>String(x.id)===String(id));if(id!=null&&!r)return;
  routineEditorId=r?.id??null;
- const days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],weekdays=r?.weekdays||[0,1,2,3,4];
- showTaskModal(r?'Configurar rutina':'Nueva rutina',`
- <div class="event-form-section"><label for="routineName">Nombre de la rutina</label><input id="routineName" maxlength="100" value="${escapeHTML(r?.name||'')}" placeholder="Ej. Prepararme para el trabajo"></div>
- <div class="event-form-section"><label class="event-choice"><input id="routineScheduleEnabled" type="checkbox" ${r?.scheduleEnabled?'checked':''} onchange="toggleRoutineScheduleFields()"> Programar activación automática</label></div>
- <div id="routineScheduleFields" class="routine-schedule-box ${r?.scheduleEnabled?'':'hidden'}">
-  <div class="routine-form-grid">
-   <label>Fecha de inicio<input id="routineStartDate" type="date" value="${escapeHTML(r?.startDate||'')}"></label>
-   <label>Fecha de término<input id="routineEndDate" type="date" value="${escapeHTML(r?.endDate||'')}"></label>
-   <label>Hora de activación<input id="routineActivationTime" type="time" value="${escapeHTML(r?.activationTime||'07:00')}"></label>
-   <label>Repetir cada<select id="routineRepeatWeeks"><option value="1" ${(r?.repeatWeeks||1)===1?'selected':''}>Cada semana</option><option value="2" ${r?.repeatWeeks===2?'selected':''}>Cada 2 semanas</option><option value="3" ${r?.repeatWeeks===3?'selected':''}>Cada 3 semanas</option></select></label>
+ const days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],weekdays=r?.weekdays||[],monthWeeks=r?.monthWeeks||[];
+ const startValue=r?.startDate||'',startDate=startValue?routineDateFromKey(startValue):new Date(),firstDay=new Date(startDate.getFullYear(),startDate.getMonth(),1).getDay(),daysInMonth=new Date(startDate.getFullYear(),startDate.getMonth()+1,0).getDate(),weekCount=Math.ceil((firstDay+daysInMonth)/7);
+ showTaskModal('Rutina',`
+ <div class="event-form-section"><input id="routineName" maxlength="100" value="${escapeHTML(r?.name||'')}" placeholder="Nombre de la rutina" aria-label="Nombre de la rutina"></div>
+ <div class="event-form-section"><label class="event-choice"><input id="routineScheduleEnabled" type="checkbox" ${r?.scheduleEnabled!==false?'checked':''} onchange="toggleRoutineScheduleFields()"> Programar activación automática</label></div>
+ <div id="routineScheduleFields" class="routine-schedule-box ${r?.scheduleEnabled===false?'hidden':''}">
+  <div class="routine-form-grid routine-date-pair">
+   <label>Fecha de inicio<input id="routineStartDate" type="date" value="${escapeHTML(startValue)}" onchange="updateRoutineRepeatWeeks();updateRoutinePreview()"></label>
+   <label>Fecha de término<input id="routineEndDate" type="date" value="${escapeHTML(r?.endDate||'')}" onchange="updateRoutinePreview()"></label>
   </div>
-  <div class="routine-field" style="margin-top:12px">Días de activación<div class="routine-weekdays">${days.map((d,i)=>'<label><input type="checkbox" name="routineWeekday" value="'+i+'" '+(weekdays.includes(i)?'checked':'')+'> '+d+'</label>').join('')}</div></div>
-  <p class="settings-note">Los eventos del calendario se generarán automáticamente para los días programados.</p>
+  <div class="routine-field" style="margin-top:10px"><label for="routineActivationTime">Hora</label><input id="routineActivationTime" type="time" value="${escapeHTML(r?.activationTime||'07:00')}" onchange="updateRoutinePreview()"></div>
+  <div class="routine-field" style="margin-top:12px"><label class="event-choice"><input id="routineRepeatMonthly" type="checkbox" ${r?.repeatMonthly?'checked':''} onchange="toggleRoutineRepeatFields()"> Repetir</label></div>
+  <div id="routineRepeatFields" class="${r?.repeatMonthly?'':'hidden'}">
+   <div class="routine-field" style="margin-top:10px">Días de activación<div class="routine-weekdays">${days.map((d,i)=>'<label><input type="checkbox" name="routineWeekday" value="'+i+'" '+(weekdays.includes(i)?'checked':'')+' onchange="updateRoutinePreview()"> '+d+'</label>').join('')}</div></div>
+   <div class="routine-field" style="margin-top:12px">Semanas del mes<div id="routineMonthWeeks" class="routine-weekdays">${Array.from({length:weekCount},(_,i)=>'<label><input type="checkbox" name="routineMonthWeek" value="'+(i+1)+'" '+(monthWeeks.includes(i+1)?'checked':'')+' onchange="updateRoutinePreview()"> Sem '+(i+1)+'</label>').join('')}</div></div>
+  </div>
+  <div class="routine-preview" id="routinePreview"><strong>Vista previa del calendario</strong><p>Selecciona la programación para ver los días que se agregarán al calendario.</p></div>
  </div>
  <div class="appearance-actions">${r?'<button type="button" class="danger-btn" onclick="confirmDeleteRoutine()">Eliminar</button>':''}<button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineEditor()">Guardar</button></div>`);
  setModalWindowBase('save',()=>{routineEditorId=null});
+ updateRoutinePreview();
+}
+function toggleRoutineScheduleFields(){document.getElementById('routineScheduleFields')?.classList.toggle('hidden',!document.getElementById('routineScheduleEnabled')?.checked)}
+function toggleRoutineRepeatFields(){document.getElementById('routineRepeatFields')?.classList.toggle('hidden',!document.getElementById('routineRepeatMonthly')?.checked);updateRoutinePreview()}
+function updateRoutineRepeatWeeks(){
+ const start=document.getElementById('routineStartDate')?.value;if(!start)return;
+ const d=routineDateFromKey(start),count=Math.ceil((new Date(d.getFullYear(),d.getMonth(),1).getDay()+new Date(d.getFullYear(),d.getMonth()+1,0).getDate())/7);
+ const selected=new Set([...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value)));
+ const holder=document.getElementById('routineMonthWeeks');if(!holder)return;
+ holder.innerHTML=Array.from({length:count},(_,i)=>'<label><input type="checkbox" name="routineMonthWeek" value="'+(i+1)+'" '+(selected.has(i+1)?'checked':'')+' onchange="updateRoutinePreview()"> Sem '+(i+1)+'</label>').join('');
+}
+function updateRoutinePreview(){
+ const box=document.getElementById('routinePreview');if(!box)return;
+ const enabled=document.getElementById('routineScheduleEnabled')?.checked,start=document.getElementById('routineStartDate')?.value,end=document.getElementById('routineEndDate')?.value,time=document.getElementById('routineActivationTime')?.value||'07:00',repeat=document.getElementById('routineRepeatMonthly')?.checked;
+ if(!enabled){box.innerHTML='<strong>Vista previa del calendario</strong><p>La rutina se activará manualmente y no generará eventos.</p>';return}
+ if(!start||(!repeat&&!end)||(!repeat&&end<start)){box.innerHTML='<strong>Vista previa del calendario</strong><p>Completa las fechas para ver la programación.</p>';return}
+ const days=[...document.querySelectorAll('input[name="routineWeekday"]:checked')].map(x=>Number(x.value)),weeks=[...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value));
+ const temp={startDate:start,endDate:end,repeatMonthly:!!repeat,weekdays:days,monthWeeks:weeks},dates=repeat?routinePeriodDates(temp):(()=>{const a=routineDateFromKey(start),b=routineDateFromKey(end),out=[];for(let d=new Date(a);d<=b;d.setDate(d.getDate()+1))out.push(routineDateKey(d));return out})();
+ if(repeat&&(!days.length||!weeks.length)){box.innerHTML='<strong>Vista previa del calendario</strong><p>Selecciona al menos un día y una semana del mes.</p>';return}
+ const formatted=dates.map(k=>routineDateFromKey(k).toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'}));
+ box.innerHTML='<strong>Vista previa del calendario</strong><p>'+dates.length+' evento(s) · '+escapeHTML(time)+'</p><p>'+ (formatted.length?formatted.join(' · '):'No hay fechas para esta configuración') +'</p>';
 }
 function confirmDeleteRoutine(){const r=routines.find(x=>String(x.id)===String(routineEditorId));if(!r)return;showWindowCaution({title:'¿Eliminar rutina?',message:'Esta acción eliminará la rutina y todas sus tareas. También se quitarán los eventos que se generaron automáticamente en el calendario.',subject:r.name,cancelLabel:'Cancelar',confirmLabel:'Eliminar rutina',onConfirm:()=>deleteRoutine(r.id)});}
 function deleteRoutine(id){const r=routines.find(x=>String(x.id)===String(id));if(!r)return;r.active=false;r.execution=null;clearRoutineTimers(r.id);events=events.filter(ev=>String(ev.routineId)!==String(r.id));routines=routines.filter(x=>String(x.id)!==String(r.id));routineEditorId=null;routineExpandedId=null;saveRoutines();closeModal();renderRoutines()}
@@ -2543,12 +2586,14 @@ function toggleRoutineScheduleFields(){document.getElementById('routineScheduleF
 function saveRoutineEditor(){
  const name=document.getElementById('routineName')?.value.trim(),enabled=!!document.getElementById('routineScheduleEnabled')?.checked;
  if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la rutina.');return}
- const start=document.getElementById('routineStartDate')?.value||'',end=document.getElementById('routineEndDate')?.value||'',time=document.getElementById('routineActivationTime')?.value||'07:00',days=[...document.querySelectorAll('input[name="routineWeekday"]:checked')].map(x=>Number(x.value)),repeat=Number(document.getElementById('routineRepeatWeeks')?.value||1);
- if(enabled&&(!start||!end||end<start)){showWindowNotice('Revisa las fechas','Selecciona una fecha de inicio y una fecha de término válida.');return}
- if(enabled&&!days.length){showWindowNotice('Selecciona los días','Elige al menos un día de activación.');return}
+ const start=document.getElementById('routineStartDate')?.value||'',end=document.getElementById('routineEndDate')?.value||'',time=document.getElementById('routineActivationTime')?.value||'07:00',repeat=!!document.getElementById('routineRepeatMonthly')?.checked,days=[...document.querySelectorAll('input[name="routineWeekday"]:checked')].map(x=>Number(x.value)),weeks=[...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value));
+ if(enabled&&!start){showWindowNotice('Revisa la fecha','Selecciona una fecha de inicio.');return}
+ if(enabled&&!repeat&&(!end||end<start)){showWindowNotice('Revisa las fechas','Selecciona una fecha de término igual o posterior a la fecha de inicio.');return}
+ if(enabled&&repeat&&!days.length){showWindowNotice('Selecciona los días','Elige al menos un día de activación.');return}
+ if(enabled&&repeat&&!weeks.length){showWindowNotice('Selecciona las semanas','Elige al menos una semana del mes.');return}
  let r=routineEditorId==null?null:routines.find(x=>String(x.id)===String(routineEditorId));
  if(!r){r={id:'routine-'+Date.now(),name,tasks:[],active:false,createdAt:new Date().toISOString()};routines.push(r)}
- Object.assign(r,{name,scheduleEnabled:enabled,startDate:enabled?start:null,endDate:enabled?end:null,activationTime:enabled?time:null,weekdays:enabled?days:[],repeatWeeks:enabled?repeat:1});
+ Object.assign(r,{name,scheduleEnabled:enabled,startDate:enabled?start:null,endDate:enabled&&!repeat?end:null,activationTime:enabled?time:null,repeatMonthly:enabled&&repeat,weekdays:enabled&&repeat?days:[],monthWeeks:enabled&&repeat?weeks:[]});
  syncRoutineCalendar(r);routineEditorId=null;closeModal();renderRoutines();
 }
 function openRoutineTaskEditor(routineId,taskId){
@@ -2572,8 +2617,8 @@ function saveRoutineTaskEditor(){
  Object.assign(task,{name,duration});saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines();
 }
 function startRoutineTaskHold(event,routineId,taskId){
- if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);
- routineHoldTimer=setTimeout(()=>{routineDragId={routineId,taskId};const row=document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]');row?.classList.add('routine-dragging');try{row?.setPointerCapture(event.pointerId)}catch{}},420);
+ if(event.target.closest('button'))return;clearTimeout(routineHoldTimer);routineDragId=null;
+ routineHoldTimer=setTimeout(()=>{const rows=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(routineId))+'"] .routine-tasks [data-routine-task-id]')];routineDragId={routineId,taskId,originalIds:rows.map(x=>String(x.dataset.routineTaskId))};const row=document.querySelector('[data-routine-task-id="'+CSS.escape(taskId)+'"]');row?.classList.add('routine-dragging');try{row?.setPointerCapture(event.pointerId)}catch{}},5000);
 }
 function moveRoutineTaskHold(event){
  if(!routineDragId)return;event.preventDefault();
@@ -2582,7 +2627,14 @@ function moveRoutineTaskHold(event){
  if(!source||!target||source===target||target.closest('.routine-card')?.dataset.routineId!==String(routineDragId.routineId))return;
  const rect=target.getBoundingClientRect();target.parentNode.insertBefore(source,event.clientY<rect.top+rect.height/2?target:target.nextSibling);
 }
-function endRoutineTaskHold(){clearTimeout(routineHoldTimer);routineHoldTimer=null;if(routineDragId){const r=routines.find(x=>String(x.id)===String(routineDragId.routineId));if(r){const ids=[...document.querySelectorAll('.routine-tasks [data-routine-task-id]')].map(x=>x.dataset.routineTaskId);r.tasks.sort((a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id)));saveRoutines()}document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null;routineTaskSuppressClick=true;setTimeout(()=>{routineTaskSuppressClick=false;renderRoutines()},0)}}
+function endRoutineTaskHold(){
+ clearTimeout(routineHoldTimer);routineHoldTimer=null;
+ if(!routineDragId)return;
+ const drag=routineDragId,r=routines.find(x=>String(x.id)===String(drag.routineId)),ids=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(drag.routineId))+'"] .routine-tasks [data-routine-task-id]')].map(x=>String(x.dataset.routineTaskId));
+ document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null;routineTaskSuppressClick=true;
+ if(!r||ids.every((id,i)=>id===drag.originalIds[i])){renderRoutines();return}
+ showWindowCaution({title:'¿Guardar nuevo orden?',message:'¿Quieres confirmar el nuevo orden de las tareas de esta rutina?',cancelLabel:'Mantener orden anterior',confirmLabel:'Guardar orden',danger:false,onCancel:()=>{routineTaskSuppressClick=false;renderRoutines()},onConfirm:()=>{const byId=new Map(r.tasks.map(t=>[String(t.id),t]));r.tasks=ids.map(id=>byId.get(id)).filter(Boolean);saveRoutines();routineTaskSuppressClick=false;renderRoutines()}});
+}
 function toggleRoutineActive(id){
  const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
  if(r.active){stopRoutine(id);return}
