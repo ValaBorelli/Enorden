@@ -1067,11 +1067,11 @@ function renderHome(){
  if(q.includes('tarea'))navigate('tareas');
  else if(q.includes('evento')||q.includes('calendario'))navigate('calendario');
  else if(q.includes('compra')||q.includes('lista'))navigate('listas');
- else alert('La búsqueda inteligente se incorporará en una siguiente etapa. Por ahora puedes buscar tareas, eventos o compras.');
+ else showWindowNotice('Búsqueda inteligente','La búsqueda inteligente se incorporará en una siguiente etapa. Por ahora puedes buscar tareas, eventos o compras.');
 }
 function voiceSearch(){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){alert('La búsqueda por voz no está disponible en este navegador. Puedes escribir tu búsqueda.');return}
+ if(!SR){showWindowNotice('Búsqueda por voz no disponible','Puedes escribir tu búsqueda.');return}
  const rec=new SR();rec.lang='es-CL';rec.onresult=e=>{
  document.getElementById('homeSearch').value=e.results[0][0].transcript;doSearch()};
  rec.start();
