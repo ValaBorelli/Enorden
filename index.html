@@ -1672,7 +1672,7 @@ function moveTaskSubtask(taskId,fromId,toId,level,parentId,confirmed=false){
  const from=list.findIndex(x=>Number(x.id)===Number(fromId)),to=list.findIndex(x=>Number(x.id)===Number(toId));
  if(from<0||to<0||from===to)return;
  const item=list[from],target=list[to];
- if(!confirm('¿Confirmas mover «'+item.title+'» '+(from<to?'después de ':'antes de ')+'«'+target.title+'»?'))return;
+ if(!confirmed){showWindowCaution({title:'¿Confirmas mover esta subtarea?',message:'Se cambiará su posición dentro de la lista.',subject:item.title,cancelLabel:'Cancelar',confirmLabel:'Mover',danger:false,onConfirm:()=>moveTaskSubtask(taskId,fromId,toId,level,parentId,true)});return;}
  list.splice(from,1);list.splice(list.indexOf(target)+(from<to?1:0),0,item);
  save();render();
 }
