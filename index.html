@@ -2469,7 +2469,7 @@ function routineDateKey(date){return keyDate(date)}
 function routineWeekdayIndex(date){return (date.getDay()+6)%7}
 function routineDateFromKey(key){return new Date(key+'T12:00:00')}
 function routineMonthWeekIndex(date){
- const firstDay=new Date(date.getFullYear(),date.getMonth(),1).getDay();
+ const firstDay=(new Date(date.getFullYear(),date.getMonth(),1).getDay()+6)%7;
  return Math.floor((date.getDate()-1+firstDay)/7)+1;
 }
 function routinePeriodDates(routine){
@@ -2539,7 +2539,7 @@ function openRoutineEditor(id){
  const r=id==null?null:routines.find(x=>String(x.id)===String(id));if(id!=null&&!r)return;
  routineEditorId=r?.id??null;
  const days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],weekdays=r?.weekdays||[],monthWeeks=r?.monthWeeks||[];
- const startValue=r?.startDate||'',startDate=startValue?routineDateFromKey(startValue):new Date(),firstDay=new Date(startDate.getFullYear(),startDate.getMonth(),1).getDay(),daysInMonth=new Date(startDate.getFullYear(),startDate.getMonth()+1,0).getDate(),weekCount=Math.ceil((firstDay+daysInMonth)/7);
+ const startValue=r?.startDate||'',startDate=startValue?routineDateFromKey(startValue):new Date(),firstDay=(new Date(startDate.getFullYear(),startDate.getMonth(),1).getDay()+6)%7,daysInMonth=new Date(startDate.getFullYear(),startDate.getMonth()+1,0).getDate(),weekCount=Math.ceil((firstDay+daysInMonth)/7);
  showTaskModal('Rutina',`
  <div class="event-form-section"><input id="routineName" maxlength="100" value="${escapeHTML(r?.name||'')}" placeholder="Nombre de la rutina" aria-label="Nombre de la rutina"></div>
  <div class="event-form-section"><label class="event-choice"><input id="routineScheduleEnabled" type="checkbox" ${r?.scheduleEnabled!==false?'checked':''} onchange="toggleRoutineScheduleFields()"> Programar activación automática</label></div>
@@ -2564,7 +2564,7 @@ function toggleRoutineScheduleFields(){document.getElementById('routineScheduleF
 function toggleRoutineRepeatFields(){document.getElementById('routineRepeatFields')?.classList.toggle('hidden',!document.getElementById('routineRepeatMonthly')?.checked);updateRoutinePreview()}
 function updateRoutineRepeatWeeks(){
  const start=document.getElementById('routineStartDate')?.value;if(!start)return;
- const d=routineDateFromKey(start),count=Math.ceil((new Date(d.getFullYear(),d.getMonth(),1).getDay()+new Date(d.getFullYear(),d.getMonth()+1,0).getDate())/7);
+ const d=routineDateFromKey(start),count=Math.ceil((((new Date(d.getFullYear(),d.getMonth(),1).getDay()+6)%7)+new Date(d.getFullYear(),d.getMonth()+1,0).getDate())/7);
  const selected=new Set([...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value)));
  const holder=document.getElementById('routineMonthWeeks');if(!holder)return;
  holder.innerHTML=Array.from({length:count},(_,i)=>'<label><input type="checkbox" name="routineMonthWeek" value="'+(i+1)+'" '+(selected.has(i+1)?'checked':'')+' onchange="updateRoutinePreview()"> Sem '+(i+1)+'</label>').join('');
