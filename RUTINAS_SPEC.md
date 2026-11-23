@@ -11,7 +11,10 @@ Las reglas de este documento describen el comportamiento esperado; no implican q
 - Cada rutina funciona visualmente como una carpeta que contiene sus propias tareas.
 - Las tareas de Rutinas son independientes de las tareas del módulo Tareas. No se mezclan ni aparecen automáticamente en ese otro módulo.
 - Al tocar una rutina, se despliega su contenido y se muestran las tareas que contiene.
-- Al mantener presionada una rutina, se abre su ventana de configuración.
+- La configuración de una rutina se abre desde su botón de engranaje.
+- Para reordenar las rutinas, el usuario debe mantener presionado el icono de carpeta durante al menos 5 segundos y luego arrastrar la tarjeta a la posición deseada.
+- Al soltar una rutina después de moverla, el sistema solicita confirmación antes de guardar el nuevo orden. Si el usuario cancela, se restaura el orden anterior.
+- El orden de las rutinas se conserva al guardar los cambios.
 - Cada rutina tiene su propia configuración, programación, estado de activación y secuencia de tareas.
 - Modificar una rutina no debe alterar las demás.
 
@@ -38,6 +41,8 @@ Las reglas de este documento describen el comportamiento esperado; no implican q
 - Al soltar la tarea después de moverla, el sistema solicita confirmación antes de guardar el nuevo orden.
 - Si el usuario cancela la confirmación, se restaura el orden anterior.
 - El cambio de orden permite reorganizar la secuencia en la que se ejecutarán las tareas.
+- Si la rutina tiene activación automática programada, cada tarea muestra junto a su nombre la hora calculada de su alarma, considerando la hora de activación y la suma de las duraciones de las tareas anteriores. Las horas se expresan en formato de 24 horas y pueden pasar a la jornada siguiente.
+- Si la rutina no tiene activación automática programada, no se muestra una hora de alarma junto a las tareas.
 
 ## 4. Funcionamiento y secuencia de las tareas
 
