@@ -12,7 +12,7 @@ Las reglas de este documento describen el comportamiento esperado; no implican q
 - Las tareas de Rutinas son independientes de las tareas del módulo Tareas. No se mezclan ni aparecen automáticamente en ese otro módulo.
 - Al tocar una rutina, se despliega su contenido y se muestran las tareas que contiene.
 - La configuración de una rutina se abre desde su botón de engranaje.
-- Para reordenar las rutinas, el usuario debe mantener presionado el icono de carpeta durante al menos 5 segundos y luego arrastrar la tarjeta a la posición deseada.
+- Para reordenar las rutinas, el usuario debe mantener presionado el icono de carpeta y arrastrar, sin tiempo mínimo ni máximo la tarjeta a la posición deseada.
 - Al soltar una rutina después de moverla, el sistema solicita confirmación antes de guardar el nuevo orden. Si el usuario cancela, se restaura el orden anterior.
 - El orden de las rutinas se conserva al guardar los cambios.
 - Cada rutina tiene su propia configuración, programación, estado de activación y secuencia de tareas.
