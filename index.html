@@ -943,7 +943,7 @@ function save(){
  localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
  localStorage.setItem('enorden_products',JSON.stringify(products));
  localStorage.setItem('enorden_events',JSON.stringify(events));
- localStorage.setItem('enorden_order',JSON.stringify(order));
+
 }
 if(pruneExpiredCompletedTasks())save();
 function escapeHTML(s){
@@ -979,7 +979,7 @@ function renderNav(){
  document.querySelector('.app').classList.toggle('shared-project-app',current==='tareas'&&activeSharedProjectId!==null);
  document.body.classList.toggle('shared-project-mode',current==='tareas'&&activeSharedProjectId!==null);
  fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current)||(current==='tareas'&&(taskView==='shared'||activeSharedProjectId!==null)));
- enableReorder(nav);
+
 }
 const languageText={
  en:{
@@ -1109,7 +1109,7 @@ function renderHome(){
   <div class="hint">Desliza horizontalmente para ver todos los módulos disponibles.</div>
  </section>
  <div class="bottom-space"></div>`;
- enableReorder(document.getElementById('homeModules'));
+
 }function doSearch(){
  const q=document.getElementById('homeSearch').value.trim().toLowerCase();
  if(!q)return;
