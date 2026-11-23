@@ -2625,7 +2625,7 @@ function clearRoutineTaskHoldPending(){
  clearTimeout(routineTaskHoldPending.timer);routineTaskHoldPending=null;
 }
 function activateRoutineTaskDrag(pending){
- if(routineTaskHoldPending!==pending||routineDragId)return;
+ if((routineTaskHoldPending&&routineTaskHoldPending!==pending)||routineDragId)return;
  routineTaskHoldPending=null;clearTimeout(pending.timer);
  const rows=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(pending.routineId))+'"] .routine-tasks [data-routine-task-id]')];
  routineDragId={routineId:pending.routineId,taskId:pending.taskId,originalIds:rows.map(x=>String(x.dataset.routineTaskId)),pointerId:pending.pointerId,moved:false};
