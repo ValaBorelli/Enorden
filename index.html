@@ -808,24 +808,20 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
  * crean tareas normales. Consultar COMPARTIDO_SPEC.md antes de ampliar reglas.
  */
 
+/* Orden fijo de módulos para la barra inferior y la sección «Mis módulos» de Inicio.
+ * No se permite reordenar ni guardar preferencias de orden por dispositivo.
+ */
 const modules=[
  {id:'calendario',name:'Calendario',emoji:'📅'},
  {id:'tareas',name:'Tareas',emoji:'✓'},
  {id:'listas',name:'Listas',emoji:'🛒'},
- {id:'finanzas',name:'Finanzas',emoji:'💰'},
  {id:'rutinas',name:'Rutinas',emoji:'🔄'},
+ {id:'finanzas',name:'Finanzas',emoji:'💰'},
  {id:'notas',name:'Notas',emoji:'📝'},
  {id:'entretenimiento',name:'Entretención',emoji:'🎬'},
  {id:'mapa',name:'Mapa',emoji:'📍'},
  {id:'chat',name:'Chat',emoji:'💬'}
 ];
-let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
-if(!Array.isArray(order))order=modules.map(m=>m.id);
-else{
- order=order.filter((id,index)=>modules.some(m=>m.id===id)&&order.indexOf(id)===index);
- if(!order.includes('entretenimiento')){const notasIndex=order.indexOf('notas');if(notasIndex>=0)order.splice(notasIndex+1,0,'entretenimiento');else order.push('entretenimiento');}
- modules.forEach(m=>{if(!order.includes(m.id))order.push(m.id);});
-}
 let current='inicio',calendarView='Mes',selectedDate=new Date();
 
 let entertainmentSetupOpen=false,entertainmentReady=false,entertainmentFilters=null;
@@ -953,7 +949,7 @@ if(pruneExpiredCompletedTasks())save();
 function escapeHTML(s){
  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-function orderedModules(){return order.map(id=>modules.find(m=>m.id===id)).filter(Boolean)}
+function orderedModules(){return modules}
 function toggleHeaderPanel(id){
  if(current===id){
   const back=headerPanelReturn||'inicio';
@@ -988,11 +984,11 @@ function renderNav(){
 const languageText={
  en:{
  'Configuración':'Settings','Administra tu experiencia en Enorden.':'Manage your Enorden experience.','Personalizar':'Customize','Idioma':'Language','Apariencia':'Appearance','Natural':'Natural','Nocturno':'Night','Colorido':'Colorful','Ejecutivo':'Executive','Selecciona el estilo visual que prefieras. Puedes cambiarlo cuando quieras.':'Choose the visual style you prefer. You can change it whenever you like.','Seleccionado':'Selected','Fondo':'Background','Encabezados':'Headings','Tarjetas':'Cards','Texto principal':'Main text','Texto secundario':'Secondary text','Acentos':'Accents','Selecciona el idioma de tu aplicación':'Choose your app language','Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.':'Your preference is saved on this device. In this prototype, it does not sync across devices.',
- 'Mi Perfil':'My Profile','Seguridad y dispositivos':'Security and devices','Integrantes del hogar':'Household members','Ayuda':'Help','Dispositivo actual':'Current device','Este es el dispositivo fijado como hogar':'This is the household device','Exigir PIN al entrar a Finanzas para todos los integrantes':'Require a PIN to enter Finance for all members','Tiempo antes del bloqueo personal de Finanzas':'Personal Finance lock timeout','Inmediatamente':'Immediately','1 minuto':'1 minute','5 minutos':'5 minutes','15 minutos':'15 minutes','30 minutos':'30 minutes','Configurar o cambiar PIN de Finanzas':'Set or change Finance PIN','Imagen de Perfil':'Profile picture','Nombre de Usuario':'Username','Contacto':'Contact','Administrador':'Administrator','Tú':'You','Este módulo se desarrollará en su siguiente etapa.':'This module will be developed in a later stage.','Tu espacio dentro de Enorden.':'Your space in Enorden.','Inicio':'Home','Calendario':'Calendar','Tareas':'Tasks','Listas':'Lists','Finanzas':'Finance','Rutinas':'Routines','Notas':'Notes','Mapa':'Map','Mis módulos':'My modules','Este es tu resumen de hoy.':'Here is your summary for today.','Buscar en tu hogar...':'Search your home...','Tareas pendientes':'Pending tasks','Eventos pendientes':'Upcoming events','Compras pendientes':'Pending shopping','Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.':'Swipe horizontally to see all available modules. You can customize their order.','Notificaciones':'Notifications','Aquí se reúnen los avisos de todos tus módulos':'Notifications from all your modules appear here.','Agregar':'Add','Cancelar ✕':'Cancel ✕','Guardar':'Save','Guardar tarea':'Save task','Nueva tarea':'New task','Nombre de la tarea':'Task name','¿Qué necesitas hacer?':'What do you need to do?','Agregar producto':'Add product','Producto':'Product','Sección':'Section','Nombre del evento':'Event name','Nuevo evento':'New event','¿Qué tipo de evento quieres crear?':'What type of event would you like to create?','Selecciona un tipo de evento':'Select an event type','Evento normal':'Regular event','Cumpleaños':'Birthday','Aniversario':'Anniversary','Nombre':'Name','Fecha':'Date','Hora':'Time','Todo el día':'All day','Prioridad':'Priority','Alta prioridad: destacar el día en el calendario':'High priority: highlight the day on the calendar','Repetición':'Repeat','No se repite':'Does not repeat','Anualmente':'Yearly','Mensualmente':'Monthly','Diariamente':'Daily','Personalizado':'Custom','Alerta':'Reminder','Desactivar':'Off','Activar':'On','+ Agregar otra alerta':'+ Add another reminder','Vista previa':'Preview','Selecciona una fecha':'Select a date','Selecciona una fecha.':'Select a date.','Guardar PIN':'Save PIN'
+ 'Mi Perfil':'My Profile','Seguridad y dispositivos':'Security and devices','Integrantes del hogar':'Household members','Ayuda':'Help','Dispositivo actual':'Current device','Este es el dispositivo fijado como hogar':'This is the household device','Exigir PIN al entrar a Finanzas para todos los integrantes':'Require a PIN to enter Finance for all members','Tiempo antes del bloqueo personal de Finanzas':'Personal Finance lock timeout','Inmediatamente':'Immediately','1 minuto':'1 minute','5 minutos':'5 minutes','15 minutos':'15 minutes','30 minutos':'30 minutes','Configurar o cambiar PIN de Finanzas':'Set or change Finance PIN','Imagen de Perfil':'Profile picture','Nombre de Usuario':'Username','Contacto':'Contact','Administrador':'Administrator','Tú':'You','Este módulo se desarrollará en su siguiente etapa.':'This module will be developed in a later stage.','Tu espacio dentro de Enorden.':'Your space in Enorden.','Inicio':'Home','Calendario':'Calendar','Tareas':'Tasks','Listas':'Lists','Finanzas':'Finance','Rutinas':'Routines','Notas':'Notes','Mapa':'Map','Mis módulos':'My modules','Este es tu resumen de hoy.':'Here is your summary for today.','Buscar en tu hogar...':'Search your home...','Tareas pendientes':'Pending tasks','Eventos pendientes':'Upcoming events','Compras pendientes':'Pending shopping','Desliza horizontalmente para ver todos los módulos disponibles.':'Swipe horizontally to see all available modules. You can customize their order.','Notificaciones':'Notifications','Aquí se reúnen los avisos de todos tus módulos':'Notifications from all your modules appear here.','Agregar':'Add','Cancelar ✕':'Cancel ✕','Guardar':'Save','Guardar tarea':'Save task','Nueva tarea':'New task','Nombre de la tarea':'Task name','¿Qué necesitas hacer?':'What do you need to do?','Agregar producto':'Add product','Producto':'Product','Sección':'Section','Nombre del evento':'Event name','Nuevo evento':'New event','¿Qué tipo de evento quieres crear?':'What type of event would you like to create?','Selecciona un tipo de evento':'Select an event type','Evento normal':'Regular event','Cumpleaños':'Birthday','Aniversario':'Anniversary','Nombre':'Name','Fecha':'Date','Hora':'Time','Todo el día':'All day','Prioridad':'Priority','Alta prioridad: destacar el día en el calendario':'High priority: highlight the day on the calendar','Repetición':'Repeat','No se repite':'Does not repeat','Anualmente':'Yearly','Mensualmente':'Monthly','Diariamente':'Daily','Personalizado':'Custom','Alerta':'Reminder','Desactivar':'Off','Activar':'On','+ Agregar otra alerta':'+ Add another reminder','Vista previa':'Preview','Selecciona una fecha':'Select a date','Selecciona una fecha.':'Select a date.','Guardar PIN':'Save PIN'
  },
  pt:{
  'Configuración':'Configurações','Administra tu experiencia en Enorden.':'Gerencie sua experiência no Enorden.','Personalizar':'Personalizar','Idioma':'Idioma','Apariencia':'Aparência','Natural':'Natural','Nocturno':'Noturno','Colorido':'Colorido','Ejecutivo':'Executivo','Selecciona el estilo visual que prefieras. Puedes cambiarlo cuando quieras.':'Selecione o estilo visual de sua preferência. Você pode alterá-lo quando quiser.','Seleccionado':'Selecionado','Fondo':'Fundo','Encabezados':'Cabeçalhos','Tarjetas':'Cartões','Texto principal':'Texto principal','Texto secundario':'Texto secundário','Acentos':'Destaques','Selecciona el idioma de tu aplicación':'Selecione o idioma do aplicativo','Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.':'Sua preferência é salva neste dispositivo. Nesta versão de teste, ela não é sincronizada entre dispositivos.',
- 'Mi Perfil':'Meu perfil','Seguridad y dispositivos':'Segurança e dispositivos','Integrantes del hogar':'Moradores da casa','Ayuda':'Ajuda','Dispositivo actual':'Dispositivo atual','Este es el dispositivo fijado como hogar':'Este é o dispositivo definido como doméstico','Exigir PIN al entrar a Finanzas para todos los integrantes':'Exigir PIN para entrar em Finanças de todos os moradores','Tiempo antes del bloqueo personal de Finanzas':'Tempo para bloqueio pessoal de Finanças','Inmediatamente':'Imediatamente','1 minuto':'1 minuto','5 minutos':'5 minutos','15 minutos':'15 minutos','30 minutos':'30 minutos','Configurar o cambiar PIN de Finanzas':'Configurar ou alterar PIN de Finanças','Imagen de Perfil':'Foto do perfil','Nombre de Usuario':'Nome de usuário','Contacto':'Contato','Administrador':'Administrador','Tú':'Você','Este módulo se desarrollará en su siguiente etapa.':'Este módulo será desenvolvido em uma próxima etapa.','Tu espacio dentro de Enorden.':'Seu espaço no Enorden.','Inicio':'Início','Calendario':'Calendário','Tareas':'Tarefas','Listas':'Listas','Finanzas':'Finanças','Rutinas':'Rotinas','Notas':'Notas','Mapa':'Mapa','Mis módulos':'Meus módulos','Este es tu resumen de hoy.':'Este é o seu resumo de hoje.','Buscar en tu hogar...':'Buscar na sua casa...','Tareas pendientes':'Tarefas pendentes','Eventos pendientes':'Próximos eventos','Compras pendientes':'Compras pendentes','Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.':'Deslize horizontalmente para ver todos os módulos. A ordem pode ser personalizada.','Notificaciones':'Notificações','Aquí se reúnen los avisos de todos tus módulos':'Aqui ficam os avisos de todos os seus módulos.','Agregar':'Adicionar','Cancelar ✕':'Cancelar ✕','Guardar':'Salvar','Guardar tarea':'Salvar tarefa','Nueva tarea':'Nova tarefa','Nombre de la tarea':'Nome da tarefa','¿Qué necesitas hacer?':'O que você precisa fazer?','Agregar producto':'Adicionar produto','Producto':'Produto','Sección':'Seção','Nombre del evento':'Nome do evento','Nuevo evento':'Novo evento','¿Qué tipo de evento quieres crear?':'Que tipo de evento você quer criar?','Selecciona un tipo de evento':'Selecione um tipo de evento','Evento normal':'Evento comum','Cumpleaños':'Aniversário','Aniversario':'Data comemorativa','Nombre':'Nome','Fecha':'Data','Hora':'Hora','Todo el día':'O dia todo','Prioridad':'Prioridade','Alta prioridad: destacar el día en el calendario':'Alta prioridade: destacar o dia no calendário','Repetición':'Repetição','No se repite':'Não se repete','Anualmente':'Anualmente','Mensualmente':'Mensalmente','Diariamente':'Diariamente','Personalizado':'Personalizado','Alerta':'Alerta','Desactivar':'Desativar','Activar':'Ativar','+ Agregar otra alerta':'+ Adicionar outro alerta','Vista previa':'Prévia','Selecciona una fecha':'Selecione uma data','Selecciona una fecha.':'Selecione uma data.','Guardar PIN':'Salvar PIN'
+ 'Mi Perfil':'Meu perfil','Seguridad y dispositivos':'Segurança e dispositivos','Integrantes del hogar':'Moradores da casa','Ayuda':'Ajuda','Dispositivo actual':'Dispositivo atual','Este es el dispositivo fijado como hogar':'Este é o dispositivo definido como doméstico','Exigir PIN al entrar a Finanzas para todos los integrantes':'Exigir PIN para entrar em Finanças de todos os moradores','Tiempo antes del bloqueo personal de Finanzas':'Tempo para bloqueio pessoal de Finanças','Inmediatamente':'Imediatamente','1 minuto':'1 minuto','5 minutos':'5 minutos','15 minutos':'15 minutos','30 minutos':'30 minutos','Configurar o cambiar PIN de Finanzas':'Configurar ou alterar PIN de Finanças','Imagen de Perfil':'Foto do perfil','Nombre de Usuario':'Nome de usuário','Contacto':'Contato','Administrador':'Administrador','Tú':'Você','Este módulo se desarrollará en su siguiente etapa.':'Este módulo será desenvolvido em uma próxima etapa.','Tu espacio dentro de Enorden.':'Seu espaço no Enorden.','Inicio':'Início','Calendario':'Calendário','Tareas':'Tarefas','Listas':'Listas','Finanzas':'Finanças','Rutinas':'Rotinas','Notas':'Notas','Mapa':'Mapa','Mis módulos':'Meus módulos','Este es tu resumen de hoy.':'Este é o seu resumo de hoje.','Buscar en tu hogar...':'Buscar na sua casa...','Tareas pendientes':'Tarefas pendentes','Eventos pendientes':'Próximos eventos','Compras pendientes':'Compras pendentes','Desliza horizontalmente para ver todos los módulos disponibles.':'Deslize horizontalmente para ver todos os módulos. A ordem pode ser personalizada.','Notificaciones':'Notificações','Aquí se reúnen los avisos de todos tus módulos':'Aqui ficam os avisos de todos os seus módulos.','Agregar':'Adicionar','Cancelar ✕':'Cancelar ✕','Guardar':'Salvar','Guardar tarea':'Salvar tarefa','Nueva tarea':'Nova tarefa','Nombre de la tarea':'Nome da tarefa','¿Qué necesitas hacer?':'O que você precisa fazer?','Agregar producto':'Adicionar produto','Producto':'Produto','Sección':'Seção','Nombre del evento':'Nome do evento','Nuevo evento':'Novo evento','¿Qué tipo de evento quieres crear?':'Que tipo de evento você quer criar?','Selecciona un tipo de evento':'Selecione um tipo de evento','Evento normal':'Evento comum','Cumpleaños':'Aniversário','Aniversario':'Data comemorativa','Nombre':'Nome','Fecha':'Data','Hora':'Hora','Todo el día':'O dia todo','Prioridad':'Prioridade','Alta prioridad: destacar el día en el calendario':'Alta prioridade: destacar o dia no calendário','Repetición':'Repetição','No se repite':'Não se repete','Anualmente':'Anualmente','Mensualmente':'Mensalmente','Diariamente':'Diariamente','Personalizado':'Personalizado','Alerta':'Alerta','Desactivar':'Desativar','Activar':'Ativar','+ Agregar otra alerta':'+ Adicionar outro alerta','Vista previa':'Prévia','Selecciona una fecha':'Selecione uma data','Selecciona una fecha.':'Selecione uma data.','Guardar PIN':'Salvar PIN'
  }
 };
 let selectedAppLanguage=appLanguage;
@@ -1129,36 +1125,7 @@ function voiceSearch(){
  document.getElementById('homeSearch').value=e.results[0][0].transcript;doSearch()};
  rec.start();
 }
-/* Reordenamiento común para Inicio y navegación inferior */
-function enableReorder(container){
- if(!container)return;
- let timer=null,source=null,active=false;
- container.querySelectorAll('[data-module]').forEach(el=>{
-  el.addEventListener('pointerdown',()=>{
-   source=el;active=false;
-   timer=setTimeout(()=>{active=true;el.style.opacity='.55'},500);
-  });
-  el.addEventListener('pointermove',e=>{
-   if(!active||!source)return;
-   const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-module]');
-   if(target&&target!==source&&target.parentElement===container){
-    const a=[...container.children].indexOf(source);
-    const b=[...container.children].indexOf(target);
-    if(a<b)container.insertBefore(source,target.nextSibling);
-    else container.insertBefore(source,target);
-   }
-  });
-  ['pointerup','pointercancel','pointerleave'].forEach(evt=>el.addEventListener(evt,()=>{
-   clearTimeout(timer);
-   if(active){
-    const newOrder=[...container.querySelectorAll('[data-module]')].map(x=>x.dataset.module);
-    order=newOrder;save();render();
-   }
-   if(source)source.style.opacity='';
-   active=false;source=null;
-  }));
- });
-}
+/* El orden de módulos es fijo y está definido en el arreglo modules. */
 function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
