@@ -222,3 +222,14 @@
 - Los selectores y controles auxiliares (por ejemplo, ruedas para elegir hora o cantidades) no se convertirán automáticamente en ventanas de guardado, confirmación o precaución; conservarán su naturaleza de selector, salvo que Vale defina otra cosa.
 - Revisar los usos de los diálogos nativos del navegador (`alert()`, `confirm()` y `prompt()`). Cuando correspondan a confirmaciones, advertencias, validaciones o avisos propios de EnOrden, reemplazarlos por ventanas de la aplicación de la categoría adecuada, preservando el flujo y la función original. Antes de reemplazarlos, inspeccionar cada uso para no alterar el comportamiento ni intervenir flujos fuera del alcance autorizado.
 - Toda ventana nueva deberá clasificarse antes de implementarse y partir de la estructura base correspondiente, manteniendo sus características particulares.
+## 15. Selector de hora analógico personalizado
+
+- Todo botón, campo o control que permita seleccionar o modificar una hora deberá utilizar el **selector de hora analógico personalizado de EnOrden**. No se utilizarán selectores nativos del navegador o del sistema operativo (como `input type="time"`, `showPicker()` u otros equivalentes) para la interacción de selección de hora.
+- El selector será un componente propio, reutilizable y compartido por todos los módulos. Su apariencia y comportamiento deberán ser consistentes en teléfonos, tabletas y computadores, independientemente del sistema operativo, navegador, fabricante o tamaño de pantalla.
+- La selección seguirá este flujo: primero se elige la hora en formato de 24 horas y luego los minutos. Se mostrará una vista previa de la hora completa durante la selección.
+- La interfaz será un reloj circular analógico, con números, manecillas, indicadores de selección y transición entre las etapas de hora y minutos. Los minutos deberán poder seleccionarse con precisión de un minuto.
+- El selector tendrá las acciones «Cancelar» y «Aceptar». Cancelar conservará el valor anterior sin aplicar cambios; Aceptar actualizará el campo asociado y ejecutará la actualización de vista previa o lógica correspondiente.
+- El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
+- Los estilos, colores, tipografía, dimensiones, animaciones, disposición y estados visuales serán definidos por EnOrden. No deberán delegarse al sistema operativo ni variar según la interfaz nativa del dispositivo.
+- Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
+- Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
