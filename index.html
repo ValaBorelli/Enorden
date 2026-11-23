@@ -2621,7 +2621,7 @@ function saveRoutineTaskEditor(){
  Object.assign(task,{name,duration});saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines();
 }
 function startRoutineTaskHold(event,routineId,taskId){
- if(event.target.closest('button')||event.button!==0||routineDragId)return;const row=event.currentTarget,rows=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(routineId))+'"] .routine-tasks [data-routine-task-id]')];routineDragId={routineId,taskId,originalIds:rows.map(x=>String(x.dataset.routineTaskId)),pointerId:event.pointerId,moved:false};row.classList.add('routine-dragging');try{row.setPointerCapture(event.pointerId)}catch{}event.preventDefault();
+ if(event.target.closest('button')||event.button!==0||routineDragId)return;const row=event.currentTarget,rows=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(routineId))+'"] .routine-tasks [data-routine-task-id]')];routineDragId={routineId,taskId,originalIds:rows.map(x=>String(x.dataset.routineTaskId)),pointerId:event.pointerId,moved:false};row.classList.add('routine-dragging');try{row.setPointerCapture(event.pointerId)}catch{}
 }
 function moveRoutineTaskHold(event){
  if(!routineDragId||event.pointerId!==routineDragId.pointerId)return;event.preventDefault();
