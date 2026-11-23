@@ -274,6 +274,24 @@ h2{font-size:18px;margin-bottom:13px}
 /* Selector de hora en formato rueda */
 .time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:#242820;font-size:15px;font-weight:700;letter-spacing:1px}.time-display-icon{font-size:23px;line-height:1;color:#242820}.time-display-button #eventTimeText{color:#242820}.event-native-time-control{position:relative;width:100%}.event-native-time-input{position:absolute;inset:0;width:100%;height:100%;opacity:0;z-index:2;cursor:pointer;font-size:16px}
 .time-picker-backdrop{z-index:55}
+.analog-time-backdrop{z-index:10095;display:none;align-items:center;justify-content:center;padding:16px;background:#0008}
+.analog-time-backdrop.show{display:flex}
+.analog-time-modal{width:min(370px,100%);padding:22px 20px 18px;border-radius:24px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0005}
+.analog-time-modal h2{text-align:center;margin:0 0 14px;font-size:19px}
+.analog-time-preview{display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 0 14px}
+.analog-time-preview strong{font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.analog-time-preview span{font-size:12px;color:var(--muted)}
+.analog-time-clock-wrap{display:flex;justify-content:center}
+.analog-time-clock{position:relative;width:min(280px,78vw);height:min(280px,78vw);max-width:280px;max-height:280px;border-radius:50%;background:var(--surface2);border:1px solid var(--line);touch-action:pan-y;user-select:none}
+.analog-time-clock:before{content:"";position:absolute;inset:12px;border:1px solid var(--line);border-radius:50%;pointer-events:none}
+.analog-time-numbers{position:absolute;inset:0}
+.analog-time-number{position:absolute;display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-17px 0 0 -17px;border:0;border-radius:50%;background:transparent;color:var(--text);font-size:14px;font-weight:600;z-index:2}
+.analog-time-number.selected{background:var(--accent);color:white;box-shadow:0 2px 8px #0003}
+.analog-time-hand{position:absolute;left:50%;top:50%;width:2px;height:38%;background:var(--accent);transform-origin:50% 0;transform:rotate(0deg);z-index:1;border-radius:3px}
+.analog-time-center{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px;border-radius:50%;background:var(--accent);z-index:3}
+.analog-time-actions{display:flex;gap:10px;margin-top:18px}
+.analog-time-actions button{flex:1}
+
 .time-picker-modal{width:min(360px,100%);padding:20px;border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0004}
 .time-picker-caption{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 16px}
 .time-wheel-group{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
@@ -755,18 +773,7 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
   <div id="modalBody"></div>
  </div>
 </div>
-<div class="modal-backdrop time-picker-backdrop" id="timePickerBackdrop" onclick="if(event.target===this)closeTimePicker(false)">
- <div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="timePickerTitle">
-  <h2 id="timePickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar hora</h2>
-  <p class="time-picker-caption">Formato de 24 horas</p>
-  <div class="time-wheel-group">
-   <div><div class="time-wheel-label">Hora</div><div class="time-wheel" id="timeHourWheel" onscroll="handleTimeWheelScroll('hour')"></div></div>
-   <div class="time-wheel-separator">:</div>
-   <div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="timeMinuteWheel" onscroll="handleTimeWheelScroll('minute')"></div></div>
-  </div>
-  <div class="time-picker-actions"><button class="secondary-btn" onclick="closeTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeTimePicker(true)">Aceptar</button></div>
- </div>
-</div>
+<div class="modal-backdrop analog-time-backdrop" id="analogTimePickerBackdrop" onclick="if(event.target===this)closeAnalogTimePicker(false)"><div class="analog-time-modal" role="dialog" aria-modal="true" aria-labelledby="analogTimePickerTitle"><h2 id="analogTimePickerTitle">Seleccionar hora</h2><div class="analog-time-preview"><strong id="analogTimePreview">07:00</strong><span id="analogTimeStepLabel">Selecciona la hora</span></div><div class="analog-time-clock-wrap"><div class="analog-time-clock" id="analogTimeClock" data-step="hour" onpointerup="handleAnalogClockPointer(event)"><div class="analog-time-hand" id="analogTimeHand"></div><div class="analog-time-center"></div><div class="analog-time-numbers" id="analogTimeNumbers"></div></div></div><div class="analog-time-actions"><button type="button" class="secondary-btn" onclick="closeAnalogTimePicker(false)">Cancelar</button><button type="button" class="primary-btn" onclick="closeAnalogTimePicker(true)">Aceptar</button></div></div></div>
 <div class="modal-backdrop time-picker-backdrop" id="alertNumberPickerBackdrop" onclick="if(event.target===this)closeAlertNumberPicker(false)"><div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="alertNumberPickerTitle"><h2 id="alertNumberPickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar cantidad</h2><p class="time-picker-caption">Desliza la rueda para elegir el número</p><div class="alert-number-wheel" id="alertNumberWheel" onscroll="handleAlertNumberWheelScroll()"></div><div class="time-picker-actions"><button class="secondary-btn" onclick="closeAlertNumberPicker(false)">Cancelar</button><button class="primary-btn" onclick="closeAlertNumberPicker(true)">Aceptar</button></div></div></div>
 <div class="modal-backdrop time-picker-backdrop" id="routineDurationPickerBackdrop" onclick="if(event.target===this)closeRoutineDurationPicker(false)"><div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="routineDurationPickerTitle"><h2 id="routineDurationPickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar duración</h2><p class="time-picker-caption">Desliza las ruedas para elegir horas y minutos</p><div class="time-wheel-group"><div><div class="time-wheel-label">Horas</div><div class="time-wheel" id="routineDurationHourWheel" onscroll="handleRoutineDurationWheelScroll('hour')"></div></div><div class="time-wheel-separator">:</div><div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="routineDurationMinuteWheel" onscroll="handleRoutineDurationWheelScroll('minute')"></div></div></div><div class="time-picker-actions"><button class="secondary-btn" onclick="closeRoutineDurationPicker(false)">Cancelar</button><button class="primary-btn" onclick="closeRoutineDurationPicker(true)">Aceptar</button></div></div></div>
 <div class="modal-backdrop anniversary-notice-backdrop" id="anniversaryNotice">
@@ -2552,7 +2559,7 @@ function openRoutineEditor(id){
    <label>Fecha de inicio<input id="routineStartDate" type="date" value="${escapeHTML(startValue)}" onchange="updateRoutineRepeatWeeks();updateRoutinePreview()"></label>
    <label>Fecha de término<input id="routineEndDate" type="date" value="${escapeHTML(r?.endDate||'')}" onchange="updateRoutinePreview()"></label>
   </div>
-  <div class="routine-field" style="margin-top:10px"><label for="routineActivationTime">Hora</label><input id="routineActivationTime" type="time" value="${escapeHTML(r?.activationTime||'07:00')}" onchange="updateRoutinePreview()"></div>
+  <div class="routine-field" style="margin-top:10px"><label>Hora</label><input id="routineActivationTime" type="hidden" value="${escapeHTML(r?.activationTime||'07:00')}"><button type="button" class="time-display-button" id="routineActivationTimeButton" onclick="openAnalogTimePicker('routineActivationTime','routineActivationTimeText','routine')"><span class="time-display-icon">◷</span><span id="routineActivationTimeText">${escapeHTML(r?.activationTime||'07:00')}</span></button></div>
   <div class="routine-field" style="margin-top:12px"><label class="event-choice"><input id="routineRepeatMonthly" type="checkbox" ${r?.repeatMonthly?'checked':''} onchange="toggleRoutineRepeatFields()"> Repetir</label></div>
   <div id="routineRepeatFields" class="${r?.repeatMonthly?'':'hidden'}">
    <div class="routine-field" style="margin-top:10px">Días de activación<div class="routine-weekdays">${days.map((d,i)=>'<label><input type="checkbox" name="routineWeekday" value="'+i+'" '+(weekdays.includes(i)?'checked':'')+' onchange="updateRoutinePreview()"> '+d+'</label>').join('')}</div></div>
@@ -2869,7 +2876,7 @@ function showEventFields(){
  const now=eventCreationTime||new Date(),currentTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
  w.innerHTML=
  '<div class="event-form-section"><label>Nombre</label><input id="eventName" placeholder="Nombre del evento" oninput="updateEventPreview()"></div>'+
- '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><div class="event-native-time-control"><button type="button" class="time-display-button" id="eventTimeDisplay"><span class="time-display-icon">◷</span><span id="eventTimeText">'+currentTime+'</span></button><input id="eventTimeNative" class="event-native-time-input" type="time" step="60" value="'+currentTime+'" aria-label="Seleccionar hora" onchange="syncEventNativeTime(this)"></div></div></div>'+
+ '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openAnalogTimePicker(\'eventTime\',\'eventTimeText\',\'calendar\')"><span class="time-display-icon">◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
  '<div class="event-form-section"><label class="event-choice"><input id="eventAllDay" type="checkbox" onchange="toggleEventAllDay()"> Todo el día</label></div>'+
  '<div class="event-form-section"><span class="field-label">¿Dónde se verá?</span><div class="event-choice-row"><label class="event-choice"><input type="radio" name="eventScope" value="personal" checked onchange="updateEventPreview()"> Mi calendario personal</label><label class="event-choice"><input type="radio" name="eventScope" value="family" onchange="updateEventPreview()"> Calendario familiar</label></div></div>'+
  '<div class="event-form-section"><label>Prioridad</label><select id="eventPriority" onchange="toggleEventColor()"><option value="normal">Normal</option><option value="high">Alta prioridad: destacar el día en el calendario</option></select><div id="eventColorWrap" class="hidden"><label>Selecciona el color</label><input id="eventColor" class="event-color" type="color" value="#d65b4a" onchange="updateEventPreview()"></div></div>'+
@@ -2877,11 +2884,11 @@ function showEventFields(){
  '<div class="event-form-section"><label>Alerta</label><select id="eventAlertState" onchange="toggleEventAlerts()"><option value="off">Desactivar</option><option value="on">Activar</option></select><div id="eventAlertsWrap" class="hidden"><div id="eventAlertRows"></div><button type="button" class="small-btn" onclick="addEventAlert()">+ Agregar otra alerta</button></div></div>'+
  '<div class="event-preview"><div class="field-label event-preview-heading">Vista previa</div><div id="eventPreview" class="event-preview-content"><div class="event-preview-title">Nombre del evento</div><div class="event-preview-row">Fecha por seleccionar</div></div></div>'+
  '<div class="event-form-actions"><button class="secondary-btn" onclick="requestModalCancel()">Cancelar</button><button class="primary-btn" onclick="addEvent()">'+(ev?'Guardar cambios':'Guardar')+'</button></div>';
- if(!ev){document.getElementById('eventTime').value=currentTime;document.getElementById('eventTimeNative').value=currentTime;document.getElementById('eventTimeText').textContent=currentTime;}
+ if(!ev){document.getElementById('eventTime').value=currentTime;document.getElementById('eventTimeText').textContent=currentTime;}
  if(type==='birthday'||type==='anniversary'){document.getElementById('eventRepeat').value='yearly';document.getElementById('eventAllDay').checked=true;document.getElementById('eventAllDay').disabled=true;document.getElementById('eventRepeat').disabled=true}
  if(type==='anniversary'){document.getElementById('eventPriority').value='high';document.getElementById('eventColor').value='#e88ab8';toggleEventColor()}
  if(ev){
-  document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';document.getElementById('eventTimeNative').value=ev.time||'09:00';document.getElementById('eventTimeText').textContent=ev.time||'09:00';
+  document.getElementById('eventName').value=ev.title||'';document.getElementById('eventDate').value=ev.date||'';document.getElementById('eventTime').value=ev.time||'09:00';document.getElementById('eventTimeText').textContent=ev.time||'09:00';
   document.getElementById('eventAllDay').checked=!!ev.allDay;document.querySelector('input[name="eventScope"][value="'+(ev.scope||'personal')+'"]').checked=true;
   document.getElementById('eventPriority').value=ev.priority||'normal';document.getElementById('eventColor').value=ev.color||'#d65b4a';document.getElementById('eventRepeat').value=ev.repeat||'none';
   document.querySelectorAll('input[name="eventWeekday"]').forEach(x=>x.checked=(ev.weekdays||[]).includes(Number(x.value)));
@@ -2890,43 +2897,39 @@ function showEventFields(){
  }else{if(type==='birthday'||type==='anniversary')toggleEventAllDay()}
  updateEventPreview();
 }
-let timePickerDraft={hour:0,minute:0},timePickerOriginal='09:00',timePickerScrollTimer=null;
-function syncEventNativeTime(input){const value=input?.value||'09:00',hidden=document.getElementById('eventTime'),label=document.getElementById('eventTimeText');if(hidden)hidden.value=value;if(label)label.textContent=value;updateEventPreview()}
- function openTimePicker(){
- const input=document.getElementById('eventTime');if(!input)return;
- timePickerOriginal=input.value||'09:00';
- const parts=timePickerOriginal.split(':').map(Number);
- timePickerDraft={hour:Number.isFinite(parts[0])?parts[0]:9,minute:Number.isFinite(parts[1])?parts[1]:0};
- renderTimeWheel('hour');renderTimeWheel('minute');
- document.getElementById('timePickerBackdrop').classList.add('show');
+let analogTimeDraft={hour:7,minute:0,step:'hour'},analogTimeTarget={inputId:'',labelId:'',context:'calendar'};
+function openAnalogTimePicker(inputId,labelId,context){
+ const input=document.getElementById(inputId);if(!input)return;
+ const parts=(input.value||'07:00').split(':').map(Number);
+ analogTimeTarget={inputId,labelId,context:context||'calendar'};
+ analogTimeDraft={hour:Math.max(0,Math.min(23,Number.isFinite(parts[0])?parts[0]:7)),minute:Math.max(0,Math.min(59,Number.isFinite(parts[1])?parts[1]:0)),step:'hour'};
+ renderAnalogTimeClock();document.getElementById('analogTimePickerBackdrop')?.classList.add('show');
 }
-function renderTimeWheel(kind){
- const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),count=kind==='hour'?24:60,selected=kind==='hour'?timePickerDraft.hour:timePickerDraft.minute;
- wheel.innerHTML=Array.from({length:count},(_,i)=>'<button type="button" class="time-wheel-option'+(i===selected?' selected':'')+'" data-value="'+i+'" onclick="chooseTimeWheelValue(\''+kind+'\','+i+')">'+String(i).padStart(2,'0')+'</button>').join('');
- wheel.scrollTop=selected*42;
+function renderAnalogTimeClock(){
+ const clock=document.getElementById('analogTimeClock'),numbers=document.getElementById('analogTimeNumbers'),preview=document.getElementById('analogTimePreview'),stepLabel=document.getElementById('analogTimeStepLabel'),hand=document.getElementById('analogTimeHand');if(!clock||!numbers)return;
+ const {hour,minute,step}=analogTimeDraft;preview.textContent=String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0');stepLabel.textContent=step==='hour'?'Selecciona la hora':'Selecciona los minutos';clock.dataset.step=step;
+ const vals=step==='hour'?Array.from({length:24},(_,i)=>i):Array.from({length:12},(_,i)=>i*5);
+ numbers.innerHTML=vals.map(v=>{const isHour=step==='hour',outer=isHour?(v>=1&&v<=12):true,angle=(isHour?(v%12):v)*Math.PI/6-Math.PI/2,radius=isHour?(outer?104:66):108,cx=140+Math.cos(angle)*radius,cy=140+Math.sin(angle)*radius,selected=isHour?v===hour:v===Math.round(minute/5)*5;return '<button type="button" class="analog-time-number'+(selected?' selected':'')+'" style="left:'+cx+'px;top:'+cy+'px" onclick="chooseAnalogClockValue(\''+step+'\','+v+')">'+String(v).padStart(2,'0')+'</button>'}).join('');
+ const angle=step==='hour'?((hour%12)*30-90):((minute/60)*360-90);if(hand){hand.style.transform='rotate('+angle+'deg)';hand.style.height=(step==='hour'&&hour>12?'25%':'38%')}
 }
-function chooseTimeWheelValue(kind,value){
- timePickerDraft[kind]=value;const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
- wheel.scrollTo({top:value*42,behavior:'smooth'});updateTimeWheelSelection(kind);
+function chooseAnalogClockValue(step,value){if(step==='hour'){analogTimeDraft.hour=value;analogTimeDraft.step='minute'}else analogTimeDraft.minute=value;renderAnalogTimeClock()}
+function handleAnalogClockPointer(event){
+ const clock=document.getElementById('analogTimeClock');if(!clock||event.target.closest('.analog-time-number'))return;
+ const rect=clock.getBoundingClientRect(),x=event.clientX-(rect.left+rect.width/2),y=event.clientY-(rect.top+rect.height/2),angle=(Math.atan2(y,x)+Math.PI/2+Math.PI*2)%(Math.PI*2),index=Math.round(angle/(Math.PI*2)*(analogTimeDraft.step==='hour'?12:60));
+ if(analogTimeDraft.step==='hour'){const inner=Math.hypot(x,y)<rect.width*.31,h=index%12;analogTimeDraft.hour=inner?(h===0?0:h+12):(h===0?12:h);analogTimeDraft.step='minute'}else analogTimeDraft.minute=index%60;
+ renderAnalogTimeClock();
 }
-function handleTimeWheelScroll(kind){
- const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
- const count=kind==='hour'?24:60,index=Math.max(0,Math.min(count-1,Math.round(wheel.scrollTop/42)));
- timePickerDraft[kind]=index;updateTimeWheelSelection(kind);
-}
-function updateTimeWheelSelection(kind){
- const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),selected=timePickerDraft[kind];
- wheel.querySelectorAll('.time-wheel-option').forEach((button,index)=>button.classList.toggle('selected',index===selected));
-}
-function closeTimePicker(apply){
- const backdrop=document.getElementById('timePickerBackdrop');if(!backdrop)return;
- if(apply){
-  const value=String(timePickerDraft.hour).padStart(2,'0')+':'+String(timePickerDraft.minute).padStart(2,'0');
-  const input=document.getElementById('eventTime'),label=document.getElementById('eventTimeText');
-  if(input)input.value=value;if(label)label.textContent=value;if(entertainmentScheduleOpen)entertainmentScheduleDraft.time=value;updateEventPreview();
+function closeAnalogTimePicker(apply){
+ const backdrop=document.getElementById('analogTimePickerBackdrop');if(!backdrop)return;
+ if(apply){const value=String(analogTimeDraft.hour).padStart(2,'0')+':'+String(analogTimeDraft.minute).padStart(2,'0'),input=document.getElementById(analogTimeTarget.inputId),label=document.getElementById(analogTimeTarget.labelId);if(input)input.value=value;if(label)label.textContent=value;
+  if(analogTimeTarget.context==='routine')updateRoutinePreview();
+  if(analogTimeTarget.context==='film'&&entertainmentScheduleDraft)entertainmentScheduleDraft.time=value;
+  if(analogTimeTarget.context==='calendar')updateEventPreview();
  }
- backdrop.classList.remove('show');backdrop.classList.remove('film-schedule-time-picker');
+ backdrop.classList.remove('show');
 }
+function openTimePicker(){openAnalogTimePicker('eventTime','eventTimeText',entertainmentScheduleOpen?'film':'calendar')}
+function closeTimePicker(apply){closeAnalogTimePicker(apply)}
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
 function toggleEventColor(){document.getElementById('eventColorWrap').classList.toggle('hidden',document.getElementById('eventPriority').value!=='high');updateEventPreview()}
 function toggleCustomDays(){document.getElementById('eventCustomDays').classList.toggle('hidden',document.getElementById('eventRepeat').value!=='custom')}
