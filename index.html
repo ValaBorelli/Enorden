@@ -2623,7 +2623,6 @@ function saveRoutineTaskEditor(){
 function startRoutineTaskHold(event,routineId,taskId){
  if(!event.target.closest('.routine-task-grip')||event.button!==0||routineDragId)return;
  const row=event.currentTarget,rows=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(routineId))+'"] .routine-tasks [data-routine-task-id]')];
- const pending={routineId,taskId,row,pointerId:event.pointerId};
  const originalIds=rows.map(x=>String(x.dataset.routineTaskId));
  routineDragId={routineId,taskId,originalIds,pointerId:event.pointerId,moved:false};
  row.classList.add('routine-dragging');
