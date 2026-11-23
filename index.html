@@ -282,7 +282,7 @@ h2{font-size:18px;margin-bottom:13px}
 .analog-time-preview strong{font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:1px}
 .analog-time-preview span{font-size:12px;color:var(--muted)}
 .analog-time-clock-wrap{display:flex;justify-content:center}
-.analog-time-clock{position:relative;width:min(280px,78vw);height:min(280px,78vw);max-width:280px;max-height:280px;border-radius:50%;background:var(--surface2);border:1px solid var(--line);touch-action:pan-y;user-select:none}
+.analog-time-clock{position:relative;width:min(280px,78vw);height:min(280px,78vw);max-width:280px;max-height:280px;border-radius:50%;background:var(--surface2);border:1px solid #000;touch-action:pan-y;user-select:none}
 .analog-time-clock:before{content:"";position:absolute;inset:12px;border:1px solid var(--line);border-radius:50%;pointer-events:none}
 .analog-time-numbers{position:absolute;inset:0}
 .analog-time-number{position:absolute;display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-17px 0 0 -17px;border:0;border-radius:50%;background:transparent;color:var(--text);font-size:14px;font-weight:600;z-index:2}
@@ -2876,14 +2876,14 @@ function renderAnalogTimeClock(){
  const clock=document.getElementById('analogTimeClock'),numbers=document.getElementById('analogTimeNumbers'),preview=document.getElementById('analogTimePreview'),stepLabel=document.getElementById('analogTimeStepLabel'),hand=document.getElementById('analogTimeHand');if(!clock||!numbers)return;
  const {hour,minute,step}=analogTimeDraft;preview.textContent=String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0');stepLabel.textContent=step==='hour'?'Selecciona la hora':'Selecciona los minutos';clock.dataset.step=step;
  const vals=step==='hour'?Array.from({length:24},(_,i)=>i):Array.from({length:12},(_,i)=>i*5);
- numbers.innerHTML=vals.map(v=>{const isHour=step==='hour',outer=isHour?(v>=1&&v<=12):true,angle=(isHour?(v%12)*Math.PI/6:v*Math.PI/30)-Math.PI/2,radius=isHour?(outer?104:66):108,cx=140+Math.cos(angle)*radius,cy=140+Math.sin(angle)*radius,selected=isHour?v===hour:v===Math.round(minute/5)*5;return '<button type="button" class="analog-time-number'+(selected?' selected':'')+'" style="left:'+(cx/280*100)+'%;top:'+(cy/280*100)+'%" onclick="chooseAnalogClockValue(\''+step+'\','+v+')">'+String(v).padStart(2,'0')+'</button>'}).join('');
- const angle=step==='hour'?((hour%12)*30-90):((minute/60)*360-90);if(hand){hand.style.transform='rotate('+(angle-90)+'deg)';hand.style.height=(step==='hour'&&(hour===0||hour>12)?'25%':'38%')}
+ numbers.innerHTML=vals.map(v=>{const isHour=step==='hour',outer=isHour?(v===0||v>=13):true,angle=(isHour?(v%12)*Math.PI/6:v*Math.PI/30)-Math.PI/2,radius=isHour?(outer?104:66):108,cx=140+Math.cos(angle)*radius,cy=140+Math.sin(angle)*radius,selected=isHour?v===hour:v===Math.round(minute/5)*5;return '<button type="button" class="analog-time-number'+(selected?' selected':'')+'" style="left:'+(cx/280*100)+'%;top:'+(cy/280*100)+'%" onclick="chooseAnalogClockValue(\''+step+'\','+v+')">'+String(v).padStart(2,'0')+'</button>'}).join('');
+ const angle=step==='hour'?((hour%12)*30-90):((minute/60)*360-90);if(hand){hand.style.transform='rotate('+(angle-90)+'deg)';hand.style.height=(step==='hour'&&(hour>=1&&hour<=12)?'25%':'38%')}
 }
 function chooseAnalogClockValue(step,value){if(step==='hour'){analogTimeDraft.hour=value;analogTimeDraft.step='minute'}else analogTimeDraft.minute=value;renderAnalogTimeClock()}
 function handleAnalogClockPointer(event){
  const clock=document.getElementById('analogTimeClock');if(!clock||event.target.closest('.analog-time-number'))return;
  const rect=clock.getBoundingClientRect(),x=event.clientX-(rect.left+rect.width/2),y=event.clientY-(rect.top+rect.height/2),angle=(Math.atan2(y,x)+Math.PI/2+Math.PI*2)%(Math.PI*2),index=Math.round(angle/(Math.PI*2)*(analogTimeDraft.step==='hour'?12:60));
- if(analogTimeDraft.step==='hour'){const inner=Math.hypot(x,y)<rect.width*.31,h=index%12;analogTimeDraft.hour=inner?(h===0?0:h+12):(h===0?12:h);analogTimeDraft.step='minute'}else analogTimeDraft.minute=index%60;
+ if(analogTimeDraft.step==='hour'){const inner=Math.hypot(x,y)<rect.width*.31,h=index%12;analogTimeDraft.hour=inner?(h===0?12:h):(h===0?0:h+12);analogTimeDraft.step='minute'}else analogTimeDraft.minute=index%60;
  renderAnalogTimeClock();
 }
 function closeAnalogTimePicker(apply){
