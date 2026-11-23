@@ -222,21 +222,27 @@
 - Los selectores y controles auxiliares (por ejemplo, ruedas para elegir hora o cantidades) no se convertirán automáticamente en ventanas de guardado, confirmación o precaución; conservarán su naturaleza de selector, salvo que Vale defina otra cosa.
 - Revisar los usos de los diálogos nativos del navegador (`alert()`, `confirm()` y `prompt()`). Cuando correspondan a confirmaciones, advertencias, validaciones o avisos propios de EnOrden, reemplazarlos por ventanas de la aplicación de la categoría adecuada, preservando el flujo y la función original. Antes de reemplazarlos, inspeccionar cada uso para no alterar el comportamiento ni intervenir flujos fuera del alcance autorizado.
 - Toda ventana nueva deberá clasificarse antes de implementarse y partir de la estructura base correspondiente, manteniendo sus características particulares.
-## 15. Selector de hora analógico personalizado
+## 15. Selectores de hora personalizados
 
-- Todo botón, campo o control que permita seleccionar o modificar una hora deberá utilizar el **selector de hora analógico personalizado de EnOrden**. No se utilizarán selectores nativos del navegador o del sistema operativo (como `input type="time"`, `showPicker()` u otros equivalentes) para la interacción de selección de hora.
-- El selector será un componente propio, reutilizable y compartido por todos los módulos. Su apariencia y comportamiento deberán ser consistentes en teléfonos, tabletas y computadores, independientemente del sistema operativo, navegador, fabricante o tamaño de pantalla.
-- La selección seguirá este flujo: primero se elige la hora en formato de 24 horas y luego los minutos. Se mostrará una vista previa de la hora completa durante la selección.
-- La interfaz será un reloj circular analógico, con números, manecillas, indicadores de selección y transición entre las etapas de hora y minutos. Los minutos deberán poder seleccionarse individualmente, desde 00 hasta 59, sin limitar la selección a intervalos de cinco minutos. Los indicadores principales podrán conservar las etiquetas cada cinco minutos, pero cada minuto deberá tener su propio punto de selección.
-- Durante la selección de horas, los números del 1 al 12 se ubicarán en el círculo interior; los números del 13 al 23 y el 00 se ubicarán en el círculo exterior. La distribución y la selección táctil deberán coincidir.
-- El círculo exterior vacío del reloj tendrá un acabado negro metálico. El círculo interior que contiene los números conservará como color base el fondo original del reloj (`var(--surface2)`), enriquecido con contrastes, degradados y sombras para lograr una apariencia de esfera metálica realista. Ambos acabados serán permanentes y deberán conservarse tanto durante la selección de horas como de minutos.
-- El borde exterior del reloj será siempre negro (#000), integrado con el acabado negro metálico del círculo exterior.
-- **Ningún color del reloj podrá modificarse según la apariencia seleccionada por el usuario.** La esfera, los números, el estado seleccionado, las manecillas y los indicadores conservarán una paleta fija, idéntica para todos los temas y dispositivos. Esta regla reemplaza cualquier indicación anterior que permitiera adaptar los colores del reloj a la configuración de apariencia.
-- El selector tendrá las acciones «Cancelar» y «Aceptar». Cancelar conservará el valor anterior sin aplicar cambios; Aceptar actualizará el campo asociado y ejecutará la actualización de vista previa o lógica correspondiente.
+### 15.1. Reloj Rueda (selector activo)
+
+- **Reloj Rueda** es el selector de hora oficial y activo de EnOrden.
+- Todo botón, campo o control que permita seleccionar o modificar una hora deberá utilizar el componente compartido **Reloj Rueda**. No se utilizarán selectores nativos del navegador o del sistema operativo (como `input type="time"`, `showPicker()` u otros equivalentes) para la interacción de selección de hora.
+- El selector tendrá dos ruedas independientes: una para las horas y otra para los minutos. Las horas se mostrarán en formato de 24 horas, desde 00 hasta 23, y los minutos desde 00 hasta 59, permitiendo elegir cualquier minuto individual.
+- Ambas ruedas tendrán un borde negro metálico. Su diseño, colores, tipografía, dimensiones, desplazamiento, estados seleccionados y comportamiento serán definidos por EnOrden y deberán mantenerse consistentes en teléfonos, tabletas y computadores, independientemente del sistema operativo, navegador, fabricante, tamaño de pantalla o tema elegido.
+- Se mostrará una vista previa de la hora completa durante la selección y las acciones «Cancelar» y «Aceptar». Cancelar conservará el valor anterior sin aplicar cambios; Aceptar actualizará el campo asociado y ejecutará la actualización de vista previa o lógica correspondiente.
 - El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
-- Los estilos, colores, tipografía, dimensiones, animaciones, disposición y estados visuales serán definidos por EnOrden. No deberán delegarse al sistema operativo ni variar según la interfaz nativa del dispositivo.
 - Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
 - Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
+
+### 15.2. Reloj Analógico (componente conservado y oculto)
+
+- El componente anteriormente denominado selector de hora analógico pasa a llamarse **Reloj Analógico**.
+- El Reloj Analógico queda oculto y fuera de uso: no será invocado por botones de hora actuales ni por nuevas funcionalidades mientras permanezca pendiente de revisión.
+- Se conservará su implementación y sus reglas visuales como referencia para retomarlo posteriormente. Su ocultamiento no implica eliminarlo ni rediseñarlo.
+- **Pendiente:** revisar y resolver la dificultad de selección individual de minutos en el Reloj Analógico. Solo después de esa revisión Vale decidirá si vuelve a habilitarse o si requiere otros ajustes.
+- Las reglas de apariencia que se conservan para el Reloj Analógico son: círculo exterior vacío con acabado negro metálico; círculo interior con color base `var(--surface2)`, contrastes, degradados y sombras; borde exterior negro `#000`; paleta fija independiente del tema y del dispositivo.
+
 
 ## 16. Orden fijo de módulos y navegación
 
