@@ -233,3 +233,30 @@
 - Los estilos, colores, tipografía, dimensiones, animaciones, disposición y estados visuales serán definidos por EnOrden. No deberán delegarse al sistema operativo ni variar según la interfaz nativa del dispositivo.
 - Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
 - Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
+
+## 16. Orden fijo de módulos y navegación
+
+- El orden de los módulos será fijo, idéntico para todos los usuarios y dispositivos. No se permitirá reordenarlos mediante arrastre, pulsación prolongada, preferencias personales ni ningún otro mecanismo.
+- La barra inferior de navegación tendrá este orden exacto:
+  1. Inicio
+  2. Calendario
+  3. Tareas
+  4. Listas
+  5. Rutinas
+  6. Finanzas
+  7. Notas
+  8. Entretención
+  9. Mapa
+  10. Chat
+- La sección «Mis módulos» de la página Inicio utilizará el mismo orden, omitiendo únicamente «Inicio»:
+  1. Calendario
+  2. Tareas
+  3. Listas
+  4. Rutinas
+  5. Finanzas
+  6. Notas
+  7. Entretención
+  8. Mapa
+  9. Chat
+- El orden definido en esta sección será la única fuente de verdad para ambas ubicaciones. No se guardarán ni aplicarán órdenes personalizados por dispositivo o usuario.
+- Todo módulo nuevo deberá incorporarse a esta regla únicamente cuando Vale defina su posición. No deberá alterar ni desplazar el orden existente por iniciativa propia.
