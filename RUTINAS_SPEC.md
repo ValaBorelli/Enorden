@@ -209,3 +209,8 @@ Los siguientes puntos todavía requieren una decisión o definición adicional. 
 
 **Pendiente para una versión futura.**
 - Evaluar si es posible incorporar una opción de programación anual que permita organizar las repeticiones por año, además de la configuración mensual actual.
+
+## 14. Selector de hora
+
+- La hora de activación de cada rutina se seleccionará mediante el selector de hora analógico personalizado y compartido de EnOrden, definido en `ENORDEN_RULES.md`.
+- El selector deberá conservar el valor existente al abrir la edición, aplicar el nuevo valor únicamente al aceptar y mantener el formato de 24 horas.
