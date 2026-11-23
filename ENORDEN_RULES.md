@@ -228,6 +228,9 @@
 - El selector será un componente propio, reutilizable y compartido por todos los módulos. Su apariencia y comportamiento deberán ser consistentes en teléfonos, tabletas y computadores, independientemente del sistema operativo, navegador, fabricante o tamaño de pantalla.
 - La selección seguirá este flujo: primero se elige la hora en formato de 24 horas y luego los minutos. Se mostrará una vista previa de la hora completa durante la selección.
 - La interfaz será un reloj circular analógico, con números, manecillas, indicadores de selección y transición entre las etapas de hora y minutos. Los minutos deberán poder seleccionarse con precisión de un minuto.
+- Durante la selección de horas, los números del 1 al 12 se ubicarán en el círculo interior; los números del 13 al 23 y el 00 se ubicarán en el círculo exterior. La distribución y la selección táctil deberán coincidir.
+- El borde exterior del reloj será siempre negro (#000), tanto durante la selección de horas como de minutos. Esta regla es una excepción permanente a la adaptación de colores y no podrá cambiar según la apariencia seleccionada por el usuario.
+- El fondo del reloj y los demás colores de su interfaz deberán adaptarse a la configuración de apariencia elegida por cada usuario. El fondo actual se conserva como referencia visual hasta que Vale solicite modificarlo.
 - El selector tendrá las acciones «Cancelar» y «Aceptar». Cancelar conservará el valor anterior sin aplicar cambios; Aceptar actualizará el campo asociado y ejecutará la actualización de vista previa o lógica correspondiente.
 - El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
 - Los estilos, colores, tipografía, dimensiones, animaciones, disposición y estados visuales serán definidos por EnOrden. No deberán delegarse al sistema operativo ni variar según la interfaz nativa del dispositivo.
