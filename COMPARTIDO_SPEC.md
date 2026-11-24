@@ -64,6 +64,27 @@ Organización individual por usuario:
 - Si la salida se solicita desde una creación todavía no guardada, «Guardar» debe validar que exista un nombre antes de registrar el proyecto; «Salir sin guardar» descarta la creación provisional.
 - Si la salida se solicita mientras se edita el nombre del proyecto, «Guardar» confirma el nuevo nombre y «Salir sin guardar» descarta ese cambio pendiente.
 
+## 3.3. Estructura de la página individual del proyecto
+
+La página individual tendrá tres espacios principales, independientes del resto de EnOrden:
+
+1. **Carpetas y tareas:** organización del trabajo y responsabilidades.
+2. **Pizarra del equipo:** espacio visual para recordatorios y anotaciones espontáneas.
+3. **Chat del proyecto:** conversación grupal entre todos los participantes.
+
+- Los tres espacios pertenecen exclusivamente al proyecto y no se conectan con las tareas normales, el calendario, las notas ni el chat general de EnOrden.
+- La página se genera desde una plantilla común de EnOrden y debe conservar una presentación consistente en teléfonos, tabletas y computadores.
+- Los controles visuales, botones, menús, ventanas, selectores y demás elementos de interfaz deben ser componentes propios de EnOrden siempre que la plataforma lo permita. No se deben utilizar controles nativos del navegador o del sistema operativo como sustitutos de componentes que puedan implementarse dentro de la aplicación.
+- Las limitaciones inevitables del sistema operativo (por ejemplo, el teclado virtual o físico utilizado para introducir texto) no deben confundirse con la interfaz de EnOrden; la aplicación debe controlar su editor, presentación, validaciones y acciones.
+
+## 3.4. Reglas generales de participación
+
+- Los permisos de lectura y escritura permiten consultar y modificar la organización de tareas del proyecto.
+- Los participantes con permiso de solo lectura pueden consultar carpetas y tareas, pero no crear, editar, mover ni eliminar tareas o carpetas.
+- Todos los participantes con acceso al proyecto, incluidos los de solo lectura, pueden leer y enviar mensajes en el chat del proyecto.
+- Todos los participantes con acceso al proyecto, incluidos los de solo lectura, pueden leer y publicar anotaciones en la pizarra compartida.
+- La participación en el chat o la pizarra no concede permisos para modificar tareas, carpetas, participantes, invitaciones ni administración del proyecto.
+
 ## 4. Duración y vencimiento
 
 Reglas iniciales:
@@ -122,6 +143,64 @@ El creador controla los permisos individuales de los demás participantes, sigui
 - La salida del creador no debe eliminar el proyecto si la administración fue transferida correctamente.
 - La lógica de administración debe ser coherente con el modelo general de roles de EnOrden.
 
+### 7.1. Carpetas y tareas internas del proyecto
+
+- Cada proyecto tendrá carpetas personalizables creadas por sus participantes con permiso de lectura y escritura.
+- En la vista principal del proyecto, las carpetas se mostrarán cerradas en una cuadrícula de tres columnas; las siguientes filas continuarán de izquierda a derecha.
+- Al seleccionar una carpeta, se abrirá una vista interior dedicada a esa carpeta. No se expandirá la carpeta dentro de la lista principal.
+- La vista interior de una carpeta tendrá un control de regreso con flecha en la zona superior izquierda para volver a la vista principal del proyecto.
+- En la vista principal, debajo de todas las carpetas se mostrarán las tareas sueltas que no pertenezcan a ninguna carpeta.
+- Una tarea creada desde la vista principal del proyecto quedará inicialmente sin carpeta. Una tarea creada desde el interior de una carpeta pertenecerá a esa carpeta.
+- Las carpetas serán de un solo nivel: no podrán contener otras carpetas.
+- Las carpetas podrán renombrarse, reordenarse y eliminarse según los permisos correspondientes.
+- Los usuarios con permiso de lectura y escritura podrán crear tareas dentro del proyecto y organizarlas en carpetas mediante arrastrar y soltar.
+- Las tareas podrán reordenarse dentro de una carpeta y trasladarse entre carpetas.
+- Una tarea podrá contener subtareas con un máximo de cinco niveles de profundidad: tarea principal y niveles N1, N2, N3 y N4.
+- Las tareas y subtareas podrán expandirse y contraerse para mostrar u ocultar su contenido.
+- Las tareas y subtareas podrán asignarse a participantes que ya tengan acceso al proyecto. La asignación identifica a la persona responsable y no cambia por sí sola sus permisos de acceso.
+- Las tareas internas y sus subtareas no se mostrarán ni modificarán en las vistas normales del módulo Tareas.
+
+### 7.2. Pizarra compartida del proyecto
+
+- Debajo de las carpetas y tareas sueltas de la vista principal existirá una pizarra blanca con apariencia de pizarra física de colegio.
+- Los participantes podrán abrir un editor propio de EnOrden, escribir mediante el teclado disponible en su dispositivo y guardar una anotación.
+- Al guardar, EnOrden reproducirá una animación que simule la escritura manual sobre la superficie de la pizarra.
+- El texto final utilizará una tipografía manuscrita y un tratamiento visual que simule escritura con plumón.
+- La superficie será una pizarra blanca lisa, de acabado plástico ligeramente brillante, sin textura verde ni apariencia de tiza.
+- Al presionar la superficie se abrirá el editor de anotaciones.
+- Cada anotación permitirá elegir un único color de plumón: negro, azul o rojo.
+- La pizarra admitirá exclusivamente texto: letras, números y signos de puntuación. No se permitirán emojis, iconos, dibujos ni otros elementos gráficos.
+- El texto publicado se mostrará con apariencia manuscrita de plumón y conservará el color elegido.
+- Las anotaciones podrán utilizarse para recordatorios, observaciones y mensajes breves del equipo.
+- Todos los participantes con acceso podrán leer y publicar anotaciones, independientemente de que tengan permiso de lectura o de lectura y escritura para las tareas.
+- En el encabezado de la pizarra, el chip «Compartida» se reemplaza por el botón «Borrar pizarra».
+- «Borrar pizarra» abre una ventana de administración que muestra todas las anotaciones y permite eliminar mensajes individualmente antes de aplicar los cambios.
+- La ventana ofrece «Cancelar», «Borrar todo» y «Guardar», además de una X circular que sobresale del borde superior derecho.
+- Pulsar fuera de la ventana no la cierra ni realiza ninguna acción. La X tiene el mismo efecto que «Cancelar» y descarta los cambios pendientes.
+- «Borrar todo» solicita confirmación antes de eliminar todas las anotaciones.
+- «Guardar» solicita confirmación y muestra una vista previa de las anotaciones que permanecerán; solo al confirmar se aplican los cambios.
+- La administración y eliminación de anotaciones conserva los colores y el orden de los mensajes restantes.
+- Cada anotación nueva guarda el nombre del usuario que la publicó y lo muestra como firma, en letras ligeramente más pequeñas, alineada en la esquina inferior derecha del mensaje.
+- La firma forma parte de la anotación y se conserva al administrar, eliminar otros mensajes o guardar cambios. Las anotaciones antiguas que no tengan autor registrado no deben atribuirse a un usuario.
+- La pizarra no crea tareas automáticamente.
+- En la etapa de prototipo, las anotaciones se guardan localmente en el dispositivo/navegador; todavía no se sincronizan entre participantes ni dispositivos. La sincronización real requiere backend compartido.
+
+### 7.3. Chat del proyecto
+
+- Cada proyecto tendrá un chat grupal propio, separado del chat general de EnOrden.
+- El chat se abrirá desde un botón flotante «Chat» ubicado en la esquina inferior derecha. La ventana se desplegará junto al botón, como un panel contextual, y podrá cerrarse desde el mismo panel o botón.
+- El botón mostrará un indicador circular en su esquina superior derecha cuando haya mensajes nuevos sin revisar; al abrir el chat, el indicador se quitará.
+- Todos los participantes con acceso al proyecto podrán leer y enviar mensajes, incluidos quienes tengan permiso de solo lectura.
+- El chat conservará su historial dentro del proyecto y no modificará tareas ni otros módulos.
+- La interfaz del chat y su editor serán componentes propios de EnOrden.
+
+### 7.4. Prototipo visual y etapas de sincronización
+
+- La primera entrega visual podrá utilizar contenido de demostración para que Vale revise la distribución, los estilos y la jerarquía de los tres espacios.
+- El contenido de demostración debe identificarse como tal y no presentarse como información real ni guardada.
+- Mientras el almacenamiento siga siendo local, las anotaciones, mensajes y tareas de prueba no representan colaboración sincronizada entre cuentas o dispositivos.
+- La sincronización real del chat, la pizarra, las tareas y sus cambios requiere almacenamiento centralizado y autorización del lado del servidor.
+
 ## 8. Almacenamiento y evolución técnica
 
 Primera versión:
@@ -152,12 +231,14 @@ Futuro:
 
 1. Página principal Compartido: listado de proyectos, orden manual, anclaje y navegación; usar datos locales/de prueba.
 2. Creación de proyectos desde Compartido y generación de páginas individuales.
-3. Plantilla visual común para las páginas de proyecto.
+3. Plantilla visual común para las páginas de proyecto, con los espacios de tareas, pizarra y chat.
 4. Modelo local de datos para proyectos y preferencias, con estructura preparada para migración.
-5. Invitaciones, solicitudes y participantes (prototipo local; sin afirmar sincronización multiusuario real).
-6. Permisos y administración.
-7. Tareas y subtareas internas del proyecto, asignaciones y vistas.
-8. Vencimiento, aviso con un día de anticipación, eliminación automática local y eliminación manual con confirmación.
-9. Pruebas de flujos, privacidad y separación respecto de Tareas.
+5. Carpetas, tareas internas, subtareas de hasta cinco niveles y asignaciones.
+6. Pizarra compartida: editor propio, anotaciones y animación de escritura.
+7. Chat del proyecto: interfaz, envío de mensajes e historial.
+8. Invitaciones, solicitudes, participantes, permisos y administración.
+9. Sincronización multiusuario mediante backend compartido y autorización del lado del servidor.
+10. Vencimiento, aviso con un día de anticipación, eliminación automática local y eliminación manual con confirmación.
+11. Pruebas de flujos, privacidad y separación respecto de Tareas.
 
 Nota de alcance: las etapas 5 a 8 tendrán limitaciones importantes mientras el almacenamiento sea exclusivamente local. Antes de ofrecerlas como colaboración real entre cuentas, deberán migrarse a backend centralizado con autenticación, permisos y tareas programadas.

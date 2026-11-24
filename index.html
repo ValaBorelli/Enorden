@@ -80,7 +80,7 @@ h2{font-size:18px;margin-bottom:13px}
 .card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .page-heading{margin-bottom:18px}
 .shared-project-section{margin:0 0 22px}.shared-project-section h2{font-size:15px;margin:0 0 8px;color:#42483f}.shared-project-create{margin:0 0 25px}.shared-project-create h2{font-size:17px;margin:0 0 11px}.shared-project-create button{width:100%;min-height:48px;border:1px solid #2459ff;border-radius:12px;background:#1748e8;color:#fff;font-weight:700;box-shadow:0 5px 18px #1748e844}.shared-project-create button:active{background:#1038bd}.shared-project-row{width:100%;display:flex;align-items:center;gap:11px;padding:13px 10px;border:0;border-bottom:1px solid var(--line);background:transparent;color:#242820;text-align:left}.shared-project-icon{font-size:20px;flex:0 0 25px}.shared-project-info{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}.shared-project-info strong{font-size:14px;overflow-wrap:anywhere}.shared-project-info small{font-size:11px;color:var(--muted)}.shared-project-arrow{font-size:23px;color:var(--muted)}.shared-project-empty{padding:10px 2px 15px;font-size:12px;color:var(--muted)}
-.shared-project-row{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.shared-project-row{touch-action:none;user-select:none;-webkit-user-select:none}
 .shared-project-action-layer{z-index:10055}
 .shared-project-action-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
 .shared-project-action-options button{min-height:48px;border-radius:10px;border:1px solid #1755ed;background:#1755ed;color:#fff;font-weight:700}
@@ -213,7 +213,101 @@ h2{font-size:18px;margin-bottom:13px}
 
 .shared-project-app{background:#080b13;min-height:100vh}.shared-project-mode{background:#080b13}.shared-project-app main{padding:0;background:#080b13;color:#f5f7ff}.shared-project-app .shared-project-workspace{min-height:calc(100vh - 160px);background:radial-gradient(ellipse at 50% 0%,#101d43 0%,#080b13 48%,#05070c 100%);margin:0;padding:0}.shared-project-app .bottom-nav{background:#fffaf1}.shared-project-app .fab{display:none!important}.bottom-space{height:75px}
 /* Las páginas de proyectos compartidos conservan su identidad visual, sin heredar los temas globales. */
+.shared-project-app .shared-project-workspace{position:relative}
+.shared-project-workspace .shared-project-menu-panel{position:absolute;top:70px;right:17px;z-index:120;margin:0}
 .shared-project-app .shared-project-workspace{--bg:#080b13;--surface:#101d2d;--surface2:#1b2b40;--green:#080b13;--green2:#1755ed;--text:#f5f7ff;--muted:#aebbd0;--line:#26364b;--accent:#8ba9ff;--header-foreground:#f5f7ff;--header-muted:#aebbd0}
+
+/* Plantilla visual inicial del espacio de trabajo de cada proyecto compartido. */
+.app.shared-project-app{max-width:1100px}
+.shared-project-workspace{padding-bottom:34px!important}
+.shared-project-workspace .project-content{padding:4px 17px 30px;display:grid;gap:17px}
+.shared-project-workspace .project-title-back{width:38px;height:38px;display:grid;place-items:center;flex:0 0 38px;border:1px solid #30425c;border-radius:11px;background:#101d30;color:#eaf0fa;font-size:22px}.shared-project-workspace .project-folder-title{flex:1;min-width:0;color:#f5f7ff;font-size:18px;font-weight:750}.shared-project-workspace .project-title-back~.shared-project-title-main{display:none}
+.shared-project-workspace .project-folder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.shared-project-workspace .project-folder-card{display:flex;min-width:0;min-height:104px;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:12px 7px;border:1px solid #2a3b55;border-radius:13px;background:linear-gradient(145deg,#14233a,#0e192a);color:#f5f7ff;text-align:center;cursor:pointer}
+.shared-project-workspace .project-folder-card:active{transform:scale(.98)}
+.shared-project-workspace .project-folder-card strong{max-width:100%;overflow-wrap:anywhere;font-size:12px;line-height:1.25}
+.shared-project-workspace .project-folder-card small{font-size:10px;color:#9aacc6}
+.shared-project-workspace .project-folder-art{position:relative;width:42px;height:31px;display:block;border-radius:5px;background:linear-gradient(145deg,#385b89,#203c65);border:1px solid #7890b5;box-shadow:inset 0 1px 2px #ffffff38,0 3px 7px #0004}
+.shared-project-workspace .project-folder-art:before{content:'';position:absolute;left:2px;top:-6px;width:17px;height:7px;border:1px solid #7890b5;border-bottom:0;border-radius:4px 4px 0 0;background:#385b89}
+.shared-project-workspace .project-folder-detail-tasks,.shared-project-workspace .project-loose-tasks{display:grid;gap:2px}
+.shared-project-workspace .project-back-button{display:inline-flex;align-items:center;gap:8px;margin:5px 17px 2px;padding:8px 11px;border:1px solid #30425c;border-radius:10px;background:#101d30;color:#eaf0fa;font-size:12px;font-weight:600}
+.shared-project-workspace .project-back-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.shared-project-workspace .project-board{position:relative;min-height:220px;padding:18px;border:1px solid #d5dbe1;border-radius:13px;background:linear-gradient(155deg,#fff 0%,#fff 72%,#f8fafb 100%);box-shadow:inset 0 2px 5px #ffffff,inset 0 -2px 7px #dce2e8aa,0 7px 18px #0003;color:#20252b;overflow:hidden}
+.shared-project-workspace .project-board:before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,#ffffffaa 0%,transparent 23%,transparent 78%,#e8edf233 100%)}
+.shared-project-workspace .project-board-label{position:relative;color:#7b8490;font-size:10px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:13px}
+.shared-project-workspace .project-board-surface{position:relative;display:flex;flex-direction:column;gap:12px;width:100%;min-height:150px;padding:0;border:0;background:transparent;text-align:left;cursor:pointer}
+@font-face{font-family:'EnOrden Pizarra';src:url('/assets/fonts/DancingScript-Variable.ttf') format('truetype');font-style:normal;font-weight:400 700;font-display:swap}
+.shared-project-workspace .project-board-note{display:block;margin:0;font-family:'EnOrden Pizarra',cursive;font-size:clamp(15px,2.5vw,19px);font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+.shared-project-workspace .project-board-note.black{color:#171717}.shared-project-workspace .project-board-note.blue{color:#1557b8}.shared-project-workspace .project-board-note.red{color:#c52c32}
+.shared-project-workspace .project-board-empty{display:grid;place-items:center;min-height:145px;color:#7c8793;font-size:13px;text-align:center}
+.shared-project-workspace .project-board-hint{position:relative;margin:12px 0 0;color:#87919d;font-size:11px}
+.shared-project-workspace .project-board-clear-button{flex:0 0 auto;padding:8px 12px;border:1px solid #8b3540;border-radius:10px;background:#321b27;color:#ffdce0;font-size:11px;font-weight:750}
+.shared-project-workspace .project-board-entry{display:flex;flex-direction:column;align-items:stretch;min-width:0;gap:2px}.shared-project-workspace .project-board-signature{align-self:flex-end;max-width:100%;overflow-wrap:anywhere;margin:0 3px 0 0;color:#59616b;font-family:inherit;font-size:11px;font-weight:600;line-height:1.25;text-align:right}.shared-project-board-manage-note .project-board-entry{flex:1;min-width:0}.shared-project-board-manage-preview .project-board-entry{padding:2px 0}
+.shared-project-board-manage-modal{position:relative;width:min(100%,520px);max-height:min(82vh,760px);display:flex;flex-direction:column;overflow:visible}
+.shared-project-board-manage-modal>header{padding-right:34px}
+.shared-project-board-manage-x{position:absolute!important;right:-13px;top:-15px;z-index:3;width:38px;height:38px;border:2px solid #fff!important;border-radius:50%!important;background:#17263b!important;color:#fff!important;box-shadow:0 4px 12px #0004;font-size:25px!important}
+.shared-project-board-manage-intro{margin:0 0 12px;color:#667085;font-size:12px;line-height:1.45}
+.shared-project-board-manage-list{display:grid;gap:8px;overflow:auto;min-height:70px;max-height:42vh;padding:2px 3px 8px}
+.shared-project-board-manage-note{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px;border:1px solid #dce1e8;border-radius:11px;background:#fff}
+.shared-project-board-manage-note .project-board-note{flex:1;min-width:0}
+.shared-project-board-note-remove{flex:0 0 auto;padding:7px 9px;border:1px solid #e3b7bc;border-radius:8px;background:#fff4f5;color:#a52e3b;font-size:11px;font-weight:700}
+.shared-project-board-manage-empty{padding:18px 8px;text-align:center;color:#7c8793;font-size:13px}
+.shared-project-board-manage-modal>footer,.shared-project-board-manage-confirm>footer{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.shared-project-board-manage-modal>footer button,.shared-project-board-manage-confirm>footer button{flex:1;min-width:0;padding:11px 8px;white-space:normal}
+.shared-project-board-manage-confirm{max-height:75vh;overflow:hidden}
+.shared-project-board-manage-preview{max-height:30vh;overflow:auto;padding:10px;border:1px solid #dce1e8;border-radius:10px;background:#fff;display:grid;gap:8px}
+.shared-project-board-modal{width:min(100%,460px)}
+.shared-project-board-modal textarea{display:block;width:100%;min-height:125px;resize:vertical;padding:12px;border:1px solid #cbd2df;border-radius:10px;background:#fff;color:#20242b;font:inherit;font-size:15px;line-height:1.5;outline:none}
+.shared-project-board-modal textarea:focus{border-color:#2463ff;box-shadow:0 0 0 3px #2463ff22}
+.shared-project-board-colors{display:flex;gap:9px;margin-top:15px;flex-wrap:wrap}
+.shared-project-board-color{display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 12px;border:1px solid #d1d7df;border-radius:10px;background:#fff;color:#303746;font-size:12px;font-weight:700}
+.shared-project-board-color:before{content:'';width:14px;height:14px;border-radius:50%;background:var(--marker)}
+.shared-project-board-color[data-color="black"]{--marker:#171717}.shared-project-board-color[data-color="blue"]{--marker:#1557b8}.shared-project-board-color[data-color="red"]{--marker:#c52c32}
+.shared-project-board-color.active{border-color:#1755ed;box-shadow:0 0 0 2px #1755ed22}
+.shared-project-board-rule{margin:9px 0 0;color:#707987;font-size:11px;line-height:1.4}
+.shared-project-workspace .project-chat-fab{position:fixed;z-index:10020;right:18px;bottom:calc(88px + env(safe-area-inset-bottom,0px));min-width:76px;height:48px;padding:0 19px;border:1px solid #4675d1;border-radius:15px;background:linear-gradient(145deg,#2868e8,#1748b0);box-shadow:0 8px 22px #0006;color:#fff;font-size:14px;font-weight:750}
+.shared-project-workspace .project-chat-unread{position:absolute;right:-3px;top:-4px;width:12px;height:12px;border:2px solid #080b13;border-radius:50%;background:#ff4d5d}
+.shared-project-workspace .project-chat-popover{position:fixed;z-index:10019;right:18px;bottom:calc(145px + env(safe-area-inset-bottom,0px));width:min(360px,calc(100vw - 30px));max-height:min(480px,calc(100vh - 190px));display:flex;flex-direction:column;gap:12px;padding:13px;border:1px solid #30425c;border-radius:17px;background:#0d1828;box-shadow:0 15px 40px #0009;color:#f5f7ff;overflow:hidden;transform-origin:bottom right;animation:projectChatOpen .18s ease-out}
+.shared-project-workspace .project-chat-popover>header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid #26364b}
+.shared-project-workspace .project-chat-popover>header strong{display:block;font-size:14px}
+.shared-project-workspace .project-chat-popover>header small{display:block;margin-top:3px;color:#91a4c0;font-size:10px}
+.shared-project-workspace .project-chat-popover>header button{width:29px;height:29px;border:1px solid #30425c;border-radius:9px;background:#17263b;color:#eaf0fa;font-size:20px}
+.shared-project-workspace .project-chat-popover .project-chat-messages{overflow:auto;min-height:100px;padding:2px 1px}
+.shared-project-workspace .project-chat-popover .project-chat-compose{margin-top:auto}
+@keyframes projectChatOpen{from{opacity:0;transform:translateY(9px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(min-width:760px){.shared-project-workspace .project-content{max-width:900px;margin:0 auto;grid-template-columns:1fr}.shared-project-workspace .project-board-section{height:auto}}
+.shared-project-workspace .project-section{background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;min-width:0}
+.shared-project-workspace .project-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.shared-project-workspace .project-section-heading h2{font-size:16px;line-height:1.25;margin:0;color:#f5f7ff}
+.shared-project-workspace .project-section-kicker{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#8ea3c4;margin-bottom:5px}
+.shared-project-workspace .project-count{font-size:11px;color:#aebbd0;background:#1b2b40;border:1px solid #30425c;border-radius:20px;padding:5px 9px;white-space:nowrap}
+.shared-project-workspace .project-folder-list{display:grid;gap:9px}
+.shared-project-workspace .project-folder{border:1px solid #2a3b55;background:#101c2d;border-radius:12px;overflow:hidden}
+.shared-project-workspace .project-folder-toggle{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:11px 12px;border:0;background:transparent;color:#f5f7ff;text-align:left}
+.shared-project-workspace .project-folder-icon{position:relative;width:32px;height:32px;display:block;border-radius:9px;background:#1b2d49;flex:0 0 32px}.shared-project-workspace .project-folder-icon:before{content:'';position:absolute;left:7px;top:10px;width:18px;height:12px;border:1.6px solid #b9c9e3;border-radius:2px;background:#29466d}.shared-project-workspace .project-folder-icon:after{content:'';position:absolute;left:8px;top:7px;width:8px;height:4px;border:1.5px solid #b9c9e3;border-bottom:0;border-radius:2px 2px 0 0}
+.shared-project-workspace .project-folder-name{flex:1;min-width:0;font-size:13px;font-weight:700}
+.shared-project-workspace .project-folder-meta{font-size:10px;color:#9aacc6;white-space:nowrap}
+.shared-project-workspace .project-folder-chevron{font-size:16px;color:#9aacc6;transition:transform .2s}
+.shared-project-workspace .project-folder-toggle[aria-expanded="true"] .project-folder-chevron{transform:rotate(90deg)}
+.shared-project-workspace .project-folder-tasks{padding:0 12px 10px 53px;display:grid;gap:7px}
+.shared-project-workspace .project-task-preview{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-top:1px solid #26364b;color:#e8edf7;font-size:12px;line-height:1.4}
+.shared-project-workspace .project-task-bullet{width:15px;height:15px;flex:0 0 15px;border:1.5px solid #8297b8;border-radius:5px;margin-top:1px}
+.shared-project-workspace .project-task-preview small{display:block;color:#8fa3c1;font-size:10px;margin-top:3px}
+/* Se eliminó la versión antigua de la pizarra verde; se conservan los estilos blancos definidos arriba. */
+.shared-project-workspace .project-chat{display:grid;gap:10px}
+.shared-project-workspace .project-chat-messages{display:grid;gap:10px}
+.shared-project-workspace .project-chat-message{display:flex;align-items:flex-start;gap:8px;min-width:0}
+.shared-project-workspace .project-chat-avatar{width:29px;height:29px;display:grid;place-items:center;flex:0 0 29px;border-radius:50%;background:#243b60;color:#dce8ff;font-size:11px;font-weight:700}
+.shared-project-workspace .project-chat-bubble{min-width:0;max-width:88%;padding:9px 11px;border:1px solid #2b3e5b;border-radius:4px 13px 13px 13px;background:#14233a;color:#eaf0fa;font-size:12px;line-height:1.45}
+.shared-project-workspace .project-chat-author{font-size:10px;color:#9db4d8;font-weight:700;margin-bottom:3px}
+.shared-project-workspace .project-chat-time{font-size:9px;color:#8498b7;margin-top:5px;text-align:right}
+.shared-project-workspace .project-chat-message.own{justify-content:flex-end}
+.shared-project-workspace .project-chat-message.own .project-chat-bubble{background:#173c78;border-color:#2858a1;border-radius:13px 4px 13px 13px}
+.shared-project-workspace .project-chat-compose{display:flex;align-items:center;gap:8px;margin-top:4px;padding:9px;border:1px solid #2a3d59;border-radius:12px;background:#0b1422}
+.shared-project-workspace .project-chat-compose-placeholder{flex:1;min-width:0;color:#8498b7;font-size:12px}
+.shared-project-workspace .project-chat-send{width:35px;height:35px;display:grid;place-items:center;border:1px solid #315fb0;border-radius:10px;background:#1755ed;color:#fff;padding:8px}.shared-project-workspace .project-chat-send svg{width:18px;height:18px}
+.shared-project-workspace .project-design-note{font-size:10px;color:#7f91ac;text-align:center;margin:0}
+@media(min-width:760px){.shared-project-workspace .project-content{max-width:900px;margin:0 auto;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:start}.shared-project-workspace .project-tasks-section{grid-column:1/-1}.shared-project-workspace .project-board-section,.shared-project-workspace .project-chat-section{height:100%}}
 .plain-heading{font-size:16px;font-weight:700;margin:23px 0 8px;color:#242820}
 .home-code{font-size:25px;font-weight:800;letter-spacing:2px;color:#39ed63;
  background:#1c3225;border-radius:12px;padding:15px;text-align:center;overflow-wrap:anywhere}
@@ -274,6 +368,27 @@ h2{font-size:18px;margin-bottom:13px}
 /* Selector de hora en formato rueda */
 .time-display-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:#242820;font-size:15px;font-weight:700;letter-spacing:1px}.time-display-icon{font-size:23px;line-height:1;color:#242820}.time-display-button #eventTimeText{color:#242820}
 .time-picker-backdrop{z-index:55}
+.analog-time-backdrop{z-index:10095;display:none;align-items:center;justify-content:center;padding:16px;background:#0008}
+.analog-time-backdrop.show{display:flex}
+.analog-time-modal{width:min(370px,100%);padding:22px 20px 18px;border-radius:24px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0005}
+.analog-time-modal h2{text-align:center;margin:0 0 14px;font-size:19px}
+.analog-time-preview{display:flex;flex-direction:column;align-items:center;gap:3px;margin:0 0 14px}
+.analog-time-preview strong{font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.analog-time-preview span{font-size:12px;color:var(--muted)}
+.analog-time-clock-wrap{display:flex;justify-content:center}
+.analog-time-clock{position:relative;width:min(280px,78vw);height:min(280px,78vw);max-width:280px;max-height:280px;border-radius:50%;background:radial-gradient(ellipse at 32% 24%,#555 0%,#292929 38%,#080808 76%,#3b3b3b 100%);border:1px solid #000;touch-action:pan-y;user-select:none;box-shadow:inset 0 1px 3px #ffffff55,inset 0 -3px 7px #000b}
+.analog-time-clock:before{content:"";position:absolute;inset:12px;border:1px solid #626262;border-radius:50%;background:radial-gradient(ellipse at 30% 20%,color-mix(in srgb,var(--surface2) 78%,white) 0%,var(--surface2) 42%,color-mix(in srgb,var(--surface2) 72%,black) 100%);box-shadow:inset 0 2px 6px #ffffff66,inset 0 -5px 10px #0005,0 0 0 1px #0005;pointer-events:none}
+.analog-time-numbers{position:absolute;inset:0}
+.analog-time-number{position:absolute;display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-17px 0 0 -17px;border:0;border-radius:50%;background:transparent;color:#202020;font-size:14px;font-weight:600;z-index:2}
+.analog-time-number.minute-tick{width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#333;opacity:.72;font-size:0}
+.analog-time-number.minute-tick.major{width:30px;height:30px;margin:-15px 0 0 -15px;background:transparent;opacity:1;font-size:11px}
+.analog-time-number.minute-tick.selected{width:24px;height:24px;margin:-12px 0 0 -12px;background:linear-gradient(145deg,#555555,#202020);color:#fff;box-shadow:0 2px 8px #0006,inset 0 1px 1px #ffffff55;opacity:1}
+.analog-time-number.selected{background:linear-gradient(145deg,#555555,#202020);color:#fff;box-shadow:0 2px 8px #0006,inset 0 1px 1px #ffffff55}
+.analog-time-hand{position:absolute;left:50%;top:50%;width:2px;height:38%;background:#252525;transform-origin:50% 0;transform:rotate(0deg);z-index:1;border-radius:3px}
+.analog-time-center{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px;border-radius:50%;background:#252525;z-index:3;box-shadow:0 1px 3px #0008}
+.analog-time-actions{display:flex;gap:10px;margin-top:18px}
+.analog-time-actions button{flex:1}
+
 .time-picker-modal{width:min(360px,100%);padding:20px;border-radius:22px;background:var(--surface);color:var(--text);box-shadow:0 18px 55px #0004}
 .time-picker-caption{font-size:12px;color:var(--muted);text-align:center;margin:2px 0 16px}
 .time-wheel-group{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
@@ -283,6 +398,34 @@ h2{font-size:18px;margin-bottom:13px}
 .time-wheel-option{display:block;width:100%;height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:17px;font-weight:500;scroll-snap-align:center}
 .time-wheel-option.selected{background:var(--surface);color:var(--text);font-size:22px;font-weight:800;box-shadow:0 1px 5px #0001}
 .time-wheel-separator{font-size:25px;font-weight:800;color:var(--text);padding-bottom:4px}
+.wheel-time-backdrop{z-index:10096}
+.wheel-time-picker-modal{
+ border:2px solid transparent;
+ background:linear-gradient(145deg,var(--surface),var(--surface2) 58%,var(--surface)) padding-box,linear-gradient(145deg,var(--muted),var(--line) 30%,var(--surface) 52%,var(--muted)) border-box;
+ color:var(--text);
+ box-shadow:0 18px 55px #0005,0 5px 14px #0002,inset 0 1px 0 #ffffff66,inset 0 -2px 5px #00000012;
+}
+.wheel-time-picker-modal .time-picker-caption,.wheel-time-picker-modal .time-wheel-label{color:var(--muted)}
+.wheel-time-preview{margin:0 auto 15px;text-align:center;font-size:32px;font-weight:800;letter-spacing:2px;font-variant-numeric:tabular-nums;color:var(--text);text-shadow:0 1px 0 #ffffff66,0 2px 4px #0002}
+.wheel-time-group{gap:8px}
+.wheel-time-wheel{
+ border:2px solid transparent;
+ border-radius:15px;
+ background:
+  linear-gradient(155deg,#ffffff55 0%,transparent 24%,transparent 68%,#00000012 100%) padding-box,
+  linear-gradient(145deg,var(--surface2),var(--surface) 48%,var(--surface2)) padding-box,
+  linear-gradient(145deg,var(--muted),var(--line) 35%,var(--surface) 55%,var(--muted)) border-box;
+ box-shadow:inset 0 2px 5px #0002,inset 0 -2px 5px #ffffff55,0 4px 10px #0002,0 1px 2px #0002;
+}
+.wheel-time-wheel .time-wheel-option{color:var(--muted);text-shadow:0 1px 0 #ffffff44}
+.wheel-time-wheel .time-wheel-option.selected{
+ background:linear-gradient(155deg,#ffffff66 0%,transparent 38%),linear-gradient(145deg,var(--surface),var(--surface2));
+ color:var(--text);
+ border:1px solid var(--line);
+ box-shadow:0 3px 9px #0003,inset 0 1px 2px #ffffff99,inset 0 -2px 3px #00000012;
+ text-shadow:0 1px 0 #ffffff66;
+}
+.wheel-time-group .time-wheel-separator{color:var(--text);text-shadow:0 1px 0 #ffffff66,0 2px 4px #0002}
 .time-picker-actions{display:flex;gap:9px;margin-top:18px}
 .time-picker-actions button{flex:1;min-height:43px}
 
@@ -680,6 +823,47 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 #anniversaryNotice .close-row h2{text-align:center}
 #anniversaryNotice .modal-close-button{position:absolute;top:-13px;right:-13px;width:38px;height:38px;min-width:38px;flex:0 0 38px;padding:0;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--text)}
 
+
+/* RUTINAS */
+.routines-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 0}
+.routines-list{display:grid;gap:12px}
+.routine-card{padding:16px;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow,0 3px 12px rgba(0,0,0,.04));user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.routine-card.is-active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.routine-card-head{display:flex;align-items:center;gap:12px}
+.routine-folder{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--surface2);font-size:22px;flex:none;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.routine-card-main{flex:1;min-width:0}
+.routine-card-main strong{display:block;overflow-wrap:anywhere}
+.routine-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.routine-card-actions{display:flex;align-items:center;gap:7px}
+.routine-toggle{width:42px;height:25px;border:0;border-radius:20px;background:var(--line);position:relative;cursor:pointer;flex:none}
+.routine-toggle:after{content:"";position:absolute;width:19px;height:19px;top:3px;left:3px;border-radius:50%;background:white;transition:transform .18s}
+.routine-toggle[aria-pressed="true"]{background:var(--accent)}
+.routine-toggle[aria-pressed="true"]:after{transform:translateX(17px)}
+.routine-tasks{margin:14px 0 0 54px;border-top:1px solid var(--line);padding-top:10px}
+.routine-task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.routine-task-row:last-child{border-bottom:0}
+.routine-task-grip{color:var(--muted);font-size:18px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;padding:5px 3px}
+.routine-task-info{flex:1;min-width:0}
+.routine-task-info strong{display:block;overflow-wrap:anywhere}
+.routine-task-info small{color:var(--muted)}
+.routine-task-time{flex:0 0 auto;min-width:48px;text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent)}
+.routine-empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+.routine-schedule-box{padding:13px;border:1px solid var(--line);border-radius:14px;background:var(--surface2);margin:12px 0}
+.routine-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.routine-form-grid label,.routine-field{display:grid;gap:6px;font-size:13px;font-weight:600}
+.routine-form-grid input,.routine-field input,.routine-field select{width:100%;min-width:0}
+.routine-weekdays{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.routine-weekdays label{display:flex;align-items:center;gap:4px;padding:7px 9px;border:1px solid var(--line);border-radius:10px;font-size:12px}
+.routine-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.routine-running-banner{padding:12px 14px;border-radius:14px;background:var(--surface2);margin:12px 0}
+.routine-dragging{opacity:.45;border:1px dashed var(--accent)}
+.routine-date-pair{grid-template-columns:1fr 1fr}
+.routine-preview{margin-top:14px;padding:11px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.routine-preview p{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+.routine-weekdays label{user-select:none}
+@media(max-width:520px){.routine-date-pair{grid-template-columns:1fr 1fr}.routine-date-pair label{min-width:0}.routine-date-pair input{font-size:12px}}
+@media(max-width:520px){.routine-card{padding:13px}.routine-tasks{margin-left:8px}.routine-form-grid{grid-template-columns:1fr}.routine-card-actions{gap:4px}}
+
 </style>
 </head>
 <body>
@@ -714,19 +898,10 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
   <div id="modalBody"></div>
  </div>
 </div>
-<div class="modal-backdrop time-picker-backdrop" id="timePickerBackdrop" onclick="if(event.target===this)closeTimePicker(false)">
- <div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="timePickerTitle">
-  <h2 id="timePickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar hora</h2>
-  <p class="time-picker-caption">Formato de 24 horas</p>
-  <div class="time-wheel-group">
-   <div><div class="time-wheel-label">Hora</div><div class="time-wheel" id="timeHourWheel" onscroll="handleTimeWheelScroll('hour')"></div></div>
-   <div class="time-wheel-separator">:</div>
-   <div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="timeMinuteWheel" onscroll="handleTimeWheelScroll('minute')"></div></div>
-  </div>
-  <div class="time-picker-actions"><button class="secondary-btn" onclick="closeTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeTimePicker(true)">Aceptar</button></div>
- </div>
-</div>
+<div class="modal-backdrop analog-time-backdrop hidden" id="analogTimePickerBackdrop" onclick="if(event.target===this)closeAnalogTimePicker(false)"><div class="analog-time-modal" role="dialog" aria-modal="true" aria-labelledby="analogTimePickerTitle"><h2 id="analogTimePickerTitle">Reloj Analógico</h2><div class="analog-time-preview"><strong id="analogTimePreview">07:00</strong><span id="analogTimeStepLabel">Selecciona la hora</span></div><div class="analog-time-clock-wrap"><div class="analog-time-clock" id="analogTimeClock" data-step="hour" onpointerup="handleAnalogClockPointer(event)"><div class="analog-time-hand" id="analogTimeHand"></div><div class="analog-time-center"></div><div class="analog-time-numbers" id="analogTimeNumbers"></div></div></div><div class="analog-time-actions"><button type="button" class="secondary-btn" onclick="closeAnalogTimePicker(false)">Cancelar</button><button type="button" class="primary-btn" onclick="closeAnalogTimePicker(true)">Aceptar</button></div></div></div>
+<div class="modal-backdrop time-picker-backdrop wheel-time-backdrop" id="wheelTimePickerBackdrop"><div class="time-picker-modal wheel-time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="wheelTimePickerTitle"><h2 id="wheelTimePickerTitle" style="text-align:center;margin:0;font-size:19px">Reloj Rueda</h2><p class="time-picker-caption">Desliza las ruedas para elegir la hora y los minutos</p><div class="wheel-time-preview" id="wheelTimePreview">07:00</div><div class="time-wheel-group wheel-time-group"><div><div class="time-wheel-label">Horas</div><div class="time-wheel wheel-time-wheel" id="wheelTimeHourWheel" onscroll="handleWheelTimeScroll('hour')"></div></div><div class="time-wheel-separator">:</div><div><div class="time-wheel-label">Minutos</div><div class="time-wheel wheel-time-wheel" id="wheelTimeMinuteWheel" onscroll="handleWheelTimeScroll('minute')"></div></div></div><div class="time-picker-actions"><button class="secondary-btn" onclick="closeWheelTimePicker(false)">Cancelar</button><button class="primary-btn" onclick="closeWheelTimePicker(true)">Aceptar</button></div></div></div>
 <div class="modal-backdrop time-picker-backdrop" id="alertNumberPickerBackdrop" onclick="if(event.target===this)closeAlertNumberPicker(false)"><div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="alertNumberPickerTitle"><h2 id="alertNumberPickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar cantidad</h2><p class="time-picker-caption">Desliza la rueda para elegir el número</p><div class="alert-number-wheel" id="alertNumberWheel" onscroll="handleAlertNumberWheelScroll()"></div><div class="time-picker-actions"><button class="secondary-btn" onclick="closeAlertNumberPicker(false)">Cancelar</button><button class="primary-btn" onclick="closeAlertNumberPicker(true)">Aceptar</button></div></div></div>
+<div class="modal-backdrop time-picker-backdrop" id="routineDurationPickerBackdrop" onclick="if(event.target===this)closeRoutineDurationPicker(false)"><div class="time-picker-modal" role="dialog" aria-modal="true" aria-labelledby="routineDurationPickerTitle"><h2 id="routineDurationPickerTitle" style="text-align:center;margin:0;font-size:19px">Seleccionar duración</h2><p class="time-picker-caption">Desliza las ruedas para elegir horas y minutos</p><div class="time-wheel-group"><div><div class="time-wheel-label">Horas</div><div class="time-wheel" id="routineDurationHourWheel" onscroll="handleRoutineDurationWheelScroll('hour')"></div></div><div class="time-wheel-separator">:</div><div><div class="time-wheel-label">Minutos</div><div class="time-wheel" id="routineDurationMinuteWheel" onscroll="handleRoutineDurationWheelScroll('minute')"></div></div></div><div class="time-picker-actions"><button class="secondary-btn" onclick="closeRoutineDurationPicker(false)">Cancelar</button><button class="primary-btn" onclick="closeRoutineDurationPicker(true)">Aceptar</button></div></div></div>
 <div class="modal-backdrop anniversary-notice-backdrop" id="anniversaryNotice">
  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="anniversaryNoticeTitle">
   <div class="close-row"><div class="modal-heading"><h2 id="anniversaryNoticeTitle">Aviso sobre aniversarios</h2></div><button class="small-btn modal-close-button" aria-label="Cerrar aviso" title="Cerrar" onclick="closeAnniversaryNotice()">✕</button></div>
@@ -759,24 +934,20 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
  * crean tareas normales. Consultar COMPARTIDO_SPEC.md antes de ampliar reglas.
  */
 
+/* Orden fijo de módulos para la barra inferior y la sección «Mis módulos» de Inicio.
+ * No se permite reordenar ni guardar preferencias de orden por dispositivo.
+ */
 const modules=[
  {id:'calendario',name:'Calendario',emoji:'📅'},
  {id:'tareas',name:'Tareas',emoji:'✓'},
  {id:'listas',name:'Listas',emoji:'🛒'},
- {id:'finanzas',name:'Finanzas',emoji:'💰'},
  {id:'rutinas',name:'Rutinas',emoji:'🔄'},
+ {id:'finanzas',name:'Finanzas',emoji:'💰'},
  {id:'notas',name:'Notas',emoji:'📝'},
  {id:'entretenimiento',name:'Entretención',emoji:'🎬'},
  {id:'mapa',name:'Mapa',emoji:'📍'},
  {id:'chat',name:'Chat',emoji:'💬'}
 ];
-let order=JSON.parse(localStorage.getItem('enorden_order')||'null');
-if(!Array.isArray(order))order=modules.map(m=>m.id);
-else{
- order=order.filter((id,index)=>modules.some(m=>m.id===id)&&order.indexOf(id)===index);
- if(!order.includes('entretenimiento')){const notasIndex=order.indexOf('notas');if(notasIndex>=0)order.splice(notasIndex+1,0,'entretenimiento');else order.push('entretenimiento');}
- modules.forEach(m=>{if(!order.includes(m.id))order.push(m.id);});
-}
 let current='inicio',calendarView='Mes',selectedDate=new Date();
 
 let entertainmentSetupOpen=false,entertainmentReady=false,entertainmentFilters=null;
@@ -790,6 +961,10 @@ let taskView='today';
 let taskSidebarCollapsed=false;
 let activeSharedProjectId=null;
 let sharedProjectPanelOpen=false;
+let sharedProjectActiveFolder=null;
+let sharedProjectChatOpen=false,sharedProjectChatUnread=true;
+let sharedProjectBoardEditorOpen=false,sharedProjectBoardColor='black';
+let sharedProjectBoardManageOpen=false,sharedProjectBoardManageDraft=[],sharedProjectBoardManageConfirm=null;
 let sharedProjectDraft=null;
 let sharedProjectCancelConfirm=false;
 let sharedProjectExitOpen=false,sharedProjectExitTarget=null;
@@ -811,6 +986,8 @@ let headerPanelReturn='inicio';
 let tasks=JSON.parse(localStorage.getItem('enorden_tasks')||'[]');
 let products=JSON.parse(localStorage.getItem('enorden_products')||'[]');
 let events=JSON.parse(localStorage.getItem('enorden_events')||'[]').map(ev=>ev.taskId!=null?{...ev,type:'event_task'}:ev.type==='special'?{...ev,type:'normal'}:ev);
+let routines=(()=>{try{const value=JSON.parse(localStorage.getItem('enorden_routines')||'[]');return Array.isArray(value)?value:[]}catch{return []}})();
+let routineExpandedId=null,routineSuppressClick=false,routineTaskSuppressClick=false,routineEditorId=null,routineTaskEditorId=null,routineTaskParentId=null,routineCardDrag=null,routineDragId=null,routineExecutionTimers=[];
 let editingEventId=null;
 let eventPrefill=null;
 let eventCreationTime=null;
@@ -896,13 +1073,13 @@ function save(){
  localStorage.setItem('enorden_tasks',JSON.stringify(tasks));
  localStorage.setItem('enorden_products',JSON.stringify(products));
  localStorage.setItem('enorden_events',JSON.stringify(events));
- localStorage.setItem('enorden_order',JSON.stringify(order));
+
 }
 if(pruneExpiredCompletedTasks())save();
 function escapeHTML(s){
  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-function orderedModules(){return order.map(id=>modules.find(m=>m.id===id)).filter(Boolean)}
+function orderedModules(){return modules}
 function toggleHeaderPanel(id){
  if(current===id){
   const back=headerPanelReturn||'inicio';
@@ -932,16 +1109,16 @@ function renderNav(){
  document.querySelector('.app').classList.toggle('shared-project-app',current==='tareas'&&activeSharedProjectId!==null);
  document.body.classList.toggle('shared-project-mode',current==='tareas'&&activeSharedProjectId!==null);
  fab.classList.toggle('hidden',!['calendario','tareas','listas'].includes(current)||(current==='tareas'&&(taskView==='shared'||activeSharedProjectId!==null)));
- enableReorder(nav);
+
 }
 const languageText={
  en:{
  'Configuración':'Settings','Administra tu experiencia en Enorden.':'Manage your Enorden experience.','Personalizar':'Customize','Idioma':'Language','Apariencia':'Appearance','Natural':'Natural','Nocturno':'Night','Colorido':'Colorful','Ejecutivo':'Executive','Selecciona el estilo visual que prefieras. Puedes cambiarlo cuando quieras.':'Choose the visual style you prefer. You can change it whenever you like.','Seleccionado':'Selected','Fondo':'Background','Encabezados':'Headings','Tarjetas':'Cards','Texto principal':'Main text','Texto secundario':'Secondary text','Acentos':'Accents','Selecciona el idioma de tu aplicación':'Choose your app language','Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.':'Your preference is saved on this device. In this prototype, it does not sync across devices.',
- 'Mi Perfil':'My Profile','Seguridad y dispositivos':'Security and devices','Integrantes del hogar':'Household members','Ayuda':'Help','Dispositivo actual':'Current device','Este es el dispositivo fijado como hogar':'This is the household device','Exigir PIN al entrar a Finanzas para todos los integrantes':'Require a PIN to enter Finance for all members','Tiempo antes del bloqueo personal de Finanzas':'Personal Finance lock timeout','Inmediatamente':'Immediately','1 minuto':'1 minute','5 minutos':'5 minutes','15 minutos':'15 minutes','30 minutos':'30 minutes','Configurar o cambiar PIN de Finanzas':'Set or change Finance PIN','Imagen de Perfil':'Profile picture','Nombre de Usuario':'Username','Contacto':'Contact','Administrador':'Administrator','Tú':'You','Este módulo se desarrollará en su siguiente etapa.':'This module will be developed in a later stage.','Tu espacio dentro de Enorden.':'Your space in Enorden.','Inicio':'Home','Calendario':'Calendar','Tareas':'Tasks','Listas':'Lists','Finanzas':'Finance','Rutinas':'Routines','Notas':'Notes','Mapa':'Map','Mis módulos':'My modules','Este es tu resumen de hoy.':'Here is your summary for today.','Buscar en tu hogar...':'Search your home...','Tareas pendientes':'Pending tasks','Eventos pendientes':'Upcoming events','Compras pendientes':'Pending shopping','Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.':'Swipe horizontally to see all available modules. You can customize their order.','Notificaciones':'Notifications','Aquí se reúnen los avisos de todos tus módulos':'Notifications from all your modules appear here.','Agregar':'Add','Cancelar ✕':'Cancel ✕','Guardar':'Save','Guardar tarea':'Save task','Nueva tarea':'New task','Nombre de la tarea':'Task name','¿Qué necesitas hacer?':'What do you need to do?','Agregar producto':'Add product','Producto':'Product','Sección':'Section','Nombre del evento':'Event name','Nuevo evento':'New event','¿Qué tipo de evento quieres crear?':'What type of event would you like to create?','Selecciona un tipo de evento':'Select an event type','Evento normal':'Regular event','Cumpleaños':'Birthday','Aniversario':'Anniversary','Nombre':'Name','Fecha':'Date','Hora':'Time','Todo el día':'All day','Prioridad':'Priority','Alta prioridad: destacar el día en el calendario':'High priority: highlight the day on the calendar','Repetición':'Repeat','No se repite':'Does not repeat','Anualmente':'Yearly','Mensualmente':'Monthly','Diariamente':'Daily','Personalizado':'Custom','Alerta':'Reminder','Desactivar':'Off','Activar':'On','+ Agregar otra alerta':'+ Add another reminder','Vista previa':'Preview','Selecciona una fecha':'Select a date','Selecciona una fecha.':'Select a date.','Guardar PIN':'Save PIN'
+ 'Mi Perfil':'My Profile','Seguridad y dispositivos':'Security and devices','Integrantes del hogar':'Household members','Ayuda':'Help','Dispositivo actual':'Current device','Este es el dispositivo fijado como hogar':'This is the household device','Exigir PIN al entrar a Finanzas para todos los integrantes':'Require a PIN to enter Finance for all members','Tiempo antes del bloqueo personal de Finanzas':'Personal Finance lock timeout','Inmediatamente':'Immediately','1 minuto':'1 minute','5 minutos':'5 minutes','15 minutos':'15 minutes','30 minutos':'30 minutes','Configurar o cambiar PIN de Finanzas':'Set or change Finance PIN','Imagen de Perfil':'Profile picture','Nombre de Usuario':'Username','Contacto':'Contact','Administrador':'Administrator','Tú':'You','Este módulo se desarrollará en su siguiente etapa.':'This module will be developed in a later stage.','Tu espacio dentro de Enorden.':'Your space in Enorden.','Inicio':'Home','Calendario':'Calendar','Tareas':'Tasks','Listas':'Lists','Finanzas':'Finance','Rutinas':'Routines','Notas':'Notes','Mapa':'Map','Mis módulos':'My modules','Este es tu resumen de hoy.':'Here is your summary for today.','Buscar en tu hogar...':'Search your home...','Tareas pendientes':'Pending tasks','Eventos pendientes':'Upcoming events','Compras pendientes':'Pending shopping','Desliza horizontalmente para ver todos los módulos disponibles.':'Swipe horizontally to see all available modules.','Notificaciones':'Notifications','Aquí se reúnen los avisos de todos tus módulos':'Notifications from all your modules appear here.','Agregar':'Add','Cancelar ✕':'Cancel ✕','Guardar':'Save','Guardar tarea':'Save task','Nueva tarea':'New task','Nombre de la tarea':'Task name','¿Qué necesitas hacer?':'What do you need to do?','Agregar producto':'Add product','Producto':'Product','Sección':'Section','Nombre del evento':'Event name','Nuevo evento':'New event','¿Qué tipo de evento quieres crear?':'What type of event would you like to create?','Selecciona un tipo de evento':'Select an event type','Evento normal':'Regular event','Cumpleaños':'Birthday','Aniversario':'Anniversary','Nombre':'Name','Fecha':'Date','Hora':'Time','Todo el día':'All day','Prioridad':'Priority','Alta prioridad: destacar el día en el calendario':'High priority: highlight the day on the calendar','Repetición':'Repeat','No se repite':'Does not repeat','Anualmente':'Yearly','Mensualmente':'Monthly','Diariamente':'Daily','Personalizado':'Custom','Alerta':'Reminder','Desactivar':'Off','Activar':'On','+ Agregar otra alerta':'+ Add another reminder','Vista previa':'Preview','Selecciona una fecha':'Select a date','Selecciona una fecha.':'Select a date.','Guardar PIN':'Save PIN'
  },
  pt:{
  'Configuración':'Configurações','Administra tu experiencia en Enorden.':'Gerencie sua experiência no Enorden.','Personalizar':'Personalizar','Idioma':'Idioma','Apariencia':'Aparência','Natural':'Natural','Nocturno':'Noturno','Colorido':'Colorido','Ejecutivo':'Executivo','Selecciona el estilo visual que prefieras. Puedes cambiarlo cuando quieras.':'Selecione o estilo visual de sua preferência. Você pode alterá-lo quando quiser.','Seleccionado':'Selecionado','Fondo':'Fundo','Encabezados':'Cabeçalhos','Tarjetas':'Cartões','Texto principal':'Texto principal','Texto secundario':'Texto secundário','Acentos':'Destaques','Selecciona el idioma de tu aplicación':'Selecione o idioma do aplicativo','Tu preferencia se guarda en este dispositivo. En esta versión de prueba no se sincroniza entre dispositivos.':'Sua preferência é salva neste dispositivo. Nesta versão de teste, ela não é sincronizada entre dispositivos.',
- 'Mi Perfil':'Meu perfil','Seguridad y dispositivos':'Segurança e dispositivos','Integrantes del hogar':'Moradores da casa','Ayuda':'Ajuda','Dispositivo actual':'Dispositivo atual','Este es el dispositivo fijado como hogar':'Este é o dispositivo definido como doméstico','Exigir PIN al entrar a Finanzas para todos los integrantes':'Exigir PIN para entrar em Finanças de todos os moradores','Tiempo antes del bloqueo personal de Finanzas':'Tempo para bloqueio pessoal de Finanças','Inmediatamente':'Imediatamente','1 minuto':'1 minuto','5 minutos':'5 minutos','15 minutos':'15 minutos','30 minutos':'30 minutos','Configurar o cambiar PIN de Finanzas':'Configurar ou alterar PIN de Finanças','Imagen de Perfil':'Foto do perfil','Nombre de Usuario':'Nome de usuário','Contacto':'Contato','Administrador':'Administrador','Tú':'Você','Este módulo se desarrollará en su siguiente etapa.':'Este módulo será desenvolvido em uma próxima etapa.','Tu espacio dentro de Enorden.':'Seu espaço no Enorden.','Inicio':'Início','Calendario':'Calendário','Tareas':'Tarefas','Listas':'Listas','Finanzas':'Finanças','Rutinas':'Rotinas','Notas':'Notas','Mapa':'Mapa','Mis módulos':'Meus módulos','Este es tu resumen de hoy.':'Este é o seu resumo de hoje.','Buscar en tu hogar...':'Buscar na sua casa...','Tareas pendientes':'Tarefas pendentes','Eventos pendientes':'Próximos eventos','Compras pendientes':'Compras pendentes','Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.':'Deslize horizontalmente para ver todos os módulos. A ordem pode ser personalizada.','Notificaciones':'Notificações','Aquí se reúnen los avisos de todos tus módulos':'Aqui ficam os avisos de todos os seus módulos.','Agregar':'Adicionar','Cancelar ✕':'Cancelar ✕','Guardar':'Salvar','Guardar tarea':'Salvar tarefa','Nueva tarea':'Nova tarefa','Nombre de la tarea':'Nome da tarefa','¿Qué necesitas hacer?':'O que você precisa fazer?','Agregar producto':'Adicionar produto','Producto':'Produto','Sección':'Seção','Nombre del evento':'Nome do evento','Nuevo evento':'Novo evento','¿Qué tipo de evento quieres crear?':'Que tipo de evento você quer criar?','Selecciona un tipo de evento':'Selecione um tipo de evento','Evento normal':'Evento comum','Cumpleaños':'Aniversário','Aniversario':'Data comemorativa','Nombre':'Nome','Fecha':'Data','Hora':'Hora','Todo el día':'O dia todo','Prioridad':'Prioridade','Alta prioridad: destacar el día en el calendario':'Alta prioridade: destacar o dia no calendário','Repetición':'Repetição','No se repite':'Não se repete','Anualmente':'Anualmente','Mensualmente':'Mensalmente','Diariamente':'Diariamente','Personalizado':'Personalizado','Alerta':'Alerta','Desactivar':'Desativar','Activar':'Ativar','+ Agregar otra alerta':'+ Adicionar outro alerta','Vista previa':'Prévia','Selecciona una fecha':'Selecione uma data','Selecciona una fecha.':'Selecione uma data.','Guardar PIN':'Salvar PIN'
+ 'Mi Perfil':'Meu perfil','Seguridad y dispositivos':'Segurança e dispositivos','Integrantes del hogar':'Moradores da casa','Ayuda':'Ajuda','Dispositivo actual':'Dispositivo atual','Este es el dispositivo fijado como hogar':'Este é o dispositivo definido como doméstico','Exigir PIN al entrar a Finanzas para todos los integrantes':'Exigir PIN para entrar em Finanças de todos os moradores','Tiempo antes del bloqueo personal de Finanzas':'Tempo para bloqueio pessoal de Finanças','Inmediatamente':'Imediatamente','1 minuto':'1 minuto','5 minutos':'5 minutos','15 minutos':'15 minutos','30 minutos':'30 minutos','Configurar o cambiar PIN de Finanzas':'Configurar ou alterar PIN de Finanças','Imagen de Perfil':'Foto do perfil','Nombre de Usuario':'Nome de usuário','Contacto':'Contato','Administrador':'Administrador','Tú':'Você','Este módulo se desarrollará en su siguiente etapa.':'Este módulo será desenvolvido em uma próxima etapa.','Tu espacio dentro de Enorden.':'Seu espaço no Enorden.','Inicio':'Início','Calendario':'Calendário','Tareas':'Tarefas','Listas':'Listas','Finanzas':'Finanças','Rutinas':'Rotinas','Notas':'Notas','Mapa':'Mapa','Mis módulos':'Meus módulos','Este es tu resumen de hoy.':'Este é o seu resumo de hoje.','Buscar en tu hogar...':'Buscar na sua casa...','Tareas pendientes':'Tarefas pendentes','Eventos pendientes':'Próximos eventos','Compras pendientes':'Compras pendentes','Desliza horizontalmente para ver todos los módulos disponibles.':'Deslize horizontalmente para ver todos os módulos disponíveis.','Notificaciones':'Notificações','Aquí se reúnen los avisos de todos tus módulos':'Aqui ficam os avisos de todos os seus módulos.','Agregar':'Adicionar','Cancelar ✕':'Cancelar ✕','Guardar':'Salvar','Guardar tarea':'Salvar tarefa','Nueva tarea':'Nova tarefa','Nombre de la tarea':'Nome da tarefa','¿Qué necesitas hacer?':'O que você precisa fazer?','Agregar producto':'Adicionar produto','Producto':'Produto','Sección':'Seção','Nombre del evento':'Nome do evento','Nuevo evento':'Novo evento','¿Qué tipo de evento quieres crear?':'Que tipo de evento você quer criar?','Selecciona un tipo de evento':'Selecione um tipo de evento','Evento normal':'Evento comum','Cumpleaños':'Aniversário','Aniversario':'Data comemorativa','Nombre':'Nome','Fecha':'Data','Hora':'Hora','Todo el día':'O dia todo','Prioridad':'Prioridade','Alta prioridad: destacar el día en el calendario':'Alta prioridade: destacar o dia no calendário','Repetición':'Repetição','No se repite':'Não se repete','Anualmente':'Anualmente','Mensualmente':'Mensalmente','Diariamente':'Diariamente','Personalizado':'Personalizado','Alerta':'Alerta','Desactivar':'Desativar','Activar':'Ativar','+ Agregar otra alerta':'+ Adicionar outro alerta','Vista previa':'Prévia','Selecciona una fecha':'Selecione uma data','Selecciona una fecha.':'Selecione uma data.','Guardar PIN':'Salvar PIN'
  }
 };
 let selectedAppLanguage=appLanguage;
@@ -1009,6 +1186,7 @@ function render(){
  else if(current==='finanzas')renderFinance();
  else if(current==='chat')renderChat();
  else if(current==='entretenimiento')renderEntertainment();
+ else if(current==='rutinas')renderRoutines();
  else renderOther(current);
  applyLanguage();
 }
@@ -1058,10 +1236,10 @@ function renderHome(){
     <span class="emoji">${m.emoji}</span><span>${m.name}</span>
    </button>`).join('')}
   </div>
-  <div class="hint">Desliza horizontalmente para ver todos los módulos disponibles. El orden es personalizable.</div>
+  <div class="hint">Desliza horizontalmente para ver todos los módulos disponibles.</div>
  </section>
  <div class="bottom-space"></div>`;
- enableReorder(document.getElementById('homeModules'));
+
 }function doSearch(){
  const q=document.getElementById('homeSearch').value.trim().toLowerCase();
  if(!q)return;
@@ -1077,41 +1255,12 @@ function voiceSearch(){
  document.getElementById('homeSearch').value=e.results[0][0].transcript;doSearch()};
  rec.start();
 }
-/* Reordenamiento común para Inicio y navegación inferior */
-function enableReorder(container){
- if(!container)return;
- let timer=null,source=null,active=false;
- container.querySelectorAll('[data-module]').forEach(el=>{
-  el.addEventListener('pointerdown',()=>{
-   source=el;active=false;
-   timer=setTimeout(()=>{active=true;el.style.opacity='.55'},500);
-  });
-  el.addEventListener('pointermove',e=>{
-   if(!active||!source)return;
-   const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-module]');
-   if(target&&target!==source&&target.parentElement===container){
-    const a=[...container.children].indexOf(source);
-    const b=[...container.children].indexOf(target);
-    if(a<b)container.insertBefore(source,target.nextSibling);
-    else container.insertBefore(source,target);
-   }
-  });
-  ['pointerup','pointercancel','pointerleave'].forEach(evt=>el.addEventListener(evt,()=>{
-   clearTimeout(timer);
-   if(active){
-    const newOrder=[...container.querySelectorAll('[data-module]')].map(x=>x.dataset.module);
-    order=newOrder;save();render();
-   }
-   if(source)source.style.opacity='';
-   active=false;source=null;
-  }));
- });
-}
+/* El orden de módulos es fijo y está definido en el arreglo modules. */
 function renderCalendar(){
  const d=selectedDate,y=d.getFullYear(),m=d.getMonth(),on=date=>events.filter(ev=>eventOccursOn(ev,date));
  const borderColor=list=>{const ev=list.find(x=>x.priority==='high'&&x.color);return ev?ev.color:''};
- const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film'};
- const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails('+Number(ev.id)+')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
+ const typeLabel={normal:'Evento normal',event_task:'Evento Tarea',birthday:'Cumpleaños',anniversary:'Aniversario',film:'Evento Film',routine:'Evento Rutina'};
+ const eventCard=(ev,showDate=false)=>'<button type="button" class="card calendar-event-card" onclick="openEventDetails(\''+escapeHTML(String(ev.id))+'\')" style="display:block;width:100%;text-align:left;cursor:pointer;margin-top:10px;border-left:5px solid '+(ev.priority==='high'&&ev.color?ev.color:'var(--line)')+'"><strong>'+({birthday:'🎂 ',anniversary:'🌹 ',normal:'📌 ',event_task:'🗒 ',film:'🎬 ',routine:'🔄 '}[ev.type]||'📌 ')+escapeHTML(ev.title)+'</strong><div class="muted" style="font-size:12px;margin-top:5px">'+(showDate?new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'})+' · ':'')+(ev.allDay?'Todo el día':escapeHTML(ev.time||''))+' · '+(typeLabel[ev.type]||'Evento')+'</div>'+(ev.alerts?.length?'<span class="pill">🔔 '+ev.alerts.length+' alerta(s)</span>':'')+'</button>';
  const selectedKey=keyDate(d),today=new Date();today.setHours(0,0,0,0);const todayKey=keyDate(today);
  let content='';
  if(calendarView==='Año'){
@@ -1260,6 +1409,22 @@ function requestCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=tru
 function dismissCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=false;render()}
 function confirmCancelSharedProjectNameEdit(){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
 function toggleSharedProjectPanel(){sharedProjectPanelOpen=!sharedProjectPanelOpen;renderSharedProjectWorkspace()}
+function openSharedProjectFolder(folder){sharedProjectActiveFolder=folder;renderSharedProjectWorkspace();window.scrollTo(0,0)}
+function returnToSharedProjectHome(){sharedProjectActiveFolder=null;renderSharedProjectWorkspace();window.scrollTo(0,0)}
+function toggleSharedProjectChat(){sharedProjectChatOpen=!sharedProjectChatOpen;if(sharedProjectChatOpen)sharedProjectChatUnread=false;renderSharedProjectWorkspace()}
+function loadSharedProjectBoardNotes(projectId){try{const data=JSON.parse(localStorage.getItem('enorden_shared_board_'+projectId)||'[]');return Array.isArray(data)?data:[]}catch(e){return[]}}
+function renderSharedProjectBoard(projectId){const notes=loadSharedProjectBoardNotes(projectId);return '<section class="project-section project-board-section"><div class="project-section-heading"><div><div class="project-section-kicker">Ideas y recordatorios</div><h2>Pizarra del equipo</h2></div><button type="button" class="project-board-clear-button" onclick="openSharedProjectBoardManage()">Borrar pizarra</button></div><div class="project-board"><div class="project-board-label">Superficie para escribir con plumón</div><button type="button" class="project-board-surface" onclick="openSharedProjectBoardEditor()" aria-label="Escribir una anotación en la pizarra">'+(notes.length?notes.map(note=>'<div class="project-board-entry"><p class="project-board-note '+(note.color||'black')+'">'+escapeHTML(note.text)+'</p>'+(note.author?'<span class="project-board-signature">'+escapeHTML(note.author)+'</span>':'')+'</div>').join(''):'<span class="project-board-empty">Presiona aquí para escribir una anotación</span>')+'</button><p class="project-board-hint">Solo texto · Plumón negro, azul o rojo</p></div></section>'}
+function openSharedProjectBoardManage(){sharedProjectBoardManageDraft=loadSharedProjectBoardNotes(activeSharedProjectId).map((note,index)=>({...note,_boardIndex:index}));sharedProjectBoardManageOpen=true;sharedProjectBoardManageConfirm=null;renderSharedProjectWorkspace()}
+function closeSharedProjectBoardManage(){sharedProjectBoardManageOpen=false;sharedProjectBoardManageConfirm=null;sharedProjectBoardManageDraft=[];renderSharedProjectWorkspace()}
+function removeSharedProjectBoardDraftNote(index){sharedProjectBoardManageDraft=sharedProjectBoardManageDraft.filter((note,i)=>i!==index);renderSharedProjectWorkspace()}
+function requestClearSharedProjectBoard(){sharedProjectBoardManageConfirm='clear';renderSharedProjectWorkspace()}
+function requestSaveSharedProjectBoardManage(){sharedProjectBoardManageConfirm='save';renderSharedProjectWorkspace()}
+function cancelSharedProjectBoardManageConfirm(){sharedProjectBoardManageConfirm=null;renderSharedProjectWorkspace()}
+function confirmSharedProjectBoardManage(){if(sharedProjectBoardManageConfirm==='clear'){localStorage.setItem('enorden_shared_board_'+activeSharedProjectId,'[]');sharedProjectBoardManageOpen=false;sharedProjectBoardManageConfirm=null;sharedProjectBoardManageDraft=[];renderSharedProjectWorkspace();return}if(sharedProjectBoardManageConfirm==='save'){const notes=sharedProjectBoardManageDraft.map(({_boardIndex,...note})=>note);localStorage.setItem('enorden_shared_board_'+activeSharedProjectId,JSON.stringify(notes));sharedProjectBoardManageOpen=false;sharedProjectBoardManageConfirm=null;sharedProjectBoardManageDraft=[];renderSharedProjectWorkspace()}}
+function openSharedProjectBoardEditor(){sharedProjectBoardEditorOpen=true;sharedProjectBoardColor='black';renderSharedProjectWorkspace()}
+function closeSharedProjectBoardEditor(){sharedProjectBoardEditorOpen=false;renderSharedProjectWorkspace()}
+function selectSharedProjectBoardColor(color){if(!['black','blue','red'].includes(color))return;sharedProjectBoardColor=color;document.querySelectorAll('.shared-project-board-color').forEach(button=>{const active=button.dataset.color===color;button.classList.toggle('active',active);button.setAttribute('aria-pressed',active?'true':'false')})}
+function saveSharedProjectBoardNote(){const input=document.getElementById('sharedProjectBoardText'),text=(input?.value||'').trim();if(!text){input?.focus();return}if(/[^\p{L}\p{N}\p{M}\p{P}\p{Z}\s]/u.test(text)){const warning=document.getElementById('sharedProjectBoardError');if(warning)warning.textContent='La pizarra solo admite texto. Elimina emojis e iconos para continuar.';input?.focus();return}const notes=loadSharedProjectBoardNotes(activeSharedProjectId),author=(localStorage.getItem('enorden_profile_name')||'Vale').trim();notes.push({text,color:sharedProjectBoardColor,author,createdAt:new Date().toISOString()});localStorage.setItem('enorden_shared_board_'+activeSharedProjectId,JSON.stringify(notes));sharedProjectBoardEditorOpen=false;renderSharedProjectWorkspace()}
 
 function openSharedProjectUsers(){sharedProjectUsersOpen=true;sharedProjectPanelOpen=false;renderSharedProjectWorkspace()}
 function closeSharedProjectUsers(){sharedProjectUsersOpen=false;sharedProjectRoleChangeDraft=null;sharedProjectRoleChangeConfirm=false;renderSharedProjectWorkspace()}
@@ -1286,7 +1451,7 @@ function renderSharedProjectWorkspace(){
   screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectModalTitle"><header><h2 id="sharedProjectModalTitle">Nuevo Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="confirmCancelSharedProject()">×</button></header><label for="sharedProjectName">Nombre del proyecto</label><input id="sharedProjectName" type="text" maxlength="80" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProject()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveNewSharedProject()">Guardar</button></footer></section></div>`);
   if(sharedProjectCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectConfirmTitle"><header><h2 id="sharedProjectConfirmTitle">Cancelar creación</h2></header><p>¿Quieres cancelar la creación del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProject()">Seguir creando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProject()">Sí, cancelar</button></footer></section></div>`);
  }else{
-  screen.querySelector('.shared-project-workspace').insertAdjacentHTML('beforeend',`<div class="shared-project-title-row"><div class="shared-project-title-main"><h1 role="button" tabindex="0" onclick="editSharedProjectName()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editSharedProjectName()}" aria-label="Editar nombre del proyecto">${escapeHTML(project.name||'Proyecto')}</h1><button type="button" class="shared-project-title-edit" onclick="editSharedProjectName()" aria-label="Editar nombre del proyecto" title="Editar nombre del proyecto">✏️</button></div><button type="button" class="shared-project-menu-toggle" onclick="toggleSharedProjectPanel()" aria-label="Abrir menú del proyecto" aria-expanded="${sharedProjectPanelOpen?'true':'false'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div>${sharedProjectPanelOpen?`<div class="shared-project-menu-panel" aria-label="Opciones del proyecto"><button type="button" class="shared-project-menu-action">Crear nueva tarea</button><button type="button" class="shared-project-menu-action" onclick="openSharedProjectUsers()">Usuarios</button><button type="button" class="shared-project-menu-action" onclick="requestDeleteSharedProject()">Eliminar proyecto</button><div class="shared-project-link-tools"><strong>Link</strong><div class="shared-project-link-value">${escapeHTML(getSharedProjectLink(project))}</div><div class="shared-project-link-buttons"><button type="button" onclick="copySharedProjectCode()">Copiar</button><button type="button" onclick="shareSharedProjectLink()">Compartir</button></div><button type="button" class="shared-project-code" onclick="copySharedProjectCode()">${escapeHTML(project.code||"Código pendiente")}</button></div></div>`:''}`);
+  screen.querySelector('.shared-project-workspace').insertAdjacentHTML('beforeend',`<div class="shared-project-title-row">${sharedProjectActiveFolder ? '<button type="button" class="project-title-back" onclick="returnToSharedProjectHome()" aria-label="Volver al proyecto">←</button><div class="project-folder-title">'+escapeHTML(sharedProjectActiveFolder)+'</div>' : ''}<div class="shared-project-title-main"><h1 role="button" tabindex="0" onclick="editSharedProjectName()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editSharedProjectName()}" aria-label="Editar nombre del proyecto">${escapeHTML(project.name||'Proyecto')}</h1><button type="button" class="shared-project-title-edit" onclick="editSharedProjectName()" aria-label="Editar nombre del proyecto" title="Editar nombre del proyecto">✏️</button></div><button type="button" class="shared-project-menu-toggle" onclick="toggleSharedProjectPanel()" aria-label="Abrir menú del proyecto" aria-expanded="${sharedProjectPanelOpen?'true':'false'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button></div>${sharedProjectPanelOpen?`<div class="shared-project-menu-panel" aria-label="Opciones del proyecto"><button type="button" class="shared-project-menu-action">Crear nueva tarea</button><button type="button" class="shared-project-menu-action" onclick="openSharedProjectUsers()">Usuarios</button><button type="button" class="shared-project-menu-action" onclick="requestDeleteSharedProject()">Eliminar proyecto</button><div class="shared-project-link-tools"><strong>Link</strong><div class="shared-project-link-value">${escapeHTML(getSharedProjectLink(project))}</div><div class="shared-project-link-buttons"><button type="button" onclick="copySharedProjectCode()">Copiar</button><button type="button" onclick="shareSharedProjectLink()">Compartir</button></div><button type="button" class="shared-project-code" onclick="copySharedProjectCode()">${escapeHTML(project.code||"Código pendiente")}</button></div></div>`:''}`);
   if(sharedProjectNameEdit&&String(sharedProjectNameEdit.id)===String(project.id)){
    screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectEditModalTitle"><header><h2 id="sharedProjectEditModalTitle">Proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="requestCancelSharedProjectNameEdit()">×</button></header><label for="sharedProjectEditName">Nombre del proyecto</label><input id="sharedProjectEditName" type="text" maxlength="80" value="${escapeHTML(sharedProjectNameEdit.name)}" placeholder="Escribe el nombre del proyecto..." autocomplete="off"><footer><button type="button" class="shared-project-cancel" onclick="requestCancelSharedProjectNameEdit()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveSharedProjectName()">Guardar</button></footer></section></div>`);
    if(sharedProjectEditCancelConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectEditConfirmTitle"><header><h2 id="sharedProjectEditConfirmTitle">Cancelar edición</h2></header><p>¿Estás seguro de que quieres cancelar la edición del nombre del proyecto?</p><footer><button type="button" class="shared-project-cancel" onclick="dismissCancelSharedProjectNameEdit()">No, continuar editando</button><button type="button" class="shared-project-save" onclick="confirmCancelSharedProjectNameEdit()">Sí, cancelar</button></footer></section></div>`);
@@ -1294,6 +1459,33 @@ function renderSharedProjectWorkspace(){
   if(sharedProjectDeleteConfirm)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectDeleteConfirmTitle"><header><h2 id="sharedProjectDeleteConfirmTitle">Eliminar proyecto</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="dismissDeleteSharedProject()">×</button></header><p>¿Estás seguro de que quieres eliminar este proyecto? Se eliminará de Proyectos Compartidos y su página dejará de estar disponible.</p><footer><button type="button" class="shared-project-cancel" onclick="dismissDeleteSharedProject()">Cancelar</button><button type="button" class="shared-project-delete" onclick="confirmDeleteSharedProject()">Eliminar</button></footer></section></div>`);if(sharedProjectUsersOpen){const people=project.participants||[{name:'Tú',role:'admin'},{name:'Usuario de ejemplo 1',role:'write'},{name:'Usuario de ejemplo 2',role:'read'}];screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer"><section class="shared-project-modal" role="dialog" aria-modal="true"><header><h2>Usuarios del proyecto</h2><button type="button" class="shared-project-modal-x" onclick="closeSharedProjectUsers()">×</button></header>'+people.map((u,i)=>'<div class="shared-project-user-row"><div><div class="shared-project-user-name">'+escapeHTML(u.name)+'</div><small>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[u.role]||'Solo lectura')+'</small></div>'+(i===0?'<select aria-label="Tus permisos" onchange="requestOwnSharedProjectRoleChange('+i+',this.value)"><option value="admin" '+(u.role==='admin'?'selected':'')+'>Administrador</option><option value="write" '+(u.role==='write'?'selected':'')+'>Lectura y escritura</option><option value="read" '+(u.role==='read'?'selected':'')+'>Solo lectura</option></select>':'<select aria-label="Permisos de '+escapeHTML(u.name)+'" onchange="changeSharedProjectRole('+i+',this.value)"><option value="admin" '+(u.role==='admin'?'selected':'')+'>Administrador</option><option value="write" '+(u.role==='write'?'selected':'')+'>Lectura y escritura</option><option value="read" '+(u.role==='read'?'selected':'')+'>Solo lectura</option></select>')+'</div>').join('')+'<footer><button type="button" class="shared-project-save" onclick="closeSharedProjectUsers()">Listo</button></footer></section></div>');if(sharedProjectRoleChangeConfirm&&sharedProjectRoleChangeDraft){const current=people[sharedProjectRoleChangeDraft.index]?.role||'admin',next=sharedProjectRoleChangeDraft.role;screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="dialog" aria-modal="true"><header><h2>Confirmar cambio de permisos</h2></header><p>¿Quieres cambiar tus permisos de <strong>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[current])+'</strong> a <strong>'+({admin:'Administrador',write:'Lectura y escritura',read:'Solo lectura'}[next])+'</strong>?</p><footer><button type="button" class="shared-project-cancel" onclick="cancelOwnSharedProjectRoleChange()">Cancelar</button><button type="button" class="shared-project-save" onclick="confirmOwnSharedProjectRoleChange()">Confirmar</button></footer></section></div>')}}
  }
  if(sharedProjectDraft){const input=document.getElementById('sharedProjectName');if(input)input.value=sharedProjectDraft.name||''}
+ if(!sharedProjectDraft){
+  const workspace=screen.querySelector('.shared-project-workspace');
+  const folders=[
+   {name:'Productores',count:3,tasks:['Coordinar locación','Preparar presupuesto','Contactar auspiciadores']},
+   {name:'Guionistas',count:2,tasks:['Crear pauta del programa','Preparar segmentos']},
+   {name:'Editores',count:2,tasks:['Editar material audiovisual','Preparar clips para redes']},
+   {name:'Diseño',count:2,tasks:['Crear identidad gráfica','Preparar piezas para redes']},
+   {name:'Cámaras',count:2,tasks:['Revisar equipos','Preparar plan de cámaras']},
+   {name:'Sonido',count:1,tasks:['Coordinar prueba de sonido']}
+  ];
+  const folder=folders.find(item=>item.name===sharedProjectActiveFolder);
+  const folderCards=folders.map(item=>'<button type="button" class="project-folder-card" onclick="openSharedProjectFolder(\''+item.name+'\')"><span class="project-folder-art" aria-hidden="true"></span><strong>'+item.name+'</strong><small>'+item.count+' tareas</small></button>').join('');
+  const folderTasks=folder?folder.tasks.map((task,i)=>'<div class="project-task-preview"><span class="project-task-bullet"></span><span>'+task+'<small>'+(i===0?'Responsable: Camila':'Sin asignar')+'</small></span></div>').join(''):'';
+  const looseTasks=sharedProjectActiveFolder?'':'<section class="project-section project-loose-section"><div class="project-section-heading"><div><div class="project-section-kicker">Sin carpeta</div><h2>Tareas generales</h2></div><span class="project-count">2 tareas</span></div><div class="project-loose-tasks"><div class="project-task-preview"><span class="project-task-bullet"></span><span>Reunión general de equipo<small>Responsable: Tú</small></span></div><div class="project-task-preview"><span class="project-task-bullet"></span><span>Revisar calendario de entregas<small>Sin asignar</small></span></div></div></section>';
+  const mainContent=folder?'<section class="project-section project-folder-detail"><div class="project-section-heading"><div><div class="project-section-kicker">Carpeta del proyecto</div><h2>'+folder.name+'</h2></div><span class="project-count">'+folder.count+' tareas</span></div><div class="project-folder-detail-tasks">'+folderTasks+'</div></section>':'<section class="project-section project-folders-section"><div class="project-section-heading"><div><div class="project-section-kicker">Espacio de trabajo</div><h2>Carpetas</h2></div><span class="project-count">'+folders.length+' carpetas</span></div><div class="project-folder-grid">'+folderCards+'</div></section>'+looseTasks;
+  if(workspace)workspace.insertAdjacentHTML('beforeend',`
+   ${sharedProjectActiveFolder?'<button type="button" class="project-back-button" onclick="returnToSharedProjectHome()" aria-label="Volver al proyecto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h12"/></svg><span>Volver al proyecto</span></button>':''}
+   <div class="project-content">${mainContent}
+    ${!sharedProjectActiveFolder?renderSharedProjectBoard(project.id):''}
+    <p class="project-design-note">Vista visual inicial · Las carpetas y tareas son ejemplos; las anotaciones de la pizarra se guardan localmente y aún no se sincronizan.</p>
+   </div>
+   <button type="button" class="project-chat-fab" onclick="toggleSharedProjectChat()" aria-expanded="${sharedProjectChatOpen?'true':'false'}"><span>Chat</span>${sharedProjectChatUnread?'<i class="project-chat-unread" aria-label="Mensaje nuevo"></i>':''}</button>
+   ${sharedProjectChatOpen?'<section class="project-chat-popover" aria-label="Chat del proyecto"><header><div><strong>Chat del proyecto</strong><small>Conversación del equipo</small></div><button type="button" onclick="toggleSharedProjectChat()" aria-label="Cerrar chat">×</button></header><div class="project-chat-messages"><div class="project-chat-message"><span class="project-chat-avatar">CM</span><div class="project-chat-bubble"><div class="project-chat-author">Camila · Productora</div>¿Tenemos confirmada la locación para el jueves?<div class="project-chat-time">10:42</div></div></div><div class="project-chat-message own"><div class="project-chat-bubble"><div class="project-chat-author">Tú</div>Sí, está lista. Voy a dejar los detalles en la pizarra.<div class="project-chat-time">10:45</div></div><span class="project-chat-avatar">TÚ</span></div><div class="project-chat-message"><span class="project-chat-avatar">MN</span><div class="project-chat-bubble"><div class="project-chat-author">Martina · Guionista</div>Perfecto, así ajusto la pauta con ese horario.<div class="project-chat-time">10:47</div></div></div></div><div class="project-chat-compose"><div class="project-chat-compose-placeholder">Escribe un mensaje al equipo…</div><button class="project-chat-send" type="button" aria-label="Enviar mensaje" title="Enviar mensaje"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-5 16-3-6-8-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m12 14 8-10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div></section>':''}
+  `);
+  if(sharedProjectBoardManageOpen){const draft=sharedProjectBoardManageDraft;screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal shared-project-board-manage-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectBoardManageTitle"><button type="button" class="shared-project-modal-x shared-project-board-manage-x" aria-label="Cerrar" onclick="closeSharedProjectBoardManage()">×</button><header><h2 id="sharedProjectBoardManageTitle">Administrar pizarra</h2></header><p class="shared-project-board-manage-intro">Selecciona los mensajes que quieras eliminar. Los cambios se aplicarán al guardar.</p><div class="shared-project-board-manage-list">${draft.length?draft.map((note,index)=>'<article class="shared-project-board-manage-note"><div class="project-board-entry"><p class="project-board-note '+(note.color||'black')+'">'+escapeHTML(note.text)+'</p>'+(note.author?'<span class="project-board-signature">'+escapeHTML(note.author)+'</span>':'')+'</div><button type="button" class="shared-project-board-note-remove" onclick="removeSharedProjectBoardDraftNote('+index+')" aria-label="Eliminar mensaje">Eliminar</button></article>').join(''):'<p class="shared-project-board-manage-empty">La pizarra no tiene mensajes.</p>'}</div><footer><button type="button" class="shared-project-cancel" onclick="closeSharedProjectBoardManage()">Cancelar</button><button type="button" class="shared-project-delete" onclick="requestClearSharedProjectBoard()">Borrar todo</button><button type="button" class="shared-project-save" onclick="requestSaveSharedProjectBoardManage()">Guardar</button></footer></section></div>`);if(sharedProjectBoardManageConfirm){const isClear=sharedProjectBoardManageConfirm==='clear';const preview=draft.length?draft.map(note=>'<div class="project-board-entry"><p class="project-board-note '+(note.color||'black')+'">'+escapeHTML(note.text)+'</p>'+(note.author?'<span class="project-board-signature">'+escapeHTML(note.author)+'</span>':'')+'</div>').join(''):'<p class="shared-project-board-manage-empty">La pizarra quedará vacía.</p>';screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm shared-project-board-manage-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectBoardManageConfirmTitle"><header><h2 id="sharedProjectBoardManageConfirmTitle">${isClear?'Borrar toda la pizarra':'Confirmar cambios'}</h2></header><p>${isClear?'¿Estás seguro de que quieres borrar todos los mensajes? Esta acción no se puede deshacer.':'Esta es una vista previa de los mensajes que quedarán en la pizarra:'}</p>${isClear?'':'<div class="shared-project-board-manage-preview">'+preview+'</div>'}<footer><button type="button" class="shared-project-cancel" onclick="cancelSharedProjectBoardManageConfirm()">Cancelar</button><button type="button" class="shared-project-delete" onclick="confirmSharedProjectBoardManage()">${isClear?'Borrar todo':'Confirmar y guardar'}</button></footer></section></div>`)}}
+  if(sharedProjectBoardEditorOpen)screen.insertAdjacentHTML('beforeend',`<div class="shared-project-modal-layer"><section class="shared-project-modal shared-project-board-modal" role="dialog" aria-modal="true" aria-labelledby="sharedProjectBoardTitle"><header><h2 id="sharedProjectBoardTitle">Nueva anotación</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="closeSharedProjectBoardEditor()">×</button></header><label for="sharedProjectBoardText">Escribe tu texto</label><textarea id="sharedProjectBoardText" maxlength="280" placeholder="Escribe aquí tu anotación..." oninput="document.getElementById('sharedProjectBoardError').textContent=''"></textarea><div class="shared-project-board-colors" role="group" aria-label="Color del plumón"><button type="button" class="shared-project-board-color active" data-color="black" aria-pressed="true" onclick="selectSharedProjectBoardColor('black')">Negro</button><button type="button" class="shared-project-board-color" data-color="blue" aria-pressed="false" onclick="selectSharedProjectBoardColor('blue')">Azul</button><button type="button" class="shared-project-board-color" data-color="red" aria-pressed="false" onclick="selectSharedProjectBoardColor('red')">Rojo</button></div><p class="shared-project-board-rule">Solo se permiten letras, números y signos de puntuación. No se admiten emojis ni iconos.</p><p id="sharedProjectBoardError" class="shared-project-board-rule" role="alert"></p><footer><button type="button" class="shared-project-cancel" onclick="closeSharedProjectBoardEditor()">Cancelar</button><button type="button" class="shared-project-save" onclick="saveSharedProjectBoardNote()">Guardar</button></footer></section></div>`);
+ }
  if(sharedProjectExitOpen){screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectExitTitle"><header><h2 id="sharedProjectExitTitle">Quieres guardar antes de salir del proyecto?</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="dismissSharedProjectExit()">×</button></header><footer><button type="button" class="shared-project-cancel" onclick="dismissSharedProjectExit()">Cancelar</button><button type="button" class="shared-project-delete" onclick="confirmSharedProjectExit(false)">Salir sin guardar</button><button type="button" class="shared-project-save" onclick="confirmSharedProjectExit(true)">Guardar</button></footer></section></div>')}
 }
 
@@ -1807,7 +1999,7 @@ function renderSettings(){
  <details class="help-group"><summary>¿Qué pasa si cambio de teléfono?</summary><div class="help-answer">En la versión completa podrás iniciar sesión en otro dispositivo verificando tu identidad.</div></details>
  </div></details>
  <details class="help-group help-main-group"><summary>Cómo usar Enorden</summary><div class="help-answer">
- <details class="help-group"><summary>Inicio</summary><div class="help-answer">1. Entra a Inicio para ver el resumen del hogar.<br>2. Revisa las tarjetas de tareas, eventos y compras pendientes.<br>3. Debajo de esas tarjetas aparecerán las cuentas regresivas que hayas creado desde un evento. Presiona una para abrir la ficha del evento correspondiente.<br>4. Usa el buscador para encontrar información.<br>5. Desliza “Mis módulos” para abrir uno. Mantén presionado un módulo para cambiar su orden.</div></details>
+ <details class="help-group"><summary>Inicio</summary><div class="help-answer">1. Entra a Inicio para ver el resumen del hogar.<br>2. Revisa las tarjetas de tareas, eventos y compras pendientes.<br>3. Debajo de esas tarjetas aparecerán las cuentas regresivas que hayas creado desde un evento. Presiona una para abrir la ficha del evento correspondiente.<br>4. Usa el buscador para encontrar información.<br>5. Desliza “Mis módulos” para abrir uno. El orden de los módulos es fijo y no se puede modificar.</div></details>
  <details class="help-group"><summary>Calendario</summary><div class="help-answer">1. Abre Calendario.<br>2. Elige Año, Mes, Semana o Día y usa las flechas para moverte entre fechas.<br>3. Pulsa “+” para crear un evento y completa sus datos.<br>4. Presiona cualquier evento para abrir su ficha central. Desde allí puedes duplicarlo, editarlo, eliminarlo o entrar en “Más” para crear una cuenta regresiva en Inicio.<br>5. Al duplicar, se abre un evento nuevo con los datos originales precargados y totalmente editables. Al editar, el tipo de evento se mantiene bloqueado.</div></details>
  <details class="help-group"><summary>Tareas</summary><div class="help-answer">1. Entra a Tareas.<br>2. Pulsa “+” para crear una tarea.<br>3. Escribe lo que necesitas hacer y guarda.<br>4. Marca la casilla al terminar. Puedes eliminarla con “×”.</div></details>
  <details class="help-group"><summary>Listas</summary><div class="help-answer">1. Abre Listas.<br>2. Pulsa “+” para agregar un producto.<br>3. Escribe su nombre y elige una sección.<br>4. Marca el producto cuando lo compres.</div></details>
@@ -2411,13 +2603,293 @@ function renderEntertainmentScheduleModal(){
 }
 function openFilmScheduleCalendar(){const input=document.getElementById('filmScheduleDate');if(!input)return;try{input.showPicker()}catch(e){input.click()}}
 function updateFilmScheduleDateLabel(){const input=document.getElementById('filmScheduleDate'),label=document.getElementById('filmScheduleDateLabel');if(label)label.textContent=input?.value?new Date(input.value+'T12:00:00').toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'}):'Calendario · Elegir fecha'}
-function openFilmScheduleTimePicker(){document.getElementById('timePickerBackdrop')?.classList.add('film-schedule-time-picker');openTimePicker()}
+function openFilmScheduleTimePicker(){openWheelTimePicker('eventTime','eventTimeText','film')}
 function toggleFilmScheduleAllDay(){const allDay=!!document.getElementById('filmScheduleAllDay')?.checked;entertainmentScheduleDraft.allDay=allDay;document.getElementById('filmScheduleTimeWrap')?.classList.toggle('hidden',allDay)}
 function requestCloseEntertainmentSchedule(){entertainmentScheduleCancelConfirm=true;renderEntertainment()}
 function continueFilmSchedule(){entertainmentScheduleCancelConfirm=false;renderEntertainment()}
 function closeEntertainmentSchedule(){entertainmentScheduleOpen=false;entertainmentScheduleCancelConfirm=false;entertainmentScheduleItem=null;entertainmentScheduleDraft={date:'',time:'20:00',allDay:false};renderEntertainment()}
 function saveFilmSchedule(){const item=entertainmentScheduleItem||entertainmentCurrent,date=document.getElementById('filmScheduleDate')?.value||entertainmentScheduleDraft.date,allDay=!!document.getElementById('filmScheduleAllDay')?.checked;if(!item||!date){showWindowNotice('Falta elegir una fecha','Selecciona una fecha para programar tu Film.');return}const time=allDay?null:(document.getElementById('eventTime')?.value||entertainmentScheduleDraft.time||'20:00'),id=Date.now()+Math.floor(Math.random()*1000);events.push({id,seriesId:'series-'+id,title:'Ver '+item.title,type:'film',date,time,allDay,scope:'personal',priority:'high',color:'#C3B091',repeat:'none',weekdays:[],alerts:allDay?[]:[{amount:15,unit:'minutes'}],links:[{type:'entertainment',id:item.id,label:item.title}],filmId:item.id,createdAt:new Date().toISOString(),notificationSentFor:''});save();closeEntertainmentSchedule();render();const savedDate=new Date(date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});showTaskModal('Tu Film se programó con éxito!', '<div class="film-schedule-success"><p><strong>Fecha:</strong> '+escapeHTML(savedDate)+'</p><p><strong>Hora:</strong> '+(allDay?'Todo el día':escapeHTML(time))+'</p>'+(allDay?'':'<p class="film-schedule-success-reminder">Te llegará una notificación 15 minutos antes de la hora seleccionada</p>')+'<p class="film-schedule-success-hint">Puedes modificar tu evento Film en el calendario</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div></div>');document.getElementById('backdrop').classList.add('film-success-overlay');setModalWindowBase('confirmation')}
 function processFilmEventNotifications(){const now=new Date();let changed=false;events.filter(ev=>ev.type==='film').forEach(ev=>{const key=ev.date+'|'+(ev.allDay?'all-day':(ev.time||'20:00'));if(ev.notificationSentFor===key)return;const start=new Date(ev.date+'T'+(ev.allDay?'00:00':(ev.time||'20:00'))+':00'),trigger=ev.allDay?start:new Date(start.getTime()-15*60*1000),end=ev.allDay?new Date(start.getTime()+86400000):start;if(now>=trigger&&now<=end){notifications.push({id:'film-'+ev.id+'-'+key,emoji:'🎬',title:ev.allDay?'Hoy: '+ev.title:'En 15 minutos: '+ev.title,description:ev.allDay?'Hoy tienes programado este Film en tu calendario.':'Tu Film está programado para las '+(ev.time||'20:00')+'.',module:'Entretención',when:'Ahora',createdAt:now.toISOString()});notifications=notifications.slice(-50);localStorage.setItem('enorden_notifications',JSON.stringify(notifications));ev.notificationSentFor=key;changed=true}});if(changed)localStorage.setItem('enorden_events',JSON.stringify(events))}
+
+
+/* RUTINAS — reglas funcionales en RUTINAS_SPEC.md */
+function saveRoutines(){localStorage.setItem('enorden_routines',JSON.stringify(routines));localStorage.setItem('enorden_events',JSON.stringify(events))}
+function routineDateKey(date){return keyDate(date)}
+function routineWeekdayIndex(date){return (date.getDay()+6)%7}
+function routineDateFromKey(key){return new Date(key+'T12:00:00')}
+function routineMonthWeekIndex(date){
+ const firstDay=(new Date(date.getFullYear(),date.getMonth(),1).getDay()+6)%7;
+ return Math.floor((date.getDate()-1+firstDay)/7)+1;
+}
+function routinePeriodDates(routine){
+ if(!routine.startDate)return [];
+ const start=routineDateFromKey(routine.startDate);
+ if(!Number.isFinite(start.getTime()))return [];
+ const result=[],days=Array.isArray(routine.weekdays)?routine.weekdays:[],weeks=Array.isArray(routine.monthWeeks)?routine.monthWeeks:[];
+ if(routine.repeatMonthly){
+  if(!days.length||!weeks.length)return [];
+  const year=start.getFullYear(),month=start.getMonth(),total=new Date(year,month+1,0).getDate();
+  for(let day=1;day<=total;day++){
+   const date=new Date(year,month,day,12);
+   if(days.includes(routineWeekdayIndex(date))&&weeks.includes(routineMonthWeekIndex(date)))result.push(routineDateKey(date));
+  }
+  return result;
+ }
+ if(!routine.endDate)return [];
+ const end=routineDateFromKey(routine.endDate);
+ if(!Number.isFinite(end.getTime())||end<start)return [];
+ for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1))result.push(routineDateKey(d));
+ return result;
+}
+function syncRoutineCalendar(routine){
+ events=events.filter(ev=>String(ev.routineId)!==String(routine.id));
+ if(routine.scheduleEnabled&&routine.startDate&&routine.endDate){
+  routinePeriodDates(routine).forEach(date=>{
+   const id='routine-event-'+routine.id+'-'+date;
+   events.push({id,seriesId:'routine-series-'+routine.id,routineId:routine.id,type:'routine',title:routine.name,date,time:null,allDay:true,scope:'personal',priority:'normal',alerts:[],repeat:'none',weekdays:[],routineGenerated:true});
+  });
+ }
+ saveRoutines();
+}
+function renderRoutines(){
+ const active=routines.filter(r=>r.active).length;
+ screen.innerHTML=`
+ <div class="page-heading"><h1>Rutinas</h1><p>Organiza tus actividades y administra el tiempo de cada una.</p></div>
+ <div class="routines-toolbar"><div><strong>${routines.length} rutina(s)</strong><div class="routine-meta">${active} activa(s) ahora</div></div><button type="button" class="primary-btn" onclick="openRoutineEditor(null)">+ Nueva rutina</button></div>
+ ${routines.length?`<div class="routines-list">${routines.map(r=>routineCardHTML(r)).join('')}</div>`:'<div class="routine-empty"><div style="font-size:34px;margin-bottom:8px">📁</div><strong>Aún no tienes rutinas</strong><p>Crea una rutina y agrega las tareas que quieres organizar.</p><button class="primary-btn" onclick="openRoutineEditor(null)">Crear primera rutina</button></div>'}
+ <p class="settings-note" style="margin-top:16px">Las rutinas y sus tareas se guardan en este dispositivo. Las alarmas con la aplicación cerrada requieren una integración nativa que todavía no está habilitada.</p>
+ <div class="bottom-space"></div>`;
+}
+function routineCardHTML(r){
+ const expanded=String(routineExpandedId)===String(r.id),tasks=r.tasks||[];
+ const schedule=r.scheduleEnabled?(r.repeatMonthly?'Repetición mensual · '+(r.startDate?routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{month:'long',year:'numeric'}):'Mes sin definir'):r.startDate&&r.endDate?'Del '+routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'})+' al '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'short'}):'Programación incompleta'):'Activación manual';
+ return `<article class="routine-card ${r.active?'is-active':''}" data-routine-id="${escapeHTML(r.id)}" onpointerdown="startRoutineHold(event,'${escapeHTML(r.id)}')" onpointermove="moveRoutineCardHold(event)" onpointerup="endRoutineHold(event)" onpointercancel="endRoutineHold(event)">
+ <div class="routine-card-head">
+  <div class="routine-folder" title="Mantén presionados los seis puntos y arrastra para reordenar" aria-label="Mantén presionada y arrastra para reordenar">📁</div>
+  <button type="button" class="routine-card-main" style="border:0;background:none;text-align:left;color:inherit;padding:0" onclick="toggleRoutineExpanded('${escapeHTML(r.id)}')"><strong>${escapeHTML(r.name)}</strong><span class="routine-meta">${tasks.length} tarea(s) · ${escapeHTML(schedule)}${r.activationTime?' · '+escapeHTML(r.activationTime):''}</span></button>
+  <div class="routine-card-actions">
+   <button type="button" class="small-btn" aria-label="Configurar rutina" title="Configurar" onclick="openRoutineEditor('${escapeHTML(r.id)}')">⚙</button>
+   <button type="button" class="routine-toggle" aria-label="${r.active?'Apagar':'Encender'} rutina" aria-pressed="${r.active?'true':'false'}" onclick="toggleRoutineActive('${escapeHTML(r.id)}')" title="${r.active?'Apagar':'Encender'}"></button>
+  </div>
+ </div>
+ ${expanded?`<div class="routine-tasks">${tasks.length?tasks.map((t,i)=>routineTaskHTML(r,t,i)).join(''):'<div class="routine-empty">Esta rutina todavía no tiene tareas.</div>'}
+ <div class="routine-actions"><button type="button" class="secondary-btn" onclick="openRoutineTaskEditor('${escapeHTML(r.id)}',null)">+ Agregar tarea</button><button type="button" class="secondary-btn" onclick="startRoutine('${escapeHTML(r.id)}')">▶ Iniciar ahora</button></div>
+ </div>`:''}
+ </article>`;
+}
+function routineTaskScheduledTime(r,index){if(!r.scheduleEnabled||!r.activationTime)return '';const parts=String(r.activationTime).split(':').map(Number),base=(parts[0]||0)*60+(parts[1]||0),offset=(r.tasks||[]).slice(0,index).reduce((sum,task)=>sum+Math.max(0,Number(task.duration)||0),0),total=(base+offset)%1440;return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0')}
+function routineTaskHTML(r,t,index){const alarmTime=routineTaskScheduledTime(r,index);return `<div class="routine-task-row" data-routine-task-id="${escapeHTML(t.id)}" onclick="openRoutineTaskFromRow(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" onpointerdown="startRoutineTaskHold(event,'${escapeHTML(r.id)}','${escapeHTML(t.id)}')" >
+ <span class="routine-task-grip" title="Mantén presionada y arrastra para reordenar">⠿</span><div class="routine-task-info"><strong>${index+1}. ${escapeHTML(t.name)}</strong><small>${Number(t.duration)||0} minutos</small></div>${alarmTime?'<span class="routine-task-time" aria-label="Alarma a las '+alarmTime+'">'+alarmTime+'</span>':''}
+ </div>`}
+function openRoutineTaskFromRow(event,routineId,taskId){if(routineTaskSuppressClick){routineTaskSuppressClick=false;return}if(event.target.closest('button'))return;openRoutineTaskEditor(routineId,taskId)}
+function toggleRoutineExpanded(id){if(routineSuppressClick){routineSuppressClick=false;return}routineExpandedId=String(routineExpandedId)===String(id)?null:id;renderRoutines()}
+function startRoutineHold(event,id){if(!event.target.closest('.routine-folder')||event.button!==0)return;const card=event.currentTarget;if(routineCardDrag)return;const cards=[...document.querySelectorAll('.routines-list > .routine-card')];routineCardDrag={id:String(id),originalIds:cards.map(item=>String(item.dataset.routineId)),pointerId:event.pointerId,moved:false};card.classList.add('routine-dragging');try{card.setPointerCapture(event.pointerId)}catch{}event.preventDefault()}
+function moveRoutineCardHold(event){if(!routineCardDrag||event.pointerId!==routineCardDrag.pointerId)return;event.preventDefault();const source=document.querySelector('.routine-card[data-routine-id="'+CSS.escape(routineCardDrag.id)+'"]'),target=document.elementFromPoint(event.clientX,event.clientY)?.closest('.routine-card');if(!source||!target||target.parentElement!==source.parentElement)return;const rect=target.getBoundingClientRect(),before=event.clientY<rect.top+rect.height/2;if(source===target&&((before&&target.previousElementSibling===source)||(!before&&target.nextElementSibling===source)))return;if(source===target)return;target.parentNode.insertBefore(source,before?target:target.nextSibling);routineCardDrag.moved=true}
+function endRoutineHold(event){if(!routineCardDrag||event.pointerId!==routineCardDrag.pointerId)return;const drag=routineCardDrag,ids=[...document.querySelectorAll('.routines-list > .routine-card')].map(card=>String(card.dataset.routineId));document.querySelectorAll('.routine-card').forEach(card=>card.classList.remove('routine-dragging'));routineCardDrag=null;if(!drag.moved||ids.every((id,index)=>id===drag.originalIds[index]))return;showWindowCaution({title:'¿Guardar nuevo orden?',message:'¿Quieres confirmar el nuevo orden de las rutinas?',cancelLabel:'Cancelar',confirmLabel:'Guardar orden',danger:false,onCancel:()=>renderRoutines(),onConfirm:()=>{const byId=new Map(routines.map(r=>[String(r.id),r]));routines=ids.map(id=>byId.get(id)).filter(Boolean);saveRoutines();renderRoutines()}})}
+function openRoutineEditor(id){
+ const r=id==null?null:routines.find(x=>String(x.id)===String(id));if(id!=null&&!r)return;
+ routineEditorId=r?.id??null;
+ const days=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],weekdays=r?.weekdays||[],monthWeeks=r?.monthWeeks||[];
+ const startValue=r?.startDate||'',startDate=startValue?routineDateFromKey(startValue):new Date(),firstDay=(new Date(startDate.getFullYear(),startDate.getMonth(),1).getDay()+6)%7,daysInMonth=new Date(startDate.getFullYear(),startDate.getMonth()+1,0).getDate(),weekCount=Math.ceil((firstDay+daysInMonth)/7);
+ showTaskModal('Rutina',`
+ <div class="event-form-section"><input id="routineName" maxlength="100" value="${escapeHTML(r?.name||'')}" placeholder="Nombre de la rutina" aria-label="Nombre de la rutina" oninput="updateRoutinePreview()"></div>
+ <div class="event-form-section"><label class="event-choice"><input id="routineScheduleEnabled" type="checkbox" ${r?.scheduleEnabled!==false?'checked':''} onchange="toggleRoutineScheduleFields()"> Programar activación automática</label></div>
+ <div id="routineScheduleFields" class="routine-schedule-box ${r?.scheduleEnabled===false?'hidden':''}">
+  <div class="routine-form-grid routine-date-pair">
+   <label>Fecha de inicio<input id="routineStartDate" type="date" value="${escapeHTML(startValue)}" onchange="updateRoutineRepeatWeeks();updateRoutinePreview()"></label>
+   <label>Fecha de término<input id="routineEndDate" type="date" value="${escapeHTML(r?.endDate||'')}" onchange="updateRoutinePreview()"></label>
+  </div>
+  <div class="routine-field" style="margin-top:10px"><label>Hora</label><input id="routineActivationTime" type="hidden" value="${escapeHTML(r?.activationTime||'07:00')}"><button type="button" class="time-display-button" id="routineActivationTimeButton" onclick="openWheelTimePicker('routineActivationTime','routineActivationTimeText','routine')"><span class="time-display-icon">◷</span><span id="routineActivationTimeText">${escapeHTML(r?.activationTime||'07:00')}</span></button></div>
+  <div class="routine-field" style="margin-top:12px"><label class="event-choice"><input id="routineRepeatMonthly" type="checkbox" ${r?.repeatMonthly?'checked':''} onchange="toggleRoutineRepeatFields()"> Repetir</label></div>
+  <div id="routineRepeatFields" class="${r?.repeatMonthly?'':'hidden'}">
+   <div class="routine-field" style="margin-top:10px">Días de activación<div class="routine-weekdays">${days.map((d,i)=>'<label><input type="checkbox" name="routineWeekday" value="'+i+'" '+(weekdays.includes(i)?'checked':'')+' onchange="updateRoutinePreview()"> '+d+'</label>').join('')}</div></div>
+   <div class="routine-field" style="margin-top:12px">Semanas del mes<div id="routineMonthWeeks" class="routine-weekdays">${Array.from({length:weekCount},(_,i)=>'<label><input type="checkbox" name="routineMonthWeek" value="'+(i+1)+'" '+(monthWeeks.includes(i+1)?'checked':'')+' onchange="updateRoutinePreview()"> Sem '+(i+1)+'</label>').join('')}</div></div>
+  </div>
+  <div class="routine-preview" id="routinePreview"><strong>Vista previa del calendario</strong><p>Selecciona la programación para ver los días que se agregarán al calendario.</p></div>
+ </div>
+ <div class="appearance-actions">${r?'<button type="button" class="danger-btn" onclick="confirmDeleteRoutine()">Eliminar</button>':''}<button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineEditor()">Guardar</button></div>`);
+ setModalWindowBase('save',()=>{routineEditorId=null});
+ updateRoutinePreview();
+}
+function toggleRoutineScheduleFields(){document.getElementById('routineScheduleFields')?.classList.toggle('hidden',!document.getElementById('routineScheduleEnabled')?.checked)}
+function toggleRoutineRepeatFields(){document.getElementById('routineRepeatFields')?.classList.toggle('hidden',!document.getElementById('routineRepeatMonthly')?.checked);updateRoutinePreview()}
+function updateRoutineRepeatWeeks(){
+ const start=document.getElementById('routineStartDate')?.value;if(!start)return;
+ const d=routineDateFromKey(start),count=Math.ceil((((new Date(d.getFullYear(),d.getMonth(),1).getDay()+6)%7)+new Date(d.getFullYear(),d.getMonth()+1,0).getDate())/7);
+ const selected=new Set([...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value)));
+ const holder=document.getElementById('routineMonthWeeks');if(!holder)return;
+ holder.innerHTML=Array.from({length:count},(_,i)=>'<label><input type="checkbox" name="routineMonthWeek" value="'+(i+1)+'" '+(selected.has(i+1)?'checked':'')+' onchange="updateRoutinePreview()"> Sem '+(i+1)+'</label>').join('');
+}
+function updateRoutinePreview(){
+ const box=document.getElementById('routinePreview');if(!box)return;
+ const enabled=document.getElementById('routineScheduleEnabled')?.checked,start=document.getElementById('routineStartDate')?.value,end=document.getElementById('routineEndDate')?.value,time=document.getElementById('routineActivationTime')?.value||'07:00',repeat=document.getElementById('routineRepeatMonthly')?.checked;
+ if(!enabled){box.innerHTML='<strong>Vista previa del calendario</strong><p>La rutina se activará manualmente y no generará eventos.</p>';return}
+ if(!start||(!repeat&&!end)||(!repeat&&end<start)){box.innerHTML='<strong>Vista previa del calendario</strong><p>Completa las fechas para ver la programación.</p>';return}
+ const days=[...document.querySelectorAll('input[name="routineWeekday"]:checked')].map(x=>Number(x.value)),weeks=[...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value));
+ const temp={startDate:start,endDate:end,repeatMonthly:!!repeat,weekdays:days,monthWeeks:weeks},dates=repeat?routinePeriodDates(temp):(()=>{const a=routineDateFromKey(start),b=routineDateFromKey(end),out=[];for(let d=new Date(a);d<=b;d.setDate(d.getDate()+1))out.push(routineDateKey(d));return out})();
+ if(repeat&&(!days.length||!weeks.length)){box.innerHTML='<strong>Vista previa del calendario</strong><p>Selecciona al menos un día y una semana del mes.</p>';return}
+ const formatted=dates.map(k=>routineDateFromKey(k).toLocaleDateString('es-CL',{weekday:'short',day:'numeric',month:'short'}));
+ const routineName=document.getElementById('routineName')?.value.trim()||'Nombre de la rutina';
+ box.innerHTML='<strong>Vista previa del calendario</strong><p>Evento: '+escapeHTML(routineName)+' · '+dates.length+' fecha(s) · '+escapeHTML(time)+'</p><p>'+ (formatted.length?formatted.join(' · '):'No hay fechas para esta configuración') +'</p>';
+}
+function confirmDeleteRoutine(){const r=routines.find(x=>String(x.id)===String(routineEditorId));if(!r)return;showWindowCaution({title:'¿Eliminar rutina?',message:'Esta acción eliminará la rutina y todas sus tareas. También se quitarán los eventos que se generaron automáticamente en el calendario.',subject:r.name,cancelLabel:'Cancelar',confirmLabel:'Eliminar rutina',onConfirm:()=>deleteRoutine(r.id)});}
+function deleteRoutine(id){const r=routines.find(x=>String(x.id)===String(id));if(!r)return;r.active=false;r.execution=null;clearRoutineTimers(r.id);events=events.filter(ev=>String(ev.routineId)!==String(r.id));routines=routines.filter(x=>String(x.id)!==String(r.id));routineEditorId=null;routineExpandedId=null;saveRoutines();closeModal();renderRoutines()}
+function toggleRoutineScheduleFields(){document.getElementById('routineScheduleFields')?.classList.toggle('hidden',!document.getElementById('routineScheduleEnabled')?.checked)}
+function saveRoutineEditor(){
+ const name=document.getElementById('routineName')?.value.trim(),enabled=!!document.getElementById('routineScheduleEnabled')?.checked;
+ if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la rutina.');return}
+ const start=document.getElementById('routineStartDate')?.value||'',end=document.getElementById('routineEndDate')?.value||'',time=document.getElementById('routineActivationTime')?.value||'07:00',repeat=!!document.getElementById('routineRepeatMonthly')?.checked,days=[...document.querySelectorAll('input[name="routineWeekday"]:checked')].map(x=>Number(x.value)),weeks=[...document.querySelectorAll('input[name="routineMonthWeek"]:checked')].map(x=>Number(x.value));
+ if(enabled&&!start){showWindowNotice('Revisa la fecha','Selecciona una fecha de inicio.');return}
+ if(enabled&&!repeat&&(!end||end<start)){showWindowNotice('Revisa las fechas','Selecciona una fecha de término igual o posterior a la fecha de inicio.');return}
+ if(enabled&&repeat&&!days.length){showWindowNotice('Selecciona los días','Elige al menos un día de activación.');return}
+ if(enabled&&repeat&&!weeks.length){showWindowNotice('Selecciona las semanas','Elige al menos una semana del mes.');return}
+ let r=routineEditorId==null?null:routines.find(x=>String(x.id)===String(routineEditorId));
+ if(!r){r={id:'routine-'+Date.now(),name,tasks:[],active:false,createdAt:new Date().toISOString()};routines.push(r)}
+ Object.assign(r,{name,scheduleEnabled:enabled,startDate:enabled?start:null,endDate:enabled&&!repeat?end:null,activationTime:enabled?time:null,repeatMonthly:enabled&&repeat,weekdays:enabled&&repeat?days:[],monthWeeks:enabled&&repeat?weeks:[]});
+ syncRoutineCalendar(r);routineEditorId=null;closeModal();renderRoutines();
+}
+
+let routineDurationDraft={hour:0,minute:30};
+function formatRoutineDuration(total){const n=Math.max(1,Math.min(1440,Math.round(Number(total)||30))),h=Math.floor(n/60),m=n%60;return h?(m?h+' h '+m+' min':h+' h'):m+' min'}
+function openRoutineDurationPicker(){const input=document.getElementById('routineTaskDuration');if(!input)return;const total=Math.max(1,Math.min(1440,Number(input.value)||30));routineDurationDraft={hour:Math.floor(total/60),minute:total%60};renderRoutineDurationWheel('hour');renderRoutineDurationWheel('minute');document.getElementById('routineDurationPickerBackdrop').classList.add('show')}
+function renderRoutineDurationWheel(kind){const wheel=document.getElementById(kind==='hour'?'routineDurationHourWheel':'routineDurationMinuteWheel'),count=kind==='hour'?25:60,selected=routineDurationDraft[kind];wheel.innerHTML=Array.from({length:count},(_,i)=>'<button type="button" class="time-wheel-option'+(i===selected?' selected':'')+'" data-value="'+i+'" onclick="chooseRoutineDurationWheelValue(\''+kind+'\','+i+')">'+String(i).padStart(2,'0')+'</button>').join('');wheel.scrollTop=selected*42}
+function chooseRoutineDurationWheelValue(kind,value){if(kind==='minute'&&routineDurationDraft.hour===24)return;routineDurationDraft[kind]=value;if(kind==='hour'&&value===24)routineDurationDraft.minute=0;if(routineDurationDraft.hour===0&&routineDurationDraft.minute===0)routineDurationDraft.minute=1;renderRoutineDurationWheel(kind);if(kind==='hour'&&value===24)renderRoutineDurationWheel('minute');else updateRoutineDurationWheelSelection('minute')}
+function handleRoutineDurationWheelScroll(kind){const wheel=document.getElementById(kind==='hour'?'routineDurationHourWheel':'routineDurationMinuteWheel'),count=kind==='hour'?25:60,index=Math.max(0,Math.min(count-1,Math.round(wheel.scrollTop/42)));routineDurationDraft[kind]=index;if(kind==='minute'&&routineDurationDraft.hour===24){routineDurationDraft.minute=0;wheel.scrollTop=0}else if(routineDurationDraft.hour===24)routineDurationDraft.minute=0;if(routineDurationDraft.hour===0&&routineDurationDraft.minute===0)routineDurationDraft.minute=1;updateRoutineDurationWheelSelection(kind);if(kind==='hour'&&routineDurationDraft.hour===24)updateRoutineDurationWheelSelection('minute')}
+function updateRoutineDurationWheelSelection(kind){const wheel=document.getElementById(kind==='hour'?'routineDurationHourWheel':'routineDurationMinuteWheel'),selected=routineDurationDraft[kind];wheel.querySelectorAll('.time-wheel-option').forEach((button,index)=>button.classList.toggle('selected',index===selected))}
+function closeRoutineDurationPicker(apply){const backdrop=document.getElementById('routineDurationPickerBackdrop');if(!backdrop)return;if(apply){const total=Math.max(1,Math.min(1440,routineDurationDraft.hour*60+routineDurationDraft.minute)),input=document.getElementById('routineTaskDuration'),label=document.getElementById('routineTaskDurationText');if(input)input.value=String(total);if(label)label.textContent=formatRoutineDuration(total)}backdrop.classList.remove('show')}
+function openRoutineTaskEditor(routineId,taskId){
+ const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;
+ const task=taskId==null?null:(r.tasks||[]).find(t=>String(t.id)===String(taskId));if(taskId!=null&&!task)return;
+ routineTaskParentId=r.id;routineTaskEditorId=task?.id??null;
+ showTaskModal(task?'Editar tarea':'Nueva tarea',`
+ <div class="event-form-section"><label for="routineTaskName">Nombre de la tarea</label><input id="routineTaskName" maxlength="120" value="${escapeHTML(task?.name||'')}" placeholder="Ej. Preparar desayuno"></div>
+ <div class="event-form-section"><label>Duración</label><input id="routineTaskDuration" type="hidden" value="${Number(task?.duration)||30}"><button type="button" class="time-display-button" id="routineTaskDurationButton" onclick="openRoutineDurationPicker()"><span class="time-display-icon">⏱</span><span id="routineTaskDurationText">${formatRoutineDuration(Number(task?.duration)||30)}</span></button></div>
+ <div class="appearance-actions">${task?'<button type="button" class="danger-btn" onclick="confirmDeleteRoutineTask()">Eliminar</button>':''}<button type="button" class="secondary-btn" onclick="closeModal()">Cancelar</button><button type="button" class="primary-btn" onclick="saveRoutineTaskEditor()">Guardar</button></div>`);
+ setModalWindowBase('save',()=>{routineTaskParentId=null;routineTaskEditorId=null});
+}
+function confirmDeleteRoutineTask(){const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),task=r?.tasks.find(x=>String(x.id)===String(routineTaskEditorId));if(!r||!task)return;showWindowCaution({title:'¿Eliminar tarea?',message:'Esta tarea se eliminará de la rutina y no se podrá recuperar.',subject:task.name,cancelLabel:'Cancelar',confirmLabel:'Eliminar tarea',onConfirm:()=>deleteRoutineTask(r.id,task.id)});}
+function deleteRoutineTask(routineId,taskId){const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;r.tasks=r.tasks.filter(t=>String(t.id)!==String(taskId));saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines()}
+function saveRoutineTaskEditor(){
+ const r=routines.find(x=>String(x.id)===String(routineTaskParentId)),name=document.getElementById('routineTaskName')?.value.trim(),duration=Number(document.getElementById('routineTaskDuration')?.value);
+ if(!r)return;if(!name){showWindowNotice('Falta el nombre','Escribe un nombre para la tarea.');return}
+ if(!Number.isInteger(duration)||duration<1||duration>1440){showWindowNotice('Duración inválida','La duración debe ser un número entre 1 y 1440 minutos.');return}
+ let task=r.tasks.find(t=>String(t.id)===String(routineTaskEditorId));
+ if(!task){task={id:'rtask-'+Date.now()+'-'+Math.random().toString(36).slice(2,6),createdAt:new Date().toISOString()};r.tasks.push(task)}
+ Object.assign(task,{name,duration});saveRoutines();routineExpandedId=r.id;routineTaskParentId=null;routineTaskEditorId=null;closeModal();renderRoutines();
+}
+function startRoutineTaskHold(event,routineId,taskId){
+ if(!event.target.closest('.routine-task-grip')||event.button!==0||routineDragId)return;
+ const row=event.currentTarget,rows=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(routineId))+'"] .routine-tasks [data-routine-task-id]')];
+ const originalIds=rows.map(x=>String(x.dataset.routineTaskId));
+ routineDragId={routineId,taskId,originalIds,pointerId:event.pointerId,moved:false};
+ row.classList.add('routine-dragging');
+ try{row.setPointerCapture(event.pointerId)}catch{}
+}
+function moveRoutineTaskHold(event){
+ if(!routineDragId||event.pointerId!==routineDragId.pointerId)return;event.preventDefault();
+ const source=document.querySelector('[data-routine-task-id="'+CSS.escape(routineDragId.taskId)+'"]');
+ const target=document.elementFromPoint(event.clientX,event.clientY)?.closest('.routine-task-row');
+ if(!source||!target||source===target||target.closest('.routine-card')?.dataset.routineId!==String(routineDragId.routineId))return;
+ const rect=target.getBoundingClientRect(),before=event.clientY<rect.top+rect.height/2;target.parentNode.insertBefore(source,before?target:target.nextSibling);routineDragId.moved=true;
+}
+function endRoutineTaskHold(event){
+ if(!routineDragId||!event||event.pointerId!==routineDragId.pointerId)return;
+ const drag=routineDragId,r=routines.find(x=>String(x.id)===String(drag.routineId)),ids=[...document.querySelectorAll('.routine-card[data-routine-id="'+CSS.escape(String(drag.routineId))+'"] .routine-tasks [data-routine-task-id]')].map(x=>String(x.dataset.routineTaskId));
+ document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));routineDragId=null;
+ if(!drag.moved||!r||ids.length!==drag.originalIds.length||ids.every((id,i)=>id===drag.originalIds[i]))return;
+ routineTaskSuppressClick=true;
+ showWindowCaution({title:'¿Guardar nuevo orden?',message:'¿Quieres confirmar el nuevo orden de las tareas de esta rutina?',cancelLabel:'Cancelar',confirmLabel:'Guardar orden',danger:false,onCancel:()=>{routineTaskSuppressClick=false;renderRoutines()},onConfirm:()=>{const byId=new Map(r.tasks.map(t=>[String(t.id),t]));r.tasks=ids.map(id=>byId.get(id)).filter(Boolean);saveRoutines();routineTaskSuppressClick=false;renderRoutines()}});
+}
+function cancelRoutineTaskHold(event){
+ if(!routineDragId||!event||event.pointerId!==routineDragId.pointerId)return;
+ document.querySelectorAll('.routine-task-row').forEach(x=>x.classList.remove('routine-dragging'));
+ routineDragId=null;routineTaskSuppressClick=false;renderRoutines();
+}
+document.addEventListener('pointermove',moveRoutineTaskHold,{capture:true,passive:false});
+document.addEventListener('pointerup',endRoutineTaskHold,true);
+document.addEventListener('pointercancel',cancelRoutineTaskHold,true);
+function toggleRoutineActive(id){
+ const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ if(r.active){stopRoutine(id);return}
+ startRoutine(id);
+}
+function clearRoutineTimers(routineId){const key=String(routineId);(routineExecutionTimers[key]||[]).forEach(id=>clearTimeout(id));delete routineExecutionTimers[key]}
+function routineTaskOffsets(r){return r.tasks.map((t,i)=>r.tasks.slice(0,i).reduce((sum,x)=>sum+Number(x.duration||0),0)*60000)}
+function routinePendingAlarmTimes(r){
+ if(!r.active||!r.execution)return [];
+ const now=Date.now(),offsets=r.execution.taskOffsets||routineTaskOffsets(r);
+ return r.tasks.map((task,i)=>{const original=r.execution.startedAt+(offsets[i]||0),snoozed=r.execution.snoozedUntil?.[task.id]||0;return Math.max(original,snoozed)}).filter(time=>time>=now);
+}
+function routineAlarmTimesFromStart(r,startAt){const offsets=routineTaskOffsets(r);return offsets.map(offset=>startAt+offset)}
+function startRoutine(id,plannedStartAt=null){
+ const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ if('Notification'in window&&Notification.permission==='default')Notification.requestPermission().catch(()=>{});
+ if(!r.tasks?.length){showWindowNotice('Rutina sin tareas','Agrega al menos una tarea antes de iniciar la rutina.');return}
+ const startAt=Number.isFinite(plannedStartAt)?plannedStartAt:Date.now(),candidateTimes=routineAlarmTimesFromStart(r,startAt);
+ const conflicts=routines.filter(other=>other.active&&String(other.id)!==String(r.id)&&routinePendingAlarmTimes(other).some(time=>candidateTimes.includes(time)));
+ if(conflicts.length){showRoutineConflictChoice(r,conflicts,startAt);return}
+ activateRoutineExecution(r,startAt);
+}
+function activateRoutineExecution(r,startAt){
+ r.active=true;r.execution={startedAt:startAt,taskOffsets:routineTaskOffsets(r),snoozes:{},startedTasks:[]};
+ scheduleRoutineTaskAlarms(r);saveRoutines();routineExpandedId=r.id;renderRoutines();
+}
+function showRoutineConflictChoice(candidate,conflicts,startAt){
+ const involved=[candidate,...conflicts],layer=document.createElement('div');layer.className='window-notice-layer';layer.id='routineConflictChoice';
+ layer.innerHTML='<section class="window-notice-card" role="alertdialog" aria-modal="true"><h2>Conflicto de horarios</h2><p>Hay tareas de estas rutinas programadas para sonar exactamente a la misma hora. Selecciona cuál deseas mantener activa; las demás se apagarán.</p><div class="routine-conflict-options">'+involved.map(r=>'<label style="display:flex;gap:9px;align-items:center;padding:9px 0"><input type="radio" name="routineConflictKeep" value="'+escapeHTML(r.id)+'"> <span>'+escapeHTML(r.name)+'</span></label>').join('')+'</div><p class="settings-note">Te recomendamos modificar los horarios o las programaciones para evitar nuevos conflictos.</p><div class="routine-actions"><button class="secondary-btn" onclick="closeWindowNotice(\'routineConflictChoice\')">Cancelar</button><button class="primary-btn" onclick="resolveRoutineConflict(\''+escapeHTML(candidate.id)+'\','+Number(startAt)+')">Confirmar selección</button></div></section>';
+ document.body.appendChild(layer);
+}
+function resolveRoutineConflict(candidateId,startAt){
+ const keep=document.querySelector('input[name="routineConflictKeep"]:checked')?.value;
+ if(!keep){showWindowNotice('Selecciona una rutina','Debes elegir cuál de las rutinas permanecerá activa.');return}
+ const candidate=routines.find(r=>String(r.id)===String(candidateId));closeWindowNotice('routineConflictChoice');
+ routines.filter(r=>r.active&&String(r.id)!==String(keep)).forEach(r=>{r.active=false;r.execution=null;clearRoutineTimers(r.id)});
+ if(String(keep)===String(candidateId)&&candidate)activateRoutineExecution(candidate,startAt);
+ else{if(candidate){candidate.active=false;candidate.execution=null;clearRoutineTimers(candidate.id)}saveRoutines();renderRoutines()}
+}
+function scheduleRoutineTaskAlarms(r){
+ clearRoutineTimers(r.id);const run=r.execution;if(!run)return;
+ routineExecutionTimers[String(r.id)]=[];
+ r.tasks.forEach((task,index)=>{
+  const offset=run.taskOffsets[index]||0,delay=Math.max(0,run.startedAt+offset-(Date.now()));
+  const timer=setTimeout(()=>triggerRoutineTaskAlarm(r.id,task.id),Math.min(delay,2147480000));routineExecutionTimers[String(r.id)].push(timer);
+ });
+}
+function triggerRoutineTaskAlarm(routineId,taskId){
+ const r=routines.find(x=>String(x.id)===String(routineId)),task=r?.tasks.find(x=>String(x.id)===String(taskId));if(!r?.active||!task)return;
+ const run=r.execution;if(!run)return;
+ const count=run.snoozes[taskId]||0;
+ if(count>0&&run.snoozedUntil?.[taskId]&&Date.now()<run.snoozedUntil[taskId])return;
+ if('Notification'in window&&Notification.permission==='granted')new Notification('Rutina: '+r.name,{body:'Comienza: '+task.name});
+ showRoutineAlarm(r,task);
+}
+function showRoutineAlarm(r,task){
+ const id='routineAlarm-'+Date.now(),layer=document.createElement('div');layer.id=id;layer.className='window-notice-layer';
+ const used=r.execution?.snoozes?.[task.id]||0;
+ layer.innerHTML='<section class="window-notice-card" role="dialog" aria-modal="true"><h2>Es hora de comenzar</h2><p><strong>'+escapeHTML(task.name)+'</strong><br>'+escapeHTML(r.name)+' · '+task.duration+' minutos</p><div class="routine-actions"><button class="secondary-btn" '+(used>=3?'disabled':'')+' onclick="snoozeRoutineTask(\''+escapeHTML(r.id)+'\',\''+escapeHTML(task.id)+'\',5,\''+id+'\')">Posponer 5 min</button><button class="secondary-btn" '+(used>=3?'disabled':'')+' onclick="snoozeRoutineTask(\''+escapeHTML(r.id)+'\',\''+escapeHTML(task.id)+'\',10,\''+id+'\')">Posponer 10 min</button><button class="primary-btn" onclick="closeWindowNotice(\''+id+'\')">Entendido</button></div><p class="settings-note">Posposiciones disponibles: '+(3-used)+'</p></section>';
+ document.body.appendChild(layer);
+}
+function snoozeRoutineTask(routineId,taskId,minutes,layerId){
+ const r=routines.find(x=>String(x.id)===String(routineId));if(!r?.active||!r.execution)return;
+ const used=r.execution.snoozes[taskId]||0;if(used>=3)return;
+ r.execution.snoozes[taskId]=used+1;r.execution.snoozedUntil=r.execution.snoozedUntil||{};r.execution.snoozedUntil[taskId]=Date.now()+minutes*60000;
+ const timer=setTimeout(()=>triggerRoutineTaskAlarm(routineId,taskId),minutes*60000);(routineExecutionTimers[String(routineId)]||(routineExecutionTimers[String(routineId)]=[])).push(timer);
+ closeWindowNotice(layerId);saveRoutines();
+}
+function stopRoutine(id){
+ const r=routines.find(x=>String(x.id)===String(id));if(!r)return;
+ const today=routineDateKey(new Date()),future=r.scheduleEnabled&&(r.repeatMonthly?routinePeriodDates(r).some(date=>date>=today):r.endDate&&r.endDate>=today);
+ if(!future){finishRoutineStop(r.id,false);return}
+ const layer=document.createElement('div');layer.className='window-notice-layer';layer.id='routineStopChoice';
+ layer.innerHTML='<section class="window-notice-card" role="alertdialog" aria-modal="true"><h2>Apagar rutina</h2><p>¿Quieres apagar solamente la ejecución del período actual o también todos los períodos siguientes?</p><div class="routine-actions"><button class="secondary-btn" onclick="closeWindowNotice(\'routineStopChoice\')">Cancelar</button><button class="primary-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',false)">Solo este período</button><button class="danger-btn" onclick="closeWindowNotice(\'routineStopChoice\');finishRoutineStop(\''+escapeHTML(r.id)+'\',true)">Todos los períodos siguientes</button></div></section>';
+ document.body.appendChild(layer);
+}
+function finishRoutineStop(routineId,cancelFuture){
+ const r=routines.find(x=>String(x.id)===String(routineId));if(!r)return;
+ r.active=false;r.execution=null;clearRoutineTimers(r.id);
+ if(cancelFuture){r.scheduleEnabled=false;r.startDate=null;r.endDate=null;r.repeatMonthly=false;r.weekdays=[];r.monthWeeks=[];r.repeatWeeks=1;events=events.filter(ev=>String(ev.routineId)!==String(r.id))}
+ saveRoutines();renderRoutines();
+}
 
 function renderOther(id){
  const m=modules.find(x=>x.id===id);
@@ -2477,6 +2949,7 @@ function eventDetailMarkup(ev){
 }
 function openEventDetails(id){
  const ev=events.find(x=>String(x.id)===String(id));if(!ev)return;
+ if(ev.type==='routine'){const r=routines.find(x=>String(x.id)===String(ev.routineId));showTaskModal('Evento Rutina','<div class="card"><strong>'+escapeHTML(ev.title)+'</strong><p class="muted">'+new Date(ev.date+'T12:00:00').toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</p><p>Este evento fue generado automáticamente por la programación de la rutina.</p>'+(r?'<p>Horario de activación: '+escapeHTML(r.activationTime||'')+'</p>':'')+'</div><div class="appearance-actions"><button class="primary-btn" onclick="closeModal()">Cerrar</button></div>');return;}
  editingEventId=null;eventPrefill=null;
  document.getElementById('modalTitle').textContent='Evento';
  const sub=document.getElementById('modalSubtitle');sub.textContent='Vista previa y acciones';sub.classList.remove('hidden');
@@ -2543,7 +3016,7 @@ function showEventFields(){
  const now=eventCreationTime||new Date(),currentTime=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
  w.innerHTML=
  '<div class="event-form-section"><label>Nombre</label><input id="eventName" placeholder="Nombre del evento" oninput="updateEventPreview()"></div>'+
- '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openTimePicker()"><span class="time-display-icon">◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
+ '<div class="event-two-col"><div class="event-form-section"><span class="field-label">Fecha</span><input id="eventDate" type="date" value="'+preset+'" onchange="updateEventPreview()"></div><div class="event-form-section" id="eventTimeWrap"><span class="field-label">Hora</span><input id="eventTime" type="hidden" value="'+currentTime+'"><button type="button" class="time-display-button" id="eventTimeDisplay" onclick="openWheelTimePicker(\'eventTime\',\'eventTimeText\',\'calendar\')"><span class="time-display-icon">◷</span><span id="eventTimeText">'+currentTime+'</span></button></div></div>'+
  '<div class="event-form-section"><label class="event-choice"><input id="eventAllDay" type="checkbox" onchange="toggleEventAllDay()"> Todo el día</label></div>'+
  '<div class="event-form-section"><span class="field-label">¿Dónde se verá?</span><div class="event-choice-row"><label class="event-choice"><input type="radio" name="eventScope" value="personal" checked onchange="updateEventPreview()"> Mi calendario personal</label><label class="event-choice"><input type="radio" name="eventScope" value="family" onchange="updateEventPreview()"> Calendario familiar</label></div></div>'+
  '<div class="event-form-section"><label>Prioridad</label><select id="eventPriority" onchange="toggleEventColor()"><option value="normal">Normal</option><option value="high">Alta prioridad: destacar el día en el calendario</option></select><div id="eventColorWrap" class="hidden"><label>Selecciona el color</label><input id="eventColor" class="event-color" type="color" value="#d65b4a" onchange="updateEventPreview()"></div></div>'+
@@ -2564,41 +3037,66 @@ function showEventFields(){
  }else{if(type==='birthday'||type==='anniversary')toggleEventAllDay()}
  updateEventPreview();
 }
-let timePickerDraft={hour:0,minute:0},timePickerOriginal='09:00',timePickerScrollTimer=null;
-function openTimePicker(){
- const input=document.getElementById('eventTime');if(!input)return;
- timePickerOriginal=input.value||'09:00';
- const parts=timePickerOriginal.split(':').map(Number);
- timePickerDraft={hour:Number.isFinite(parts[0])?parts[0]:9,minute:Number.isFinite(parts[1])?parts[1]:0};
- renderTimeWheel('hour');renderTimeWheel('minute');
- document.getElementById('timePickerBackdrop').classList.add('show');
+let wheelTimeDraft={hour:7,minute:0},wheelTimeTarget={inputId:'',labelId:'',context:'calendar'};
+function openWheelTimePicker(inputId,labelId,context){
+ const input=document.getElementById(inputId);if(!input)return;
+ const parts=(input.value||'07:00').split(':').map(Number);
+ wheelTimeTarget={inputId,labelId,context:context||'calendar'};
+ wheelTimeDraft={hour:Math.max(0,Math.min(23,Number.isFinite(parts[0])?parts[0]:7)),minute:Math.max(0,Math.min(59,Number.isFinite(parts[1])?parts[1]:0))};
+ renderWheelTimeOptions('hour');renderWheelTimeOptions('minute');updateWheelTimePreview();
+ document.getElementById('wheelTimePickerBackdrop')?.classList.add('show');
 }
-function renderTimeWheel(kind){
- const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),count=kind==='hour'?24:60,selected=kind==='hour'?timePickerDraft.hour:timePickerDraft.minute;
- wheel.innerHTML=Array.from({length:count},(_,i)=>'<button type="button" class="time-wheel-option'+(i===selected?' selected':'')+'" data-value="'+i+'" onclick="chooseTimeWheelValue(\''+kind+'\','+i+')">'+String(i).padStart(2,'0')+'</button>').join('');
+function renderWheelTimeOptions(kind){
+ const wheel=document.getElementById(kind==='hour'?'wheelTimeHourWheel':'wheelTimeMinuteWheel'),selected=wheelTimeDraft[kind],count=kind==='hour'?24:60;
+ if(!wheel)return;
+ wheel.innerHTML=Array.from({length:count},(_,i)=>'<button type="button" class="time-wheel-option'+(i===selected?' selected':'')+'" data-value="'+i+'" onclick="chooseWheelTimeValue(\''+kind+'\','+i+')">'+String(i).padStart(2,'0')+'</button>').join('');
  wheel.scrollTop=selected*42;
 }
-function chooseTimeWheelValue(kind,value){
- timePickerDraft[kind]=value;const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
- wheel.scrollTo({top:value*42,behavior:'smooth'});updateTimeWheelSelection(kind);
-}
-function handleTimeWheelScroll(kind){
- const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel');
- const count=kind==='hour'?24:60,index=Math.max(0,Math.min(count-1,Math.round(wheel.scrollTop/42)));
- timePickerDraft[kind]=index;updateTimeWheelSelection(kind);
-}
-function updateTimeWheelSelection(kind){
- const wheel=document.getElementById(kind==='hour'?'timeHourWheel':'timeMinuteWheel'),selected=timePickerDraft[kind];
- wheel.querySelectorAll('.time-wheel-option').forEach((button,index)=>button.classList.toggle('selected',index===selected));
-}
-function closeTimePicker(apply){
- const backdrop=document.getElementById('timePickerBackdrop');if(!backdrop)return;
+function updateWheelTimePreview(){const preview=document.getElementById('wheelTimePreview');if(preview)preview.textContent=String(wheelTimeDraft.hour).padStart(2,'0')+':'+String(wheelTimeDraft.minute).padStart(2,'0')}
+function chooseWheelTimeValue(kind,value){const max=kind==='hour'?23:59;wheelTimeDraft[kind]=Math.max(0,Math.min(max,Number(value)||0));const wheel=document.getElementById(kind==='hour'?'wheelTimeHourWheel':'wheelTimeMinuteWheel');if(wheel)wheel.scrollTo({top:wheelTimeDraft[kind]*42,behavior:'smooth'});updateWheelTimeSelection(kind);updateWheelTimePreview()}
+function handleWheelTimeScroll(kind){const wheel=document.getElementById(kind==='hour'?'wheelTimeHourWheel':'wheelTimeMinuteWheel');if(!wheel)return;const max=kind==='hour'?23:59;wheelTimeDraft[kind]=Math.max(0,Math.min(max,Math.round(wheel.scrollTop/42)));updateWheelTimeSelection(kind);updateWheelTimePreview()}
+function updateWheelTimeSelection(kind){const wheel=document.getElementById(kind==='hour'?'wheelTimeHourWheel':'wheelTimeMinuteWheel'),selected=wheelTimeDraft[kind];if(wheel)wheel.querySelectorAll('.time-wheel-option').forEach((button,index)=>button.classList.toggle('selected',index===selected))}
+function closeWheelTimePicker(apply){
+ const backdrop=document.getElementById('wheelTimePickerBackdrop');if(!backdrop)return;
  if(apply){
-  const value=String(timePickerDraft.hour).padStart(2,'0')+':'+String(timePickerDraft.minute).padStart(2,'0');
-  const input=document.getElementById('eventTime'),label=document.getElementById('eventTimeText');
-  if(input)input.value=value;if(label)label.textContent=value;if(entertainmentScheduleOpen)entertainmentScheduleDraft.time=value;updateEventPreview();
+  const value=String(wheelTimeDraft.hour).padStart(2,'0')+':'+String(wheelTimeDraft.minute).padStart(2,'0'),input=document.getElementById(wheelTimeTarget.inputId),label=document.getElementById(wheelTimeTarget.labelId);
+  if(input)input.value=value;if(label)label.textContent=value;
+  if(wheelTimeTarget.context==='routine')updateRoutinePreview();
+  if(wheelTimeTarget.context==='film'&&entertainmentScheduleDraft)entertainmentScheduleDraft.time=value;
+  if(wheelTimeTarget.context==='calendar')updateEventPreview();
  }
- backdrop.classList.remove('show');backdrop.classList.remove('film-schedule-time-picker');
+ backdrop.classList.remove('show');
+}
+let analogTimeDraft={hour:7,minute:0,step:'hour'},analogTimeTarget={inputId:'',labelId:'',context:'calendar'};
+function openAnalogTimePicker(inputId,labelId,context){
+ const input=document.getElementById(inputId);if(!input)return;
+ const parts=(input.value||'07:00').split(':').map(Number);
+ analogTimeTarget={inputId,labelId,context:context||'calendar'};
+ analogTimeDraft={hour:Math.max(0,Math.min(23,Number.isFinite(parts[0])?parts[0]:7)),minute:Math.max(0,Math.min(59,Number.isFinite(parts[1])?parts[1]:0)),step:'hour'};
+ renderAnalogTimeClock();document.getElementById('analogTimePickerBackdrop')?.classList.add('show');
+}
+function renderAnalogTimeClock(){
+ const clock=document.getElementById('analogTimeClock'),numbers=document.getElementById('analogTimeNumbers'),preview=document.getElementById('analogTimePreview'),stepLabel=document.getElementById('analogTimeStepLabel'),hand=document.getElementById('analogTimeHand');if(!clock||!numbers)return;
+ const {hour,minute,step}=analogTimeDraft;preview.textContent=String(hour).padStart(2,'0')+':'+String(minute).padStart(2,'0');stepLabel.textContent=step==='hour'?'Selecciona la hora':'Selecciona los minutos';clock.dataset.step=step;
+ const vals=step==='hour'?Array.from({length:24},(_,i)=>i):Array.from({length:60},(_,i)=>i);
+ numbers.innerHTML=vals.map(v=>{const isHour=step==='hour',outer=isHour?(v===0||v>=13):true,angle=(isHour?(v%12)*Math.PI/6:v*Math.PI/30)-Math.PI/2,radius=isHour?(outer?104:66):108,cx=140+Math.cos(angle)*radius,cy=140+Math.sin(angle)*radius,major=!isHour&&v%5===0,selected=isHour?v===hour:v===minute,classes='analog-time-number'+(!isHour?' minute-tick'+(major?' major':''):'')+(selected?' selected':'');return '<button type="button" aria-label="'+(isHour?'Hora ':'Minuto ')+String(v).padStart(2,'0')+'" class="'+classes+'" style="left:'+(cx/280*100)+'%;top:'+(cy/280*100)+'%" onclick="chooseAnalogClockValue(\''+step+'\','+v+')">'+(isHour||major?String(v).padStart(2,'0'):'')+'</button>'}).join('');
+ const angle=step==='hour'?((hour%12)*30-90):((minute/60)*360-90);if(hand){hand.style.transform='rotate('+(angle-90)+'deg)';hand.style.height=(step==='hour'&&(hour>=1&&hour<=12)?'25%':'38%')}
+}
+function chooseAnalogClockValue(step,value){if(step==='hour'){analogTimeDraft.hour=value;analogTimeDraft.step='minute'}else analogTimeDraft.minute=value;renderAnalogTimeClock()}
+function handleAnalogClockPointer(event){
+ const clock=document.getElementById('analogTimeClock');if(!clock||event.target.closest('.analog-time-number'))return;
+ const rect=clock.getBoundingClientRect(),x=event.clientX-(rect.left+rect.width/2),y=event.clientY-(rect.top+rect.height/2),angle=(Math.atan2(y,x)+Math.PI/2+Math.PI*2)%(Math.PI*2),index=Math.round(angle/(Math.PI*2)*(analogTimeDraft.step==='hour'?12:60));
+ if(analogTimeDraft.step==='hour'){const inner=Math.hypot(x,y)<rect.width*.31,h=index%12;analogTimeDraft.hour=inner?(h===0?12:h):(h===0?0:h+12);analogTimeDraft.step='minute'}else analogTimeDraft.minute=index%60;
+ renderAnalogTimeClock();
+}
+function closeAnalogTimePicker(apply){
+ const backdrop=document.getElementById('analogTimePickerBackdrop');if(!backdrop)return;
+ if(apply){const value=String(analogTimeDraft.hour).padStart(2,'0')+':'+String(analogTimeDraft.minute).padStart(2,'0'),input=document.getElementById(analogTimeTarget.inputId),label=document.getElementById(analogTimeTarget.labelId);if(input)input.value=value;if(label)label.textContent=value;
+  if(analogTimeTarget.context==='routine')updateRoutinePreview();
+  if(analogTimeTarget.context==='film'&&entertainmentScheduleDraft)entertainmentScheduleDraft.time=value;
+  if(analogTimeTarget.context==='calendar')updateEventPreview();
+ }
+ backdrop.classList.remove('show');
 }
 function toggleEventAllDay(){const v=document.getElementById('eventAllDay').checked;document.getElementById('eventTimeWrap').classList.toggle('hidden',v);updateEventPreview()}
 function toggleEventColor(){document.getElementById('eventColorWrap').classList.toggle('hidden',document.getElementById('eventPriority').value!=='high');updateEventPreview()}
@@ -2626,6 +3124,41 @@ function addEvent(forceDuplicate=false){
  else{showTaskModal('Evento actualizado con éxito','<p>«'+escapeHTML(name)+'» se actualizó correctamente en el calendario.</p><div class="event-detail-actions"><button type="button" class="primary-btn" onclick="closeModal()">Entendido</button></div>');setModalWindowBase('confirmation')}
 }
 processFilmEventNotifications();setInterval(processFilmEventNotifications,60000);
+
+function processRoutineCalendarNotifications(){
+ const now=new Date(),today=keyDate(now);let changed=false;
+ routines.forEach(r=>{
+  if(!r.scheduleEnabled)return;
+  const dates=routinePeriodDates(r),noticeSent=r.noticeSent||{};
+  if(r.repeatMonthly){
+   const firstDate=dates[0];if(!firstDate)return;
+   const first=routineDateFromKey(firstDate),noticeDate=new Date(first);noticeDate.setDate(noticeDate.getDate()-1);
+   const key='month|'+r.startDate;
+   if(keyDate(noticeDate)===today&&!noticeSent[key]){
+    notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina se activará según los días y semanas del mes que seleccionaste, durante '+routineDateFromKey(r.startDate).toLocaleDateString('es-CL',{month:'long',year:'numeric'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
+    notifications=notifications.slice(-50);noticeSent[key]=true;changed=true;
+   }
+  }else{
+   const firstDate=dates[0];if(firstDate){
+    const first=routineDateFromKey(firstDate),noticeDate=new Date(first),key='period|'+firstDate;noticeDate.setDate(noticeDate.getDate()-1);
+    if(keyDate(noticeDate)===today&&!noticeSent[key]){
+     notifications.push({id:'routine-notice-'+r.id+'-'+key,emoji:'🔄',title:'Mañana comienza: '+r.name,description:'Tu rutina estará activa desde '+routineDateFromKey(firstDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+' hasta '+routineDateFromKey(r.endDate).toLocaleDateString('es-CL',{day:'numeric',month:'long'})+'.',module:'Rutinas',when:'Ahora',createdAt:now.toISOString()});
+     notifications=notifications.slice(-50);noticeSent[key]=true;changed=true;
+    }
+   }
+  }
+  r.noticeSent=noticeSent;
+ });
+ if(changed){localStorage.setItem('enorden_notifications',JSON.stringify(notifications));saveRoutines()}
+}
+function processRoutineAutoStarts(){
+ const now=new Date(),today=keyDate(now),clock=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+ routines.forEach(r=>{
+  if(!r.scheduleEnabled||r.active||r.lastAutoStartKey===today||!routinePeriodDates(r).includes(today)||clock!==r.activationTime)return;
+  r.lastAutoStartKey=today;startRoutine(r.id,new Date(today+'T'+r.activationTime+':00').getTime());
+ });
+}
+processRoutineCalendarNotifications();processRoutineAutoStarts();setInterval(()=>{processRoutineCalendarNotifications();processRoutineAutoStarts()},30000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&current==='finanzas')startFinanceLockTimer();else if(!document.hidden){if(pruneExpiredCompletedTasks())save();processFilmEventNotifications()}});
 window.addEventListener('pagehide',()=>{if(current==='finanzas')startFinanceLockTimer()});
 render();

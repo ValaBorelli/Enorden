@@ -222,3 +222,53 @@
 - Los selectores y controles auxiliares (por ejemplo, ruedas para elegir hora o cantidades) no se convertirán automáticamente en ventanas de guardado, confirmación o precaución; conservarán su naturaleza de selector, salvo que Vale defina otra cosa.
 - Revisar los usos de los diálogos nativos del navegador (`alert()`, `confirm()` y `prompt()`). Cuando correspondan a confirmaciones, advertencias, validaciones o avisos propios de EnOrden, reemplazarlos por ventanas de la aplicación de la categoría adecuada, preservando el flujo y la función original. Antes de reemplazarlos, inspeccionar cada uso para no alterar el comportamiento ni intervenir flujos fuera del alcance autorizado.
 - Toda ventana nueva deberá clasificarse antes de implementarse y partir de la estructura base correspondiente, manteniendo sus características particulares.
+## 15. Selectores de hora personalizados
+
+### 15.1. Reloj Rueda (selector activo)
+
+- **Reloj Rueda** es el selector de hora oficial y activo de EnOrden.
+- Todo botón, campo o control que permita seleccionar o modificar una hora deberá utilizar el componente compartido **Reloj Rueda**. No se utilizarán selectores nativos del navegador o del sistema operativo (como `input type="time"`, `showPicker()` u otros equivalentes) para la interacción de selección de hora.
+- El selector tendrá dos ruedas independientes: una para las horas y otra para los minutos. Las horas se mostrarán en formato de 24 horas, desde 00 hasta 23, y los minutos desde 00 hasta 59, permitiendo elegir cualquier minuto individual.
+- Ambas ruedas tendrán un acabado de cubierta de vidrio, con reflejos, sombras, profundidad y contrastes que den sensación de volumen. Los bordes y fondos tendrán acabado metálico y se adaptarán a la paleta de la apariencia activa de EnOrden. Si el usuario cambia el tema en Configuración, el modal, las ruedas, los números, la selección y los detalles visuales deberán actualizarse con las variables del tema activo, sin conservar colores fijos que contradigan esa apariencia. El diseño, tipografía, dimensiones, desplazamiento y comportamiento serán definidos por EnOrden y deberán mantenerse consistentes en teléfonos, tabletas y computadores, independientemente del sistema operativo, navegador, fabricante o tamaño de pantalla.
+- Se mostrará una vista previa de la hora completa durante la selección y las acciones «Cancelar» y «Aceptar». Cancelar conservará el valor anterior sin aplicar cambios; Aceptar actualizará el campo asociado y ejecutará la actualización de vista previa o lógica correspondiente.
+- El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
+- Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
+- Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
+
+### 15.2. Reloj Analógico (componente conservado y oculto)
+
+- El componente anteriormente denominado selector de hora analógico pasa a llamarse **Reloj Analógico**.
+- El Reloj Analógico queda oculto y fuera de uso: no será invocado por botones de hora actuales ni por nuevas funcionalidades mientras permanezca pendiente de revisión.
+- Se conservará su implementación y sus reglas visuales como referencia para retomarlo posteriormente. Su ocultamiento no implica eliminarlo ni rediseñarlo.
+- **Pendiente:** revisar y resolver la dificultad de selección individual de minutos en el Reloj Analógico. Solo después de esa revisión Vale decidirá si vuelve a habilitarse o si requiere otros ajustes.
+- Las reglas de apariencia que se conservan para el Reloj Analógico son: círculo exterior vacío con acabado negro metálico; círculo interior con color base `var(--surface2)`, contrastes, degradados y sombras; borde exterior negro `#000`; paleta fija independiente del tema y del dispositivo.
+
+
+## 16. Orden fijo de módulos y navegación
+
+- El orden de los módulos será fijo, idéntico para todos los usuarios y dispositivos. No se permitirá reordenarlos mediante arrastre, pulsación prolongada, preferencias personales ni ningún otro mecanismo.
+- La barra inferior de navegación tendrá este orden exacto:
+  1. Inicio
+  2. Calendario
+  3. Tareas
+  4. Listas
+  5. Rutinas
+  6. Finanzas
+  7. Notas
+  8. Entretención
+  9. Mapa
+  10. Chat
+- La sección «Mis módulos» de la página Inicio utilizará el mismo orden, omitiendo únicamente «Inicio»:
+  1. Calendario
+  2. Tareas
+  3. Listas
+  4. Rutinas
+  5. Finanzas
+  6. Notas
+  7. Entretención
+  8. Mapa
+  9. Chat
+- El orden definido en esta sección será la única fuente de verdad para ambas ubicaciones. No se guardarán ni aplicarán órdenes personalizados por dispositivo o usuario.
+- Todo módulo nuevo deberá incorporarse a esta regla únicamente cuando Vale defina su posición. No deberá alterar ni desplazar el orden existente por iniciativa propia.
+
+

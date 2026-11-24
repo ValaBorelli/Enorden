@@ -243,3 +243,8 @@ Para cada plataforma, el orden de enlaces será: `universalUrl`, `appUrl`, `webU
 - **PENDIENTE:** escoger la infraestructura que realizará los reintentos cuando EnOrden no esté abierto. No basta con programar un temporizador dentro de la página.
 - **PENDIENTE:** revisar, cuando llegue el momento de cambiar proveedores, cuánto tiempo se conservará una copia temporal de los favoritos para intentar recuperarlos durante la migración y cuándo se eliminará definitivamente esa copia. La intención expresada es que, el día en que la actualización se haga para todos los usuarios de la app, idealmente se reemplace por completo.
 - **PENDIENTE:** antes de monetizar, revisar las condiciones, licencias, permisos, costos y contratos de cada proveedor, además de los derechos de imágenes, marcas y enlaces que correspondan.
+
+### Selector de hora
+
+- La programación de un Film utilizará el selector de hora analógico personalizado y compartido de EnOrden, definido en `ENORDEN_RULES.md`.
+- No utilizar controles nativos de hora del navegador o del sistema operativo. El selector debe mantener la misma apariencia y comportamiento que el utilizado en Calendario y Rutinas.
