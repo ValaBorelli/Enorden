@@ -171,7 +171,6 @@ El creador controla los permisos individuales de los demás participantes, sigui
 - Cada anotación permitirá elegir un único color de plumón: negro, azul o rojo.
 - La pizarra admitirá exclusivamente texto: letras, números y signos de puntuación. No se permitirán emojis, iconos, dibujos ni otros elementos gráficos.
 - El texto publicado se mostrará con apariencia manuscrita de plumón y conservará el color elegido.
-- La tipografía oficial de las anotaciones es Dancing Script, incluida localmente en `assets/fonts/DancingScript-Variable.ttf` y cargada mediante `@font-face` (`EnOrden Pizarra`, pesos 400–700; peso aplicado 600). No se depende de fuentes del sistema ni de una fuente genérica. La licencia SIL Open Font License 1.1 se conserva en `assets/fonts/OFL.txt`.
 - Las anotaciones podrán utilizarse para recordatorios, observaciones y mensajes breves del equipo.
 - Todos los participantes con acceso podrán leer y publicar anotaciones, independientemente de que tengan permiso de lectura o de lectura y escritura para las tareas.
 - En el encabezado de la pizarra, el chip «Compartida» se reemplaza por el botón «Borrar pizarra».
