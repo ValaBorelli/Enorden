@@ -146,6 +146,11 @@ El creador controla los permisos individuales de los demás participantes, sigui
 ### 7.1. Carpetas y tareas internas del proyecto
 
 - Cada proyecto tendrá carpetas personalizables creadas por sus participantes con permiso de lectura y escritura.
+- En la vista principal del proyecto, las carpetas se mostrarán cerradas en una cuadrícula de tres columnas; las siguientes filas continuarán de izquierda a derecha.
+- Al seleccionar una carpeta, se abrirá una vista interior dedicada a esa carpeta. No se expandirá la carpeta dentro de la lista principal.
+- La vista interior de una carpeta tendrá un control de regreso con flecha en la zona superior izquierda para volver a la vista principal del proyecto.
+- En la vista principal, debajo de todas las carpetas se mostrarán las tareas sueltas que no pertenezcan a ninguna carpeta.
+- Una tarea creada desde la vista principal del proyecto quedará inicialmente sin carpeta. Una tarea creada desde el interior de una carpeta pertenecerá a esa carpeta.
 - Las carpetas serán de un solo nivel: no podrán contener otras carpetas.
 - Las carpetas podrán renombrarse, reordenarse y eliminarse según los permisos correspondientes.
 - Los usuarios con permiso de lectura y escritura podrán crear tareas dentro del proyecto y organizarlas en carpetas mediante arrastrar y soltar.
@@ -157,7 +162,7 @@ El creador controla los permisos individuales de los demás participantes, sigui
 
 ### 7.2. Pizarra compartida del proyecto
 
-- Debajo del espacio de tareas existirá una pizarra visual con apariencia de pizarra física de colegio.
+- Debajo de las carpetas y tareas sueltas de la vista principal existirá una pizarra blanca con apariencia de pizarra física de colegio.
 - Los participantes podrán abrir un editor propio de EnOrden, escribir mediante el teclado disponible en su dispositivo y guardar una anotación.
 - Al guardar, EnOrden reproducirá una animación que simule la escritura manual sobre la superficie de la pizarra.
 - El texto final utilizará una tipografía manuscrita y un tratamiento visual que simule escritura con plumón.
@@ -168,6 +173,8 @@ El creador controla los permisos individuales de los demás participantes, sigui
 ### 7.3. Chat del proyecto
 
 - Cada proyecto tendrá un chat grupal propio, separado del chat general de EnOrden.
+- El chat se abrirá desde un botón flotante «Chat» ubicado en la esquina inferior derecha. La ventana se desplegará junto al botón, como un panel contextual, y podrá cerrarse desde el mismo panel o botón.
+- El botón mostrará un indicador circular en su esquina superior derecha cuando haya mensajes nuevos sin revisar; al abrir el chat, el indicador se quitará.
 - Todos los participantes con acceso al proyecto podrán leer y enviar mensajes, incluidos quienes tengan permiso de solo lectura.
 - El chat conservará su historial dentro del proyecto y no modificará tareas ni otros módulos.
 - La interfaz del chat y su editor serán componentes propios de EnOrden.
