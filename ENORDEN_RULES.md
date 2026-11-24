@@ -272,11 +272,3 @@
 - Todo módulo nuevo deberá incorporarse a esta regla únicamente cuando Vale defina su posición. No deberá alterar ni desplazar el orden existente por iniciativa propia.
 
 
-## 17. Tipografía oficial de la pizarra de proyectos
-
-- La tipografía oficial de las anotaciones de la pizarra de proyectos es **Dancing Script**, servida localmente desde `assets/fonts/DancingScript-Variable.ttf`.
-- La aplicación debe cargar el archivo incluido en el propio proyecto mediante `@font-face` y no depender de fuentes instaladas en el dispositivo, servicios externos ni familias genéricas para representar las anotaciones.
-- La familia interna CSS se denomina `EnOrden Pizarra`; se utiliza el archivo variable en el rango de pesos 400–700 y el peso visual de las anotaciones se mantiene en 600, salvo decisión explícita posterior.
-- Esta regla se aplica al texto de las anotaciones de la pizarra y a sus vistas de administración y previsualización. No modifica la tipografía de las firmas de autor ni la de otros módulos.
-- El archivo de licencia SIL Open Font License 1.1 de Dancing Script debe acompañar siempre al archivo de fuente en `assets/fonts/OFL.txt`.
-- No reemplazar esta fuente por `Segoe Print`, `Bradley Hand`, `Comic Sans MS` ni por una fuente manuscrita genérica. La fuente incluida en EnOrden es la referencia única para todos los dispositivos.
