@@ -1434,8 +1434,6 @@ function requestCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=tru
 function dismissCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=false;render()}
 function confirmCancelSharedProjectNameEdit(){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
 function toggleSharedProjectPanel(){sharedProjectPanelOpen=!sharedProjectPanelOpen;renderSharedProjectWorkspace()}
-function openSharedProjectFolder(folder){sharedProjectActiveFolder=folder;renderSharedProjectWorkspace();window.scrollTo(0,0)}
-function returnToSharedProjectHome(){sharedProjectActiveFolder=null;renderSharedProjectWorkspace();window.scrollTo(0,0)}
 function toggleSharedProjectChat(){sharedProjectChatOpen=!sharedProjectChatOpen;if(sharedProjectChatOpen)sharedProjectChatUnread=false;renderSharedProjectWorkspace()}
 function getSharedProjectRecord(){
  const projects=loadSharedProjects();
