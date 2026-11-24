@@ -272,3 +272,98 @@
 - Todo módulo nuevo deberá incorporarse a esta regla únicamente cuando Vale defina su posición. No deberá alterar ni desplazar el orden existente por iniciativa propia.
 
 
+
+
+## 17. Biblioteca gráfica oficial de iconos de EnOrden
+
+### 17.1. Objetivo y alcance
+
+- EnOrden utilizará una biblioteca propia de **40 iconos ilustrados tridimensionales** para sustituir progresivamente los emojis del sistema operativo que representen conceptos incluidos en el pack.
+- La biblioteca será un recurso gráfico interno de la aplicación. Su apariencia no dependerá de los emojis, fuentes, sistema operativo, navegador ni fabricante del dispositivo.
+- La implementación de estos iconos no autoriza cambios en configuraciones, funcionalidades, textos, navegación, distribución, colores ni estilos generales de la interfaz. Cuando se reemplace un emoji, se conservarán su ubicación, función, significado, contexto, interacción y jerarquía visual.
+- Los símbolos funcionales que no formen parte del inventario aprobado (por ejemplo, flechas de navegación, signos de cierre, checks o controles) no se reemplazarán automáticamente. Su modificación requiere una decisión específica de Vale.
+- La sustitución debe limitarse a las apariciones que correspondan realmente a los 40 conceptos del pack. No se cambiarán caracteres que sean contenido escrito por el usuario, datos, texto editorial o parte de una representación funcional distinta.
+
+### 17.2. Identidad artística obligatoria
+
+- Todos los iconos pertenecerán a una misma familia visual: objetos tridimensionales con realismo moderado, volumen natural y apariencia de piezas físicas cuidadosamente modeladas.
+- Se utilizarán superficies y materiales coherentes con cada objeto: metal, papel, cartón, madera, vidrio, cerámica, plástico, tela y materiales naturales, según corresponda.
+- Los bordes serán suaves y definidos; las proporciones equilibradas; los detalles suficientes para reconocer cada objeto sin saturarlo.
+- La iluminación será uniforme en toda la colección, con dirección de luz consistente, sombras suaves y reflejos discretos.
+- El resultado no deberá parecer un emoji nativo de Android, iOS, Windows o macOS.
+- Quedan prohibidos los estilos planos, monocromáticos, minimalistas, caricaturescos o infantiles; los contornos negros gruesos; las proporciones exageradas y los elementos decorativos ajenos al objeto.
+- No se aplicará un filtro monocromático ni se impondrá la paleta corporativa de EnOrden. Cada objeto utilizará colores naturales y reconocibles, independientes del tema de color activo de la aplicación.
+
+### 17.3. Composición y consistencia
+
+- Todos los archivos individuales utilizarán el mismo tamaño de lienzo y una escala visual equivalente.
+- El objeto estará centrado, completo y sin recortes, con márgenes visuales similares entre piezas.
+- Se mantendrán una perspectiva, iluminación, profundidad y criterio de sombras coherentes en los 40 iconos.
+- No se agregarán fondos, etiquetas, marcas de agua ni textos decorativos. Solo se permitirán detalles propios del objeto cuando sean necesarios para reconocerlo o representarlo correctamente.
+- Los iconos deberán conservar su legibilidad en los tamaños pequeños en que se utilicen dentro de la interfaz.
+
+### 17.4. Recursos, formatos y autonomía
+
+- Cada icono se almacenará como un recurso gráfico individual, con nombre estable y descriptivo, dentro de la biblioteca local de recursos de EnOrden.
+- Se preferirá SVG únicamente cuando permita conservar fielmente la ilustración aprobada. Cuando el nivel de realismo requiera imagen rasterizada, se utilizará PNG de resolución suficiente y fondo transparente.
+- Los recursos individuales no tendrán fondo opaco ni sombras externas cortadas por los límites del lienzo.
+- La aplicación no dependerá de fuentes de emojis, recursos externos ni servicios de terceros para representar estos iconos.
+- Los recursos deberán empaquetarse y servirse desde la propia aplicación, de modo que su apariencia sea idéntica en los dispositivos compatibles.
+- Los nombres de archivo y las referencias internas deberán ser estables. Los usos del mismo concepto deberán reutilizar el mismo recurso, evitando duplicados visuales o variantes no aprobadas.
+
+### 17.5. Inventario oficial del pack
+
+El pack está compuesto por estos 40 conceptos, que constituyen el inventario de referencia:
+
+1. Calendario.
+2. Carrito o canasta de compras.
+3. Flechas circulares de repetición o actualización.
+4. Pila de monedas o dinero.
+5. Hoja de notas con lápiz.
+6. Claqueta de cine.
+7. Pin de ubicación.
+8. Globos de conversación.
+9. Casa.
+10. Engranaje de configuración.
+11. Mano saludando.
+12. Sol.
+13. Micrófono.
+14. Torta de cumpleaños con velas.
+15. Rosa.
+16. Chincheta.
+17. Bloc de notas pequeño.
+18. Campana de notificaciones.
+19. Lupa.
+20. Dos personas abrazándose.
+21. Silueta de una persona.
+22. Portapapeles con lista de tareas.
+23. Eslabones de una cadena.
+24. Lápiz.
+25. Carpeta.
+26. Sobre de correo.
+27. Globo terráqueo.
+28. Paleta de pintura.
+29. Cara sonriente sencilla.
+30. Cara sonriente expresiva.
+31. Cara con gafas de sol.
+32. Cara de gato.
+33. Rama de hojas.
+34. Estrella.
+35. Candado cerrado.
+36. Corazón.
+37. Tira de película.
+38. Televisor.
+39. Símbolo de reproducción.
+40. Cronómetro.
+
+Las descripciones visuales detalladas aprobadas por Vale para cada uno de estos conceptos son la referencia de producción de los recursos. No se deben reinterpretar ni sustituir por diseños de otro estilo.
+
+### 17.6. Reglas de implementación y revisión
+
+- Antes de implementar, comprobar que estén disponibles los 40 recursos individuales aprobados. Una lámina de presentación o una imagen de muestra no sustituye los archivos individuales necesarios para la aplicación.
+- La primera implementación se realizará exclusivamente en la rama de desarrollo y en el entorno de pruebas. No se modificará `main`, producción ni se publicará la biblioteca para usuarios generales sin autorización expresa de Vale.
+- El reemplazo será exclusivamente visual: no cambiará lógica, datos, eventos, permisos, configuraciones, preferencias, almacenamiento ni comportamiento de los componentes existentes.
+- Se conservarán los tamaños, alineaciones y espacios actuales en cada contexto, ajustando únicamente la presentación del recurso para que se integre correctamente sin desplazar otros elementos.
+- Antes de dar por terminada la implementación, revisar los 40 recursos, sus usos, tamaños pequeños, transparencia, carga local y consistencia en distintos tamaños de pantalla.
+- Cualquier concepto que no tenga un recurso individual aprobado permanecerá temporalmente con su representación actual. No se crearán sustitutos improvisados ni se utilizará otro icono del pack en su lugar.
+- La biblioteca se considerará aprobada para producción solo después de la revisión visual de Vale en el entorno de pruebas.
