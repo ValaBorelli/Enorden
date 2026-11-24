@@ -166,9 +166,15 @@ El creador controla los permisos individuales de los demás participantes, sigui
 - Los participantes podrán abrir un editor propio de EnOrden, escribir mediante el teclado disponible en su dispositivo y guardar una anotación.
 - Al guardar, EnOrden reproducirá una animación que simule la escritura manual sobre la superficie de la pizarra.
 - El texto final utilizará una tipografía manuscrita y un tratamiento visual que simule escritura con plumón.
+- La superficie será una pizarra blanca lisa, de acabado plástico ligeramente brillante, sin textura verde ni apariencia de tiza.
+- Al presionar la superficie se abrirá el editor de anotaciones.
+- Cada anotación permitirá elegir un único color de plumón: negro, azul o rojo.
+- La pizarra admitirá exclusivamente texto: letras, números y signos de puntuación. No se permitirán emojis, iconos, dibujos ni otros elementos gráficos.
+- El texto publicado se mostrará con apariencia manuscrita de plumón y conservará el color elegido.
 - Las anotaciones podrán utilizarse para recordatorios, observaciones y mensajes breves del equipo.
 - Todos los participantes con acceso podrán leer y publicar anotaciones, independientemente de que tengan permiso de lectura o de lectura y escritura para las tareas.
 - La pizarra no crea tareas automáticamente.
+- En la etapa de prototipo, las anotaciones se guardan localmente en el dispositivo/navegador; todavía no se sincronizan entre participantes ni dispositivos. La sincronización real requiere backend compartido.
 
 ### 7.3. Chat del proyecto
 
