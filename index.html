@@ -219,6 +219,34 @@ h2{font-size:18px;margin-bottom:13px}
 .app.shared-project-app{max-width:1100px}
 .shared-project-workspace{padding-bottom:34px!important}
 .shared-project-workspace .project-content{padding:4px 17px 30px;display:grid;gap:17px}
+.shared-project-workspace .project-folder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.shared-project-workspace .project-folder-card{display:flex;min-width:0;min-height:104px;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:12px 7px;border:1px solid #2a3b55;border-radius:13px;background:linear-gradient(145deg,#14233a,#0e192a);color:#f5f7ff;text-align:center;cursor:pointer}
+.shared-project-workspace .project-folder-card:active{transform:scale(.98)}
+.shared-project-workspace .project-folder-card strong{max-width:100%;overflow-wrap:anywhere;font-size:12px;line-height:1.25}
+.shared-project-workspace .project-folder-card small{font-size:10px;color:#9aacc6}
+.shared-project-workspace .project-folder-art{position:relative;width:42px;height:31px;display:block;border-radius:5px;background:linear-gradient(145deg,#385b89,#203c65);border:1px solid #7890b5;box-shadow:inset 0 1px 2px #ffffff38,0 3px 7px #0004}
+.shared-project-workspace .project-folder-art:before{content:'';position:absolute;left:2px;top:-6px;width:17px;height:7px;border:1px solid #7890b5;border-bottom:0;border-radius:4px 4px 0 0;background:#385b89}
+.shared-project-workspace .project-folder-detail-tasks,.shared-project-workspace .project-loose-tasks{display:grid;gap:2px}
+.shared-project-workspace .project-back-button{display:inline-flex;align-items:center;gap:8px;margin:5px 17px 2px;padding:8px 11px;border:1px solid #30425c;border-radius:10px;background:#101d30;color:#eaf0fa;font-size:12px;font-weight:600}
+.shared-project-workspace .project-back-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.shared-project-workspace .project-board{border:10px solid #e5e8eb;border-radius:9px;background:linear-gradient(145deg,#fff 0%,#f7f8f8 55%,#eef1f2 100%);box-shadow:inset 0 0 0 1px #cbd0d4,inset 0 0 18px #c5cbd033,0 8px 22px #0004;color:#27313a}
+.shared-project-workspace .project-board:before{background:repeating-linear-gradient(0deg,#34405408 0,#34405408 1px,transparent 1px,transparent 5px)}
+.shared-project-workspace .project-board-label{color:#718096}
+.shared-project-workspace .project-board-note{color:#2454a6;text-shadow:none;font-weight:600}
+.shared-project-workspace .project-board-note:nth-of-type(2){color:#b33b36}
+.shared-project-workspace .project-board-note:nth-of-type(3){color:#16805a}
+.shared-project-workspace .project-board-signature{color:#697586}
+.shared-project-workspace .project-chat-fab{position:fixed;z-index:10020;right:18px;bottom:calc(88px + env(safe-area-inset-bottom,0px));min-width:76px;height:48px;padding:0 19px;border:1px solid #4675d1;border-radius:15px;background:linear-gradient(145deg,#2868e8,#1748b0);box-shadow:0 8px 22px #0006;color:#fff;font-size:14px;font-weight:750}
+.shared-project-workspace .project-chat-unread{position:absolute;right:-3px;top:-4px;width:12px;height:12px;border:2px solid #080b13;border-radius:50%;background:#ff4d5d}
+.shared-project-workspace .project-chat-popover{position:fixed;z-index:10019;right:18px;bottom:calc(145px + env(safe-area-inset-bottom,0px));width:min(360px,calc(100vw - 30px));max-height:min(480px,calc(100vh - 190px));display:flex;flex-direction:column;gap:12px;padding:13px;border:1px solid #30425c;border-radius:17px;background:#0d1828;box-shadow:0 15px 40px #0009;color:#f5f7ff;overflow:hidden;transform-origin:bottom right;animation:projectChatOpen .18s ease-out}
+.shared-project-workspace .project-chat-popover>header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid #26364b}
+.shared-project-workspace .project-chat-popover>header strong{display:block;font-size:14px}
+.shared-project-workspace .project-chat-popover>header small{display:block;margin-top:3px;color:#91a4c0;font-size:10px}
+.shared-project-workspace .project-chat-popover>header button{width:29px;height:29px;border:1px solid #30425c;border-radius:9px;background:#17263b;color:#eaf0fa;font-size:20px}
+.shared-project-workspace .project-chat-popover .project-chat-messages{overflow:auto;min-height:100px;padding:2px 1px}
+.shared-project-workspace .project-chat-popover .project-chat-compose{margin-top:auto}
+@keyframes projectChatOpen{from{opacity:0;transform:translateY(9px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(min-width:760px){.shared-project-workspace .project-content{max-width:900px;margin:0 auto;grid-template-columns:1fr}.shared-project-workspace .project-board-section{height:auto}}
 .shared-project-workspace .project-section{background:linear-gradient(145deg,#111d30,#0d1727);border:1px solid #26364b;border-radius:17px;padding:15px;box-shadow:0 9px 24px #0003;min-width:0}
 .shared-project-workspace .project-section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
 .shared-project-workspace .project-section-heading h2{font-size:16px;line-height:1.25;margin:0;color:#f5f7ff}
@@ -910,6 +938,8 @@ let taskView='today';
 let taskSidebarCollapsed=false;
 let activeSharedProjectId=null;
 let sharedProjectPanelOpen=false;
+let sharedProjectActiveFolder=null;
+let sharedProjectChatOpen=false,sharedProjectChatUnread=true;
 let sharedProjectDraft=null;
 let sharedProjectCancelConfirm=false;
 let sharedProjectExitOpen=false,sharedProjectExitTarget=null;
@@ -1354,6 +1384,9 @@ function requestCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=tru
 function dismissCancelSharedProjectNameEdit(){sharedProjectEditCancelConfirm=false;render()}
 function confirmCancelSharedProjectNameEdit(){sharedProjectNameEdit=null;sharedProjectEditCancelConfirm=false;render()}
 function toggleSharedProjectPanel(){sharedProjectPanelOpen=!sharedProjectPanelOpen;renderSharedProjectWorkspace()}
+function openSharedProjectFolder(folder){sharedProjectActiveFolder=folder;renderSharedProjectWorkspace();window.scrollTo(0,0)}
+function returnToSharedProjectHome(){sharedProjectActiveFolder=null;renderSharedProjectWorkspace();window.scrollTo(0,0)}
+function toggleSharedProjectChat(){sharedProjectChatOpen=!sharedProjectChatOpen;if(sharedProjectChatOpen)sharedProjectChatUnread=false;renderSharedProjectWorkspace()}
 
 function openSharedProjectUsers(){sharedProjectUsersOpen=true;sharedProjectPanelOpen=false;renderSharedProjectWorkspace()}
 function closeSharedProjectUsers(){sharedProjectUsersOpen=false;sharedProjectRoleChangeDraft=null;sharedProjectRoleChangeConfirm=false;renderSharedProjectWorkspace()}
@@ -1390,20 +1423,28 @@ function renderSharedProjectWorkspace(){
  if(sharedProjectDraft){const input=document.getElementById('sharedProjectName');if(input)input.value=sharedProjectDraft.name||''}
  if(!sharedProjectDraft){
   const workspace=screen.querySelector('.shared-project-workspace');
+  const folders=[
+   {name:'Productores',count:3,tasks:['Coordinar locación','Preparar presupuesto','Contactar auspiciadores']},
+   {name:'Guionistas',count:2,tasks:['Crear pauta del programa','Preparar segmentos']},
+   {name:'Editores',count:2,tasks:['Editar material audiovisual','Preparar clips para redes']},
+   {name:'Diseño',count:2,tasks:['Crear identidad gráfica','Preparar piezas para redes']},
+   {name:'Cámaras',count:2,tasks:['Revisar equipos','Preparar plan de cámaras']},
+   {name:'Sonido',count:1,tasks:['Coordinar prueba de sonido']}
+  ];
+  const folder=folders.find(item=>item.name===sharedProjectActiveFolder);
+  const folderCards=folders.map(item=>'<button type="button" class="project-folder-card" onclick="openSharedProjectFolder(\''+item.name+'\')"><span class="project-folder-art" aria-hidden="true"></span><strong>'+item.name+'</strong><small>'+item.count+' tareas</small></button>').join('');
+  const folderTasks=folder?folder.tasks.map((task,i)=>'<div class="project-task-preview"><span class="project-task-bullet"></span><span>'+task+'<small>'+(i===0?'Responsable: Camila':'Sin asignar')+'</small></span></div>').join(''):'';
+  const looseTasks=sharedProjectActiveFolder?'':'<section class="project-section project-loose-section"><div class="project-section-heading"><div><div class="project-section-kicker">Sin carpeta</div><h2>Tareas generales</h2></div><span class="project-count">2 tareas</span></div><div class="project-loose-tasks"><div class="project-task-preview"><span class="project-task-bullet"></span><span>Reunión general de equipo<small>Responsable: Tú</small></span></div><div class="project-task-preview"><span class="project-task-bullet"></span><span>Revisar calendario de entregas<small>Sin asignar</small></span></div></div></section>';
+  const mainContent=folder?'<section class="project-section project-folder-detail"><div class="project-section-heading"><div><div class="project-section-kicker">Carpeta del proyecto</div><h2>'+folder.name+'</h2></div><span class="project-count">'+folder.count+' tareas</span></div><div class="project-folder-detail-tasks">'+folderTasks+'</div></section>':'<section class="project-section project-folders-section"><div class="project-section-heading"><div><div class="project-section-kicker">Espacio de trabajo</div><h2>Carpetas</h2></div><span class="project-count">'+folders.length+' carpetas</span></div><div class="project-folder-grid">'+folderCards+'</div></section>'+looseTasks;
   if(workspace)workspace.insertAdjacentHTML('beforeend',`
-   <div class="project-content">
-    <section class="project-section project-tasks-section">
-     <div class="project-section-heading"><div><div class="project-section-kicker">Espacio de trabajo</div><h2>Carpetas y tareas</h2></div><span class="project-count">3 áreas · 7 tareas</span></div>
-     <div class="project-folder-list">
-      <div class="project-folder"><button class="project-folder-toggle" type="button" aria-expanded="true" onclick="const p=this.nextElementSibling;p.classList.toggle('hidden');this.setAttribute('aria-expanded',String(!p.classList.contains('hidden')))"><span class="project-folder-icon" aria-hidden="true"></span><span class="project-folder-name">Productores</span><span class="project-folder-meta">3 tareas</span><span class="project-folder-chevron">›</span></button><div class="project-folder-tasks"><div class="project-task-preview"><span class="project-task-bullet"></span><span>Coordinar locación<small>Responsable: Camila · 2 subtareas</small></span></div><div class="project-task-preview"><span class="project-task-bullet"></span><span>Preparar presupuesto<small>Responsable: Diego · 3 subtareas</small></span></div><div class="project-task-preview"><span class="project-task-bullet"></span><span>Contactar auspiciadores<small>Sin asignar</small></span></div></div></div>
-      <div class="project-folder"><button class="project-folder-toggle" type="button" aria-expanded="false" onclick="const p=this.nextElementSibling;p.classList.toggle('hidden');this.setAttribute('aria-expanded',String(!p.classList.contains('hidden')))"><span class="project-folder-icon" aria-hidden="true"></span><span class="project-folder-name">Guionistas</span><span class="project-folder-meta">2 tareas</span><span class="project-folder-chevron">›</span></button><div class="project-folder-tasks hidden"><div class="project-task-preview"><span class="project-task-bullet"></span><span>Crear pauta del programa<small>Responsable: Martina · 4 subtareas</small></span></div><div class="project-task-preview"><span class="project-task-bullet"></span><span>Preparar segmentos<small>Responsable: Martina · 2 subtareas</small></span></div></div></div>
-      <div class="project-folder"><button class="project-folder-toggle" type="button" aria-expanded="false" onclick="const p=this.nextElementSibling;p.classList.toggle('hidden');this.setAttribute('aria-expanded',String(!p.classList.contains('hidden')))"><span class="project-folder-icon" aria-hidden="true"></span><span class="project-folder-name">Editores</span><span class="project-folder-meta">2 tareas</span><span class="project-folder-chevron">›</span></button><div class="project-folder-tasks hidden"><div class="project-task-preview"><span class="project-task-bullet"></span><span>Editar material audiovisual<small>Responsable: Nicolás · 3 subtareas</small></span></div><div class="project-task-preview"><span class="project-task-bullet"></span><span>Preparar clips para redes<small>Sin asignar</small></span></div></div></div>
-     </div>
-    </section>
-    <section class="project-section project-board-section"><div class="project-section-heading"><div><div class="project-section-kicker">Ideas y recordatorios</div><h2>Pizarra del equipo</h2></div><span class="project-count">Compartida</span></div><div class="project-board"><div class="project-board-label">Anotaciones del equipo</div><p class="project-board-note">Revisar la pauta antes del jueves</p><p class="project-board-note">Confirmar disponibilidad del estudio</p><p class="project-board-note">No olvidar enviar los cambios de edición</p><div class="project-board-signature">— Producción</div></div></section>
-    <section class="project-section project-chat-section"><div class="project-section-heading"><div><div class="project-section-kicker">Comunicación del equipo</div><h2>Chat del proyecto</h2></div><span class="project-count">Todos participan</span></div><div class="project-chat"><div class="project-chat-messages"><div class="project-chat-message"><span class="project-chat-avatar">CM</span><div class="project-chat-bubble"><div class="project-chat-author">Camila · Productora</div>¿Tenemos confirmada la locación para el jueves?<div class="project-chat-time">10:42</div></div></div><div class="project-chat-message own"><div class="project-chat-bubble"><div class="project-chat-author">Tú</div>Sí, está lista. Voy a dejar los detalles en la pizarra.<div class="project-chat-time">10:45</div></div><span class="project-chat-avatar">TÚ</span></div><div class="project-chat-message"><span class="project-chat-avatar">MN</span><div class="project-chat-bubble"><div class="project-chat-author">Martina · Guionista</div>Perfecto, así ajusto la pauta con ese horario.<div class="project-chat-time">10:47</div></div></div></div><div class="project-chat-compose"><div class="project-chat-compose-placeholder">Escribe un mensaje al equipo…</div><button class="project-chat-send" type="button" aria-label="Enviar mensaje" title="Enviar mensaje"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-5 16-3-6-8-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m12 14 8-10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div></div></section>
+   ${sharedProjectActiveFolder?'<button type="button" class="project-back-button" onclick="returnToSharedProjectHome()" aria-label="Volver al proyecto"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h12"/></svg><span>Volver al proyecto</span></button>':''}
+   <div class="project-content">${mainContent}
+    ${!sharedProjectActiveFolder?'<section class="project-section project-board-section"><div class="project-section-heading"><div><div class="project-section-kicker">Ideas y recordatorios</div><h2>Pizarra del equipo</h2></div><span class="project-count">Compartida</span></div><div class="project-board"><div class="project-board-label">Anotaciones del equipo</div><p class="project-board-note">Revisar la pauta antes del jueves</p><p class="project-board-note">Confirmar disponibilidad del estudio</p><p class="project-board-note">No olvidar enviar los cambios de edición</p><div class="project-board-signature">— Producción</div></div></section>':''}
     <p class="project-design-note">Vista visual inicial · Los contenidos mostrados son ejemplos de diseño, todavía no se guardan ni se sincronizan.</p>
-   </div>`);
+   </div>
+   <button type="button" class="project-chat-fab" onclick="toggleSharedProjectChat()" aria-expanded="${sharedProjectChatOpen?'true':'false'}"><span>Chat</span>${sharedProjectChatUnread?'<i class="project-chat-unread" aria-label="Mensaje nuevo"></i>':''}</button>
+   ${sharedProjectChatOpen?'<section class="project-chat-popover" aria-label="Chat del proyecto"><header><div><strong>Chat del proyecto</strong><small>Conversación del equipo</small></div><button type="button" onclick="toggleSharedProjectChat()" aria-label="Cerrar chat">×</button></header><div class="project-chat-messages"><div class="project-chat-message"><span class="project-chat-avatar">CM</span><div class="project-chat-bubble"><div class="project-chat-author">Camila · Productora</div>¿Tenemos confirmada la locación para el jueves?<div class="project-chat-time">10:42</div></div></div><div class="project-chat-message own"><div class="project-chat-bubble"><div class="project-chat-author">Tú</div>Sí, está lista. Voy a dejar los detalles en la pizarra.<div class="project-chat-time">10:45</div></div><span class="project-chat-avatar">TÚ</span></div><div class="project-chat-message"><span class="project-chat-avatar">MN</span><div class="project-chat-bubble"><div class="project-chat-author">Martina · Guionista</div>Perfecto, así ajusto la pauta con ese horario.<div class="project-chat-time">10:47</div></div></div></div><div class="project-chat-compose"><div class="project-chat-compose-placeholder">Escribe un mensaje al equipo…</div><button class="project-chat-send" type="button" aria-label="Enviar mensaje" title="Enviar mensaje"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-5 16-3-6-8-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m12 14 8-10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div></section>':''}
+  `);
  }
  if(sharedProjectExitOpen){screen.insertAdjacentHTML('beforeend','<div class="shared-project-modal-layer shared-project-confirm-layer"><section class="shared-project-modal shared-project-confirm" role="alertdialog" aria-modal="true" aria-labelledby="sharedProjectExitTitle"><header><h2 id="sharedProjectExitTitle">Quieres guardar antes de salir del proyecto?</h2><button type="button" class="shared-project-modal-x" aria-label="Cerrar" onclick="dismissSharedProjectExit()">×</button></header><footer><button type="button" class="shared-project-cancel" onclick="dismissSharedProjectExit()">Cancelar</button><button type="button" class="shared-project-delete" onclick="confirmSharedProjectExit(false)">Salir sin guardar</button><button type="button" class="shared-project-save" onclick="confirmSharedProjectExit(true)">Guardar</button></footer></section></div>')}
 }
