@@ -180,6 +180,8 @@ El creador controla los permisos individuales de los demás participantes, sigui
 - «Borrar todo» solicita confirmación antes de eliminar todas las anotaciones.
 - «Guardar» solicita confirmación y muestra una vista previa de las anotaciones que permanecerán; solo al confirmar se aplican los cambios.
 - La administración y eliminación de anotaciones conserva los colores y el orden de los mensajes restantes.
+- Cada anotación nueva guarda el nombre del usuario que la publicó y lo muestra como firma, en letras ligeramente más pequeñas, alineada en la esquina inferior derecha del mensaje.
+- La firma forma parte de la anotación y se conserva al administrar, eliminar otros mensajes o guardar cambios. Las anotaciones antiguas que no tengan autor registrado no deben atribuirse a un usuario.
 - La pizarra no crea tareas automáticamente.
 - En la etapa de prototipo, las anotaciones se guardan localmente en el dispositivo/navegador; todavía no se sincronizan entre participantes ni dispositivos. La sincronización real requiere backend compartido.
 
