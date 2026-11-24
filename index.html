@@ -236,13 +236,13 @@ h2{font-size:18px;margin-bottom:13px}
 .shared-project-workspace .project-board:before{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,#ffffffaa 0%,transparent 23%,transparent 78%,#e8edf233 100%)}
 .shared-project-workspace .project-board-label{position:relative;color:#7b8490;font-size:10px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:13px}
 .shared-project-workspace .project-board-surface{position:relative;display:flex;flex-direction:column;gap:12px;width:100%;min-height:150px;padding:0;border:0;background:transparent;text-align:left;cursor:pointer}
-@font-face{font-family:'EnOrden Pizarra';src:url('/assets/fonts/DancingScript-Variable.ttf') format('truetype');font-style:normal;font-weight:400 700;font-display:swap}
-.shared-project-workspace .project-board-note{display:block;margin:0;font-family:'EnOrden Pizarra',cursive;font-size:clamp(15px,2.5vw,19px);font-weight:600;line-height:1.45;overflow-wrap:anywhere}
-.shared-project-workspace .project-board-note.black{color:#171717}.shared-project-workspace .project-board-note.blue{color:#1557b8}.shared-project-workspace .project-board-note.red{color:#c52c32}
+@font-face{font-family:'EnOrden Pizarra';src:url('/assets/fonts/Caveat-Variable.ttf') format('truetype');font-style:normal;font-weight:400 700;font-display:swap;font-synthesis:none}
+.shared-project-workspace .project-board-note,.shared-project-board-manage-modal .project-board-note,.shared-project-board-manage-preview .project-board-note{display:block;margin:0;font-family:'EnOrden Pizarra',cursive;font-size:clamp(15px,2.5vw,19px);font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+.shared-project-workspace .project-board-note.black,.shared-project-board-manage-modal .project-board-note.black,.shared-project-board-manage-preview .project-board-note.black{color:#171717}.shared-project-workspace .project-board-note.blue,.shared-project-board-manage-modal .project-board-note.blue,.shared-project-board-manage-preview .project-board-note.blue{color:#1557b8}.shared-project-workspace .project-board-note.red,.shared-project-board-manage-modal .project-board-note.red,.shared-project-board-manage-preview .project-board-note.red{color:#c52c32}
 .shared-project-workspace .project-board-empty{display:grid;place-items:center;min-height:145px;color:#7c8793;font-size:13px;text-align:center}
 .shared-project-workspace .project-board-hint{position:relative;margin:12px 0 0;color:#87919d;font-size:11px}
 .shared-project-workspace .project-board-clear-button{flex:0 0 auto;padding:8px 12px;border:1px solid #8b3540;border-radius:10px;background:#321b27;color:#ffdce0;font-size:11px;font-weight:750}
-.shared-project-workspace .project-board-entry{display:flex;flex-direction:column;align-items:stretch;min-width:0;gap:2px}.shared-project-workspace .project-board-signature{align-self:flex-end;max-width:100%;overflow-wrap:anywhere;margin:0 3px 0 0;color:#59616b;font-family:inherit;font-size:11px;font-weight:600;line-height:1.25;text-align:right}.shared-project-board-manage-note .project-board-entry{flex:1;min-width:0}.shared-project-board-manage-preview .project-board-entry{padding:2px 0}
+.shared-project-workspace .project-board-entry{display:flex;flex-direction:column;align-items:stretch;min-width:0;gap:2px}.shared-project-workspace .project-board-signature,.shared-project-board-manage-modal .project-board-signature,.shared-project-board-manage-preview .project-board-signature{align-self:flex-end;max-width:100%;overflow-wrap:anywhere;margin:0 3px 0 0;color:#59616b;font-family:'EnOrden Pizarra',cursive;font-size:11px;font-weight:600;line-height:1.25;text-align:right}.shared-project-board-manage-note .project-board-entry{flex:1;min-width:0}.shared-project-board-manage-preview .project-board-entry{padding:2px 0}
 .shared-project-board-manage-modal{position:relative;width:min(100%,520px);max-height:min(82vh,760px);display:flex;flex-direction:column;overflow:visible}
 .shared-project-board-manage-modal>header{padding-right:34px}
 .shared-project-board-manage-x{position:absolute!important;right:-13px;top:-15px;z-index:3;width:38px;height:38px;border:2px solid #fff!important;border-radius:50%!important;background:#17263b!important;color:#fff!important;box-shadow:0 4px 12px #0004;font-size:25px!important}
@@ -1924,26 +1924,27 @@ function renderNotifications(){
  <p>Aquí se reúnen los avisos de todos tus módulos.</p></div>
  ${cards||'<div class="card empty">Todavía no tienes notificaciones.</div>'}<div class="bottom-space"></div>`;
 }function renderCentralSourceCredits(){
- const items=(typeof entertainmentPool!=='undefined'&&Array.isArray(entertainmentPool)?entertainmentPool:[])
-  .concat(typeof entertainmentCurrent!=='undefined'&&entertainmentCurrent?[entertainmentCurrent]:[]);
- const hasTMDB=items.some(item=>{
-  const source=String(item?.catalogSource||item?.source||'').toLowerCase();
-  return source==='tmdb'||source.includes('themoviedb');
- });
- const hasJustWatch=items.some(item=>{
-  const availability=item?.streamingAvailability&&typeof item.streamingAvailability==='object'?item.streamingAvailability:{};
-  const source=String(availability.source||item?.availabilitySource||'').toLowerCase();
-  return source==='justwatch'||source.includes('justwatch');
- });
- if(!hasTMDB&&!hasJustWatch){
-  return '<div class="settings-note">Todavía no hay fuentes externas identificadas en los datos disponibles. Cuando un módulo utilice información de un proveedor externo, su procedencia y atribución correspondiente aparecerán aquí.</div><div class="sources-credit-section"><strong>Fuentes históricas</strong><p class="settings-note">No hay fuentes históricas registradas actualmente.</p></div>';
+  const items=(typeof entertainmentPool!=='undefined'&&Array.isArray(entertainmentPool)?entertainmentPool:[])
+   .concat(typeof entertainmentCurrent!=='undefined'&&entertainmentCurrent?[entertainmentCurrent]:[]);
+  const hasTMDB=items.some(item=>{
+   const source=String(item?.catalogSource||item?.source||'').toLowerCase();
+   return source==='tmdb'||source.includes('themoviedb');
+  });
+  const hasJustWatch=items.some(item=>{
+   const availability=item?.streamingAvailability&&typeof item.streamingAvailability==='object'?item.streamingAvailability:{};
+   const source=String(availability.source||item?.availabilitySource||'').toLowerCase();
+   return source==='justwatch'||source.includes('justwatch');
+  });
+  const caveatCredit='<div class="sources-credit-section"><strong>Tipografía de la pizarra</strong><p class="settings-note">Caveat — diseñada por Pablo Impallari, con contribuciones de Eugene Spizhovy. Copyright 2014 The Caveat Project Authors. Distribuida bajo SIL Open Font License 1.1. <a href="https://github.com/googlefonts/caveat" target="_blank" rel="noopener noreferrer">Repositorio oficial</a>. El texto completo de la licencia se incluye en los archivos de EnOrden.</p></div>';
+  if(!hasTMDB&&!hasJustWatch){
+   return '<div class="settings-note">Todavía no hay fuentes externas identificadas en los datos disponibles. Cuando un módulo utilice información de un proveedor externo, su procedencia y atribución correspondiente aparecerán aquí.</div><div class="sources-credit-section"><strong>Fuentes históricas</strong><p class="settings-note">No hay fuentes históricas registradas actualmente.</p></div>'+caveatCredit;
+  }
+  const logoUrl='https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg';
+  return (hasTMDB?'<div class="sources-credit-section"><strong>Proveedor de catálogo</strong><div class="sources-credit-entry"><a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" aria-label="The Movie Database"><img class="sources-credit-tmdb-logo" src="'+logoUrl+'" alt="TMDB"></a><span>The Movie Database (TMDB)</span></div><p class="settings-note">This product uses the TMDB API but is not endorsed or certified by TMDB.</p></div>':'')+
+   (hasJustWatch?'<div class="sources-credit-section"><strong>Fuente original de disponibilidad</strong><div class="sources-credit-entry"><span>JustWatch</span></div><p class="settings-note">Disponibilidad informada por JustWatch a través de TMDB.</p></div>':'')+
+   '<div class="sources-credit-section"><strong>Licencias y condiciones</strong><p class="settings-note">Las atribuciones se muestran según la procedencia real de los datos. Las condiciones específicas de cada proveedor se respetan de acuerdo con su licencia y términos aplicables.</p></div>'+
+   '<div class="sources-credit-section"><strong>Fuentes históricas</strong><p class="settings-note">No hay fuentes históricas registradas actualmente.</p></div>'+caveatCredit;
  }
- const logoUrl='https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg';
- return (hasTMDB?'<div class="sources-credit-section"><strong>Proveedor de catálogo</strong><div class="sources-credit-entry"><a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" aria-label="The Movie Database"><img class="sources-credit-tmdb-logo" src="'+logoUrl+'" alt="TMDB"></a><span>The Movie Database (TMDB)</span></div><p class="settings-note">This product uses the TMDB API but is not endorsed or certified by TMDB.</p></div>':'')+
-  (hasJustWatch?'<div class="sources-credit-section"><strong>Fuente original de disponibilidad</strong><div class="sources-credit-entry"><span>JustWatch</span></div><p class="settings-note">Disponibilidad informada por JustWatch a través de TMDB.</p></div>':'')+
-  '<div class="sources-credit-section"><strong>Licencias y condiciones</strong><p class="settings-note">Las atribuciones se muestran según la procedencia real de los datos. Las condiciones específicas de cada proveedor se respetan de acuerdo con su licencia y términos aplicables.</p></div>'+
-  '<div class="sources-credit-section"><strong>Fuentes históricas</strong><p class="settings-note">No hay fuentes históricas registradas actualmente.</p></div>';
-}
 function renderSettings(){
  const isAdmin=householdRole==='admin';
  screen.innerHTML=`
