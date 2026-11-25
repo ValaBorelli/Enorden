@@ -234,6 +234,15 @@
 - El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
 - Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
 - Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
+### 15.2. Reloj Analógico (componente conservado y oculto)
+
+- El componente anteriormente denominado selector de hora analógico pasa a llamarse **Reloj Analógico**.
+- El Reloj Analógico queda oculto y fuera de uso: no será invocado por botones de hora actuales ni por nuevas funcionalidades mientras permanezca pendiente de revisión.
+- Se conservará su implementación y sus reglas visuales como referencia para retomarlo posteriormente. Su ocultamiento no implica eliminarlo ni rediseñarlo.
+- **Pendiente:** revisar y resolver la dificultad de selección individual de minutos en el Reloj Analógico. Solo después de esa revisión Vale decidirá si vuelve a habilitarse o si requiere otros ajustes.
+- Las reglas de apariencia que se conservan para el Reloj Analógico son: círculo exterior vacío con acabado negro metálico; círculo interior con color base `var(--surface2)`, contrastes, degradados y sombras; borde exterior negro `#000`; paleta fija independiente del tema y del dispositivo.
+
+
 ### 15.3. Selector de Fecha EnOrden (componente oficial)
 - Todo campo, botón o control que permita seleccionar una fecha utilizará el componente propio **Selector de Fecha EnOrden**. No se utilizarán controles nativos del navegador o del sistema operativo, como `input type="date"`, `showPicker()` ni calendarios externos.
 - El selector se mostrará en una ventana modal centrada sobre la pantalla. El fondo oscurecido no será interactivo: tocar fuera de la ventana no la cerrará ni ejecutará acciones.
@@ -244,15 +253,6 @@
 - «Cancelar» y la X circular cerrarán el selector sin aplicar cambios. «Guardar» confirmará la fecha seleccionada. La selección temporal no modificará el valor original hasta guardar.
 - El componente deberá ser adaptable a teléfonos, tabletas y computadores y mantener la misma apariencia y comportamiento en todos los sistemas operativos y navegadores compatibles.
 - Todos los campos existentes y futuros que permitan elegir fechas deberán reutilizar este componente, incluidos los formularios de eventos, tareas programadas, rutinas y programación de Entretención. Los valores internos seguirán almacenándose en el formato de fecha que requiera cada función.
-
-### 15.2. Reloj Analógico (componente conservado y oculto)
-
-- El componente anteriormente denominado selector de hora analógico pasa a llamarse **Reloj Analógico**.
-- El Reloj Analógico queda oculto y fuera de uso: no será invocado por botones de hora actuales ni por nuevas funcionalidades mientras permanezca pendiente de revisión.
-- Se conservará su implementación y sus reglas visuales como referencia para retomarlo posteriormente. Su ocultamiento no implica eliminarlo ni rediseñarlo.
-- **Pendiente:** revisar y resolver la dificultad de selección individual de minutos en el Reloj Analógico. Solo después de esa revisión Vale decidirá si vuelve a habilitarse o si requiere otros ajustes.
-- Las reglas de apariencia que se conservan para el Reloj Analógico son: círculo exterior vacío con acabado negro metálico; círculo interior con color base `var(--surface2)`, contrastes, degradados y sombras; borde exterior negro `#000`; paleta fija independiente del tema y del dispositivo.
-
 
 ## 16. Orden fijo de módulos y navegación
 
