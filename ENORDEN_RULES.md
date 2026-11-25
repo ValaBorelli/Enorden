@@ -234,6 +234,16 @@
 - El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
 - Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
 - Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
+### 15.3. Selector de Fecha EnOrden (componente oficial)
+- Todo campo, botón o control que permita seleccionar una fecha utilizará el componente propio **Selector de Fecha EnOrden**. No se utilizarán controles nativos del navegador o del sistema operativo, como `input type="date"`, `showPicker()` ni calendarios externos.
+- El selector se mostrará en una ventana modal centrada sobre la pantalla. El fondo oscurecido no será interactivo: tocar fuera de la ventana no la cerrará ni ejecutará acciones.
+- La ventana incluirá el título «Selecciona una fecha», una vista previa en formato `DD Mmm AAAA` (por ejemplo, «25 Nov 2026») y un botón con lápiz para activar la escritura manual.
+- La vista de calendario mostrará el mes y año en español, un control desplegable para elegir el año mediante una lista desplazable en tres columnas, flechas laterales para cambiar de mes y los días de lunes a domingo con sus fechas correctamente alineadas.
+- La lista de años será desplazable y se organizará en tres columnas. El año elegido quedará visualmente destacado.
+- La escritura manual aceptará exclusivamente números. La entrada se presentará y procesará en el orden día, mes y año, con dos dígitos para el día, dos para el mes y cuatro para el año. Se admitirán separadores introducidos por el usuario, pero la interfaz normalizará el formato a `DD-MM-AAAA`; por ejemplo, `25-11-2026` corresponde al 25 de noviembre de 2026. No se permitirá guardar una fecha incompleta o inexistente.
+- «Cancelar» y la X circular cerrarán el selector sin aplicar cambios. «Guardar» confirmará la fecha seleccionada. La selección temporal no modificará el valor original hasta guardar.
+- El componente deberá ser adaptable a teléfonos, tabletas y computadores y mantener la misma apariencia y comportamiento en todos los sistemas operativos y navegadores compatibles.
+- Todos los campos existentes y futuros que permitan elegir fechas deberán reutilizar este componente, incluidos los formularios de eventos, tareas programadas, rutinas y programación de Entretención. Los valores internos seguirán almacenándose en el formato de fecha que requiera cada función.
 
 ### 15.2. Reloj Analógico (componente conservado y oculto)
 
