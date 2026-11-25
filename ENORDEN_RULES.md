@@ -234,7 +234,6 @@
 - El componente recibirá el valor inicial del campo que lo invoca y deberá funcionar tanto al crear como al editar información.
 - Cualquier nueva funcionalidad que incorpore selección de hora deberá reutilizar este componente. No crear selectores de hora independientes ni excepciones por módulo sin autorización expresa de Vale.
 - Esta regla se aplica a todos los módulos y a cualquier flujo futuro que permita elegir una hora. Los campos de hora almacenados internamente pueden conservar el formato de datos que requiera su función; la regla define la interfaz de selección.
-
 ### 15.2. Reloj Analógico (componente conservado y oculto)
 
 - El componente anteriormente denominado selector de hora analógico pasa a llamarse **Reloj Analógico**.
@@ -243,6 +242,17 @@
 - **Pendiente:** revisar y resolver la dificultad de selección individual de minutos en el Reloj Analógico. Solo después de esa revisión Vale decidirá si vuelve a habilitarse o si requiere otros ajustes.
 - Las reglas de apariencia que se conservan para el Reloj Analógico son: círculo exterior vacío con acabado negro metálico; círculo interior con color base `var(--surface2)`, contrastes, degradados y sombras; borde exterior negro `#000`; paleta fija independiente del tema y del dispositivo.
 
+
+### 15.3. Selector de Fecha EnOrden (componente oficial)
+- Todo campo, botón o control que permita seleccionar una fecha utilizará el componente propio **Selector de Fecha EnOrden**. No se utilizarán controles nativos del navegador o del sistema operativo, como `input type="date"`, `showPicker()` ni calendarios externos.
+- El selector se mostrará en una ventana modal centrada sobre la pantalla. El fondo oscurecido no será interactivo: tocar fuera de la ventana no la cerrará ni ejecutará acciones.
+- La ventana incluirá el título «Selecciona una fecha», una vista previa en formato `DD Mmm AAAA` (por ejemplo, «25 Nov 2026») y un botón con lápiz para activar la escritura manual.
+- La vista de calendario mostrará el mes y año en español, un control desplegable para elegir el año mediante una lista desplazable en tres columnas, flechas laterales para cambiar de mes y los días de lunes a domingo con sus fechas correctamente alineadas.
+- La lista de años será desplazable y se organizará en tres columnas. El año elegido quedará visualmente destacado.
+- La escritura manual aceptará exclusivamente números. La entrada se presentará y procesará en el orden día, mes y año, con dos dígitos para el día, dos para el mes y cuatro para el año. Se admitirán separadores introducidos por el usuario, pero la interfaz normalizará el formato a `DD-MM-AAAA`; por ejemplo, `25-11-2026` corresponde al 25 de noviembre de 2026. No se permitirá guardar una fecha incompleta o inexistente.
+- «Cancelar» y la X circular cerrarán el selector sin aplicar cambios. «Guardar» confirmará la fecha seleccionada. La selección temporal no modificará el valor original hasta guardar.
+- El componente deberá ser adaptable a teléfonos, tabletas y computadores y mantener la misma apariencia y comportamiento en todos los sistemas operativos y navegadores compatibles.
+- Todos los campos existentes y futuros que permitan elegir fechas deberán reutilizar este componente, incluidos los formularios de eventos, tareas programadas, rutinas y programación de Entretención. Los valores internos seguirán almacenándose en el formato de fecha que requiera cada función.
 
 ## 16. Orden fijo de módulos y navegación
 
@@ -272,3 +282,98 @@
 - Todo módulo nuevo deberá incorporarse a esta regla únicamente cuando Vale defina su posición. No deberá alterar ni desplazar el orden existente por iniciativa propia.
 
 
+
+
+## 17. Biblioteca gráfica oficial de iconos de EnOrden
+
+### 17.1. Objetivo y alcance
+
+- EnOrden utilizará una biblioteca propia de **40 iconos ilustrados tridimensionales** para sustituir progresivamente los emojis del sistema operativo que representen conceptos incluidos en el pack.
+- La biblioteca será un recurso gráfico interno de la aplicación. Su apariencia no dependerá de los emojis, fuentes, sistema operativo, navegador ni fabricante del dispositivo.
+- La implementación de estos iconos no autoriza cambios en configuraciones, funcionalidades, textos, navegación, distribución, colores ni estilos generales de la interfaz. Cuando se reemplace un emoji, se conservarán su ubicación, función, significado, contexto, interacción y jerarquía visual.
+- Los símbolos funcionales que no formen parte del inventario aprobado (por ejemplo, flechas de navegación, signos de cierre, checks o controles) no se reemplazarán automáticamente. Su modificación requiere una decisión específica de Vale.
+- La sustitución debe limitarse a las apariciones que correspondan realmente a los 40 conceptos del pack. No se cambiarán caracteres que sean contenido escrito por el usuario, datos, texto editorial o parte de una representación funcional distinta.
+
+### 17.2. Identidad artística obligatoria
+
+- Todos los iconos pertenecerán a una misma familia visual: objetos tridimensionales con realismo moderado, volumen natural y apariencia de piezas físicas cuidadosamente modeladas.
+- Se utilizarán superficies y materiales coherentes con cada objeto: metal, papel, cartón, madera, vidrio, cerámica, plástico, tela y materiales naturales, según corresponda.
+- Los bordes serán suaves y definidos; las proporciones equilibradas; los detalles suficientes para reconocer cada objeto sin saturarlo.
+- La iluminación será uniforme en toda la colección, con dirección de luz consistente, sombras suaves y reflejos discretos.
+- El resultado no deberá parecer un emoji nativo de Android, iOS, Windows o macOS.
+- Quedan prohibidos los estilos planos, monocromáticos, minimalistas, caricaturescos o infantiles; los contornos negros gruesos; las proporciones exageradas y los elementos decorativos ajenos al objeto.
+- No se aplicará un filtro monocromático ni se impondrá la paleta corporativa de EnOrden. Cada objeto utilizará colores naturales y reconocibles, independientes del tema de color activo de la aplicación.
+
+### 17.3. Composición y consistencia
+
+- Todos los archivos individuales utilizarán el mismo tamaño de lienzo y una escala visual equivalente.
+- El objeto estará centrado, completo y sin recortes, con márgenes visuales similares entre piezas.
+- Se mantendrán una perspectiva, iluminación, profundidad y criterio de sombras coherentes en los 40 iconos.
+- No se agregarán fondos, etiquetas, marcas de agua ni textos decorativos. Solo se permitirán detalles propios del objeto cuando sean necesarios para reconocerlo o representarlo correctamente.
+- Los iconos deberán conservar su legibilidad en los tamaños pequeños en que se utilicen dentro de la interfaz.
+
+### 17.4. Recursos, formatos y autonomía
+
+- Cada icono se almacenará como un recurso gráfico individual, con nombre estable y descriptivo, dentro de la biblioteca local de recursos de EnOrden.
+- Se preferirá SVG únicamente cuando permita conservar fielmente la ilustración aprobada. Cuando el nivel de realismo requiera imagen rasterizada, se utilizará PNG de resolución suficiente y fondo transparente.
+- Los recursos individuales no tendrán fondo opaco ni sombras externas cortadas por los límites del lienzo.
+- La aplicación no dependerá de fuentes de emojis, recursos externos ni servicios de terceros para representar estos iconos.
+- Los recursos deberán empaquetarse y servirse desde la propia aplicación, de modo que su apariencia sea idéntica en los dispositivos compatibles.
+- Los nombres de archivo y las referencias internas deberán ser estables. Los usos del mismo concepto deberán reutilizar el mismo recurso, evitando duplicados visuales o variantes no aprobadas.
+
+### 17.5. Inventario oficial del pack
+
+El pack está compuesto por estos 40 conceptos, que constituyen el inventario de referencia:
+
+1. Calendario.
+2. Carrito o canasta de compras.
+3. Flechas circulares de repetición o actualización.
+4. Pila de monedas o dinero.
+5. Hoja de notas con lápiz.
+6. Claqueta de cine.
+7. Pin de ubicación.
+8. Globos de conversación.
+9. Casa.
+10. Engranaje de configuración.
+11. Mano saludando.
+12. Sol.
+13. Micrófono.
+14. Torta de cumpleaños con velas.
+15. Rosa.
+16. Chincheta.
+17. Bloc de notas pequeño.
+18. Campana de notificaciones.
+19. Lupa.
+20. Dos personas abrazándose.
+21. Silueta de una persona.
+22. Portapapeles con lista de tareas.
+23. Eslabones de una cadena.
+24. Lápiz.
+25. Carpeta.
+26. Sobre de correo.
+27. Globo terráqueo.
+28. Paleta de pintura.
+29. Cara sonriente sencilla.
+30. Cara sonriente expresiva.
+31. Cara con gafas de sol.
+32. Cara de gato.
+33. Rama de hojas.
+34. Estrella.
+35. Candado cerrado.
+36. Corazón.
+37. Tira de película.
+38. Televisor.
+39. Símbolo de reproducción.
+40. Cronómetro.
+
+Las descripciones visuales detalladas aprobadas por Vale para cada uno de estos conceptos son la referencia de producción de los recursos. No se deben reinterpretar ni sustituir por diseños de otro estilo.
+
+### 17.6. Reglas de implementación y revisión
+
+- Antes de implementar, comprobar que estén disponibles los 40 recursos individuales aprobados. Una lámina de presentación o una imagen de muestra no sustituye los archivos individuales necesarios para la aplicación.
+- La primera implementación se realizará exclusivamente en la rama de desarrollo y en el entorno de pruebas. No se modificará `main`, producción ni se publicará la biblioteca para usuarios generales sin autorización expresa de Vale.
+- El reemplazo será exclusivamente visual: no cambiará lógica, datos, eventos, permisos, configuraciones, preferencias, almacenamiento ni comportamiento de los componentes existentes.
+- Se conservarán los tamaños, alineaciones y espacios actuales en cada contexto, ajustando únicamente la presentación del recurso para que se integre correctamente sin desplazar otros elementos.
+- Antes de dar por terminada la implementación, revisar los 40 recursos, sus usos, tamaños pequeños, transparencia, carga local y consistencia en distintos tamaños de pantalla.
+- Cualquier concepto que no tenga un recurso individual aprobado permanecerá temporalmente con su representación actual. No se crearán sustitutos improvisados ni se utilizará otro icono del pack en su lugar.
+- La biblioteca se considerará aprobada para producción solo después de la revisión visual de Vale en el entorno de pruebas.
