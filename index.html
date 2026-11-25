@@ -3091,7 +3091,7 @@ function startNoteDrag(event,pin){
  event.preventDefault();notesDragState={id:String(note.id),pointerId:event.pointerId,paper,board,moved:false};paper.classList.add('is-dragging');pin.setPointerCapture?.(event.pointerId);pin.addEventListener('pointermove',moveNoteDrag);pin.addEventListener('pointerup',endNoteDrag,{once:true});pin.addEventListener('pointercancel',endNoteDrag,{once:true});
 }
 function moveNoteDrag(event){
- const drag=notesDragState;if(!drag||event.pointerId!==drag.pointerId)return;event.preventDefault();const rect=drag.board.getBoundingClientRect(),paperRect=drag.paper.getBoundingClientRect(),x=Math.max(0,Math.min(rect.width-paperRect.width,event.clientX-rect.left-paperRect.width/2)),y=Math.max(0,Math.min(rect.height-paperRect.height,event.clientY-rect.top-12));
+ const drag=notesDragState;if(!drag||event.pointerId!==drag.pointerId)return;event.preventDefault();if(event.clientY>window.innerHeight-65)window.scrollBy(0,18);else if(event.clientY<45)window.scrollBy(0,-18);const rect=drag.board.getBoundingClientRect(),paperRect=drag.paper.getBoundingClientRect(),x=Math.max(0,Math.min(rect.width-paperRect.width,event.clientX-rect.left-paperRect.width/2)),y=Math.max(0,Math.min(rect.height-paperRect.height,event.clientY-rect.top-12));
  drag.paper.style.left=(x/Math.max(1,rect.width)*100)+'%';drag.paper.style.top=(y/Math.max(1,rect.height)*100)+'%';drag.moved=true;
  const trash=document.getElementById('notesTrashButton'),tr=trash?.getBoundingClientRect();trash?.classList.toggle('is-drag-target',!!tr&&event.clientX>=tr.left&&event.clientX<=tr.right&&event.clientY>=tr.top&&event.clientY<=tr.bottom);
 }
