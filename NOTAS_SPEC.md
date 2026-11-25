@@ -23,7 +23,8 @@ Notas es una pizarra visual de corcho donde los integrantes del hogar pueden col
 - El movimiento debe funcionar con mouse y pantallas táctiles.
 - Al soltar una nota sobre la papelera, se marca como eliminada y deja de mostrarse en la pizarra.
 - La papelera es un botón flotante circular en la esquina inferior derecha, por encima de la navegación inferior. Su ilustración representa una papelera de escritorio metálica negra, construida en SVG y con cuerpo de malla.
-- Cada nota enviada a la papelera aparece como una bola de papel arrugado dentro de la papelera. La ilustración muestra hasta 10 papeles simultáneamente; al restaurar o vaciar notas, la cantidad visible se actualiza. La entrada de cada papel tiene una breve animación.
+- La papelera se dibuja completa, con cuerpo cilíndrico ligeramente cónico, borde superior y base inferior visibles, en metal negro con malla de rombos.
+- Cada nota enviada a la papelera aparece como una bola de papel arrugado dentro de la papelera. La ilustración muestra hasta 10 papeles simultáneamente; al restaurar o vaciar notas, la cantidad visible se actualiza. Cada papel entra con una animación escalonada y visible.
 - Al abrirla, se presenta una lista de las notas eliminadas visibles para el usuario.
 - Cada nota tiene una acción individual «Devolver» que la restaura a la pizarra.
 - «Vaciar papelera» solicita confirmación y elimina definitivamente las notas que contiene.
