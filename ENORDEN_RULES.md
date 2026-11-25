@@ -377,3 +377,33 @@ Las descripciones visuales detalladas aprobadas por Vale para cada uno de estos 
 - Antes de dar por terminada la implementación, revisar los 40 recursos, sus usos, tamaños pequeños, transparencia, carga local y consistencia en distintos tamaños de pantalla.
 - Cualquier concepto que no tenga un recurso individual aprobado permanecerá temporalmente con su representación actual. No se crearán sustitutos improvisados ni se utilizará otro icono del pack en su lugar.
 - La biblioteca se considerará aprobada para producción solo después de la revisión visual de Vale en el entorno de pruebas.
+
+
+## 18. Distinción obligatoria entre el módulo Chat y el chat de Proyectos
+
+EnOrden contiene dos funciones diferentes que utilizan la palabra «chat». Deben identificarse, documentarse, desarrollarse y mantenerse como elementos independientes. **Está prohibido asumir que una solicitud sobre uno de ellos se refiere al otro.**
+
+### 18.1. Módulo Chat (módulo independiente)
+
+- El nombre **«módulo Chat»** identifica exclusivamente el módulo independiente de EnOrden ubicado en la navegación principal inmediatamente después del módulo **Mapa**.
+- En el orden fijo de navegación de la sección 16, corresponde al último módulo.
+- Cuando Vale solicite trabajar en el «módulo Chat», la solicitud se refiere únicamente a este módulo independiente.
+- Su propósito, reglas funcionales, interfaz, almacenamiento, participantes, permisos, notificaciones y demás características se definirán en su propio manual `CHAT_SPEC.md` y mediante decisiones expresas de Vale.
+- No se deben trasladar automáticamente a este módulo las reglas, permisos, comportamiento, estructura ni decisiones del chat de Proyectos.
+
+### 18.2. Chat de Proyectos (función integrada en Tareas)
+
+- El nombre **«chat de Proyectos»** identifica exclusivamente la conversación integrada en la página o plantilla de cada proyecto, ubicada en **Tareas → Compartidos → Proyectos**.
+- No es un módulo independiente ni forma parte del módulo Chat de la navegación principal.
+- Cuando Vale se refiera al «chat de Proyectos», «chat dentro de proyectos» o utilice la ruta completa **«el chat que está dentro de la página plantilla de proyectos que está dentro de la página de Compartidos del módulo Tareas»**, la solicitud se refiere únicamente a esta función integrada.
+- Esta función pertenece al ámbito del módulo Tareas y de la experiencia de Proyectos Compartidos. Su documentación y reglas corresponden a las especificaciones de ese ámbito, no a `CHAT_SPEC.md` del módulo independiente.
+- Se mantienen las exclusiones ya establecidas para **Tareas → Compartidos** en la sección 14: el sistema general de ventanas no debe aplicarse ni modificar sus ventanas y diálogos, incluido el chat interno, salvo autorización expresa posterior de Vale.
+
+### 18.3. Regla de interpretación y prevención de cruces
+
+- La expresión **«módulo Chat»** siempre significa el módulo independiente situado después de Mapa.
+- La expresión **«chat de Proyectos»** siempre significa la conversación integrada en **Tareas → Compartidos → Proyectos**.
+- Las reglas, decisiones, datos, permisos, interfaces, componentes, estilos, almacenamiento, notificaciones y funcionalidades de ambos chats deben mantenerse separados. Una decisión tomada para uno no se considera aprobada para el otro.
+- No reutilizar, modificar ni conectar componentes o lógica de uno con el otro por iniciativa propia. Cualquier integración o reutilización futura requerirá una decisión explícita de Vale.
+- Si una solicitud de Vale utiliza solamente la palabra «chat» y el contexto no permite determinar con certeza cuál de los dos identifica, detenerse y hacer una pregunta aclaratoria antes de revisar o modificar código.
+- Antes de comenzar cualquier trabajo relacionado con chat, identificar expresamente cuál de los dos elementos está dentro del alcance y revisar la documentación correspondiente. Nunca modificar ambos como consecuencia de una solicitud dirigida a uno solo.
