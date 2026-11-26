@@ -2490,7 +2490,7 @@ function chatPrepare(){
    family.notifiedCycle=family.cycleStartedAt;
   }
  }
- const activeNotes=notesRecords.filter(note=>noteCanSee(note)&&Number.isFinite(Date.parse(note.createdAt))&&now-Date.parse(note.createdAt)<CHAT_NOTE_RETENTION);
+ const activeNotes=notesRecords.filter(note=>Number.isFinite(Date.parse(note.createdAt))&&now-Date.parse(note.createdAt)<CHAT_NOTE_RETENTION);
  const activeIds=new Set(activeNotes.map(chatNoteId));
  Object.keys(chatLocalState.messages).forEach(id=>{
   if(id.startsWith('nota:')&&!activeIds.has(id))delete chatLocalState.messages[id];
@@ -2508,7 +2508,7 @@ function chatPrepare(){
 }
 function chatGetConversation(id){
  if(id==='familia')return {id:'familia',name:'Familia',kind:'family',createdAt:chatLocalState.meta.family.cycleStartedAt};
- const note=notesRecords.find(item=>chatNoteId(item)===id&&noteCanSee(item));
+ const note=notesRecords.find(item=>chatNoteId(item)===id);
  if(!note||Date.now()-Date.parse(note.createdAt)>=CHAT_NOTE_RETENTION)return null;
  return {id,name:(note.text||'').trim().slice(0,54)||'Nota',kind:'note',createdAt:note.createdAt,note};
 }
