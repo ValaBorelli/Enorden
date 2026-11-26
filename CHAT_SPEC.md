@@ -98,3 +98,95 @@ El módulo Chat se desarrollará manteniendo tres capas independientes:
 - Los mensajes enviados en esta etapa se muestran como enviados por el usuario local.
 - Los avisos de vencimiento son una simulación local; las notificaciones fiables para todos los integrantes requerirán una conexión de servidor y un mecanismo de notificaciones.
 - El cumplimiento de vencimientos en segundo plano y entre dispositivos deberá garantizarse en la futura capa de servidor.
+
+
+---
+
+## Forma de trabajo, estado actual y próximos pasos
+
+Esta sección registra cómo continuaremos desarrollando el módulo Chat, qué está construido, qué falta y qué puede avanzarse sin tomar decisiones prematuras sobre servicios externos. No reemplaza ni modifica los 35 requisitos aprobados ni las reglas de la primera versión.
+
+### 1. Método de trabajo obligatorio
+
+- El desarrollo se realizará de forma incremental, en etapas pequeñas y revisables. Antes de cada cambio se identificará qué parte del módulo se modificará y se mantendrá el alcance limitado al módulo Chat independiente.
+- Se conservará la separación de tres capas definida en este documento: **interfaz**, **lógica del chat** y **conexión de datos**. Cada cambio deberá respetar esa separación.
+- La interfaz no deberá contener reglas de negocio ni depender directamente de un proveedor de almacenamiento. La lógica deberá poder probarse sin depender de un proveedor concreto. La conexión de datos deberá poder sustituirse sin reconstruir la interfaz ni reescribir las reglas del chat.
+- Mientras no se elija expresamente una solución definitiva de servidor, base de datos o sincronización, se trabajará con adaptadores y datos locales de prueba. No se asumirá ni seleccionará un proveedor por iniciativa propia.
+- Las propuestas de arquitectura, almacenamiento, cuentas, permisos o proveedores se tratarán como opciones de análisis hasta que Vale las apruebe explícitamente. Conversar sobre una alternativa no equivale a elegirla.
+- Cada etapa deberá incluir revisión del código y de sus diferencias, comprobaciones técnicas y, cuando corresponda, revisión visual mediante Netlify Deploy Preview. Se informará con claridad qué se implementó, qué se probó realmente y qué sigue pendiente. No se declarará una función terminada si solo se escribió el código.
+- Los cambios se realizarán en `EnOrden-Desarrollo`. Se utilizará el Pull Request y su Deploy Preview para revisión. No se fusionará ni publicará en `main` sin autorización expresa de Vale.
+- No se modificarán otros módulos, navegación, cabecera, estilos globales, componentes compartidos ni infraestructura ajena al Chat, salvo autorización expresa.
+- Las decisiones aprobadas se incorporarán acumulativamente a este documento. Las dudas y alternativas no resueltas se registrarán como pendientes, sin convertirlas en reglas.
+
+### 2. Estado de la implementación actual
+
+La primera estructura funcional del módulo Chat está construida como **prototipo local**. Su estado debe entenderse así:
+
+**Interfaz**
+- Existe una lista de conversaciones con Familia en primer lugar.
+- Existe una vista de conversación, presentación de mensajes, respuestas y compositor.
+- Se puede elegir entre el formato Texto y Transcripción.
+- La interfaz contempla conversaciones temporales asociadas a notas.
+- Se incorporó una presentación adaptable a pantallas pequeñas.
+- La interfaz y las capas están separadas lógicamente dentro del archivo actual; todavía no están divididas físicamente en archivos independientes.
+
+**Lógica**
+- Está implementado localmente el inicio y vencimiento del ciclo de siete días de Familia.
+- Familia permanece en la lista y queda vacía al vencer su ciclo.
+- Está implementada la creación lógica de conversaciones temporales para las notas y su vencimiento a las 24 horas desde la creación de cada nota.
+- Está implementado el aviso informativo inicial de Familia.
+- Existe una simulación local del aviso previo al vencimiento.
+- Los mensajes de tipo Transcripción se almacenan como texto y siguen las mismas reglas de vencimiento que los mensajes de texto.
+
+**Conexión de datos**
+- Existe un adaptador local de prueba basado en almacenamiento del navegador.
+- Los datos solo están disponibles en el mismo dispositivo y navegador donde se generaron.
+- No existe todavía conexión a un servidor, base de datos remota ni sincronización entre integrantes o dispositivos.
+
+**Limitación de validación**
+- La publicación de la vista previa de Netlify puede aparecer como exitosa, pero eso por sí solo no significa que la interfaz y todos los flujos hayan sido probados manualmente. En el estado documentado de esta etapa, no se ha completado una validación interactiva integral en navegador. Esa revisión sigue pendiente.
+
+### 3. Qué podemos avanzar ahora, sin elegir todavía un proveedor
+
+Mientras la arquitectura definitiva de datos siga abierta, se puede continuar con tareas que no dependen de esa decisión:
+
+1. **Revisión visual de la interfaz:** revisar la vista previa en distintos tamaños de pantalla, detectar problemas de jerarquía, espaciado, legibilidad, navegación y estados vacíos, y aplicar únicamente las correcciones aprobadas por Vale.
+2. **Pruebas funcionales locales:** comprobar los flujos de envío de texto y transcripción, respuestas, primer uso de Familia, inicio de ciclo, vencimiento, renovación y conversaciones de notas.
+3. **Casos límite de las reglas temporales:** probar vencimientos exactos, ciclos sin mensajes posteriores, notas sin participación, varias notas con vencimientos independientes y reapertura del módulo después de períodos de inactividad.
+4. **Robustez de la lógica:** separar y probar las reglas de negocio frente a la interfaz, evitar que una acción sobre una conversación afecte a otra y comprobar que los datos vencidos no vuelvan a mostrarse.
+5. **Estados y experiencia de uso:** revisar estados de carga, ausencia de mensajes, errores locales, confirmaciones y comportamiento de la interfaz cuando no hay conversaciones temporales activas.
+6. **Preparación de la capa de datos:** definir y documentar un contrato neutral del adaptador (por ejemplo, operaciones para consultar, crear, responder, actualizar y eliminar mensajes y metadatos), sin implementar todavía una integración externa ni asumir cómo se autenticarán los usuarios.
+7. **Mantenimiento de la documentación:** registrar cada decisión aprobada, las limitaciones conocidas y el resultado real de las pruebas.
+
+Estas tareas pueden desarrollarse y revisarse con datos de prueba locales. No requieren decidir ahora dónde vivirán los datos definitivos.
+
+### 4. Pendientes para una etapa posterior
+
+Los siguientes puntos no deben considerarse implementados ni resueltos:
+
+- Elegir, junto a Vale, la arquitectura definitiva de almacenamiento y sincronización. La elección de servidor, base de datos, proveedor o modelo de cuentas permanece abierta.
+- Definir autenticación, identidad de cada integrante, pertenencia a una familia, permisos y recuperación de acceso para el Chat.
+- Implementar mensajería real entre distintos integrantes y dispositivos, con sincronización y actualización en tiempo real o el mecanismo que se acuerde.
+- Garantizar los vencimientos y eliminaciones en el servidor, incluso cuando ningún usuario abra la aplicación.
+- Implementar notificaciones fiables a todos los integrantes, incluida la notificación única por integrante y por ciclo 24 horas antes del vencimiento.
+- Definir e implementar la eliminación efectiva de los datos remotos y sus metadatos, de acuerdo con las reglas aprobadas y las capacidades del proveedor elegido.
+- Incorporar grabación, envío, recepción y almacenamiento de audio original en una versión futura. No forma parte de la versión 1 aprobada.
+- Evaluar si la transcripción automática dentro de EnOrden será necesaria en una versión futura. La versión 1 solo contempla texto escrito o dictado mediante el teclado del dispositivo.
+- Revisar seguridad, privacidad, reglas de acceso, manejo de errores, límites de uso, costos y recuperación ante fallos cuando se evalúe una integración real.
+- Ejecutar pruebas integrales con más de un usuario y dispositivo una vez que exista una conexión remota.
+
+### 5. Orden recomendado para continuar
+
+El orden de trabajo recomendado, sujeto a la revisión y aprobación de Vale en cada etapa, es:
+
+1. Revisar visualmente el prototipo actual y recopilar las correcciones de interfaz.
+2. Corregir y validar la interfaz del Chat sin intervenir otros módulos.
+3. Probar la lógica local de mensajes, respuestas, ciclos y vencimientos, incluidos los casos límite.
+4. Completar el contrato de la capa de datos para que sea independiente del proveedor.
+5. Revisar con Vale las alternativas de almacenamiento y sincronización, sin elegir una hasta contar con su aprobación expresa.
+6. Una vez aprobada la arquitectura, implementar la conexión remota y adaptar el adaptador de datos.
+7. Incorporar sincronización multiusuario, notificaciones y vencimientos garantizados en servidor.
+8. Realizar pruebas integrales de privacidad, permisos, expiración y funcionamiento entre dispositivos.
+9. Evaluar por separado las funciones de audio original para una versión futura.
+
+El orden puede ajustarse según los resultados de las pruebas o las decisiones de Vale. Ningún pendiente de etapas posteriores autoriza a adelantar una elección de proveedor o a modificar el alcance aprobado de la versión 1.
