@@ -69,3 +69,32 @@ Documento de trabajo para definir e implementar el módulo Chat.
 33. El Chat Familia y los chats asociados a Notas tendrán temporizadores y ciclos de vencimiento independientes.
 34. El vencimiento de un chat no deberá afectar el funcionamiento ni el contenido de los demás chats.
 35. Las reglas de duración, eliminación y participación deberán cumplirse automáticamente, sin requerir intervención manual de los usuarios.
+
+
+---
+
+## Primera implementación — alcance de la versión 1
+
+Esta sección define el alcance de la primera versión funcional sin eliminar ni reinterpretar los requisitos generales aprobados anteriormente.
+
+- La versión 1 permitirá enviar mensajes de texto.
+- La versión 1 permitirá enviar transcripciones como contenido de texto. El usuario podrá escribirlas o utilizar el dictado disponible en el teclado de su dispositivo.
+- La versión 1 no grabará, enviará ni almacenará archivos de audio.
+- La grabación y el envío de mensajes de audio originales quedan reservados para una versión futura.
+- Las transcripciones se someterán a las mismas reglas de duración y eliminación que los mensajes de texto del chat correspondiente.
+
+## Separación técnica obligatoria
+
+El módulo Chat se desarrollará manteniendo tres capas independientes:
+
+1. **Interfaz:** pantallas, lista de conversaciones, vista de mensajes, compositor, estados vacíos, controles y presentación visual. No contendrá reglas de persistencia ni decisiones propias del proveedor de almacenamiento.
+2. **Lógica del chat:** ciclos, vencimientos, creación y eliminación de conversaciones temporales, validaciones, respuestas, avisos y comportamiento de mensajes. No dependerá de una tecnología de servidor específica.
+3. **Conexión de datos:** adaptador responsable de leer y guardar mensajes y metadatos. En la etapa actual utilizará almacenamiento local de prueba. Más adelante podrá sustituirse por la conexión al servidor que se elija, sin reconstruir la interfaz ni reescribir las reglas de negocio.
+
+## Limitaciones del prototipo local
+
+- Los datos guardados localmente solo están disponibles en el dispositivo y navegador donde se generaron.
+- El prototipo no representa mensajería multiusuario ni sincronización en tiempo real.
+- Los mensajes enviados en esta etapa se muestran como enviados por el usuario local.
+- Los avisos de vencimiento son una simulación local; las notificaciones fiables para todos los integrantes requerirán una conexión de servidor y un mecanismo de notificaciones.
+- El cumplimiento de vencimientos en segundo plano y entre dispositivos deberá garantizarse en la futura capa de servidor.
