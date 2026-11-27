@@ -78,8 +78,12 @@ Documento de trabajo para definir e implementar el módulo Chat.
 Esta sección define el alcance de la primera versión funcional sin eliminar ni reinterpretar los requisitos generales aprobados anteriormente.
 
 - La versión 1 permitirá enviar mensajes de texto.
-- La versión 1 permitirá enviar transcripciones como contenido de texto. El usuario podrá escribirlas o utilizar el dictado disponible en el teclado de su dispositivo.
-- La versión 1 no grabará, enviará ni almacenará archivos de audio.
+- La versión 1 permitirá enviar transcripciones como contenido de texto. El usuario podrá escribirlas o utilizar el micrófono integrado en el compositor del Chat.
+- El reconocimiento de voz utilizará la API disponible en el navegador (`SpeechRecognition` o `webkitSpeechRecognition`), sin integrar ni contratar un proveedor externo.
+- El idioma del reconocimiento se determinará automáticamente a partir del idioma seleccionado en EnOrden: español (`es-CL`), inglés (`en-US`) o portugués (`pt-BR`).
+- El texto reconocido se insertará en el campo de escritura y podrá editarse antes de enviarlo.
+- La disponibilidad del reconocimiento y de cada idioma dependerá del navegador y del dispositivo. Si no está disponible, EnOrden informará al usuario.
+- EnOrden no guardará ni enviará archivos de audio como mensajes; el audio se utiliza únicamente durante el reconocimiento de voz proporcionado por el navegador.
 - La grabación y el envío de mensajes de audio originales quedan reservados para una versión futura.
 - Las transcripciones se someterán a las mismas reglas de duración y eliminación que los mensajes de texto del chat correspondiente.
 
@@ -125,7 +129,9 @@ La primera estructura funcional del módulo Chat está construida como **prototi
 **Interfaz**
 - Existe una lista de conversaciones con Familia en primer lugar.
 - Existe una vista de conversación, presentación de mensajes, respuestas y compositor.
-- Se puede elegir entre el formato Texto y Transcripción.
+- Se puede elegir entre el formato Texto y Transcripción en el Chat Familia.
+- En Transcripción se muestra un control de micrófono propio de EnOrden; el reconocimiento usa el idioma configurado en la aplicación (es-CL, en-US o pt-BR) y coloca el resultado en el campo editable antes del envío.
+- Los chats asociados a notas mantienen el formato de texto, de acuerdo con sus reglas aprobadas.
 - La interfaz contempla conversaciones temporales asociadas a notas.
 - Se incorporó una presentación adaptable a pantallas pequeñas.
 - La interfaz y las capas están separadas lógicamente dentro del archivo actual; todavía no están divididas físicamente en archivos independientes.
@@ -171,7 +177,7 @@ Los siguientes puntos no deben considerarse implementados ni resueltos:
 - Implementar notificaciones fiables a todos los integrantes, incluida la notificación única por integrante y por ciclo 24 horas antes del vencimiento.
 - Definir e implementar la eliminación efectiva de los datos remotos y sus metadatos, de acuerdo con las reglas aprobadas y las capacidades del proveedor elegido.
 - Incorporar grabación, envío, recepción y almacenamiento de audio original en una versión futura. No forma parte de la versión 1 aprobada.
-- Evaluar si la transcripción automática dentro de EnOrden será necesaria en una versión futura. La versión 1 solo contempla texto escrito o dictado mediante el teclado del dispositivo.
+- La transcripción por voz integrada en el compositor del Chat forma parte de la versión 1. Su funcionamiento depende de la compatibilidad de la API de reconocimiento de voz del navegador y del idioma disponible en el dispositivo; no se incorporará un proveedor externo específico.
 - Revisar seguridad, privacidad, reglas de acceso, manejo de errores, límites de uso, costos y recuperación ante fallos cuando se evalúe una integración real.
 - Ejecutar pruebas integrales con más de un usuario y dispositivo una vez que exista una conexión remota.
 
