@@ -132,6 +132,7 @@ La primera estructura funcional del módulo Chat está construida como **prototi
 **Interfaz**
 - Existe una lista de conversaciones con Familia en primer lugar.
 - Existe una vista de conversación, presentación de mensajes, respuestas y compositor.
+- La pantalla del chat conserva una altura fija dentro del espacio disponible; el encabezado y el compositor permanecen visibles, mientras que el historial de mensajes tiene desplazamiento vertical independiente. Los mensajes antiguos no alargan la página y se consultan mediante scroll dentro del área de conversación.
 - El Chat Familia muestra permanentemente el campo de escritura, el botón de micrófono y el botón de envío en un único compositor.
 - El micrófono inicia o detiene el reconocimiento de voz; el idioma se toma de la configuración de EnOrden (es-CL, en-US o pt-BR) y el resultado se incorpora al mismo campo editable.
 - El usuario puede escribir y dictar dentro del mismo mensaje, sin cambiar de modo. Los chats asociados a notas siguen siendo exclusivamente de texto.
