@@ -984,7 +984,6 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .chat-replying{display:flex;align-items:center;gap:8px;padding:7px 9px;margin-bottom:8px;border-radius:8px;background:var(--surface2);font-size:11px;color:var(--muted)}
 .chat-replying span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .chat-replying button{border:0;background:transparent;font-size:17px;color:var(--muted)}
-.chat-compose-modes{display:flex;gap:6px;margin-bottom:8px}.chat-compose-modes button{border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);color:var(--muted);font-size:10px}.chat-compose-modes button.active{background:var(--surface2);border-color:var(--green2);color:var(--text,#242820);font-weight:700}
 .chat-compose-row{display:flex;align-items:flex-end;gap:8px}
 .chat-transcribe-button{width:43px;height:43px;flex:0 0 43px;border:1px solid var(--line);border-radius:13px;background:var(--surface2);color:var(--text);font-size:19px;display:grid;place-items:center}
 .chat-transcribe-button.active{background:var(--green2);border-color:var(--green2);color:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--green2) 18%,transparent)}
@@ -1155,7 +1154,7 @@ let homeCode=localStorage.getItem('enorden_home_code');
 if(!homeCode){homeCode='EN-'+Math.random().toString(36).slice(2,8).toUpperCase();localStorage.setItem('enorden_home_code',homeCode)}
 let notifications=JSON.parse(localStorage.getItem('enorden_notifications')||'[]');
 let notificationsOpened=localStorage.getItem('enorden_notifications_opened')==='true';
-let chatActiveId='familia',chatMobileDetail=false,chatReplyDraft=null,chatMessageFormat='text';
+let chatActiveId='familia',chatMobileDetail=false,chatReplyDraft=null;
 let financeSetupContext='settings';
 const screen=document.getElementById('screen');
 const nav=document.getElementById('bottomNav');
@@ -2517,6 +2516,7 @@ function chatGetConversation(id){
  return {id,name:(note.text||'').trim().slice(0,54)||'Nota',kind:'note',createdAt:note.createdAt,note};
 }
 function chatSendMessage(){
+ chatStopTranscription();
  const input=document.getElementById('chatMessageInput'),text=(input?.value||'').trim();
  if(!text)return;
  const conversation=chatGetConversation(chatActiveId);if(!conversation)return;
@@ -2529,10 +2529,10 @@ function chatSendMessage(){
   chatLocalState.meta.family.cycleStartedAt=new Date().toISOString();
   chatLocalState.meta.family.notifiedCycle=null;
  }
- const message={id:'msg-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),text,createdAt:new Date().toISOString(),sender:'Tú',mine:true,replyTo:chatReplyDraft?{text:chatReplyDraft.text,sender:chatReplyDraft.sender}:null,format:chatMessageFormat};
+ const message={id:'msg-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),text,createdAt:new Date().toISOString(),sender:'Tú',mine:true,replyTo:chatReplyDraft?{text:chatReplyDraft.text,sender:chatReplyDraft.sender}:null,format:'text'};
  if(!Array.isArray(chatLocalState.messages[conversation.id]))chatLocalState.messages[conversation.id]=[];
  chatLocalState.messages[conversation.id].push(message);
- chatReplyDraft=null;chatMessageFormat='text';chatSave();renderChat();
+ chatReplyDraft=null;chatSave();renderChat();
 }
 function chatSelectConversation(id){
  if(!chatGetConversation(id))return;
@@ -2547,10 +2547,6 @@ function chatReplyTo(messageId){
  document.getElementById('chatMessageInput')?.focus();
 }
 function chatCancelReply(){chatReplyDraft=null;renderChat()}
-function chatSetMessageFormat(format){
- chatStopTranscription();chatMessageFormat=format==='transcription'?'transcription':'text';
- renderChat();document.getElementById('chatMessageInput')?.focus();
-}
 let chatRecognition=null,chatRecognitionActive=false,chatRecognitionBaseText='',chatRecognitionStatus='';
 function chatTranscriptionLanguage(){return ({es:'es-CL',en:'en-US',pt:'pt-BR'})[appLanguage]||'es-CL'}
 function chatTranscriptionCopy(key){
@@ -2620,10 +2616,9 @@ function renderChat(){
  const familyEnd=familyStart?familyStart+CHAT_FAMILY_RETENTION:null;
  const expiryText=active.kind==='family'?(familyEnd?'Este ciclo termina el '+new Date(familyEnd).toLocaleString('es-CL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+'.':'El período de 7 días comenzará cuando se envíe el primer mensaje.'):'Este chat se elimina 24 horas después de crear la nota.';
  const replyMarkup=chatReplyDraft?'<div class="chat-replying"><span>Respondiendo a '+escapeHTML(chatReplyDraft.sender)+': '+escapeHTML(chatReplyDraft.text)+'</span><button type="button" onclick="chatCancelReply()" aria-label="Cancelar respuesta">×</button></div>':'';
- if(active.kind==='note'&&chatMessageFormat==='transcription')chatMessageFormat='text';
  const isMobileDetail=chatMobileDetail?'':'chat-mobile-hidden';
  const isMobileList=chatMobileDetail?'chat-mobile-hidden':'';
- screen.innerHTML='<div class="chat-page"><div class="chat-heading"><div><h1>Chat</h1><p>Conversaciones del hogar.</p></div></div><div class="chat-layout"><aside class="chat-list-panel '+isMobileList+'"><div class="chat-list-head"><strong>Conversaciones</strong><small>Familia y chats de tus notas</small></div><div class="chat-list">'+(list||'<div class="chat-empty">Todavía no hay conversaciones.</div>')+'</div></aside><section class="chat-room '+isMobileDetail+'"><div class="chat-room-head"><button type="button" class="chat-back" onclick="chatBackToList()" aria-label="Volver a conversaciones">‹</button><span class="chat-avatar">'+(active.kind==='family'?'👨‍👩‍👧‍👦':'📝')+'</span><div class="chat-room-title"><strong>'+escapeHTML(active.name)+'</strong><small>'+(active.kind==='family'?'Chat familiar':'Conversación de nota')+'</small></div><span class="chat-room-info">⋯</span></div><div class="chat-expiry-note">'+escapeHTML(expiryText)+'</div><div class="chat-messages" id="chatMessages">'+chatRenderMessages(active)+'</div><div class="chat-composer">'+replyMarkup+'<div class="chat-compose-modes"><button type="button" class="'+(chatMessageFormat==='text'?'active':'')+'" onclick="chatSetMessageFormat(&quot;text&quot;)">Texto</button>'+(active.kind==='family'?'<button type="button" class="'+(chatMessageFormat==='transcription'?'active':'')+'" onclick="chatSetMessageFormat(&quot;transcription&quot;)">Transcripción</button>':'')+'</div><div class="chat-compose-row"><textarea id="chatMessageInput" rows="1" maxlength="4000" placeholder="Escribe un mensaje…" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();chatSendMessage()}"></textarea>'+(active.kind==='family'&&chatMessageFormat==='transcription'?'<button type="button" id="chatTranscribeButton" class="chat-transcribe-button" onclick="chatToggleTranscription()" aria-label="Iniciar transcripción por voz" aria-pressed="false">🎙</button>':'')+'<button type="button" class="chat-send" onclick="chatSendMessage()" aria-label="Enviar mensaje">➤</button></div>'+(active.kind==='family'&&chatMessageFormat==='transcription'?'<div id="chatTranscriptionStatus" class="chat-transcription-status" aria-live="polite">'+escapeHTML(chatRecognitionStatus||chatTranscriptionCopy('ready'))+'</div>':'')+'<div class="chat-footnote">Solo texto y transcripciones. EnOrden convierte tu voz en texto y no guarda el audio.</div></div></section></div></div>';
+ screen.innerHTML='<div class="chat-page"><div class="chat-heading"><div><h1>Chat</h1><p>Conversaciones del hogar.</p></div></div><div class="chat-layout"><aside class="chat-list-panel '+isMobileList+'"><div class="chat-list-head"><strong>Conversaciones</strong><small>Familia y chats de tus notas</small></div><div class="chat-list">'+(list||'<div class="chat-empty">Todavía no hay conversaciones.</div>')+'</div></aside><section class="chat-room '+isMobileDetail+'"><div class="chat-room-head"><button type="button" class="chat-back" onclick="chatBackToList()" aria-label="Volver a conversaciones">‹</button><span class="chat-avatar">'+(active.kind==='family'?'👨‍👩‍👧‍👦':'📝')+'</span><div class="chat-room-title"><strong>'+escapeHTML(active.name)+'</strong><small>'+(active.kind==='family'?'Chat familiar':'Conversación de nota')+'</small></div><span class="chat-room-info">⋯</span></div><div class="chat-expiry-note">'+escapeHTML(expiryText)+'</div><div class="chat-messages" id="chatMessages">'+chatRenderMessages(active)+'</div><div class="chat-composer">'+replyMarkup+'<div class="chat-compose-row"><textarea id="chatMessageInput" rows="1" maxlength="4000" placeholder="Escribe un mensaje…" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();chatSendMessage()}"></textarea>'+(active.kind==='family'?'<button type="button" id="chatTranscribeButton" class="chat-transcribe-button" onclick="chatToggleTranscription()" aria-label="Iniciar transcripción por voz" aria-pressed="false">🎙</button>':'')+'<button type="button" class="chat-send" onclick="chatSendMessage()" aria-label="Enviar mensaje">➤</button></div>'+(active.kind==='family'?'<div id="chatTranscriptionStatus" class="chat-transcription-status" aria-live="polite">'+escapeHTML(chatRecognitionStatus||chatTranscriptionCopy('ready'))+'</div>':'')+'<div class="chat-footnote">Puedes escribir o dictar tu mensaje. EnOrden convierte tu voz en texto y no guarda el audio.</div></div></section></div></div>';
  const messages=document.getElementById('chatMessages');if(messages)messages.scrollTop=messages.scrollHeight;
 }
 function startFinanceLockTimer(){
