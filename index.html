@@ -2151,6 +2151,19 @@ function renderLists(){
 }
 function toggleProduct(id){const p=products.find(x=>x.id===id);if(p)p.bought=!p.bought;save();render()}
 function deleteProduct(id){products=products.filter(x=>x.id!==id);save();render()}
+function addProduct(){
+ const input=document.getElementById('newValue');
+ const sectionSelect=document.getElementById('newSection');
+ if(!input||!sectionSelect)return;
+ const name=input.value.trim();
+ if(!name){input.focus();showWindowNotice('Falta el nombre del producto','Escribe el nombre del producto antes de agregarlo.');return;}
+ const section=sectionSelect.value;
+ if(!section){sectionSelect.focus();showWindowNotice('Falta seleccionar una sección','Elige la sección donde quieres guardar el producto.');return;}
+ products.push({id:Date.now(),name,section,bought:false});
+ save();
+ closeModal();
+ render();
+}
 function renderNotifications(){
  if(!notificationsOpened){
   notificationsOpened=true;localStorage.setItem('enorden_notifications_opened','true');
