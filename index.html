@@ -948,6 +948,63 @@ a.entertainment-streaming-chip:focus-visible{outline:2px solid var(--green2);out
 .routine-date-field>label{font-size:13px;font-weight:700;color:var(--text)}
 @media(max-width:380px){.enorden-date-picker{padding:20px 13px 15px}.enorden-date-days{gap:2px}.enorden-date-days button{font-size:12px}}
 
+
+/* CHAT — INTERFAZ (capa 1) */
+.chat-page{display:flex;flex-direction:column;height:calc(100dvh - 155px);min-height:0;gap:14px;overflow:hidden}
+.chat-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:0 0 auto}
+.chat-heading h1{margin:0}.chat-heading p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.chat-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;flex:1;min-height:0;overflow:hidden}
+.chat-list-panel,.chat-room{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0;min-height:0}
+.chat-list-head{padding:14px 15px 10px;border-bottom:1px solid var(--line)}
+.chat-list-head strong{font-size:14px}.chat-list-head small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.chat-list{display:flex;flex-direction:column}
+.chat-list-item{width:100%;display:flex;align-items:center;gap:11px;padding:13px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text,#242820);text-align:left}
+.chat-list-item:last-child{border-bottom:0}.chat-list-item.active{background:var(--surface2)}
+.chat-avatar{width:43px;height:43px;flex:0 0 43px;border-radius:50%;display:grid;place-items:center;background:var(--surface2);font-size:21px}
+.chat-list-copy{min-width:0;flex:1}.chat-list-copy strong{display:block;font-size:14px}.chat-list-copy small{display:block;margin-top:4px;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-list-meta{font-size:10px;color:var(--muted);white-space:nowrap}
+.chat-room{display:flex;flex-direction:column;height:100%;min-height:0}
+.chat-room-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.chat-back{border:0;background:transparent;color:var(--text,#242820);font-size:22px;padding:4px 7px}
+.chat-room-title{min-width:0;flex:1}.chat-room-title strong{display:block;font-size:15px}.chat-room-title small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.chat-room-info{font-size:12px;color:var(--muted)}
+.chat-messages{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:10px;padding:15px 12px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;background:color-mix(in srgb,var(--bg) 72%,transparent)}
+.chat-day-divider{text-align:center;color:var(--muted);font-size:10px;margin:4px 0}
+.chat-bubble{max-width:86%;align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:9px 11px;box-shadow:0 1px 2px #00000008}
+.chat-bubble.mine{align-self:flex-end;background:color-mix(in srgb,var(--green2) 12%,var(--surface));border-radius:14px 14px 4px 14px}
+.chat-bubble-author{font-size:10px;font-weight:700;color:var(--green2);margin-bottom:4px}
+.chat-bubble-text{font-size:13px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.chat-bubble-meta{display:flex;justify-content:flex-end;gap:5px;align-items:center;color:var(--muted);font-size:9px;margin-top:5px}
+.chat-reply-preview{border-left:3px solid var(--green2);padding:5px 7px;margin-bottom:6px;background:var(--surface2);border-radius:4px;font-size:10px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.chat-reply-action{border:0;background:transparent;color:var(--muted);font-size:10px;padding:5px 0 0}
+.chat-empty{margin:auto;text-align:center;padding:26px 20px;color:var(--muted);max-width:270px}
+.chat-empty-icon{font-size:35px;margin-bottom:9px}.chat-empty strong{display:block;color:var(--text,#242820);font-size:14px;margin-bottom:6px}
+.chat-empty p{font-size:12px;line-height:1.5;margin:0}
+.chat-composer{padding:10px;border-top:1px solid var(--line);background:var(--surface)}
+.chat-replying{display:flex;align-items:center;gap:8px;padding:7px 9px;margin-bottom:8px;border-radius:8px;background:var(--surface2);font-size:11px;color:var(--muted)}
+.chat-replying span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-replying button{border:0;background:transparent;font-size:17px;color:var(--muted)}
+.chat-compose-row{display:flex;align-items:flex-end;gap:8px}
+.chat-transcribe-button{width:43px;height:43px;flex:0 0 43px;border:1px solid var(--line);border-radius:13px;background:var(--surface2);color:var(--text);font-size:19px;display:grid;place-items:center}
+.chat-transcribe-button.active{background:var(--green2);border-color:var(--green2);color:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--green2) 18%,transparent)}
+.chat-transcribe-button:disabled{opacity:.45;cursor:not-allowed}
+.chat-transcription-status{min-height:15px;font-size:10px;color:var(--muted);padding:5px 3px 0}
+.chat-compose-row textarea{flex:1;min-width:0;min-height:42px;max-height:120px;resize:vertical;border:1px solid var(--line);border-radius:13px;padding:11px 12px;background:var(--bg);color:var(--text,#242820);font:inherit;font-size:13px;outline:none}
+.chat-compose-row textarea:focus{border-color:var(--green2)}
+.chat-send{width:43px;height:43px;flex:0 0 43px;border:0;border-radius:13px;background:var(--green2);color:white;font-size:19px}
+.chat-send:disabled{opacity:.45}
+.chat-footnote{font-size:10px;color:var(--muted);padding:7px 3px 0}
+.chat-expiry-note{padding:9px 12px;background:color-mix(in srgb,var(--gold) 13%,var(--surface));color:var(--muted);font-size:10px;line-height:1.4;border-bottom:1px solid var(--line)}
+.chat-transcript-tag{display:inline-block;font-size:9px;color:var(--muted);margin-top:4px}
+.chat-mobile-hidden{display:none}
+@media(min-width:600px){
+ .chat-layout{grid-template-columns:minmax(190px,.72fr) minmax(0,1.5fr);align-items:stretch}
+ .chat-list-panel{max-height:calc(100vh - 225px);overflow:auto}
+ .chat-room{height:100%;max-height:none}
+ .chat-back{display:none}
+ .chat-mobile-hidden{display:flex}
+}
+
 </style>
 </head>
 <body>
@@ -1097,8 +1154,7 @@ let homeCode=localStorage.getItem('enorden_home_code');
 if(!homeCode){homeCode='EN-'+Math.random().toString(36).slice(2,8).toUpperCase();localStorage.setItem('enorden_home_code',homeCode)}
 let notifications=JSON.parse(localStorage.getItem('enorden_notifications')||'[]');
 let notificationsOpened=localStorage.getItem('enorden_notifications_opened')==='true';
-let chats=JSON.parse(localStorage.getItem('enorden_chats')||'null');
-if(!Array.isArray(chats)){chats=[{id:'familia',name:'Familia',createdAt:Date.now(),retentionHours:168,type:'family'}];localStorage.setItem('enorden_chats',JSON.stringify(chats))}
+let chatActiveId='familia',chatMobileDetail=false,chatReplyDraft=null;
 let financeSetupContext='settings';
 const screen=document.getElementById('screen');
 const nav=document.getElementById('bottomNav');
@@ -2388,21 +2444,182 @@ function renderFinance(){
  <div class="card empty"><div style="font-size:34px">💰</div><p>La planilla de finanzas se construirá en la siguiente etapa.</p></div>
  <div class="bottom-space"></div>`;
 }
-function renderChat(){
- const family=chats.find(c=>c.id==='familia');
- if(family&&Date.now()>=family.createdAt+family.retentionHours*60*60*1000){
-  chats=chats.filter(c=>c.id!=='familia');localStorage.setItem('enorden_chats',JSON.stringify(chats));
+/* CHAT — CONEXIÓN DE DATOS (capa 3)
+ * Adaptador local temporal. No representa sincronización multiusuario.
+ * Cuando se elija servidor, se sustituirá este adaptador sin rehacer la interfaz.
+ */
+const chatLocalData={
+ load(){
+  try{
+   const messages=JSON.parse(localStorage.getItem('enorden_chat_v1_messages')||'{}');
+   const meta=JSON.parse(localStorage.getItem('enorden_chat_v1_meta')||'{}');
+   return {messages:messages&&typeof messages==='object'?messages:{},meta:meta&&typeof meta==='object'?meta:{}};
+  }catch{return {messages:{},meta:{}}}
+ },
+ save(state){
+  localStorage.setItem('enorden_chat_v1_messages',JSON.stringify(state.messages||{}));
+  localStorage.setItem('enorden_chat_v1_meta',JSON.stringify(state.meta||{}));
  }
- const active=chats.find(c=>c.id==='familia');
- screen.innerHTML=`
- <div class="page-heading"><h1>Chat</h1><p>Conversaciones del hogar.</p></div>
- <div class="card">
-  <div class="card-row"><strong>💬 Familia</strong><span class="pill">Chat familiar</span></div>
-  <p class="settings-note">${active?'Este chat comenzó el '+new Date(active.createdAt).toLocaleString('es-CL')+'.':'El chat familiar se iniciará al crear la conversación.'}</p>
-  <p class="settings-note">La duración de 7 días se cuenta desde el inicio del chat, no desde el último mensaje. Los chats asociados a tareas tendrán una duración de 24 horas desde su creación.</p>
- </div>
- <div class="card empty">La mensajería de texto y audio se incorporará en una siguiente etapa.</div>
- <div class="bottom-space"></div>`;
+};
+let chatLocalState=chatLocalData.load();
+
+/* CHAT — LÓGICA DEL CHAT (capa 2)
+ * Reglas de duración y comportamiento independientes de la presentación.
+ * La versión inicial admite texto y transcripciones escritas/dictadas como texto.
+ * No graba, envía ni almacena archivos de audio.
+ */
+const CHAT_FAMILY_RETENTION=7*24*60*60*1000;
+const CHAT_NOTE_RETENTION=24*60*60*1000;
+function chatEnsureState(){
+ if(!chatLocalState||!chatLocalState.messages||!chatLocalState.meta)chatLocalState=chatLocalData.load();
+ if(!chatLocalState.meta.family)chatLocalState.meta.family={cycleStartedAt:null,notifiedCycle:null,introSeen:false};
+ if(!chatLocalState.messages.familia)chatLocalState.messages.familia=[];
+}
+function chatSave(){chatLocalData.save(chatLocalState)}
+function chatNoteId(note){return 'nota:'+String(note.id)}
+function chatPrepare(){
+ chatEnsureState();
+ const now=Date.now(),family=chatLocalState.meta.family;
+ if(family.cycleStartedAt){
+  const start=Date.parse(family.cycleStartedAt),end=start+CHAT_FAMILY_RETENTION;
+  if(Number.isFinite(start)&&now>=end){
+   chatLocalState.messages.familia=[];
+   family.cycleStartedAt=null;
+   family.notifiedCycle=null;
+  }else if(Number.isFinite(start)&&now>=end-24*60*60*1000&&family.notifiedCycle!==family.cycleStartedAt){
+   notifications.push({emoji:'💬',title:'El chat Familia se renovará pronto',description:'En 24 horas se eliminarán los mensajes y transcripciones de este ciclo.',module:'Chat',when:'Ahora'});
+   notifications=notifications.slice(-3);
+   localStorage.setItem('enorden_notifications',JSON.stringify(notifications));
+   family.notifiedCycle=family.cycleStartedAt;
+  }
+ }
+ const activeNotes=notesRecords.filter(note=>Number.isFinite(Date.parse(note.createdAt))&&now-Date.parse(note.createdAt)<CHAT_NOTE_RETENTION);
+ const activeIds=new Set(activeNotes.map(chatNoteId));
+ Object.keys(chatLocalState.messages).forEach(id=>{
+  if(id.startsWith('nota:')&&!activeIds.has(id))delete chatLocalState.messages[id];
+ });
+ Object.keys(chatLocalState.meta).forEach(id=>{
+  if(id.startsWith('nota:')&&!activeIds.has(id))delete chatLocalState.meta[id];
+ });
+ activeNotes.forEach(note=>{
+  const id=chatNoteId(note);
+  if(!chatLocalState.messages[id])chatLocalState.messages[id]=[];
+  if(!chatLocalState.meta[id])chatLocalState.meta[id]={createdAt:note.createdAt};
+ });
+ chatSave();
+ return activeNotes.sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt));
+}
+function chatGetConversation(id){
+ if(id==='familia')return {id:'familia',name:'Familia',kind:'family',createdAt:chatLocalState.meta.family.cycleStartedAt};
+ const note=notesRecords.find(item=>chatNoteId(item)===id);
+ if(!note||Date.now()-Date.parse(note.createdAt)>=CHAT_NOTE_RETENTION)return null;
+ return {id,name:(note.text||'').trim().slice(0,54)||'Nota',kind:'note',createdAt:note.createdAt,note};
+}
+function chatSendMessage(){
+ chatStopTranscription();
+ const input=document.getElementById('chatMessageInput'),text=(input?.value||'').trim();
+ if(!text)return;
+ const conversation=chatGetConversation(chatActiveId);if(!conversation)return;
+ if(conversation.kind==='family'&&!chatLocalState.meta.family.introSeen){
+  chatLocalState.meta.family.introSeen=true;chatSave();
+  showWindowNotice('¡Bienvenidos al chat Familia!','Este chat renueva sus conversaciones cada 7 días. Al finalizar cada período, todos los mensajes y transcripciones se eliminan automáticamente para dar espacio a nuevas conversaciones. ¡Disfruten de este espacio para mantenerse conectados!');
+  return;
+ }
+ if(conversation.kind==='family'&&!chatLocalState.meta.family.cycleStartedAt){
+  chatLocalState.meta.family.cycleStartedAt=new Date().toISOString();
+  chatLocalState.meta.family.notifiedCycle=null;
+ }
+ const message={id:'msg-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),text,createdAt:new Date().toISOString(),sender:'Tú',mine:true,replyTo:chatReplyDraft?{text:chatReplyDraft.text,sender:chatReplyDraft.sender}:null,format:'text'};
+ if(!Array.isArray(chatLocalState.messages[conversation.id]))chatLocalState.messages[conversation.id]=[];
+ chatLocalState.messages[conversation.id].push(message);
+ chatReplyDraft=null;chatSave();renderChat();
+}
+function chatSelectConversation(id){
+ if(!chatGetConversation(id))return;
+ chatActiveId=id;chatMobileDetail=true;chatReplyDraft=null;renderChat();
+}
+function chatBackToList(){chatMobileDetail=false;chatReplyDraft=null;renderChat()}
+function chatReplyTo(messageId){
+ const conversation=chatGetConversation(chatActiveId),message=conversation&&chatLocalState.messages[conversation.id]?.find(item=>item.id===messageId);
+ if(!message)return;
+ chatReplyDraft={text:message.text,sender:message.sender||'Integrante'};
+ renderChat();
+ document.getElementById('chatMessageInput')?.focus();
+}
+function chatCancelReply(){chatReplyDraft=null;renderChat()}
+let chatRecognition=null,chatRecognitionActive=false,chatRecognitionBaseText='',chatRecognitionStatus='';
+function chatTranscriptionLanguage(){return ({es:'es-CL',en:'en-US',pt:'pt-BR'})[appLanguage]||'es-CL'}
+function chatTranscriptionCopy(key){
+ const messages={
+ es:{unsupported:'El reconocimiento de voz no está disponible en este navegador.',permission:'No se pudo acceder al micrófono. Revisa los permisos del navegador.',network:'El reconocimiento de voz no pudo conectarse. Inténtalo nuevamente.',noSpeech:'No se detectó voz. Inténtalo nuevamente.',listening:'Escuchando… Habla con naturalidad.',ready:'Toca el micrófono y comienza a hablar.',generic:'No se pudo iniciar la transcripción. Inténtalo nuevamente.'},
+ en:{unsupported:'Speech recognition is not available in this browser.',permission:'The microphone could not be accessed. Check your browser permissions.',network:'Speech recognition could not connect. Please try again.',noSpeech:'No speech was detected. Please try again.',listening:'Listening… Speak naturally.',ready:'Tap the microphone and start speaking.',generic:'Transcription could not start. Please try again.'},
+ pt:{unsupported:'O reconhecimento de voz não está disponível neste navegador.',permission:'Não foi possível acessar o microfone. Verifique as permissões do navegador.',network:'O reconhecimento de voz não conseguiu se conectar. Tente novamente.',noSpeech:'Nenhuma fala foi detectada. Tente novamente.',listening:'Ouvindo… Fale naturalmente.',ready:'Toque no microfone e comece a falar.',generic:'Não foi possível iniciar a transcrição. Tente novamente.'}
+ };
+ return (messages[appLanguage]||messages.es)[key]||messages.es.generic;
+}
+function chatUpdateTranscriptionControl(){
+ const button=document.getElementById('chatTranscribeButton');
+ if(button){button.classList.toggle('active',chatRecognitionActive);button.setAttribute('aria-pressed',String(chatRecognitionActive));button.textContent=chatRecognitionActive?'■':'🎙'}
+ const status=document.getElementById('chatTranscriptionStatus');if(status)status.textContent=chatRecognitionStatus;
+}
+function chatStopTranscription(){if(chatRecognition&&chatRecognitionActive){try{chatRecognition.stop()}catch(error){}}else{chatRecognitionActive=false;chatUpdateTranscriptionControl()}}
+function chatToggleTranscription(){
+ if(chatRecognitionActive){chatStopTranscription();return}
+ const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!Recognition){chatRecognitionStatus=chatTranscriptionCopy('unsupported');chatUpdateTranscriptionControl();return}
+ const input=document.getElementById('chatMessageInput');if(!input)return;
+ try{
+  chatRecognition=new Recognition();chatRecognition.lang=chatTranscriptionLanguage();chatRecognition.continuous=true;chatRecognition.interimResults=true;chatRecognition.maxAlternatives=1;
+  chatRecognitionBaseText=input.value.trim();chatRecognitionStatus=chatTranscriptionCopy('listening');
+  chatRecognition.onstart=()=>{chatRecognitionActive=true;chatUpdateTranscriptionControl()};
+  chatRecognition.onresult=event=>{
+   let finalText='',interimText='';
+   for(let i=0;i<event.results.length;i++){const result=event.results[i],part=result[0]?.transcript||'';if(result.isFinal)finalText+=part;else interimText+=part}
+   input.value=[chatRecognitionBaseText,finalText.trim(),interimText.trim()].filter(Boolean).join(' ').slice(0,4000);
+   input.dispatchEvent(new Event('input',{bubbles:true}));
+  };
+  chatRecognition.onerror=event=>{
+   const key=event.error==='not-allowed'||event.error==='service-not-allowed'?'permission':event.error==='network'?'network':event.error==='no-speech'?'noSpeech':'generic';
+   chatRecognitionStatus=chatTranscriptionCopy(key);chatRecognitionActive=false;chatUpdateTranscriptionControl();
+  };
+  chatRecognition.onend=()=>{chatRecognitionActive=false;chatRecognition=null;if(chatRecognitionStatus===chatTranscriptionCopy('listening'))chatRecognitionStatus=chatTranscriptionCopy('ready');chatUpdateTranscriptionControl()};
+  chatRecognition.start();
+ }catch(error){chatRecognitionActive=false;chatRecognition=null;chatRecognitionStatus=chatTranscriptionCopy('generic');chatUpdateTranscriptionControl()}
+}
+function chatFormatTime(value){
+ const date=new Date(value);
+ return Number.isNaN(date.getTime())?'':date.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+}
+function chatRenderMessages(conversation){
+ const messages=chatLocalState.messages[conversation.id]||[];
+ if(!messages.length){
+  const copy=conversation.kind==='family'?'Cuando alguien de la familia envíe el primer mensaje, comenzará un nuevo ciclo de 7 días.':'Este espacio está disponible para conversar sobre esta nota durante sus primeras 24 horas.';
+  return '<div class="chat-empty"><div class="chat-empty-icon">💬</div><strong>Comienza la conversación</strong><p>'+escapeHTML(copy)+'</p></div>';
+ }
+ return messages.map(message=>'<article class="chat-bubble '+(message.mine?'mine':'')+'">'+(message.replyTo?'<div class="chat-reply-preview"><strong>'+escapeHTML(message.replyTo.sender)+'</strong><br>'+escapeHTML(message.replyTo.text)+'</div>':'')+'<div class="chat-bubble-author">'+escapeHTML(message.sender||'Integrante')+'</div><div class="chat-bubble-text">'+escapeHTML(message.text).replace(/\n/g,'<br>')+'</div>'+(message.format==='transcription'?'<span class="chat-transcript-tag">Transcripción</span>':'')+'<div class="chat-bubble-meta">'+chatFormatTime(message.createdAt)+'</div><button class="chat-reply-action" type="button" onclick="chatReplyTo(\''+escapeHTML(message.id)+'\')">Responder</button></article>').join('');
+}
+
+/* CHAT — INTERFAZ (capa 1)
+ * Presentación desacoplada de las reglas y del adaptador de almacenamiento.
+ */
+function renderChat(){
+ const noteChats=chatPrepare();
+ if(chatActiveId!=='familia'&&!chatGetConversation(chatActiveId)){chatActiveId='familia';chatMobileDetail=false}
+ const conversations=[{id:'familia',name:'Familia',kind:'family'},...noteChats.map(note=>({id:chatNoteId(note),name:(note.text||'').trim().slice(0,54)||'Nota',kind:'note',createdAt:note.createdAt}))];
+ const active=chatGetConversation(chatActiveId)||chatGetConversation('familia');
+ const list=conversations.map(item=>{
+  const msgs=chatLocalState.messages[item.id]||[],last=msgs[msgs.length-1];
+  const preview=last?last.text:(item.kind==='family'?'Conversación familiar':'Chat de esta nota');
+  return '<button type="button" class="chat-list-item '+(active.id===item.id?'active':'')+'" onclick="chatSelectConversation(\''+escapeHTML(item.id)+'\')"><span class="chat-avatar">'+(item.kind==='family'?'👨‍👩‍👧‍👦':'📝')+'</span><span class="chat-list-copy"><strong>'+escapeHTML(item.name)+'</strong><small>'+escapeHTML(preview)+'</small></span><span class="chat-list-meta">'+(last?chatFormatTime(last.createdAt):(item.kind==='family'?'7 días':'24 h'))+'</span></button>';
+ }).join('');
+ const familyStart=chatLocalState.meta.family.cycleStartedAt?Date.parse(chatLocalState.meta.family.cycleStartedAt):null;
+ const familyEnd=familyStart?familyStart+CHAT_FAMILY_RETENTION:null;
+ const expiryText=active.kind==='family'?(familyEnd?'Este ciclo termina el '+new Date(familyEnd).toLocaleString('es-CL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+'.':'El período de 7 días comenzará cuando se envíe el primer mensaje.'):'Este chat se elimina 24 horas después de crear la nota.';
+ const replyMarkup=chatReplyDraft?'<div class="chat-replying"><span>Respondiendo a '+escapeHTML(chatReplyDraft.sender)+': '+escapeHTML(chatReplyDraft.text)+'</span><button type="button" onclick="chatCancelReply()" aria-label="Cancelar respuesta">×</button></div>':'';
+ const isMobileDetail=chatMobileDetail?'':'chat-mobile-hidden';
+ const isMobileList=chatMobileDetail?'chat-mobile-hidden':'';
+ screen.innerHTML='<div class="chat-page"><div class="chat-heading"><div><h1>Chat</h1><p>Conversaciones del hogar.</p></div></div><div class="chat-layout"><aside class="chat-list-panel '+isMobileList+'"><div class="chat-list-head"><strong>Conversaciones</strong><small>Familia y chats de tus notas</small></div><div class="chat-list">'+(list||'<div class="chat-empty">Todavía no hay conversaciones.</div>')+'</div></aside><section class="chat-room '+isMobileDetail+'"><div class="chat-room-head"><button type="button" class="chat-back" onclick="chatBackToList()" aria-label="Volver a conversaciones">‹</button><span class="chat-avatar">'+(active.kind==='family'?'👨‍👩‍👧‍👦':'📝')+'</span><div class="chat-room-title"><strong>'+escapeHTML(active.name)+'</strong><small>'+(active.kind==='family'?'Chat familiar':'Conversación de nota')+'</small></div><span class="chat-room-info">⋯</span></div><div class="chat-expiry-note">'+escapeHTML(expiryText)+'</div><div class="chat-messages" id="chatMessages">'+chatRenderMessages(active)+'</div><div class="chat-composer">'+replyMarkup+'<div class="chat-compose-row"><textarea id="chatMessageInput" rows="1" maxlength="4000" placeholder="Escribe un mensaje…" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();chatSendMessage()}"></textarea>'+(active.kind==='family'?'<button type="button" id="chatTranscribeButton" class="chat-transcribe-button" onclick="chatToggleTranscription()" aria-label="Iniciar transcripción por voz" aria-pressed="false">🎙</button>':'')+'<button type="button" class="chat-send" onclick="chatSendMessage()" aria-label="Enviar mensaje">➤</button></div>'+(active.kind==='family'?'<div id="chatTranscriptionStatus" class="chat-transcription-status" aria-live="polite">'+escapeHTML(chatRecognitionStatus||chatTranscriptionCopy('ready'))+'</div>':'')+'<div class="chat-footnote">Puedes escribir o dictar tu mensaje. EnOrden convierte tu voz en texto y no guarda el audio.</div></div></section></div></div>';
+ const messages=document.getElementById('chatMessages');if(messages)messages.scrollTop=messages.scrollHeight;
 }
 function startFinanceLockTimer(){
  if(householdDevice||adminFinanceRule){financeUnlockUntil=0}
